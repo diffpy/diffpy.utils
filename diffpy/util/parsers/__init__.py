@@ -15,6 +15,8 @@
 """
 """
 
+from resample import resample
+
 __id__ = "$Id$"
 
 # End of file
