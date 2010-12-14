@@ -15,6 +15,7 @@
 """
 """
 
+from loaddata import loadData
 from resample import resample
 
 __id__ = "$Id$"

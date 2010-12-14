@@ -14,6 +14,7 @@
 
 """Various utilities related to data parsing and manipulation."""
 
+import numpy
 
 def resample(r, s, dr):
     """Resample a PDF on a new grid.
