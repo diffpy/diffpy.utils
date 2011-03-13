@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 
-"""util - utilities for diffpy
+"""util - small shared utilities for other diffpy packages
 
 Packages:   diffpy.util
 """
 
 from setuptools import setup, find_packages
-import fix_setuptools_chmod
 
 # define distribution
 setup(

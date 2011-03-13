@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 ##############################################################################
 #
 # diffpy.util       by DANSE Diffraction group
@@ -11,6 +12,9 @@
 # See LICENSE.txt for license information.
 #
 ##############################################################################
+
+# module version
+__id__ = "$Id$"
 
 """Various utilities related to data parsing and manipulation."""
 
@@ -66,5 +70,4 @@ def resample(r, s, dr):
     # If we got here, then no resampling is required
     return r.copy(), s.copy()
 
-__id__ = "$Id$"
 # End of file
