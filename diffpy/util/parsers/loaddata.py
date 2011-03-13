@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ##############################################################################
 #
-# diffpy.util       by DANSE Diffraction group
+# diffpy.utils      by DANSE Diffraction group
 #                   Simon J. L. Billinge
 #                   (c) 2010 Trustees of the Columbia University
 #                   in the City of New York.  All rights reserved.
@@ -12,6 +12,9 @@
 # See LICENSE.txt for license information.
 #
 ##############################################################################
+
+# Turn on the "with" statement for Python 2.5.
+from __future__ import with_statement
 
 # module version
 __id__ = "$Id$"

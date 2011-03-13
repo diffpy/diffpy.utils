@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ##############################################################################
 #
-# diffpy.util       by DANSE Diffraction group
+# diffpy.utils      by DANSE Diffraction group
 #                   Simon J. L. Billinge
 #                   (c) 2010 Trustees of the Columbia University
 #                   in the City of New York.  All rights reserved.
@@ -20,10 +20,7 @@ Subpackages:
 parsers  -- various utilities related to data parsing and manipulation.
 """
 
-# Turn on the "with" statement for Python 2.5.
-from __future__ import with_statement
-
 # package version
-from diffpy.util.version import __version__
+from diffpy.utils.version import __version__
 
 # End of file

@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
-"""util - small shared utilities for other diffpy packages
+"""utils - small shared utilities for other diffpy packages
 
-Packages:   diffpy.util
+Packages:   diffpy.utils
 """
 
 from setuptools import setup, find_packages
 
 # define distribution
 setup(
-        name = "diffpy.util",
+        name = "diffpy.utils",
         version = "0.1",
         namespace_packages = ['diffpy'],
         packages = find_packages(exclude=['tests']),
