@@ -10,7 +10,7 @@ from setuptools import setup, find_packages
 # define distribution
 setup(
         name = "diffpy.utils",
-        version = "0.1",
+        version = "1.0",
         namespace_packages = ['diffpy'],
         packages = find_packages(),
         test_suite = 'diffpy.utils.tests',
