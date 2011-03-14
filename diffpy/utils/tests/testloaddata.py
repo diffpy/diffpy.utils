@@ -9,7 +9,7 @@ __id__ = '$Id$'
 import unittest
 import numpy
 from diffpy.utils.parsers import loadData
-from diffpy.utils.tests.testutils import datafile
+from diffpy.utils.tests.testhelpers import datafile
 
 loaddata01 = datafile('loaddata01.txt')
 

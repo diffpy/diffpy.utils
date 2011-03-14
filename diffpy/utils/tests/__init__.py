@@ -25,6 +25,7 @@ def test():
     '''
     import unittest
     modulenames = '''
+        diffpy.utils.tests.testloaddata
     '''.split()
     suite = unittest.TestSuite()
     loader = unittest.defaultTestLoader
