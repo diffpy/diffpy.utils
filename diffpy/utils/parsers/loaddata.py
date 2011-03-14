@@ -20,8 +20,7 @@ from __future__ import with_statement
 __id__ = "$Id$"
 
 
-def loadData(filename, minrows=10, mincols=2, usecols=(0, 1), unpack=True,
-        delimiter=None):
+def loadData(filename, minrows=10, mincols=2, unpack=True, **kwargs):
     """Find and load data from a text file.
 
     The data reading starts at the first matrix block of at least minrows rows
@@ -32,16 +31,19 @@ def loadData(filename, minrows=10, mincols=2, usecols=(0, 1), unpack=True,
     minrows  -- minimum number of rows in the first data block.
                 All rows must have the same number of floating point values.
     mincols  -- minimum number of floating point values in each row.
-    usecols  -- zero-based index of columns to be loaded
+    usecols  -- zero-based index of columns to be loaded, by default use
+                the first mincols columns.
     unpack   -- return data as a sequence of columns that allows tuple
                 unpacking such as  x, y = loadData('filename.dat')
-    delimiter -- the string used to separate values.
-                By default, this is any whitespace.
+    kwargs   -- keyword arguments that are passed to numpy.loadtxt
 
     Return a numpy array of the data.
     See also numpy.loadtxt for more details.
     """
     from numpy import array, loadtxt
+    # determine the arguments
+    delimiter = kwargs.get('delimiter')
+    usecols = kwargs.get('usecols', range(mincols))
     # Check if a line consists of floats only and return their count
     # Return zero if some strings cannot be converted.
     def countfloats(line):
@@ -53,24 +55,20 @@ def loadData(filename, minrows=10, mincols=2, usecols=(0, 1), unpack=True,
     # make sure fid gets cleaned up
     with open(filename, 'rb') as fid:
         # search for the start of datablock
-        start = None
-        fpos = 0
+        start = ncols = None
+        fpos = nrows = 0
         for line in fid:
             fpos += len(line)
             nc = countfloats(line)
             if nc < mincols:
                 start = None
                 continue
-            # nc is acceptable here
-            if start is None:
+            # nc is acceptable here, require the same number of columns
+            # throughout the datablock
+            if start is None or nc != ncols:
                 ncols = nc
                 nrows = 0
                 start = fpos - len(line)
-            # ncols is defined here, require the same number of columns
-            # throughout the datablock
-            if nc != ncols:
-                start = None
-                continue
             nrows += 1
             # block was found here!
             if nrows >= minrows:
@@ -81,8 +79,7 @@ def loadData(filename, minrows=10, mincols=2, usecols=(0, 1), unpack=True,
             rv = array([], dtype=float)
         else:
             fid.seek(start)
-            rv = loadtxt(fid, usecols=usecols,
-                    unpack=unpack, delimiter=delimiter)
+            rv = loadtxt(fid, unpack=unpack, **kwargs)
     return rv
 
 # End of file
