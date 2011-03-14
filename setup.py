@@ -14,6 +14,7 @@ setup(
         namespace_packages = ['diffpy'],
         packages = find_packages(),
         test_suite = 'diffpy.utils.tests',
+        include_package_data = True,
         author = 'Simon J.L. Billinge',
         author_email = 'sb2896@columbia.edu',
         maintainer = 'Pavol Juhas',
