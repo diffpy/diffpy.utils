@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 ##############################################################################
 #
-# PDFgui            by DANSE Diffraction group
+# diffpy.utils      by DANSE Diffraction group
 #                   Simon J. L. Billinge
 #                   (c) 2006 trustees of the Michigan State University.
 #                   All rights reserved.
 #
-# File coded by:    Chris Farrow
+# File coded by:    Chris Farrow, Pavol Juhas
 #
 # See AUTHORS.txt for a list of people who contributed.
 # See LICENSE.txt for license information.
@@ -158,3 +158,5 @@ def _indicesToBlocks(indices):
         i0 = i
     rv = map(tuple, rngs)
     return rv
+
+# End of file
