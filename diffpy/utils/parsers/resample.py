@@ -26,7 +26,10 @@ def wsinterp(x, xp, fp, left = None, right = None):
     """One-dimensional Whittaker-Shannon interpolation.
 
     This uses the Whittaker-Shannon interpolation formula to interpolate the
-    value of fp (array), which is defined over xp (array), at x (scalar).
+    value of fp (array), which is defined over xp (array), at x (array or
+    float).
+
+    Returns the interpolated array with dimensions of x.
 
     """
     scalar = numpy.isscalar(x)
