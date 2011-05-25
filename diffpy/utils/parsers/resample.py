@@ -20,6 +20,40 @@ __id__ = "$Id$"
 
 import numpy
 
+# NOTE - this should be faster than resample below and conforms more closely to
+# numpy.interp. I'm keeping resample for legacy reasons.
+def wsinterp(x, xp, fp, left = None, right = None):
+    """One-dimensional Whittaker-Shannon interpolation.
+
+    This uses the Whittaker-Shannon interpolation formula to interpolate the
+    value of fp (array), which is defined over xp (array), at x (scalar).
+
+    """
+    scalar = numpy.isscalar(x)
+    if scalar:
+        x = numpy.array(x)
+        x.resize(1)
+    # shape = (nxp, nx), nxp copies of x data span axis 1
+    u = numpy.resize(x, (len(xp), len(x)))
+    # Must take transpose of u for proper broadcasting with xp.
+    # shape = (nx, nxp), v(xp) data spans axis 1
+    v = (xp - u.T) / (xp[1] - xp[0])
+    # shape = (nx, nxp), m(v) data spans axis 1
+    m = fp * numpy.sinc(v)
+    # Sum over m(v) (axis 1)
+    fp_at_x = numpy.sum(m, axis = 1)
+
+    # Enforce left and right
+    if left is None: left = fp[0]
+    fp_at_x[x < xp[0]] = left
+    if right is None: right = fp[-1]
+    fp_at_x[x > xp[-1]] = right
+
+    # Return a float if we got a float
+    if scalar: return float(fp_at_x)
+
+    return fp_at_x
+
 def resample(r, s, dr):
     """Resample a PDF on a new grid.
 
