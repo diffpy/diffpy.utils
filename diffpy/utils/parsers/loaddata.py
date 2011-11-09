@@ -20,7 +20,7 @@ from __future__ import with_statement
 __id__ = "$Id$"
 
 
-def loadData(filename, minrows=10, mincols=2, unpack=True, **kwargs):
+def loadData(filename, minrows=10, mincols=1, unpack=True, **kwargs):
     """Find and load data from a text file.
 
     The data reading starts at the first matrix block of at least minrows rows
@@ -30,9 +30,10 @@ def loadData(filename, minrows=10, mincols=2, unpack=True, **kwargs):
     filename -- name of the file we want to load data from.
     minrows  -- minimum number of rows in the first data block.
                 All rows must have the same number of floating point values.
-    mincols  -- minimum number of floating point values in each row.
+    mincols  -- minimum number of floats in a data block.  If usecols is
+                defined, only the specified columns are checked for floats.
     usecols  -- zero-based index of columns to be loaded, by default use
-                the first mincols columns.
+                all detected columns.
     unpack   -- return data as a sequence of columns that allows tuple
                 unpacking such as  x, y = loadData('filename.dat')
     kwargs   -- keyword arguments that are passed to numpy.loadtxt
@@ -43,13 +44,16 @@ def loadData(filename, minrows=10, mincols=2, unpack=True, **kwargs):
     from numpy import array, loadtxt
     # determine the arguments
     delimiter = kwargs.get('delimiter')
-    usecols = kwargs.get('usecols', range(mincols))
+    usecols = kwargs.get('usecols')
     # Check if a line consists of floats only and return their count
     # Return zero if some strings cannot be converted.
     def countfloats(line):
         try:
-            nf = len(map(float, line.split(delimiter)))
-        except ValueError:
+            words = line.split(delimiter)
+            if usecols is not None:
+                words = [words[i] for i in usecols]
+            nf = len(map(float, words))
+        except (IndexError, ValueError):
             nf = 0
         return nf
     # make sure fid gets cleaned up
