@@ -25,14 +25,14 @@ class TestLoadData(unittest.TestCase):
         d = loadData(loaddata01)
         self.failUnless(numpy.array_equal(d2c, d))
         # the default minrows=10 makes it read from the third line
-        d = loadData(loaddata01, mincols=1, usecols=(0, 1))
+        d = loadData(loaddata01)
         self.failUnless(numpy.array_equal(d2c, d))
-        # the mincols=2 would make it read from the third line
-        d = loadData(loaddata01, minrows=1, mincols=2)
+        # the usecols=(0, 1) would make it read from the third line
+        d = loadData(loaddata01, minrows=1, usecols=(0, 1))
         self.failUnless(numpy.array_equal(d2c, d))
         # check the effect of usecols effect
         d = loadData(loaddata01, usecols=(0,))
-        self.failUnless(numpy.array_equal(d1c, d))
+        self.failUnless(numpy.array_equal(d2c[:,0], d))
         d = loadData(loaddata01, usecols=(1,))
         self.failUnless(numpy.array_equal(d2c[:,1], d))
         return
@@ -42,11 +42,11 @@ class TestLoadData(unittest.TestCase):
         """check loading of one-column data.
         """
         d1c = numpy.arange(1, 6)
-        d = loadData(loaddata01, mincols=1, minrows=1)
+        d = loadData(loaddata01, usecols=[0], minrows=1)
         self.failUnless(numpy.array_equal(d1c, d))
-        d = loadData(loaddata01, mincols=1, minrows=2)
+        d = loadData(loaddata01, usecols=[0], minrows=2)
         self.failUnless(numpy.array_equal(d1c, d))
-        d = loadData(loaddata01, mincols=1, minrows=3)
+        d = loadData(loaddata01, usecols=[0], minrows=3)
         self.failIf(numpy.array_equal(d1c, d))
         return
 
