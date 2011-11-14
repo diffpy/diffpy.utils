@@ -19,21 +19,22 @@ class TestLoadData(unittest.TestCase):
     def test_loadData_default(self):
         """check loadData() with default options
         """
-        d2c = numpy.array([[3, 4, 5], [31, 32, 33]])
+        d1c = numpy.arange(1, 6)
+        d2c = numpy.array([[3, 31], [4, 32], [5, 33]])
         self.assertRaises(IOError, loadData, 'doesnotexist')
         d = loadData(loaddata01)
         self.failUnless(numpy.array_equal(d2c, d))
         # the default minrows=10 makes it read from the third line
         d = loadData(loaddata01, mincols=1, usecols=(0, 1))
         self.failUnless(numpy.array_equal(d2c, d))
-        # the default mincols=2 makes it read from the third line
-        d = loadData(loaddata01, minrows=1)
+        # the mincols=2 would make it read from the third line
+        d = loadData(loaddata01, minrows=1, mincols=2)
         self.failUnless(numpy.array_equal(d2c, d))
         # check the effect of usecols effect
         d = loadData(loaddata01, usecols=(0,))
-        self.failUnless(numpy.array_equal(d2c[0], d))
+        self.failUnless(numpy.array_equal(d1c, d))
         d = loadData(loaddata01, usecols=(1,))
-        self.failUnless(numpy.array_equal(d2c[1], d))
+        self.failUnless(numpy.array_equal(d2c[:,1], d))
         return
 
 

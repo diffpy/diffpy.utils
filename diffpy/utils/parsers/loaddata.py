@@ -20,7 +20,7 @@ from __future__ import with_statement
 __id__ = "$Id$"
 
 
-def loadData(filename, minrows=10, mincols=1, unpack=True, **kwargs):
+def loadData(filename, minrows=10, mincols=1, **kwargs):
     """Find and load data from a text file.
 
     The data reading starts at the first matrix block of at least minrows rows
@@ -35,7 +35,9 @@ def loadData(filename, minrows=10, mincols=1, unpack=True, **kwargs):
     usecols  -- zero-based index of columns to be loaded, by default use
                 all detected columns.
     unpack   -- return data as a sequence of columns that allows tuple
-                unpacking such as  x, y = loadData('filename.dat')
+                unpacking such as  x, y = loadData(FILENAME, unpack=True).
+                Note transposing the loaded array as loadData(FILENAME).T
+                has the same effect.
     kwargs   -- keyword arguments that are passed to numpy.loadtxt
 
     Return a numpy array of the data.
@@ -52,6 +54,10 @@ def loadData(filename, minrows=10, mincols=1, unpack=True, **kwargs):
             words = line.split(delimiter)
             if usecols is not None:
                 words = [words[i] for i in usecols]
+            else:
+                # remove trailing blank columns
+                while words and not words[-1].strip():
+                    words.pop(-1)
             nf = len(map(float, words))
         except (IndexError, ValueError):
             nf = 0
@@ -83,7 +89,10 @@ def loadData(filename, minrows=10, mincols=1, unpack=True, **kwargs):
             rv = array([], dtype=float)
         else:
             fid.seek(start)
-            rv = loadtxt(fid, unpack=unpack, **kwargs)
+            # always use usecols argument so that loadtxt does not crash
+            # in case of trailing delimiters.
+            kwargs.setdefault('usecols', range(ncols))
+            rv = loadtxt(fid, **kwargs)
     return rv
 
 # End of file
