@@ -50,7 +50,7 @@ def loadData(filename, minrows=10, **kwargs):
     mincv = (1, 1)
     # but if usecols is specified, require sufficient number of columns
     # where the used columns contain floats
-    if usecols:
+    if usecols is not None:
         hiidx = max(-min(usecols), max(usecols) + 1)
         mincv = (hiidx, len(set(usecols)))
     # Check if a line consists of floats only and return their count
