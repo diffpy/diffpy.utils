@@ -102,4 +102,154 @@ def loadData(filename, minrows=10, **kwargs):
             rv = loadtxt(fid, **kwargs)
     return rv
 
+
+class TextDataLoader(object):
+    '''Smart loading of a text data with possibly multiple datasets.
+    '''
+
+    minrows = 10
+    usecols = None
+    skiprows = None
+
+    def __init__(self, minrows=None, usecols=None, skiprows=None):
+        if minrows is not None:
+            self.minrows = minrows
+        if usecols is not None:
+            self.usecols = tuple(usecols)
+        if skiprows is not None:
+            self.skiprows = skiprows
+        # data items
+        self._reset()
+        return
+
+
+    def _reset(self):
+        self.filename = ''
+        self.headers = []
+        self.datasets = []
+        self._resetvars()
+        return
+
+
+    def _resetvars(self):
+        self._filename = ''
+        self._lines = None
+        self._splitlines = None
+        self._words = None
+        self._linerecs = None
+        self._wordrecs = None
+        return
+
+
+    def read(self, filename):
+        with open(filename, 'rb') as fp:
+            self.readfp(fp)
+        return
+
+
+    def readfp(self, fp, append=False):
+        import numpy
+        self._reset()
+        # try to read lines from fp first
+        self._lines = fp.readlines()
+        # and if good, assign filename
+        self.filename = getattr(fp, 'name', '')
+        self._words = ''.join(self._lines).split()
+        self._splitlines = map(str.split, self._lines)
+        self._findDataBlocks()
+        return
+
+
+    def _findDataBlocks(self):
+        import numpy
+        mincols = 1
+        if self.usecols is not None and len(self.usecols):
+            mincols = max(mincols, max(self.usecols) + 1)
+            mincols = max(mincols, abs(min(self.usecols)))
+        nlines = len(self._lines)
+        nwords = len(self._words)
+        # idx - line index, nw0, nw1 - index of the first and last word,
+        # nf - number of words, ok - has data
+        self._linerecs = numpy.recarray((nlines,), dtype=[('idx', int),
+            ('nw0', int), ('nw1', int), ('nf', int), ('ok', bool)])
+        lr = self._linerecs
+        lr.idx = numpy.arange(nlines)
+        lr.nf = map(len, self._splitlines)
+        lr.nw1 = lr.nf.cumsum()
+        lr.nw0 = lr.nw1 - lr.nf
+        lr.ok = True
+        # word records
+        lw = self._wordrecs = numpy.recarray((nwords,), dtype=[('idx', int),
+            ('line', int), ('col', int), ('ok', bool), ('value', float)])
+        lw.idx = numpy.arange(nwords)
+        n1 = numpy.zeros(nwords, dtype=bool)
+        n1[lr.nw1[:-1]] = True
+        lw.line = n1.cumsum()
+        lw.col = lw.idx - lr.nw0[lw.line]
+        flag = None
+        lw.ok = True
+        values = nwords * [0.0]
+        for i, w in enumerate(self._words):
+            try:
+                values[i] = float(w)
+            except:
+                lw.ok[i] = False
+        # prune lines that have a non-float values:
+        lw.values = values
+        if self.usecols is None:
+            badlines = lw.line[~lw.ok]
+            lr.ok[badlines] = False
+        else:
+            for col in self.usecols:
+                badlines = lw.line[(lw.col == col) & ~lw.ok]
+                lr.ok[badlines] = False
+        lr1 = lr[lr.nf >= mincols]
+        okb = numpy.r_[lr1.ok[:1], lr1.ok[1:] & ~lr1.ok[:-1], False]
+        oke = numpy.r_[False, ~lr1.ok[1:] & lr1.ok[:-1], lr1.ok[-1:]]
+        blockb = numpy.r_[True, lr1.nf[1:] != lr1.nf[:-1], False]
+        blocke = numpy.r_[False, blockb[1:-1], True]
+        beg = numpy.nonzero(okb | blockb)[0]
+        end = numpy.nonzero(oke | blocke)[0]
+        rowcounts = end - beg
+        assert not numpy.any(rowcounts < 0)
+        goodrows = (rowcounts >= self.minrows)
+        begend = numpy.transpose([beg, end - 1])[goodrows]
+        hbeg = 0
+        for dbeg, dend in begend:
+            bb1 = lr1[dbeg]
+            ee1 = lr1[dend]
+            hend = bb1.idx
+            header = ''.join(self._lines[hbeg:hend])
+            hbeg = ee1.idx + 1
+            if self.usecols is None:
+                data = numpy.reshape(lw.value[bb1.nw0:ee1.nw1], (-1, bb1.nf))
+            else:
+                tdata = numpy.empty((len(self.usecols), dend - dbeg), dtype=float)
+                for j, trow in zip(self.usecols, tdata):
+                    j %= bb1.nf
+                    trow[:] = lw.value[bb1.nw0 + j : ee1.nw1 : bb1.nf]
+                data = tdata.transpose()
+            self.headers.append(header)
+            self.datasets.append(data)
+        # finish reading to a last header and empty dataset
+        if hbeg < len(self._lines):
+            header = ''.join(self._lines[hbeg:])
+            data = numpy.empty(0, dtype=float)
+            self.headers.append(header)
+            self.datasets.append(data)
+        return
+
+
+# End of class TextDataLoader
+
+def isfloat(s):
+    '''True if s is convertible to float.
+    '''
+    try:
+        float(s)
+        return True
+    except:
+        pass
+    return False
+
 # End of file
