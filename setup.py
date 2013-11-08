@@ -32,7 +32,7 @@ def getversioncfg():
     if not os.path.isdir('.git'):  return cp
     d = cp.defaults()
     g = gitinfo()
-    if g['commit'] != d.get('commit'):
+    if g['version'] != d.get('version') or g['commit'] != d.get('commit'):
         cp.set('DEFAULT', 'version', g['version'])
         cp.set('DEFAULT', 'commit', g['commit'])
         cp.set('DEFAULT', 'date', g['date'])
