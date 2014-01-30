@@ -113,14 +113,14 @@ def limitSelectionToRows(grid, indices):
 
 def quickResizeColumns(grid, indices):
     """Resize the columns that were recently affected by cell changes.
-    
+
     This is faster than the normal grid AutoSizeColumns, since the latter loops
     over the entire grid. In addition, this will not cause a
     EVT_GRID_CMD_CELL_CHANGE event to be thrown, which can cause recursion.
     This method will only increase column size.
     """
     # Get the columns and maximum text width in each one
-    dc = wx.ScreenDC() 
+    dc = wx.ScreenDC()
     maxSize = {}
     for (i, j) in indices:
         if j not in maxSize:
