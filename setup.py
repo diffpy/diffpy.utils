@@ -27,7 +27,6 @@ def gitinfo():
 
 
 def getversioncfg():
-    import os
     from ConfigParser import SafeConfigParser
     cp = SafeConfigParser()
     cp.read(versioncfgfile)
