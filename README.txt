@@ -52,11 +52,7 @@ instructions.
 
 INSTALLATION
 
-The easiest option is to use the latest DiffPy-CMI release bundle from
-http://www.diffpy.org/, which comes with diffpy.utils and all other
-dependencies included.
-
-If you prefer to install from sources, make sure all required software
+To install from sources, make sure all required software
 packages are in place and then run
 
     sudo python setup.py install
