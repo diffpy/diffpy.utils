@@ -66,7 +66,7 @@ the HOME directory and running
     python -m diffpy.utils.tests.run
 
 
-DEVELOPMENT
+CONTRIBUTION
 
 diffpy.utils is an open-source software developed as a part of the
 DiffPy-CMI complex modeling initiative at the Brookhaven National
