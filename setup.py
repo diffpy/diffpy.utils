@@ -51,6 +51,7 @@ setup_args = dict(
         packages = find_packages(),
         test_suite = 'diffpy.utils.tests',
         include_package_data = True,
+        zip_safe = False,
         author = 'Simon J.L. Billinge',
         author_email = 'sb2896@columbia.edu',
         maintainer = 'Pavol Juhas',
@@ -58,7 +59,7 @@ setup_args = dict(
         url = 'http://www.diffpy.org/',
         download_url = 'http://www.diffpy.org/packages/',
         description = "Utilities for diffpy",
-        license = 'BSD',
+        license = "BSD, see LICENSE.txt",
         keywords = "diffpy utilities",
         classifiers = [
             # List of possible values at
