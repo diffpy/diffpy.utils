@@ -1,0 +1,170 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>wx Package &mdash; diffpy.utils 1.1a1-8 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1a1-8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <link rel="top" title="diffpy.utils 1.1a1-8 documentation" href="../index.html" />
+    <link rel="up" title="utils Package" href="diffpy.utils.html" />
+    <link rel="prev" title="tests Package" href="diffpy.utils.tests.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="diffpy.utils.tests.html" title="tests Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">diffpy.utils 1.1a1-8 documentation</a> &raquo;</li>
+          <li><a href="diffpy.utils.html" accesskey="U">utils Package</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="wx-package">
+<h1>wx Package<a class="headerlink" href="#wx-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">wx</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-diffpy.utils.wx"></span><p>Utilities related wx Python GUIs.</p>
+<p>gridutils    &#8211; selection management in wx.grid.Grid</p>
+</div>
+<div class="section" id="module-diffpy.utils.wx.gridutils">
+<span id="gridutils-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">gridutils</span></tt> Module<a class="headerlink" href="#module-diffpy.utils.wx.gridutils" title="Permalink to this headline">¶</a></h2>
+<p>Common functions for manipulating wx.grid.Grid.</p>
+<dl class="function">
+<dt id="diffpy.utils.wx.gridutils.getSelectedCells">
+<tt class="descclassname">diffpy.utils.wx.gridutils.</tt><tt class="descname">getSelectedCells</tt><big>(</big><em>grid</em><big>)</big><a class="reference internal" href="../_modules/diffpy/utils/wx/gridutils.html#getSelectedCells"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.wx.gridutils.getSelectedCells" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of (row, col) pairs of all selected cells.
+Unlike grid.GetSelectedCells this returns them all no matter
+how they were selected.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="diffpy.utils.wx.gridutils.getSelectionColumns">
+<tt class="descclassname">diffpy.utils.wx.gridutils.</tt><tt class="descname">getSelectionColumns</tt><big>(</big><em>grid</em><big>)</big><a class="reference internal" href="../_modules/diffpy/utils/wx/gridutils.html#getSelectionColumns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.wx.gridutils.getSelectionColumns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indices of columns that have any cell selected.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="diffpy.utils.wx.gridutils.getSelectionRows">
+<tt class="descclassname">diffpy.utils.wx.gridutils.</tt><tt class="descname">getSelectionRows</tt><big>(</big><em>grid</em><big>)</big><a class="reference internal" href="../_modules/diffpy/utils/wx/gridutils.html#getSelectionRows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.wx.gridutils.getSelectionRows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indices of the rows that have any cell selected.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="diffpy.utils.wx.gridutils.limitSelectionToRows">
+<tt class="descclassname">diffpy.utils.wx.gridutils.</tt><tt class="descname">limitSelectionToRows</tt><big>(</big><em>grid</em>, <em>indices</em><big>)</big><a class="reference internal" href="../_modules/diffpy/utils/wx/gridutils.html#limitSelectionToRows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.wx.gridutils.limitSelectionToRows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Limit selection to the specified row indices.
+No action for empty indices.</p>
+<p>grid     &#8211; instance of wx.grid.Grid
+indices  &#8211; list of row indices to be selected, must be sorted and unique.</p>
+<p>No return value.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="diffpy.utils.wx.gridutils.quickResizeColumns">
+<tt class="descclassname">diffpy.utils.wx.gridutils.</tt><tt class="descname">quickResizeColumns</tt><big>(</big><em>grid</em>, <em>indices</em><big>)</big><a class="reference internal" href="../_modules/diffpy/utils/wx/gridutils.html#quickResizeColumns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.wx.gridutils.quickResizeColumns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resize the columns that were recently affected by cell changes.</p>
+<p>This is faster than the normal grid AutoSizeColumns, since the latter loops
+over the entire grid. In addition, this will not cause a
+EVT_GRID_CMD_CELL_CHANGE event to be thrown, which can cause recursion.
+This method will only increase column size.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">wx Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">wx</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-diffpy.utils.wx.gridutils"><tt class="docutils literal"><span class="pre">gridutils</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="diffpy.utils.tests.html"
+                        title="previous chapter">tests Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/api/diffpy.utils.wx.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="diffpy.utils.tests.html" title="tests Package"
+             >previous</a> |</li>
+        <li><a href="../index.html">diffpy.utils 1.1a1-8 documentation</a> &raquo;</li>
+          <li><a href="diffpy.utils.html" >utils Package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Pavol Juhas, Timur Dykhne, Christopher Farrow, Simon Billinge.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
