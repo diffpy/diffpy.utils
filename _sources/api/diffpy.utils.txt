@@ -9,6 +9,14 @@ utils Package
     :undoc-members:
     :show-inheritance:
 
+:mod:`version` Module
+---------------------
+
+.. automodule:: diffpy.utils.version
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Subpackages
 -----------
 
