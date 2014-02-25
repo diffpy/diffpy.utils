@@ -1,4 +1,6 @@
-diffpy.utils - general purpose shared utilities for the diffpy libraries.
+#diffpy.utils
+
+General purpose shared utilities for the diffpy libraries.
 
 The diffpy.utils package provides functions to easily find and load data from
 text files, various utilites related to data parsing and manipulation, and a set
@@ -18,16 +20,16 @@ on the Whittaker-Shannon formula.
 
 For more information about the diffpy.utils library, see the users manual at
 
-    http://www.diffpy.org/doc/utils/
+http://www.diffpy.org/doc/utils/
 
 
-REQUIREMENTS
+## REQUIREMENTS
 
 The diffpy.utils package requires Python 2.6 or 2.7 and the following software:
 
-    setuptools   -- tools for installing Python packages
-    NumPy        -- library for scientific computing with Python
-    wxPython     -- GUI toolkit for the Python language
+* `setuptools`   - tools for installing Python packages
+* `NumPy`        - library for scientific computing with Python
+* `wxPython`     - GUI toolkit for the Python language
 
 Some of the required software packages may be available in the system package
 manager, for example, on Ubuntu Linux the dependencies can be installed as:
@@ -50,7 +52,7 @@ For other required packages see their respective web pages for installation
 instructions.
 
 
-INSTALLATION
+## INSTALLATION
 
 To install from sources, make sure all required software
 packages are in place and then run
@@ -66,13 +68,13 @@ the HOME directory and running
     python -m diffpy.utils.tests.run
 
 
-CONTRIBUTION
+## CONTRIBUTION
 
 diffpy.utils is an open-source software developed as a part of the
 DiffPy-CMI complex modeling initiative at the Brookhaven National
 Laboratory.  The diffpy.utils sources are hosted at
 
-    https://github.com/diffpy/diffpy.utils/,
+https://github.com/diffpy/diffpy.utils/,
 
 Feel free to fork the project and contribute.  To install diffpy.utils
 in a development mode, with its sources being directly used by Python
@@ -81,10 +83,10 @@ rather than copied to a package directory, use
     python setup.py develop --user
 
 
-CONTACTS
+## CONTACTS
 
 For more information on diffpy.utils please visit the project web-page
 
-    http://www.diffpy.org/
+http://www.diffpy.org/
 
 or email Prof. Simon Billinge at sb2896@columbia.edu.
