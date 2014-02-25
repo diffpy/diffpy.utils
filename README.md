@@ -34,7 +34,7 @@ The diffpy.utils package requires Python 2.6 or 2.7 and the following software:
 Some of the required software packages may be available in the system package
 manager, for example, on Ubuntu Linux the dependencies can be installed as:
 
-    sudo apt-get install
+    sudo apt-get install \
         python-setuptools python-numpy python-wxgtk2.8
 
 For Mac OS X systems with the MacPorts package manager one could do
