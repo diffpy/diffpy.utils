@@ -16,9 +16,6 @@
 # Turn on the "with" statement for Python 2.5.
 from __future__ import with_statement
 
-# module version
-__id__ = "$Id$"
-
 
 def loadData(filename, minrows=10, **kwargs):
     """Find and load data from a text file.

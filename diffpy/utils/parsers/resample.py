@@ -13,9 +13,6 @@
 #
 ##############################################################################
 
-# module version
-__id__ = "$Id$"
-
 """Various utilities related to data parsing and manipulation."""
 
 import numpy

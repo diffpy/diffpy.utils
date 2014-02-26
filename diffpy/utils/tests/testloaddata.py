@@ -3,9 +3,6 @@
 """Unit tests for diffpy.utils.parsers.loaddata
 """
 
-# version
-__id__ = '$Id$'
-
 import unittest
 import numpy
 from diffpy.utils.parsers import loadData

@@ -16,9 +16,6 @@
 """Common functions for manipulating wx.grid.Grid.
 """
 
-# module version
-__id__ = "$Id$"
-
 import wx
 
 

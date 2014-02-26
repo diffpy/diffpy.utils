@@ -18,10 +18,6 @@
 python -m diffpy.utils.tests.run
 """
 
-# version
-__id__ = '$Id$'
-
-
 if __name__ == '__main__':
     import sys
     from diffpy.utils.tests import test

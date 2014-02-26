@@ -16,9 +16,6 @@
 """Various utilities related to data parsing and manipulation.
 """
 
-# module version
-__id__ = "$Id$"
-
 from .loaddata import loadData
 from .resample import resample
 

@@ -18,7 +18,4 @@
 gridutils    -- selection management in wx.grid.Grid
 """
 
-# module version
-__id__ = "$Id$"
-
 # End of file
