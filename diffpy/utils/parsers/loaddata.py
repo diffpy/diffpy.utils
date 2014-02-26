@@ -6,7 +6,7 @@
 #                   (c) 2010 Trustees of the Columbia University
 #                   in the City of New York.  All rights reserved.
 #
-# File coded by:    Timur Dykhne, Chris Farrow, Pavol Juhas
+# File coded by:    Timur Davis, Chris Farrow, Pavol Juhas
 #
 # See AUTHORS.txt for a list of people who contributed.
 # See LICENSE.txt for license information.
