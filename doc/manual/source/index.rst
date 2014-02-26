@@ -59,9 +59,8 @@ API and Index
 
 .. toctree::
    :maxdepth: 3
-   
+
    api/diffpy.utils.rst
-   
+
 * :ref:`genindex`
 * :ref:`search`
-

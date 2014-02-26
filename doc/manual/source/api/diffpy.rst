@@ -10,4 +10,3 @@ Subpackages
 .. toctree::
 
     diffpy.utils
-
