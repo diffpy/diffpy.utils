@@ -23,6 +23,9 @@ import time
 #sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('../../..'))
 
+# abbreviations
+ab_authors = u'Pavol Juhás, Timur Davis, Christopher L. Farrow, Simon J.L. Billinge group'
+
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -51,7 +54,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'diffpy.utils'
-copyright = u'2014, Pavol Juhas, Timur Dykhne, Christopher Farrow, Simon Billinge'
+copyright = u'%Y, Brookhaven National Laboratory'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -101,11 +104,10 @@ exclude_patterns = ['build']
 pygments_style = 'sphinx'
 
 # A list of ignored prefixes for module index sorting.
-#modindex_common_prefix = []
+modindex_common_prefix = ['diffpy.utils']
 
 # Display all warnings for missing links.
 nitpicky = True
-
 
 # -- Options for HTML output ----------------------------------------------
 
@@ -211,7 +213,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
   ('index', 'diffpyutils.tex', u'diffpy.utils Documentation',
-   u'Pavol Juhas, Timur Dykhne, Christopher Farrow, Simon Billinge', 'manual'),
+   ab_authors, 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -241,7 +243,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'srreal', u'SrReal Documentation',
-     [u'Pavol Juhas, Timur Dykhne, Christopher Farrow, Simon Billinge'], 1)
+     ab_authors, 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -255,7 +257,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'diffpyutils', u'diffpy.utils Documentation',
-   u'Pavol Juhas, Timur Dykhne, Christopher Farrow, Simon Billinge', 'diffpyutils', 'One line description of project.',
+   ab_authors, 'diffpyutils', 'One line description of project.',
    'Miscellaneous'),
 ]
 
