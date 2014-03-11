@@ -1,8 +1,5 @@
-diffpy Package
+diffpy package
 ==============
-
-:mod:`diffpy` Package
----------------------
 
 Subpackages
 -----------
@@ -10,3 +7,11 @@ Subpackages
 .. toctree::
 
     diffpy.utils
+
+Module contents
+---------------
+
+.. automodule:: diffpy
+    :members:
+    :undoc-members:
+    :show-inheritance:

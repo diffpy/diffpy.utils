@@ -1,18 +1,22 @@
-wx Package
-==========
+diffpy.utils.wx package
+=======================
 
-:mod:`wx` Package
------------------
+Submodules
+----------
 
-.. automodule:: diffpy.utils.wx
+diffpy.utils.wx.gridutils module
+--------------------------------
+
+.. automodule:: diffpy.utils.wx.gridutils
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`gridutils` Module
------------------------
 
-.. automodule:: diffpy.utils.wx.gridutils
+Module contents
+---------------
+
+.. automodule:: diffpy.utils.wx
     :members:
     :undoc-members:
     :show-inheritance:
