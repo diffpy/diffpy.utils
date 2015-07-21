@@ -24,7 +24,7 @@ import time
 sys.path.insert(0, os.path.abspath('../../..'))
 
 # abbreviations
-ab_authors = u'Pavol Juhás, Timur Davis, Christopher L. Farrow, Simon J.L. Billinge group'
+ab_authors = 'Pavol Juhás, Timur Davis, Christopher L. Farrow, Simon J.L. Billinge group'
 
 # -- General configuration ------------------------------------------------
 
@@ -53,8 +53,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'diffpy.utils'
-copyright = u'%Y, Brookhaven National Laboratory'
+project = 'diffpy.utils'
+copyright = '%Y, Brookhaven National Laboratory'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -212,7 +212,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'diffpyutils.tex', u'diffpy.utils Documentation',
+  ('index', 'diffpyutils.tex', 'diffpy.utils Documentation',
    ab_authors, 'manual'),
 ]
 
@@ -242,7 +242,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'srreal', u'SrReal Documentation',
+    ('index', 'srreal', 'SrReal Documentation',
      ab_authors, 1)
 ]
 
@@ -256,7 +256,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'diffpyutils', u'diffpy.utils Documentation',
+  ('index', 'diffpyutils', 'diffpy.utils Documentation',
    ab_authors, 'diffpyutils', 'One line description of project.',
    'Miscellaneous'),
 ]

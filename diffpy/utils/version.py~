@@ -22,6 +22,7 @@ from configparser import RawConfigParser
 
 # obtain version information from the version.cfg file
 cp = RawConfigParser(dict(version='', date='', commit='', timestamp=0))
+print(cp.read(resource_filename(__name__, 'version.cfg')))
 if not cp.read(resource_filename(__name__, 'version.cfg')):
     from warnings import warn
     warn('Package metadata not found, execute "./setup.py egg_info".')
