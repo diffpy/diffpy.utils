@@ -22,9 +22,9 @@ def gitinfo():
     from subprocess import Popen, PIPE
     kw = dict(stdout=PIPE, cwd=MYDIR)
     proc = Popen(['git', 'describe', '--match=v[[:digit:]]*'], **kw)
-    desc = proc.stdout.read()
+    desc = proc.stdout.read().decode('utf-8')
     proc = Popen(['git', 'log', '-1', '--format=%H %at %ai'], **kw)
-    glog = proc.stdout.read()
+    glog = proc.stdout.read().decode('utf-8')
     rv = {}
     rv['version'] = '.post'.join(desc.strip().split('-')[:2]).lstrip('v')
     rv['commit'], rv['timestamp'], rv['date'] = glog.strip().split(None, 2)
@@ -32,7 +32,7 @@ def gitinfo():
 
 
 def getversioncfg():
-    from ConfigParser import RawConfigParser
+    from configparser import RawConfigParser
     vd0 = dict(version=FALLBACK_VERSION, commit='', date='', timestamp=0)
     # first fetch data from gitarchivecfgfile, ignore if it is unexpanded
     g = vd0.copy()

@@ -25,14 +25,14 @@ def getSelectionRows(grid):
     rows = grid.GetNumberRows()
     rset = set()
     if grid.GetSelectedCols():
-        rset.update(range(rows))
+        rset.update(list(range(rows)))
     rset.update(grid.GetSelectedRows())
     for r, c in grid.GetSelectedCells():
         rset.add(r)
-    blocks = zip(grid.GetSelectionBlockTopLeft(),
-            grid.GetSelectionBlockBottomRight())
+    blocks = list(zip(grid.GetSelectionBlockTopLeft(),
+            grid.GetSelectionBlockBottomRight()))
     for tl, br in blocks:
-        rset.update(range(tl[0], br[0] + 1))
+        rset.update(list(range(tl[0], br[0] + 1)))
     rv = sorted(rset)
     return rv
 
@@ -43,14 +43,14 @@ def getSelectionColumns(grid):
     cols = grid.GetNumberCols()
     cset = set()
     if grid.GetSelectedRows():
-        cset.update(range(cols))
+        cset.update(list(range(cols)))
     cset.update(grid.GetSelectedCols())
     for r, c in grid.GetSelectedCells():
         cset.add(c)
-    blocks = zip(grid.GetSelectionBlockTopLeft(),
-            grid.GetSelectionBlockBottomRight())
+    blocks = list(zip(grid.GetSelectionBlockTopLeft(),
+            grid.GetSelectionBlockBottomRight()))
     for tl, br in blocks:
-        cset.update(range(tl[1], br[1] + 1))
+        cset.update(list(range(tl[1], br[1] + 1)))
     rv = sorted(cset)
     return rv
 
@@ -62,18 +62,18 @@ def getSelectedCells(grid):
     """
     rows = grid.GetNumberRows()
     cols = grid.GetNumberCols()
-    allrows = range(rows)
-    allcols = range(cols)
+    allrows = list(range(rows))
+    allcols = list(range(cols))
     rcset = set()
     for r in grid.GetSelectedRows():
-        rcset.update(zip(cols * [r], allcols))
+        rcset.update(list(zip(cols * [r], allcols)))
     for c in grid.GetSelectedCols():
-        rcset.update(zip(allrows, rows * [c]))
-    blocks = zip(grid.GetSelectionBlockTopLeft(),
-            grid.GetSelectionBlockBottomRight())
+        rcset.update(list(zip(allrows, rows * [c])))
+    blocks = list(zip(grid.GetSelectionBlockTopLeft(),
+            grid.GetSelectionBlockBottomRight()))
     for tl, br in blocks:
-        brows = range(tl[0], br[0] + 1)
-        bcols = range(tl[1], br[1] + 1)
+        brows = list(range(tl[0], br[0] + 1))
+        bcols = list(range(tl[1], br[1] + 1))
         rcset.update((r, c) for r in brows for c in bcols)
     rcset.update(grid.GetSelectedCells())
     rv = sorted(rcset)
@@ -128,7 +128,7 @@ def quickResizeColumns(grid, indices):
             maxSize[j] = size
 
     grid.BeginBatch()
-    for (j,size) in maxSize.items():
+    for (j,size) in list(maxSize.items()):
         if size > grid.GetColSize(j):
             grid.SetColSize(j, size)
     grid.EndBatch()
@@ -153,7 +153,7 @@ def _indicesToBlocks(indices):
         else:
             rngs[-1][-1] = i
         i0 = i
-    rv = map(tuple, rngs)
+    rv = list(map(tuple, rngs))
     return rv
 
 # End of file

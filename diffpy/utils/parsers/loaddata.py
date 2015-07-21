@@ -14,7 +14,7 @@
 ##############################################################################
 
 # Turn on the "with" statement for Python 2.5.
-from __future__ import with_statement
+
 
 
 def loadData(filename, minrows=10, **kwargs):
@@ -60,9 +60,9 @@ def loadData(filename, minrows=10, **kwargs):
                 words.pop(-1)
             nc = len(words)
             if usecols is not None:
-                nv = len(map(float, [words[i] for i in usecols]))
+                nv = len(list(map(float, [words[i] for i in usecols])))
             else:
-                nv = len(map(float, words))
+                nv = len(list(map(float, words)))
         except (IndexError, ValueError):
             nc = nv = 0
         return nc, nv
@@ -95,7 +95,7 @@ def loadData(filename, minrows=10, **kwargs):
             fid.seek(start)
             # always use usecols argument so that loadtxt does not crash
             # in case of trailing delimiters.
-            kwargs.setdefault('usecols', range(ncvblock[0]))
+            kwargs.setdefault('usecols', list(range(ncvblock[0])))
             rv = loadtxt(fid, **kwargs)
     return rv
 
@@ -152,7 +152,7 @@ class TextDataLoader(object):
         # and if good, assign filename
         self.filename = getattr(fp, 'name', '')
         self._words = ''.join(self._lines).split()
-        self._splitlines = map(str.split, self._lines)
+        self._splitlines = list(map(str.split, self._lines))
         self._findDataBlocks()
         return
 
@@ -171,7 +171,7 @@ class TextDataLoader(object):
             ('nw0', int), ('nw1', int), ('nf', int), ('ok', bool)])
         lr = self._linerecs
         lr.idx = numpy.arange(nlines)
-        lr.nf = map(len, self._splitlines)
+        lr.nf = list(map(len, self._splitlines))
         lr.nw1 = lr.nf.cumsum()
         lr.nw0 = lr.nw1 - lr.nf
         lr.ok = True
