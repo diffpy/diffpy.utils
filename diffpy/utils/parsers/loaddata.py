@@ -13,10 +13,6 @@
 #
 ##############################################################################
 
-# Turn on the "with" statement for Python 2.5.
-
-
-
 def loadData(filename, minrows=10, **kwargs):
     """Find and load data from a text file.
 
