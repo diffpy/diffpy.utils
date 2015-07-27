@@ -92,8 +92,7 @@ setup_args = dict(
             'Operating System :: Microsoft :: Windows',
             'Operating System :: POSIX',
             'Operating System :: Unix',
-            'Programming Language :: Python :: 2.6',
-            'Programming Language :: Python :: 2.7',
+            'Programming Language :: Python :: 3.x'
             'Topic :: Scientific/Engineering :: Physics',
         ],
 )

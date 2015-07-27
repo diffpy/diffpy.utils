@@ -17,7 +17,7 @@ sys.path.insert(0, BASEDIR)
 from setup import versiondata
 timestamp = versiondata.getint('DEFAULT', 'timestamp')
 
-print('Run "setup.py sdist --formats=tar"', end=' ')
+print 'Run "setup.py sdist --formats=tar"',
 cmd_sdist = [sys.executable] + 'setup.py sdist --formats=tar'.split()
 ec = subprocess.call(cmd_sdist, cwd=BASEDIR, stdout=open(os.devnull, 'w'))
 if ec:  sys.exit(ec)
