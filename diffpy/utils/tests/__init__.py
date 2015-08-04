@@ -28,8 +28,9 @@ def testsuite():
     suite = unittest.TestSuite()
     loader = unittest.defaultTestLoader
     for mname in modulenames:
-        exec ('import %s as mobj' % mname, globals())
-        suite.addTests(loader.loadTestsFromModule(mobj))
+        ns = {}
+        exec('import %s as mobj' % mname, ns)
+        suite.addTests(loader.loadTestsFromModule(ns['mobj']))
     return suite
 
 
