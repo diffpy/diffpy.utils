@@ -56,9 +56,9 @@ def loadData(filename, minrows=10, **kwargs):
                 words.pop(-1)
             nc = len(words)
             if usecols is not None:
-                nv = len(list(map(float, [words[i] for i in usecols])))
+                nv = len([float(words[i]) for i in usecols])
             else:
-                nv = len(list(map(float, words)))
+                nv = len([float(w) for w in words])
         except (IndexError, ValueError):
             nc = nv = 0
         return nc, nv
@@ -148,7 +148,7 @@ class TextDataLoader(object):
         # and if good, assign filename
         self.filename = getattr(fp, 'name', '')
         self._words = ''.join(self._lines).split()
-        self._splitlines = list(map(str.split, self._lines))
+        self._splitlines = [line.split() for line in self._lines]
         self._findDataBlocks()
         return
 
@@ -167,7 +167,7 @@ class TextDataLoader(object):
             ('nw0', int), ('nw1', int), ('nf', int), ('ok', bool)])
         lr = self._linerecs
         lr.idx = numpy.arange(nlines)
-        lr.nf = list(map(len, self._splitlines))
+        lr.nf = [len(sl) for sl in self._splitlines]
         lr.nw1 = lr.nf.cumsum()
         lr.nw0 = lr.nw1 - lr.nf
         lr.ok = True
