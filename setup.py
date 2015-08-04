@@ -22,9 +22,9 @@ def gitinfo():
     from subprocess import Popen, PIPE
     kw = dict(stdout=PIPE, cwd=MYDIR)
     proc = Popen(['git', 'describe', '--match=v[[:digit:]]*'], **kw)
-    desc = proc.stdout.read().decode('utf-8')
+    desc = proc.stdout.read().decode()
     proc = Popen(['git', 'log', '-1', '--format=%H %at %ai'], **kw)
-    glog = proc.stdout.read().decode('utf-8')
+    glog = proc.stdout.read().decode()
     rv = {}
     rv['version'] = '.post'.join(desc.strip().split('-')[:2]).lstrip('v')
     rv['commit'], rv['timestamp'], rv['date'] = glog.strip().split(None, 2)
@@ -92,7 +92,7 @@ setup_args = dict(
             'Operating System :: Microsoft :: Windows',
             'Operating System :: POSIX',
             'Operating System :: Unix',
-            'Programming Language :: Python :: 3.x'
+            'Programming Language :: Python :: 3'
             'Topic :: Scientific/Engineering :: Physics',
         ],
 )
