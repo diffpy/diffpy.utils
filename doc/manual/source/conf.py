@@ -212,7 +212,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'diffpyutils.tex', u'diffpy.utils Documentation',
+  ('index', 'diffpy.utils.tex', u'diffpy.utils Documentation',
    ab_authors, 'manual'),
 ]
 
@@ -242,7 +242,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'srreal', u'SrReal Documentation',
+    ('index', 'diffpy.utils', u'diffpy.utils Documentation',
      ab_authors, 1)
 ]
 
@@ -256,8 +256,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'diffpyutils', u'diffpy.utils Documentation',
-   ab_authors, 'diffpyutils', 'One line description of project.',
+  ('index', 'diffpy.utils', u'diffpy.utils Documentation',
+   ab_authors, 'diffpy.utils', 'One line description of project.',
    'Miscellaneous'),
 ]
 
