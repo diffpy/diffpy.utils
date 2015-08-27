@@ -6,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>diffpy.utils.parsers package &mdash; diffpy.utils 1.1b1 documentation</title>
+    <title>diffpy.utils.parsers package &mdash; diffpy.utils 1.1.post10 documentation</title>
     
-    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.1b1',
+        VERSION:     '1.1.post10',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,13 +24,13 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/sidebar.js"></script>
-    <link rel="top" title="diffpy.utils 1.1b1 documentation" href="../index.html" />
+    <link rel="top" title="diffpy.utils 1.1.post10 documentation" href="../index.html" />
     <link rel="up" title="diffpy.utils package" href="diffpy.utils.html" />
     <link rel="next" title="diffpy.utils.wx package" href="diffpy.utils.wx.html" />
     <link rel="prev" title="diffpy.utils package" href="diffpy.utils.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -45,15 +45,15 @@
         <li class="right" >
           <a href="diffpy.utils.html" title="diffpy.utils package"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">diffpy.utils 1.1b1 documentation</a> &raquo;</li>
-          <li><a href="diffpy.utils.html" accesskey="U">diffpy.utils package</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">diffpy.utils 1.1.post10 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="diffpy.utils.html" accesskey="U">diffpy.utils package</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="diffpy-utils-parsers-package">
 <h1>diffpy.utils.parsers package<a class="headerlink" href="#diffpy-utils-parsers-package" title="Permalink to this headline">¶</a></h1>
@@ -64,45 +64,45 @@
 <span id="diffpy-utils-parsers-loaddata-module"></span><h2>diffpy.utils.parsers.loaddata module<a class="headerlink" href="#module-diffpy.utils.parsers.loaddata" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="diffpy.utils.parsers.loaddata.TextDataLoader">
-<em class="property">class </em><tt class="descclassname">diffpy.utils.parsers.loaddata.</tt><tt class="descname">TextDataLoader</tt><big>(</big><em>minrows=None</em>, <em>usecols=None</em>, <em>skiprows=None</em><big>)</big><a class="reference internal" href="../_modules/diffpy/utils/parsers/loaddata.html#TextDataLoader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.parsers.loaddata.TextDataLoader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><code class="descclassname">diffpy.utils.parsers.loaddata.</code><code class="descname">TextDataLoader</code><span class="sig-paren">(</span><em>minrows=None</em>, <em>usecols=None</em>, <em>skiprows=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/parsers/loaddata.html#TextDataLoader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.parsers.loaddata.TextDataLoader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Smart loading of a text data with possibly multiple datasets.</p>
 <dl class="attribute">
 <dt id="diffpy.utils.parsers.loaddata.TextDataLoader.minrows">
-<tt class="descname">minrows</tt><em class="property"> = 10</em><a class="headerlink" href="#diffpy.utils.parsers.loaddata.TextDataLoader.minrows" title="Permalink to this definition">¶</a></dt>
+<code class="descname">minrows</code><em class="property"> = 10</em><a class="headerlink" href="#diffpy.utils.parsers.loaddata.TextDataLoader.minrows" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="diffpy.utils.parsers.loaddata.TextDataLoader.read">
-<tt class="descname">read</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="../_modules/diffpy/utils/parsers/loaddata.html#TextDataLoader.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.parsers.loaddata.TextDataLoader.read" title="Permalink to this definition">¶</a></dt>
+<code class="descname">read</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/parsers/loaddata.html#TextDataLoader.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.parsers.loaddata.TextDataLoader.read" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="diffpy.utils.parsers.loaddata.TextDataLoader.readfp">
-<tt class="descname">readfp</tt><big>(</big><em>fp</em>, <em>append=False</em><big>)</big><a class="reference internal" href="../_modules/diffpy/utils/parsers/loaddata.html#TextDataLoader.readfp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.parsers.loaddata.TextDataLoader.readfp" title="Permalink to this definition">¶</a></dt>
+<code class="descname">readfp</code><span class="sig-paren">(</span><em>fp</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/parsers/loaddata.html#TextDataLoader.readfp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.parsers.loaddata.TextDataLoader.readfp" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="diffpy.utils.parsers.loaddata.TextDataLoader.skiprows">
-<tt class="descname">skiprows</tt><em class="property"> = None</em><a class="headerlink" href="#diffpy.utils.parsers.loaddata.TextDataLoader.skiprows" title="Permalink to this definition">¶</a></dt>
+<code class="descname">skiprows</code><em class="property"> = None</em><a class="headerlink" href="#diffpy.utils.parsers.loaddata.TextDataLoader.skiprows" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="diffpy.utils.parsers.loaddata.TextDataLoader.usecols">
-<tt class="descname">usecols</tt><em class="property"> = None</em><a class="headerlink" href="#diffpy.utils.parsers.loaddata.TextDataLoader.usecols" title="Permalink to this definition">¶</a></dt>
+<code class="descname">usecols</code><em class="property"> = None</em><a class="headerlink" href="#diffpy.utils.parsers.loaddata.TextDataLoader.usecols" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="diffpy.utils.parsers.loaddata.isfloat">
-<tt class="descclassname">diffpy.utils.parsers.loaddata.</tt><tt class="descname">isfloat</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="../_modules/diffpy/utils/parsers/loaddata.html#isfloat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.parsers.loaddata.isfloat" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">diffpy.utils.parsers.loaddata.</code><code class="descname">isfloat</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/parsers/loaddata.html#isfloat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.parsers.loaddata.isfloat" title="Permalink to this definition">¶</a></dt>
 <dd><p>True if s is convertible to float.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="diffpy.utils.parsers.loaddata.loadData">
-<tt class="descclassname">diffpy.utils.parsers.loaddata.</tt><tt class="descname">loadData</tt><big>(</big><em>filename</em>, <em>minrows=10</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/diffpy/utils/parsers/loaddata.html#loadData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.parsers.loaddata.loadData" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">diffpy.utils.parsers.loaddata.</code><code class="descname">loadData</code><span class="sig-paren">(</span><em>filename</em>, <em>minrows=10</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/parsers/loaddata.html#loadData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.parsers.loaddata.loadData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find and load data from a text file.</p>
 <p>The data reading starts at the first matrix block of at least minrows rows
 and constant number of columns.  This seems to work for most of the
@@ -131,7 +131,7 @@ See also numpy.loadtxt for more details.</p>
 <p>Various utilities related to data parsing and manipulation.</p>
 <dl class="function">
 <dt id="diffpy.utils.parsers.resample.resample">
-<tt class="descclassname">diffpy.utils.parsers.resample.</tt><tt class="descname">resample</tt><big>(</big><em>r</em>, <em>s</em>, <em>dr</em><big>)</big><a class="reference internal" href="../_modules/diffpy/utils/parsers/resample.html#resample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.parsers.resample.resample" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">diffpy.utils.parsers.resample.</code><code class="descname">resample</code><span class="sig-paren">(</span><em>r</em>, <em>s</em>, <em>dr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/parsers/resample.html#resample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.parsers.resample.resample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resample a PDF on a new grid.</p>
 <p>This uses the Whittaker-Shannon interpolation formula to put s1 on a new
 grid if dr is less than the sampling interval of r1, or linear
@@ -144,7 +144,7 @@ dr      &#8211;  The new sampling interval</p>
 
 <dl class="function">
 <dt id="diffpy.utils.parsers.resample.wsinterp">
-<tt class="descclassname">diffpy.utils.parsers.resample.</tt><tt class="descname">wsinterp</tt><big>(</big><em>x</em>, <em>xp</em>, <em>fp</em>, <em>left=None</em>, <em>right=None</em><big>)</big><a class="reference internal" href="../_modules/diffpy/utils/parsers/resample.html#wsinterp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.parsers.resample.wsinterp" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">diffpy.utils.parsers.resample.</code><code class="descname">wsinterp</code><span class="sig-paren">(</span><em>x</em>, <em>xp</em>, <em>fp</em>, <em>left=None</em>, <em>right=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/parsers/resample.html#wsinterp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#diffpy.utils.parsers.resample.wsinterp" title="Permalink to this definition">¶</a></dt>
 <dd><p>One-dimensional Whittaker-Shannon interpolation.</p>
 <p>This uses the Whittaker-Shannon interpolation formula to interpolate the
 value of fp (array), which is defined over xp (array), at x (array or
@@ -163,7 +163,7 @@ float).</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
@@ -182,12 +182,14 @@ float).</p>
   <h4>Next topic</h4>
   <p class="topless"><a href="diffpy.utils.wx.html"
                         title="next chapter">diffpy.utils.wx package</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/api/diffpy.utils.parsers.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/diffpy.utils.parsers.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
@@ -204,7 +206,7 @@ float).</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -219,13 +221,13 @@ float).</p>
         <li class="right" >
           <a href="diffpy.utils.html" title="diffpy.utils package"
              >previous</a> |</li>
-        <li><a href="../index.html">diffpy.utils 1.1b1 documentation</a> &raquo;</li>
-          <li><a href="diffpy.utils.html" >diffpy.utils package</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">diffpy.utils 1.1.post10 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="diffpy.utils.html" >diffpy.utils package</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright 2014, Brookhaven National Laboratory.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Brookhaven National Laboratory.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>
