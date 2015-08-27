@@ -32,6 +32,5 @@ __gitsha__ = cp.get('DEFAULT', 'commit')
 __timestamp__ = cp.getint('DEFAULT', 'timestamp')
 
 del cp
-pass
 
 # End of file
