@@ -66,9 +66,11 @@ def loadData(filename, minrows=10, **kwargs):
     with open(filename, 'rb') as fid:
         # search for the start of datablock
         start = ncvblock = None
-        fpos = nrows = 0
+        fpos = (0, 0)
+        nrows = 0
         for line in fid:
-            fpos += len(line)
+            fpos = (fpos[1], fpos[1] + len(line))
+            line = line.decode()
             ncv = countcolumnsvalues(line)
             if ncv < mincv:
                 start = None
@@ -78,7 +80,7 @@ def loadData(filename, minrows=10, **kwargs):
             if start is None or ncv != ncvblock:
                 ncvblock = ncv
                 nrows = 0
-                start = fpos - len(line)
+                start = fpos[0]
             nrows += 1
             # block was found here!
             if nrows >= minrows:
