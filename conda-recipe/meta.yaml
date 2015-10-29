@@ -1,13 +1,11 @@
 package:
   name: diffpy.utils
-  version: 1.1.post10
+  ## Use __conda_version__.txt.
+  # version: 1.1.post12
 
 source:
-  git_url: https://github.com/diffpy/diffpy.utils
-  git_rev: 14087b2295e9f8053e26b480caedbe79f7955215
-#  patches:
-   # List any patch files here
-   # - fix.patch
+  # git_url: https://github.com/diffpy/diffpy.utils
+  git_url: ..
 
 build:
   preserve_egg_dir: True
