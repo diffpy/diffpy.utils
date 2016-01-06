@@ -54,6 +54,7 @@ before_install:
     esac
 
   - mkdir -p ~/pkgs/
+  - mkdir -p ~/rundir/
 
   - $NOMC || pushd ~/pkgs/
   - $NOMC || wget --timestamping ${MYMCREPO}/${MYMCBUNDLE}
@@ -77,7 +78,7 @@ install:
   - $NOAPT || pip install $MYPIPFLAGS coverage
   - $NOAPT || easy_install --user "${MYTARBUNDLE}"
 
-  - cd
+  - cd ~/rundir
   - MYGIT_REV=$(python -c "import diffpy.utils.version as v; print(v.__gitsha__)")
   - if [[ "${TRAVIS_COMMIT}" != "${MYGIT_REV}" ]]; then
         echo "Version mismatch ${TRAVIS_COMMIT} vs ${MYGIT_REV}.";
