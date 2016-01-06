@@ -20,6 +20,9 @@ matrix:
     - os: osx
       env: MYUSEMC=false MYPYTHON_VERSION=2.7
 
+git:
+  depth: 999999
+
 branches:
   except:
     - /^v[0-9]/
@@ -32,7 +35,7 @@ addons:
 
 before_install:
   - umask 022
-  - git fetch origin --unshallow --tags
+  - git fetch origin --tags
   - if ${MYUSEMC}; then
         NOAPT=true; NOMC=false;
     else
