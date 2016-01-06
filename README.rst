@@ -32,43 +32,39 @@ The functions in diffpy.utils.wx module require
 
 * ``wxPython``     - GUI toolkit for the Python language
 
-Some of the required software packages may be available in the system package
-manager, for example, on Ubuntu Linux the dependencies can be installed as::
+We recommend to use `Anaconda Python <https://www.continuum.io/downloads>`_
+as it allows to install the software dependencies together with
+diffpy.utils.  For other Python distributions it is necessary to install
+the required software separately.  As an example, on Ubuntu Linux the
+required software can be installed with ::
 
    sudo apt-get install python-setuptools python-numpy
-
-For Mac OS X systems with the MacPorts package manager one could do ::
-
-   sudo port install python27 py27-setuptools py27-numpy
-
-When installing for MacPorts, make sure the MacPorts bin directory is the
-first in the system PATH and that python27 is selected as the default
-Python version in MacPorts::
-
-   sudo port select --set python python27
-
-For other required packages see their respective web pages for installation
-instructions.
 
 
 INSTALLATION
 ------------------------------------------------------------------------
 
-Use ``easy_install`` to download and install the latest release from
-`Python Package Index <https://pypi.python.org>`_ ::
+The preferred method is to use Anaconda Python and install from the
+"diffpy" channel of Anaconda packages ::
 
-   sudo easy_install diffpy.utils
+   conda config --add channels diffpy
+   conda install diffpy.utils
 
-If you prefer to install from sources, make sure all required software
-packages are in place and then run ::
+Another option is to use ``easy_install`` to download and install the
+latest release from `Python Package Index <https://pypi.python.org>`_ ::
 
-   sudo python setup.py install
+   easy_install diffpy.utils
 
-This installs diffpy.util for all users in the default system location.
-If administrator (root) access is not available, see the usage info from
-``python setup.py install --help`` for options to install to user-writable
-directories.  The installation integrity can be verified by changing to
-the HOME directory and running ::
+If you prefer to install from sources, obtain the source archive and
+run ::
+
+   python setup.py install
+
+You may need to use ``sudo`` with system Python as it attempts to
+install to standard system directories.  If sudo is not available, check
+the usage info from ``python setup.py install --help`` for options to
+install to user-writable locations.  The installation integrity can be
+verified by changing to the HOME directory and running ::
 
    python -m diffpy.utils.tests.run
 
