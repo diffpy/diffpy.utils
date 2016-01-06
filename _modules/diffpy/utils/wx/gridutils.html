@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>diffpy.utils.wx.gridutils &mdash; diffpy.utils 1.1.post10 documentation</title>
+    <title>diffpy.utils.wx.gridutils &mdash; diffpy.utils 1.2 documentation</title>
     
     <link rel="stylesheet" href="../../../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '1.1.post10',
+        VERSION:     '1.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sidebar.js"></script>
-    <link rel="top" title="diffpy.utils 1.1.post10 documentation" href="../../../../index.html" />
+    <link rel="top" title="diffpy.utils 1.2 documentation" href="../../../../index.html" />
     <link rel="up" title="Module code" href="../../../index.html" /> 
   </head>
   <body role="document">
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">diffpy.utils 1.1.post10 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">diffpy.utils 1.2 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -84,9 +84,9 @@
     <span class="k">for</span> <span class="n">tl</span><span class="p">,</span> <span class="n">br</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">:</span>
         <span class="n">rset</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">br</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">rv</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">rset</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">rv</span>
+    <span class="k">return</span> <span class="n">rv</span></div>
 
-</div>
+
 <div class="viewcode-block" id="getSelectionColumns"><a class="viewcode-back" href="../../../../api/diffpy.utils.wx.html#diffpy.utils.wx.gridutils.getSelectionColumns">[docs]</a><span class="k">def</span> <span class="nf">getSelectionColumns</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Indices of columns that have any cell selected.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -102,9 +102,9 @@
     <span class="k">for</span> <span class="n">tl</span><span class="p">,</span> <span class="n">br</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">:</span>
         <span class="n">cset</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">br</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">rv</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">cset</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">rv</span>
+    <span class="k">return</span> <span class="n">rv</span></div>
 
-</div>
+
 <div class="viewcode-block" id="getSelectedCells"><a class="viewcode-back" href="../../../../api/diffpy.utils.wx.html#diffpy.utils.wx.gridutils.getSelectedCells">[docs]</a><span class="k">def</span> <span class="nf">getSelectedCells</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get list of (row, col) pairs of all selected cells.</span>
 <span class="sd">    Unlike grid.GetSelectedCells this returns them all no matter</span>
@@ -127,9 +127,9 @@
         <span class="n">rcset</span><span class="o">.</span><span class="n">update</span><span class="p">((</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">brows</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">bcols</span><span class="p">)</span>
     <span class="n">rcset</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">GetSelectedCells</span><span class="p">())</span>
     <span class="n">rv</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">rcset</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">rv</span>
+    <span class="k">return</span> <span class="n">rv</span></div>
 
-</div>
+
 <div class="viewcode-block" id="limitSelectionToRows"><a class="viewcode-back" href="../../../../api/diffpy.utils.wx.html#diffpy.utils.wx.gridutils.limitSelectionToRows">[docs]</a><span class="k">def</span> <span class="nf">limitSelectionToRows</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Limit selection to the specified row indices.</span>
 <span class="sd">    No action for empty indices.</span>
@@ -155,9 +155,9 @@
     <span class="n">kcol</span> <span class="o">=</span> <span class="n">bisect</span><span class="o">.</span><span class="n">bisect_left</span><span class="p">(</span><span class="n">cindices</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">GetGridCursorCol</span><span class="p">())</span>
     <span class="n">kcol</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">kcol</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cindices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">grid</span><span class="o">.</span><span class="n">SetGridCursor</span><span class="p">(</span><span class="n">indices</span><span class="p">[</span><span class="n">krow</span><span class="p">],</span> <span class="n">cindices</span><span class="p">[</span><span class="n">kcol</span><span class="p">])</span>
-    <span class="k">return</span>
+    <span class="k">return</span></div>
 
-</div>
+
 <div class="viewcode-block" id="quickResizeColumns"><a class="viewcode-back" href="../../../../api/diffpy.utils.wx.html#diffpy.utils.wx.gridutils.quickResizeColumns">[docs]</a><span class="k">def</span> <span class="nf">quickResizeColumns</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Resize the columns that were recently affected by cell changes.</span>
 
@@ -182,10 +182,10 @@
         <span class="k">if</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="n">grid</span><span class="o">.</span><span class="n">GetColSize</span><span class="p">(</span><span class="n">j</span><span class="p">):</span>
             <span class="n">grid</span><span class="o">.</span><span class="n">SetColSize</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
     <span class="n">grid</span><span class="o">.</span><span class="n">EndBatch</span><span class="p">()</span>
-    <span class="k">return</span>
+    <span class="k">return</span></div>
 
 <span class="c"># Local Helpers --------------------------------------------------------------</span>
-</div>
+
 <span class="k">def</span> <span class="nf">_indicesToBlocks</span><span class="p">(</span><span class="n">indices</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Convert a list of integer indices to a list of (start, stop) tuples.</span>
 <span class="sd">    The (start, stop) tuple defines a continuous block, where the stop index</span>
@@ -240,13 +240,13 @@
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">diffpy.utils 1.1.post10 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">diffpy.utils 1.2 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2015, Brookhaven National Laboratory.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+        &copy; Copyright 2016, Brookhaven National Laboratory.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
     </div>
   </body>
 </html>
