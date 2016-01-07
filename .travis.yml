@@ -10,15 +10,12 @@ os:
 env:
   - MYUSEMC=true MYPYTHON_VERSION=2.6
   - MYUSEMC=true MYPYTHON_VERSION=2.7
-  - MYUSEMC=false MYPYTHON_VERSION=2.6
-  - MYUSEMC=false MYPYTHON_VERSION=2.7
+  - MYUSEMC=false
 
 matrix:
   exclude:
     - os: osx
-      env: MYUSEMC=false MYPYTHON_VERSION=2.6
-    - os: osx
-      env: MYUSEMC=false MYPYTHON_VERSION=2.7
+      env: MYUSEMC=false
 
 git:
   depth: 999999
