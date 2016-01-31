@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>diffpy.utils.parsers.resample &mdash; diffpy.utils 1.2 documentation</title>
+    <title>diffpy.utils.parsers.resample &mdash; diffpy.utils 1.2.1 documentation</title>
     
     <link rel="stylesheet" href="../../../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '1.2',
+        VERSION:     '1.2.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sidebar.js"></script>
-    <link rel="top" title="diffpy.utils 1.2 documentation" href="../../../../index.html" />
+    <link rel="top" title="diffpy.utils 1.2.1 documentation" href="../../../../index.html" />
     <link rel="up" title="Module code" href="../../../index.html" /> 
   </head>
   <body role="document">
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">diffpy.utils 1.2 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">diffpy.utils 1.2.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -48,27 +48,27 @@
           <div class="body" role="main">
             
   <h1>Source code for diffpy.utils.parsers.resample</h1><div class="highlight"><pre>
-<span class="c">#!/usr/bin/env python</span>
-<span class="c">##############################################################################</span>
-<span class="c">#</span>
-<span class="c"># diffpy.utils      by DANSE Diffraction group</span>
-<span class="c">#                   Simon J. L. Billinge</span>
-<span class="c">#                   (c) 2010 The Trustees of Columbia University</span>
-<span class="c">#                   in the City of New York.  All rights reserved.</span>
-<span class="c">#</span>
-<span class="c"># File coded by:    Chris Farrow</span>
-<span class="c">#</span>
-<span class="c"># See AUTHORS.txt for a list of people who contributed.</span>
-<span class="c"># See LICENSE_DANSE.txt for license information.</span>
-<span class="c">#</span>
-<span class="c">##############################################################################</span>
+<span class="ch">#!/usr/bin/env python</span>
+<span class="c1">##############################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># diffpy.utils      by DANSE Diffraction group</span>
+<span class="c1">#                   Simon J. L. Billinge</span>
+<span class="c1">#                   (c) 2010 The Trustees of Columbia University</span>
+<span class="c1">#                   in the City of New York.  All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># File coded by:    Chris Farrow</span>
+<span class="c1">#</span>
+<span class="c1"># See AUTHORS.txt for a list of people who contributed.</span>
+<span class="c1"># See LICENSE_DANSE.txt for license information.</span>
+<span class="c1">#</span>
+<span class="c1">##############################################################################</span>
 
 <span class="sd">&quot;&quot;&quot;Various utilities related to data parsing and manipulation.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
 
-<span class="c"># NOTE - this should be faster than resample below and conforms more closely to</span>
-<span class="c"># numpy.interp. I&#39;m keeping resample for legacy reasons.</span>
+<span class="c1"># NOTE - this should be faster than resample below and conforms more closely to</span>
+<span class="c1"># numpy.interp. I&#39;m keeping resample for legacy reasons.</span>
 <div class="viewcode-block" id="wsinterp"><a class="viewcode-back" href="../../../../api/diffpy.utils.parsers.html#diffpy.utils.parsers.resample.wsinterp">[docs]</a><span class="k">def</span> <span class="nf">wsinterp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">left</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;One-dimensional Whittaker-Shannon interpolation.</span>
 
@@ -83,23 +83,23 @@
     <span class="k">if</span> <span class="n">scalar</span><span class="p">:</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">x</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="c"># shape = (nxp, nx), nxp copies of x data span axis 1</span>
+    <span class="c1"># shape = (nxp, nx), nxp copies of x data span axis 1</span>
     <span class="n">u</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xp</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
-    <span class="c"># Must take transpose of u for proper broadcasting with xp.</span>
-    <span class="c"># shape = (nx, nxp), v(xp) data spans axis 1</span>
+    <span class="c1"># Must take transpose of u for proper broadcasting with xp.</span>
+    <span class="c1"># shape = (nx, nxp), v(xp) data spans axis 1</span>
     <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">xp</span> <span class="o">-</span> <span class="n">u</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">xp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">xp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="c"># shape = (nx, nxp), m(v) data spans axis 1</span>
+    <span class="c1"># shape = (nx, nxp), m(v) data spans axis 1</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">fp</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sinc</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-    <span class="c"># Sum over m(v) (axis 1)</span>
+    <span class="c1"># Sum over m(v) (axis 1)</span>
     <span class="n">fp_at_x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="c"># Enforce left and right</span>
+    <span class="c1"># Enforce left and right</span>
     <span class="k">if</span> <span class="n">left</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="n">left</span> <span class="o">=</span> <span class="n">fp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">fp_at_x</span><span class="p">[</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">xp</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">left</span>
     <span class="k">if</span> <span class="n">right</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="n">right</span> <span class="o">=</span> <span class="n">fp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">fp_at_x</span><span class="p">[</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">xp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">right</span>
 
-    <span class="c"># Return a float if we got a float</span>
+    <span class="c1"># Return a float if we got a float</span>
     <span class="k">if</span> <span class="n">scalar</span><span class="p">:</span> <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">fp_at_x</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">fp_at_x</span></div>
@@ -128,20 +128,20 @@
 
     <span class="k">elif</span> <span class="n">dr0</span> <span class="o">&gt;</span> <span class="n">dr</span><span class="p">:</span>
 
-        <span class="c"># Tried to pad the end of s to dampen, but nothing works.</span>
-        <span class="c">#m = (s[-1] - s[-2]) / dr0</span>
-        <span class="c">#b = (s[-2] * r[-1] - s[-1] * r[-2]) / dr0</span>
-        <span class="c">#rpad = r[-1] + numpy.arange(1, len(s))*dr0</span>
-        <span class="c">#spad = rpad * m + b</span>
-        <span class="c">#spad = numpy.concatenate([s,spad])</span>
-        <span class="c">#rnew = numpy.arange(0, rpad[-1], dr)</span>
-        <span class="c">#snew = numpy.zeros_like(rnew)</span>
-        <span class="c">## Accomodate for the fact that r[0] might not be 0</span>
-        <span class="c">#u = (rnew-r[0]) / dr0</span>
-        <span class="c">#for n in range(len(spad)):</span>
-        <span class="c">#    snew += spad[n] * numpy.sinc(u - n)</span>
+        <span class="c1"># Tried to pad the end of s to dampen, but nothing works.</span>
+        <span class="c1">#m = (s[-1] - s[-2]) / dr0</span>
+        <span class="c1">#b = (s[-2] * r[-1] - s[-1] * r[-2]) / dr0</span>
+        <span class="c1">#rpad = r[-1] + numpy.arange(1, len(s))*dr0</span>
+        <span class="c1">#spad = rpad * m + b</span>
+        <span class="c1">#spad = numpy.concatenate([s,spad])</span>
+        <span class="c1">#rnew = numpy.arange(0, rpad[-1], dr)</span>
+        <span class="c1">#snew = numpy.zeros_like(rnew)</span>
+        <span class="c1">## Accomodate for the fact that r[0] might not be 0</span>
+        <span class="c1">#u = (rnew-r[0]) / dr0</span>
+        <span class="c1">#for n in range(len(spad)):</span>
+        <span class="c1">#    snew += spad[n] * numpy.sinc(u - n)</span>
 
-        <span class="c">#sel = numpy.logical_and(rnew &gt;= r[0], rnew &lt;= r[-1])</span>
+        <span class="c1">#sel = numpy.logical_and(rnew &gt;= r[0], rnew &lt;= r[-1])</span>
 
         <span class="n">rnew</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dr</span><span class="p">)</span>
         <span class="n">snew</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">rnew</span><span class="p">)</span>
@@ -151,10 +151,10 @@
         <span class="n">sel</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">rnew</span> <span class="o">&gt;=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rnew</span> <span class="o">&lt;=</span> <span class="n">r</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">rnew</span><span class="p">[</span><span class="n">sel</span><span class="p">],</span> <span class="n">snew</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
 
-    <span class="c"># If we got here, then no resampling is required</span>
+    <span class="c1"># If we got here, then no resampling is required</span>
     <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">s</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
 
-<span class="c"># End of file</span>
+<span class="c1"># End of file</span>
 </pre></div>
 
           </div>
@@ -188,13 +188,13 @@
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">diffpy.utils 1.2 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">diffpy.utils 1.2.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, Brookhaven National Laboratory.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
 </html>

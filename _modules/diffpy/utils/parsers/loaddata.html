@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>diffpy.utils.parsers.loaddata &mdash; diffpy.utils 1.2 documentation</title>
+    <title>diffpy.utils.parsers.loaddata &mdash; diffpy.utils 1.2.1 documentation</title>
     
     <link rel="stylesheet" href="../../../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '1.2',
+        VERSION:     '1.2.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sidebar.js"></script>
-    <link rel="top" title="diffpy.utils 1.2 documentation" href="../../../../index.html" />
+    <link rel="top" title="diffpy.utils 1.2.1 documentation" href="../../../../index.html" />
     <link rel="up" title="Module code" href="../../../index.html" /> 
   </head>
   <body role="document">
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">diffpy.utils 1.2 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">diffpy.utils 1.2.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -48,23 +48,24 @@
           <div class="body" role="main">
             
   <h1>Source code for diffpy.utils.parsers.loaddata</h1><div class="highlight"><pre>
-<span class="c">#!/usr/bin/env python</span>
-<span class="c">##############################################################################</span>
-<span class="c">#</span>
-<span class="c"># diffpy.utils      by DANSE Diffraction group</span>
-<span class="c">#                   Simon J. L. Billinge</span>
-<span class="c">#                   (c) 2010 The Trustees of Columbia University</span>
-<span class="c">#                   in the City of New York.  All rights reserved.</span>
-<span class="c">#</span>
-<span class="c"># File coded by:    Timur Davis, Chris Farrow, Pavol Juhas</span>
-<span class="c">#</span>
-<span class="c"># See AUTHORS.txt for a list of people who contributed.</span>
-<span class="c"># See LICENSE_DANSE.txt for license information.</span>
-<span class="c">#</span>
-<span class="c">##############################################################################</span>
+<span class="ch">#!/usr/bin/env python</span>
+<span class="c1">##############################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># diffpy.utils      by DANSE Diffraction group</span>
+<span class="c1">#                   Simon J. L. Billinge</span>
+<span class="c1">#                   (c) 2010 The Trustees of Columbia University</span>
+<span class="c1">#                   in the City of New York.  All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># File coded by:    Timur Davis, Chris Farrow, Pavol Juhas</span>
+<span class="c1">#</span>
+<span class="c1"># See AUTHORS.txt for a list of people who contributed.</span>
+<span class="c1"># See LICENSE_DANSE.txt for license information.</span>
+<span class="c1">#</span>
+<span class="c1">##############################################################################</span>
 
-<span class="c"># Turn on the &quot;with&quot; statement for Python 2.5.</span>
+<span class="c1"># Turn on the &quot;with&quot; statement for Python 2.5.</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">with_statement</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
 
 
 <div class="viewcode-block" id="loadData"><a class="viewcode-back" href="../../../../api/diffpy.utils.parsers.html#diffpy.utils.parsers.loaddata.loadData">[docs]</a><span class="k">def</span> <span class="nf">loadData</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">minrows</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -90,22 +91,22 @@
 <span class="sd">    See also numpy.loadtxt for more details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span><span class="p">,</span> <span class="n">loadtxt</span>
-    <span class="c"># determine the arguments</span>
-    <span class="n">delimiter</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;delimiter&#39;</span><span class="p">)</span>
-    <span class="n">usecols</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;usecols&#39;</span><span class="p">)</span>
-    <span class="c"># required at least one column of floating point values</span>
+    <span class="c1"># determine the arguments</span>
+    <span class="n">delimiter</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;delimiter&#39;</span><span class="p">)</span>
+    <span class="n">usecols</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;usecols&#39;</span><span class="p">)</span>
+    <span class="c1"># required at least one column of floating point values</span>
     <span class="n">mincv</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="c"># but if usecols is specified, require sufficient number of columns</span>
-    <span class="c"># where the used columns contain floats</span>
+    <span class="c1"># but if usecols is specified, require sufficient number of columns</span>
+    <span class="c1"># where the used columns contain floats</span>
     <span class="k">if</span> <span class="n">usecols</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">hiidx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="nb">min</span><span class="p">(</span><span class="n">usecols</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">usecols</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">mincv</span> <span class="o">=</span> <span class="p">(</span><span class="n">hiidx</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">usecols</span><span class="p">)))</span>
-    <span class="c"># Check if a line consists of floats only and return their count</span>
-    <span class="c"># Return zero if some strings cannot be converted.</span>
+    <span class="c1"># Check if a line consists of floats only and return their count</span>
+    <span class="c1"># Return zero if some strings cannot be converted.</span>
     <span class="k">def</span> <span class="nf">countcolumnsvalues</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">words</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">)</span>
-            <span class="c"># remove trailing blank columns</span>
+            <span class="c1"># remove trailing blank columns</span>
             <span class="k">while</span> <span class="n">words</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">words</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
                 <span class="n">words</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">nc</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
@@ -116,9 +117,9 @@
         <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
             <span class="n">nc</span> <span class="o">=</span> <span class="n">nv</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">return</span> <span class="n">nc</span><span class="p">,</span> <span class="n">nv</span>
-    <span class="c"># make sure fid gets cleaned up</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fid</span><span class="p">:</span>
-        <span class="c"># search for the start of datablock</span>
+    <span class="c1"># make sure fid gets cleaned up</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fid</span><span class="p">:</span>
+        <span class="c1"># search for the start of datablock</span>
         <span class="n">start</span> <span class="o">=</span> <span class="n">ncvblock</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="n">fpos</span> <span class="o">=</span> <span class="n">nrows</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fid</span><span class="p">:</span>
@@ -127,25 +128,25 @@
             <span class="k">if</span> <span class="n">ncv</span> <span class="o">&lt;</span> <span class="n">mincv</span><span class="p">:</span>
                 <span class="n">start</span> <span class="o">=</span> <span class="bp">None</span>
                 <span class="k">continue</span>
-            <span class="c"># ncv is acceptable here, require the same number of columns</span>
-            <span class="c"># throughout the datablock</span>
+            <span class="c1"># ncv is acceptable here, require the same number of columns</span>
+            <span class="c1"># throughout the datablock</span>
             <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">ncv</span> <span class="o">!=</span> <span class="n">ncvblock</span><span class="p">:</span>
                 <span class="n">ncvblock</span> <span class="o">=</span> <span class="n">ncv</span>
                 <span class="n">nrows</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="n">start</span> <span class="o">=</span> <span class="n">fpos</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
             <span class="n">nrows</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="c"># block was found here!</span>
+            <span class="c1"># block was found here!</span>
             <span class="k">if</span> <span class="n">nrows</span> <span class="o">&gt;=</span> <span class="n">minrows</span><span class="p">:</span>
                 <span class="k">break</span>
-        <span class="c"># Return an empty array when no data found.</span>
-        <span class="c"># loadtxt would otherwise raise an exception on loading from EOF.</span>
+        <span class="c1"># Return an empty array when no data found.</span>
+        <span class="c1"># loadtxt would otherwise raise an exception on loading from EOF.</span>
         <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">rv</span> <span class="o">=</span> <span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">fid</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
-            <span class="c"># always use usecols argument so that loadtxt does not crash</span>
-            <span class="c"># in case of trailing delimiters.</span>
-            <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s">&#39;usecols&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncvblock</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="c1"># always use usecols argument so that loadtxt does not crash</span>
+            <span class="c1"># in case of trailing delimiters.</span>
+            <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;usecols&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncvblock</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
             <span class="n">rv</span> <span class="o">=</span> <span class="n">loadtxt</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">rv</span></div>
 
@@ -165,13 +166,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">usecols</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">usecols</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">skiprows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">skiprows</span> <span class="o">=</span> <span class="n">skiprows</span>
-        <span class="c"># data items</span>
+        <span class="c1"># data items</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
         <span class="k">return</span>
 
 
     <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">datasets</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_resetvars</span><span class="p">()</span>
@@ -179,7 +180,7 @@
 
 
     <span class="k">def</span> <span class="nf">_resetvars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_splitlines</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_words</span> <span class="o">=</span> <span class="bp">None</span>
@@ -189,51 +190,48 @@
 
 
 <div class="viewcode-block" id="TextDataLoader.read"><a class="viewcode-back" href="../../../../api/diffpy.utils.parsers.html#diffpy.utils.parsers.loaddata.TextDataLoader.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">readfp</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 
 <div class="viewcode-block" id="TextDataLoader.readfp"><a class="viewcode-back" href="../../../../api/diffpy.utils.parsers.html#diffpy.utils.parsers.loaddata.TextDataLoader.readfp">[docs]</a>    <span class="k">def</span> <span class="nf">readfp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">numpy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
-        <span class="c"># try to read lines from fp first</span>
+        <span class="c1"># try to read lines from fp first</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
-        <span class="c"># and if good, assign filename</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_words</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="c1"># and if good, assign filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_words</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_splitlines</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">split</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_findDataBlocks</span><span class="p">()</span>
         <span class="k">return</span></div>
 
 
     <span class="k">def</span> <span class="nf">_findDataBlocks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">numpy</span>
         <span class="n">mincols</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">usecols</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usecols</span><span class="p">):</span>
             <span class="n">mincols</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">mincols</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usecols</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">mincols</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">mincols</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usecols</span><span class="p">)))</span>
         <span class="n">nlines</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">)</span>
         <span class="n">nwords</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_words</span><span class="p">)</span>
-        <span class="c"># idx - line index, nw0, nw1 - index of the first and last word,</span>
-        <span class="c"># nf - number of words, ok - has data</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_linerecs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">recarray</span><span class="p">((</span><span class="n">nlines</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s">&#39;idx&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span>
-            <span class="p">(</span><span class="s">&#39;nw0&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;nw1&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;nf&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;ok&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)])</span>
+        <span class="c1"># idx - line index, nw0, nw1 - index of the first and last word,</span>
+        <span class="c1"># nf - number of words, ok - has data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_linerecs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">recarray</span><span class="p">((</span><span class="n">nlines</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;idx&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;nw0&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;nw1&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;nf&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;ok&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)])</span>
         <span class="n">lr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linerecs</span>
         <span class="n">lr</span><span class="o">.</span><span class="n">idx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nlines</span><span class="p">)</span>
         <span class="n">lr</span><span class="o">.</span><span class="n">nf</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_splitlines</span><span class="p">)</span>
         <span class="n">lr</span><span class="o">.</span><span class="n">nw1</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">nf</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
         <span class="n">lr</span><span class="o">.</span><span class="n">nw0</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">nw1</span> <span class="o">-</span> <span class="n">lr</span><span class="o">.</span><span class="n">nf</span>
         <span class="n">lr</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="c"># word records</span>
-        <span class="n">lw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wordrecs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">recarray</span><span class="p">((</span><span class="n">nwords</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s">&#39;idx&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span>
-            <span class="p">(</span><span class="s">&#39;line&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;col&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;ok&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;value&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)])</span>
+        <span class="c1"># word records</span>
+        <span class="n">lw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wordrecs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">recarray</span><span class="p">((</span><span class="n">nwords</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;idx&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;line&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;col&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;ok&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)])</span>
         <span class="n">lw</span><span class="o">.</span><span class="n">idx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nwords</span><span class="p">)</span>
         <span class="n">n1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nwords</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
         <span class="n">n1</span><span class="p">[</span><span class="n">lr</span><span class="o">.</span><span class="n">nw1</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="n">lw</span><span class="o">.</span><span class="n">line</span> <span class="o">=</span> <span class="n">n1</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
         <span class="n">lw</span><span class="o">.</span><span class="n">col</span> <span class="o">=</span> <span class="n">lw</span><span class="o">.</span><span class="n">idx</span> <span class="o">-</span> <span class="n">lr</span><span class="o">.</span><span class="n">nw0</span><span class="p">[</span><span class="n">lw</span><span class="o">.</span><span class="n">line</span><span class="p">]</span>
-        <span class="n">flag</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="n">lw</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="n">values</span> <span class="o">=</span> <span class="n">nwords</span> <span class="o">*</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_words</span><span class="p">):</span>
@@ -241,7 +239,7 @@
                 <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="n">lw</span><span class="o">.</span><span class="n">ok</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="c"># prune lines that have a non-float values:</span>
+        <span class="c1"># prune lines that have a non-float values:</span>
         <span class="n">lw</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">usecols</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">badlines</span> <span class="o">=</span> <span class="n">lw</span><span class="o">.</span><span class="n">line</span><span class="p">[</span><span class="o">~</span><span class="n">lw</span><span class="o">.</span><span class="n">ok</span><span class="p">]</span>
@@ -266,7 +264,7 @@
             <span class="n">bb1</span> <span class="o">=</span> <span class="n">lr1</span><span class="p">[</span><span class="n">dbeg</span><span class="p">]</span>
             <span class="n">ee1</span> <span class="o">=</span> <span class="n">lr1</span><span class="p">[</span><span class="n">dend</span><span class="p">]</span>
             <span class="n">hend</span> <span class="o">=</span> <span class="n">bb1</span><span class="o">.</span><span class="n">idx</span>
-            <span class="n">header</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">[</span><span class="n">hbeg</span><span class="p">:</span><span class="n">hend</span><span class="p">])</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">[</span><span class="n">hbeg</span><span class="p">:</span><span class="n">hend</span><span class="p">])</span>
             <span class="n">hbeg</span> <span class="o">=</span> <span class="n">ee1</span><span class="o">.</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">usecols</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">lw</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="n">bb1</span><span class="o">.</span><span class="n">nw0</span><span class="p">:</span><span class="n">ee1</span><span class="o">.</span><span class="n">nw1</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">bb1</span><span class="o">.</span><span class="n">nf</span><span class="p">))</span>
@@ -278,16 +276,16 @@
                 <span class="n">data</span> <span class="o">=</span> <span class="n">tdata</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="c"># finish reading to a last header and empty dataset</span>
+        <span class="c1"># finish reading to a last header and empty dataset</span>
         <span class="k">if</span> <span class="n">hbeg</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">):</span>
-            <span class="n">header</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">[</span><span class="n">hbeg</span><span class="p">:])</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">[</span><span class="n">hbeg</span><span class="p">:])</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 
-<span class="c"># End of class TextDataLoader</span>
+<span class="c1"># End of class TextDataLoader</span>
 
 <div class="viewcode-block" id="isfloat"><a class="viewcode-back" href="../../../../api/diffpy.utils.parsers.html#diffpy.utils.parsers.loaddata.isfloat">[docs]</a><span class="k">def</span> <span class="nf">isfloat</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;True if s is convertible to float.</span>
@@ -299,7 +297,7 @@
         <span class="k">pass</span>
     <span class="k">return</span> <span class="bp">False</span></div>
 
-<span class="c"># End of file</span>
+<span class="c1"># End of file</span>
 </pre></div>
 
           </div>
@@ -333,13 +331,13 @@
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">diffpy.utils 1.2 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">diffpy.utils 1.2.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, Brookhaven National Laboratory.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
 </html>
