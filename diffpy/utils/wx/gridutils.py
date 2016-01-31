@@ -91,7 +91,6 @@ def limitSelectionToRows(grid, indices):
     '''
     import bisect
     if not indices:  return
-    cols = grid.GetNumberCols()
     rowblocks = _indicesToBlocks(indices)
     cindices = getSelectionColumns(grid) or [grid.GetGridCursorCol()]
     colblocks = _indicesToBlocks(cindices)
