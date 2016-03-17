@@ -13,6 +13,9 @@
 #
 ##############################################################################
 
+import numpy
+
+
 def loadData(filename, minrows=10, **kwargs):
     """Find and load data from a text file.
 
@@ -143,7 +146,6 @@ class TextDataLoader(object):
 
 
     def readfp(self, fp, append=False):
-        import numpy
         self._reset()
         # try to read lines from fp first
         self._lines = fp.readlines()
@@ -156,7 +158,6 @@ class TextDataLoader(object):
 
 
     def _findDataBlocks(self):
-        import numpy
         mincols = 1
         if self.usecols is not None and len(self.usecols):
             mincols = max(mincols, max(self.usecols) + 1)
@@ -181,7 +182,6 @@ class TextDataLoader(object):
         n1[lr.nw1[:-1]] = True
         lw.line = n1.cumsum()
         lw.col = lw.idx - lr.nw0[lw.line]
-        flag = None
         lw.ok = True
         values = nwords * [0.0]
         for i, w in enumerate(self._words):

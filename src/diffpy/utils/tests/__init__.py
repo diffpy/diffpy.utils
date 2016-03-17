@@ -27,6 +27,7 @@ def testsuite():
     '''.split()
     suite = unittest.TestSuite()
     loader = unittest.defaultTestLoader
+    mobj = None
     for mname in modulenames:
         ns = {}
         exec('import %s as mobj' % mname, ns)

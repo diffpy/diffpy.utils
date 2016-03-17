@@ -15,7 +15,7 @@ FALLBACK_VERSION = '3.0a0.post0'
 # versioncfgfile holds version data for git commit hash and date.
 # It must reside in the same directory as version.py.
 MYDIR = os.path.dirname(os.path.abspath(__file__))
-versioncfgfile = os.path.join(MYDIR, 'diffpy/utils/version.cfg')
+versioncfgfile = os.path.join(MYDIR, 'src/diffpy/utils/version.cfg')
 gitarchivecfgfile = versioncfgfile.replace('version.cfg', 'gitarchive.cfg')
 
 def gitinfo():
@@ -32,6 +32,7 @@ def gitinfo():
 
 
 def getversioncfg():
+    import re
     from configparser import RawConfigParser
     vd0 = dict(version=FALLBACK_VERSION, commit='', date='', timestamp=0)
     # first fetch data from gitarchivecfgfile, ignore if it is unexpanded
@@ -40,6 +41,9 @@ def getversioncfg():
     cp0.read(gitarchivecfgfile)
     if '$Format:' not in cp0.get('DEFAULT', 'commit'):
         g = cp0.defaults()
+        mx = re.search(r'\btag: v(\d[^,]*)', g.pop('refnames'))
+        if mx:
+            g['version'] = mx.group(1)
     # then try to obtain version data from git.
     gitdir = os.path.join(MYDIR, '.git')
     if os.path.exists(gitdir) or 'GIT_DIR' in os.environ:
@@ -68,7 +72,8 @@ setup_args = dict(
         name = "diffpy.utils",
         version = versiondata.get('DEFAULT', 'version'),
         namespace_packages = ['diffpy'],
-        packages = [('diffpy.' + p) for p in find_packages('diffpy')],
+        packages = [('diffpy.' + p) for p in find_packages('src/diffpy')],
+        package_dir = {'' : 'src'},
         test_suite = 'diffpy.utils.tests',
         include_package_data = True,
         zip_safe = False,

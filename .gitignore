@@ -40,4 +40,4 @@ nosetests.xml
 
 # version information
 setup.cfg
-/diffpy/utils/version.cfg
+/src/diffpy/*/version.cfg
