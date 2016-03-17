@@ -71,7 +71,6 @@ versiondata = getversioncfg()
 setup_args = dict(
         name = "diffpy.utils",
         version = versiondata.get('DEFAULT', 'version'),
-        namespace_packages = ['diffpy'],
         packages = [('diffpy.' + p) for p in find_packages('src/diffpy')],
         package_dir = {'' : 'src'},
         test_suite = 'diffpy.utils.tests',
