@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 ##############################################################################
 #
 # diffpy.utils      by DANSE Diffraction group
@@ -13,9 +13,10 @@
 #
 ##############################################################################
 
-"""Utilities related wx Python GUIs.
-
-gridutils    -- selection management in wx.grid.Grid
+"""Various utilities related to data parsing and manipulation.
 """
+
+from .loaddata import loadData
+from .resample import resample
 
 # End of file

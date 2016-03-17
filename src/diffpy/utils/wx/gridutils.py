@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 ##############################################################################
 #
 # diffpy.utils      by DANSE Diffraction group
@@ -91,7 +91,6 @@ def limitSelectionToRows(grid, indices):
     '''
     import bisect
     if not indices:  return
-    cols = grid.GetNumberCols()
     rowblocks = _indicesToBlocks(indices)
     cindices = getSelectionColumns(grid) or [grid.GetGridCursorCol()]
     colblocks = _indicesToBlocks(cindices)

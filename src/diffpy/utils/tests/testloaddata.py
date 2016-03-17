@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """Unit tests for diffpy.utils.parsers.loaddata
 """
@@ -16,7 +16,6 @@ class TestLoadData(unittest.TestCase):
     def test_loadData_default(self):
         """check loadData() with default options
         """
-        d1c = numpy.arange(1, 6)
         d2c = numpy.array([[3, 31], [4, 32], [5, 33]])
         self.assertRaises(IOError, loadData, 'doesnotexist')
         d = loadData(loaddata01)

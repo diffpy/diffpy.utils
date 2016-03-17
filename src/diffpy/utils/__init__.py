@@ -1,27 +1,26 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 ##############################################################################
 #
 # diffpy.utils      by DANSE Diffraction group
 #                   Simon J. L. Billinge
-#                   (c) 2012 The Trustees of Columbia University
+#                   (c) 2010 The Trustees of Columbia University
 #                   in the City of New York.  All rights reserved.
 #
-# File coded by:    Pavol Juhas
+# File coded by:    Chris Farrow, Pavol Juhas
 #
 # See AUTHORS.txt for a list of people who contributed.
 # See LICENSE_DANSE.txt for license information.
 #
 ##############################################################################
 
-"""Convenience module for executing all unit tests with
+"""Smalled shared functions for use by other diffpy packages.
 
-python -m diffpy.utils.tests.run
+Subpackages:
+
+parsers  -- various utilities related to data parsing and manipulation.
 """
 
-if __name__ == '__main__':
-    import sys
-    from diffpy.utils.tests import test
-    # produce zero exit code for a successful test
-    sys.exit(not test().wasSuccessful())
+# package version
+from diffpy.utils.version import __version__
 
 # End of file
