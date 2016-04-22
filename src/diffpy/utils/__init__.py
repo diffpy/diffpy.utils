@@ -23,4 +23,7 @@ parsers  -- various utilities related to data parsing and manipulation.
 # package version
 from diffpy.utils.version import __version__
 
+# silence the pyflakes syntax checker
+assert __version__ or True
+
 # End of file
