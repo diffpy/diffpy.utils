@@ -19,4 +19,7 @@
 from .loaddata import loadData
 from .resample import resample
 
+# silence the pyflakes syntax checker
+assert loadData or resample or True
+
 # End of file

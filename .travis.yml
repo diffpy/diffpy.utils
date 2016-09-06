@@ -26,6 +26,7 @@ branches:
     - /^v[0-9]/
 
 before_install:
+  - MYNAME=diffpy.utils
   - umask 022
   - git fetch origin --tags
   - if ${MYUSEMC}; then
@@ -45,9 +46,10 @@ before_install:
         echo "Unsupported operating system." >&2;
         exit 2 ;;
     esac
+  - MYRUNDIR=${PWD}/build/rundir
 
   - mkdir -p ~/pkgs/
-  - mkdir -p ~/rundir/
+  - mkdir -p ${MYRUNDIR}
 
   - $NOMC || pushd ~/pkgs/
   - $NOMC || wget --timestamping ${MYMCREPO}/${MYMCBUNDLE}
@@ -67,16 +69,18 @@ before_install:
   - $NOBREW || MYTARBUNDLE="$(ls -t "${PWD}"/dist/*.tar.gz | head -1)"
 
 install:
-  - $NOMC || CONDA_PY=${MYPYTHON_VERSION} conda build conda-recipe
-  - $NOMC || conda list --name=_test --export diffpy.utils > /tmp/mypackage.txt
+  - $NOMC || CONDA_PY=${MYPYTHON_VERSION} conda build --keep-old-work conda-recipe
+  - $NOMC || MYCONDATESTENV="$(ls -td ~/mc/conda-bld/conda-recipe_*/_t_env | head -1)"
+  - $NOMC || source activate ${MYCONDATESTENV:?"conda test environment not found"}
+  - $NOMC || conda list  --export ${MYNAME} > /tmp/mypackage.txt
   - $NOMC || source activate testenv
   - $NOMC || conda install --yes --use-local --file=/tmp/mypackage.txt
 
   - $NOBREW || $MYPIP install $MYPIPFLAGS coverage
   - $NOBREW || $MYPIP install $MYPIPFLAGS "${MYTARBUNDLE}"
 
-  - cd ~/rundir
-  - MYGIT_REV=$(python3 -c "import diffpy.utils.version as v; print(v.__gitsha__)")
+  - cd ${MYRUNDIR}
+  - MYGIT_REV=$(python3 -c "import ${MYNAME}.version as v; print(v.__gitsha__)")
   - if [[ "${TRAVIS_COMMIT}" != "${MYGIT_REV}" ]]; then
         echo "Version mismatch ${TRAVIS_COMMIT} vs ${MYGIT_REV}.";
         exit 1;
@@ -87,7 +91,7 @@ before_script:
   - $NOBREW || PATH="${USER_BASE}/bin:${PATH}"
 
 script:
-  - coverage run --source diffpy.utils -m diffpy.utils.tests.run
+  - coverage run --source ${MYNAME} -m ${MYNAME}.tests.run
 
 after_success:
   - $MYPIP install $MYPIPFLAGS codecov

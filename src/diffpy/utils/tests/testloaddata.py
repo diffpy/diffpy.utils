@@ -18,8 +18,6 @@ class TestLoadData(unittest.TestCase):
         """
         d2c = numpy.array([[3, 31], [4, 32], [5, 33]])
         self.assertRaises(IOError, loadData, 'doesnotexist')
-        d = loadData(loaddata01)
-        self.assertTrue(numpy.array_equal(d2c, d))
         # the default minrows=10 makes it read from the third line
         d = loadData(loaddata01)
         self.assertTrue(numpy.array_equal(d2c, d))
