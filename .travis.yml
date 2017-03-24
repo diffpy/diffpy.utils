@@ -8,7 +8,6 @@ os:
   - osx
 
 env:
-  - MYUSEMC=true MYPYTHON_VERSION=3.3
   - MYUSEMC=true MYPYTHON_VERSION=3.4
   - MYUSEMC=true MYPYTHON_VERSION=3.5
   - MYUSEMC=true MYPYTHON_VERSION=3.6
@@ -58,6 +57,11 @@ before_install:
   - $NOMC || test -x ~/mc/bin/conda || bash ${MYMCBUNDLE} -b -f -p ~/mc
   - $NOMC || popd
   - $NOMC || export PATH="${HOME}/mc/bin:${PATH}"
+
+  # Avoid failure due to a bug in conda-build 2.1.6, 2.1.7,
+  # see https://github.com/conda/conda-build/issues/1825.
+  - $NOMC || echo 'conda-build ==2.1.5' | tee ~/mc/conda-meta/pinned
+
   - $NOMC || conda update --yes conda
   - $NOMC || conda install --yes conda-build jinja2
   - $NOMC || conda create --name=testenv --yes python=${MYPYTHON_VERSION} coverage
