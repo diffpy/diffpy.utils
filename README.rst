@@ -23,7 +23,7 @@ http://diffpy.github.io/diffpy.utils.
 REQUIREMENTS
 ------------------------------------------------------------------------
 
-The diffpy.utils package requires Python 2.6 or 2.7 and the following software:
+The diffpy.utils package requires Python 2.7 and the following software:
 
 * ``setuptools``   - tools for installing Python packages
 * ``NumPy``        - library for scientific computing with Python
