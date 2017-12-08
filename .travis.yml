@@ -51,11 +51,11 @@ before_install:
     esac
   - MYRUNDIR=${PWD}/build/rundir
 
-  - mkdir -p ~/pkgs/
+  - mkdir -p ~/pkgs
   - mkdir -p ${MYRUNDIR}
   - cp .coveragerc ${MYRUNDIR}/
 
-  - $NOMC || pushd ~/pkgs/
+  - $NOMC || pushd ~/pkgs
   - $NOMC || wget --timestamping ${MYMCREPO}/${MYMCBUNDLE}
   - $NOMC || test -x ~/mc/bin/conda || bash ${MYMCBUNDLE} -b -f -p ~/mc
   - $NOMC || popd
@@ -65,14 +65,16 @@ before_install:
   - $NOMC || conda create --name=testenv --yes python=${MYPYTHON_VERSION} coverage
 
   - $NOAPT || test "${TRAVIS_OS_NAME}" = "linux" || exit $?
+  - $NOAPT || PATH="$(echo "$PATH" | sed 's,:/opt/pyenv/[^:]*,,g')"
+  - $NOAPT || test "$(which python)" = "/usr/bin/python" || (
+                  which python; exit 1)
   - $NOAPT || devutils/makesdist
   - $NOAPT || MYTARBUNDLE="$(ls -t "${PWD}"/dist/*.tar.gz | head -1)"
 
 install:
-  - $NOMC || conda build --python=${MYPYTHON_VERSION} --dirty conda-recipe
-  - $NOMC || MYCONDATESTENV="$(ls -td ~/mc/conda-bld/${MYNAME}_*/_t_env* | head -1)"
-  - $NOMC || source activate ${MYCONDATESTENV:?"conda test environment not found"}
-  - $NOMC || conda list  --export ${MYNAME} > /tmp/mypackage.txt
+  - $NOMC || conda build --python=${MYPYTHON_VERSION} conda-recipe
+  - $NOMC || conda render --python=${MYPYTHON_VERSION} --output conda-recipe |
+                sed 's,.*/,,; s/[.]tar[.]bz2$//; s/-/=/g' > /tmp/mypackage.txt
   - $NOMC || source activate testenv
   - $NOMC || conda install --yes --use-local --file=/tmp/mypackage.txt
 
@@ -80,7 +82,7 @@ install:
   - $NOAPT || easy_install --user "${MYTARBUNDLE}"
 
   - cd ${MYRUNDIR}
-  - MYGIT_REV=$(python -c "import ${MYNAME}.version as v; print(v.__gitsha__)")
+  - MYGIT_REV=$(python -c "import ${MYNAME}.version as v; print(v.__git_commit__)")
   - if [[ "${TRAVIS_COMMIT}" != "${MYGIT_REV}" ]]; then
         echo "Version mismatch ${TRAVIS_COMMIT} vs ${MYGIT_REV}.";
         exit 1;
