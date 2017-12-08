@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-########################################################################
+##############################################################################
 #
 # diffpy.utils      by DANSE Diffraction group
 #                   Simon J. L. Billinge
@@ -11,8 +11,7 @@
 # See AUTHORS.txt for a list of people who contributed.
 # See LICENSE_DANSE.txt for license information.
 #
-########################################################################
-
+##############################################################################
 
 """
 Definition of __version__, __date__, __timestamp__, __git_commit__.
