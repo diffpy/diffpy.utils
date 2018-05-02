@@ -24,7 +24,7 @@ import time
 sys.path.insert(0, os.path.abspath('../../..'))
 
 # abbreviations
-ab_authors = 'Pavol Juhás, Timur Davis, Christopher L. Farrow, Simon J.L. Billinge group'
+ab_authors = u'Pavol Juhás, Timur Davis, Christopher L. Farrow, Simon J.L. Billinge group'
 
 # -- General configuration ------------------------------------------------
 
