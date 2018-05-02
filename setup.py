@@ -80,7 +80,7 @@ versiondata = getversioncfg()
 setup_args = dict(
     name = "diffpy.utils",
     version = versiondata.get('DEFAULT', 'version'),
-    packages = [('diffpy.' + p) for p in find_packages('src/diffpy')],
+    packages = find_packages(os.path.join(MYDIR, 'src')),
     package_dir = {'' : 'src'},
     test_suite = 'diffpy.utils.tests',
     include_package_data = True,
@@ -105,6 +105,7 @@ setup_args = dict(
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX',
         'Operating System :: Unix',
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
