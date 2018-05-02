@@ -1,8 +1,8 @@
-.. image:: https://travis-ci.org/diffpy/diffpy.utils.svg?branch=python3
+.. image:: https://travis-ci.org/diffpy/diffpy.utils.svg?branch=master
    :target: https://travis-ci.org/diffpy/diffpy.utils
 
-.. image:: http://codecov.io/github/diffpy/diffpy.utils/coverage.svg?branch=python3
-   :target: http://codecov.io/github/diffpy/diffpy.utils?branch=python3
+.. image:: http://codecov.io/github/diffpy/diffpy.utils/coverage.svg?branch=master
+   :target: http://codecov.io/github/diffpy/diffpy.utils?branch=master
 
 
 diffpy.utils
