@@ -20,14 +20,17 @@ MYDIR = os.path.dirname(os.path.abspath(__file__))
 versioncfgfile = os.path.join(MYDIR, 'src/diffpy/utils/version.cfg')
 gitarchivecfgfile = os.path.join(MYDIR, '.gitarchive.cfg')
 
+# determine if we run with Python 3.
+PY3 = (sys.version_info[0] == 3)
+
 
 def gitinfo():
     from subprocess import Popen, PIPE
-    kw = dict(stdout=PIPE, cwd=MYDIR)
+    kw = dict(stdout=PIPE, cwd=MYDIR, universal_newlines=True)
     proc = Popen(['git', 'describe', '--match=v[[:digit:]]*'], **kw)
-    desc = proc.stdout.read().decode()
+    desc = proc.stdout.read()
     proc = Popen(['git', 'log', '-1', '--format=%H %ct %ci'], **kw)
-    glog = proc.stdout.read().decode()
+    glog = proc.stdout.read()
     rv = {}
     rv['version'] = '.post'.join(desc.strip().split('-')[:2]).lstrip('v')
     rv['commit'], rv['timestamp'], rv['date'] = glog.strip().split(None, 2)
@@ -35,7 +38,7 @@ def gitinfo():
 
 
 def getversioncfg():
-    if sys.version_info[0] >= 3:
+    if PY3:
         from configparser import RawConfigParser
     else:
         from ConfigParser import RawConfigParser
@@ -67,7 +70,8 @@ def getversioncfg():
         cp.set('DEFAULT', 'commit', g['commit'])
         cp.set('DEFAULT', 'date', g['date'])
         cp.set('DEFAULT', 'timestamp', g['timestamp'])
-        cp.write(open(versioncfgfile, 'w'))
+        with open(versioncfgfile, 'w') as fp:
+            cp.write(fp)
     return cp
 
 versiondata = getversioncfg()
