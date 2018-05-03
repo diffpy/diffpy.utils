@@ -6,24 +6,30 @@ Packages:   diffpy.utils
 """
 
 import os
+import re
+import sys
 from setuptools import setup, find_packages
 
 # Use this version when git data are not available, like in git zip archive.
 # Update when tagging a new release.
-FALLBACK_VERSION = '1.2.2.post0'
+FALLBACK_VERSION = '3.0a2.post0'
 
 # versioncfgfile holds version data for git commit hash and date.
 # It must reside in the same directory as version.py.
 MYDIR = os.path.dirname(os.path.abspath(__file__))
 versioncfgfile = os.path.join(MYDIR, 'src/diffpy/utils/version.cfg')
-gitarchivecfgfile = versioncfgfile.replace('version.cfg', 'gitarchive.cfg')
+gitarchivecfgfile = os.path.join(MYDIR, '.gitarchive.cfg')
+
+# determine if we run with Python 3.
+PY3 = (sys.version_info[0] == 3)
+
 
 def gitinfo():
     from subprocess import Popen, PIPE
-    kw = dict(stdout=PIPE, cwd=MYDIR)
+    kw = dict(stdout=PIPE, cwd=MYDIR, universal_newlines=True)
     proc = Popen(['git', 'describe', '--match=v[[:digit:]]*'], **kw)
     desc = proc.stdout.read()
-    proc = Popen(['git', 'log', '-1', '--format=%H %at %ai'], **kw)
+    proc = Popen(['git', 'log', '-1', '--format=%H %ct %ci'], **kw)
     glog = proc.stdout.read()
     rv = {}
     rv['version'] = '.post'.join(desc.strip().split('-')[:2]).lstrip('v')
@@ -32,14 +38,16 @@ def gitinfo():
 
 
 def getversioncfg():
-    import re
-    from ConfigParser import RawConfigParser
+    if PY3:
+        from configparser import RawConfigParser
+    else:
+        from ConfigParser import RawConfigParser
     vd0 = dict(version=FALLBACK_VERSION, commit='', date='', timestamp=0)
     # first fetch data from gitarchivecfgfile, ignore if it is unexpanded
     g = vd0.copy()
     cp0 = RawConfigParser(vd0)
     cp0.read(gitarchivecfgfile)
-    if '$Format:' not in cp0.get('DEFAULT', 'commit'):
+    if len(cp0.get('DEFAULT', 'commit')) > 20:
         g = cp0.defaults()
         mx = re.search(r'\btag: v(\d[^,]*)', g.pop('refnames'))
         if mx:
@@ -62,7 +70,8 @@ def getversioncfg():
         cp.set('DEFAULT', 'commit', g['commit'])
         cp.set('DEFAULT', 'date', g['date'])
         cp.set('DEFAULT', 'timestamp', g['timestamp'])
-        cp.write(open(versioncfgfile, 'w'))
+        with open(versioncfgfile, 'w') as fp:
+            cp.write(fp)
     return cp
 
 versiondata = getversioncfg()
@@ -97,6 +106,9 @@ setup_args = dict(
         'Operating System :: POSIX',
         'Operating System :: Unix',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Scientific/Engineering :: Physics',
     ],
 )

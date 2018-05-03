@@ -120,14 +120,14 @@ def quickResizeColumns(grid, indices):
     maxSize = {}
     for (i, j) in indices:
         if j not in maxSize:
-            renderer = grid.GetCellRenderer(i,j)
-            attr = grid.GetOrCreateCellAttr(i,j)
+            renderer = grid.GetCellRenderer(i, j)
+            attr = grid.GetOrCreateCellAttr(i, j)
             size = renderer.GetBestSize(grid, attr, dc, i, j).width
             size += 10 # Need a small buffer
             maxSize[j] = size
 
     grid.BeginBatch()
-    for (j,size) in maxSize.items():
+    for (j, size) in maxSize.items():
         if size > grid.GetColSize(j):
             grid.SetColSize(j, size)
     grid.EndBatch()
@@ -152,7 +152,7 @@ def _indicesToBlocks(indices):
         else:
             rngs[-1][-1] = i
         i0 = i
-    rv = map(tuple, rngs)
+    rv = [tuple(ij) for ij in rngs]
     return rv
 
 # End of file

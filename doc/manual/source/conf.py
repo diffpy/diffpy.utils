@@ -53,8 +53,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'diffpy.utils'
-copyright = u'%Y, Brookhaven National Laboratory'
+project = 'diffpy.utils'
+copyright = '%Y, Brookhaven National Laboratory'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -212,7 +212,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'diffpy.utils.tex', u'diffpy.utils Documentation',
+  ('index', 'diffpy.utils.tex', 'diffpy.utils Documentation',
    ab_authors, 'manual'),
 ]
 
@@ -242,7 +242,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'diffpy.utils', u'diffpy.utils Documentation',
+    ('index', 'diffpy.utils', 'diffpy.utils Documentation',
      ab_authors, 1)
 ]
 
@@ -256,7 +256,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'diffpy.utils', u'diffpy.utils Documentation',
+  ('index', 'diffpy.utils', 'diffpy.utils Documentation',
    ab_authors, 'diffpy.utils', 'One line description of project.',
    'Miscellaneous'),
 ]

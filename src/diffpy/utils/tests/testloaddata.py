@@ -20,15 +20,15 @@ class TestLoadData(unittest.TestCase):
         self.assertRaises(IOError, loadData, 'doesnotexist')
         # the default minrows=10 makes it read from the third line
         d = loadData(loaddata01)
-        self.failUnless(numpy.array_equal(d2c, d))
+        self.assertTrue(numpy.array_equal(d2c, d))
         # the usecols=(0, 1) would make it read from the third line
         d = loadData(loaddata01, minrows=1, usecols=(0, 1))
-        self.failUnless(numpy.array_equal(d2c, d))
+        self.assertTrue(numpy.array_equal(d2c, d))
         # check the effect of usecols effect
         d = loadData(loaddata01, usecols=(0,))
-        self.failUnless(numpy.array_equal(d2c[:,0], d))
+        self.assertTrue(numpy.array_equal(d2c[:,0], d))
         d = loadData(loaddata01, usecols=(1,))
-        self.failUnless(numpy.array_equal(d2c[:,1], d))
+        self.assertTrue(numpy.array_equal(d2c[:,1], d))
         return
 
 
@@ -37,11 +37,11 @@ class TestLoadData(unittest.TestCase):
         """
         d1c = numpy.arange(1, 6)
         d = loadData(loaddata01, usecols=[0], minrows=1)
-        self.failUnless(numpy.array_equal(d1c, d))
+        self.assertTrue(numpy.array_equal(d1c, d))
         d = loadData(loaddata01, usecols=[0], minrows=2)
-        self.failUnless(numpy.array_equal(d1c, d))
+        self.assertTrue(numpy.array_equal(d1c, d))
         d = loadData(loaddata01, usecols=[0], minrows=3)
-        self.failIf(numpy.array_equal(d1c, d))
+        self.assertFalse(numpy.array_equal(d1c, d))
         return
 
 # End of class TestRoutines
