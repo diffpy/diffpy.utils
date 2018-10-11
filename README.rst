@@ -33,7 +33,7 @@ The functions in diffpy.utils.wx module require
 
 * ``wxPython``     - GUI toolkit for the Python language
 
-We recommend to use `Anaconda Python <https://www.continuum.io/downloads>`_
+We recommend to use `Anaconda Python <https://www.anaconda.com/download>`_
 as it allows to install the software dependencies together with
 diffpy.utils.  For other Python distributions it is necessary to install
 the required software separately.  As an example, on Ubuntu Linux the
