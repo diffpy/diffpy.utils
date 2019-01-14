@@ -1,6 +1,3 @@
-# Use container-based travis workers
-sudo: false
-
 language: generic
 
 os:
