@@ -1,5 +1,5 @@
 ####################################################
-diffpy.utils documentation!
+diffpy.utils documentation
 ####################################################
 
 diffpy.utils - general purpose shared utilities for the diffpy libraries.
@@ -12,13 +12,6 @@ variously formatted text files and wx GUI utilities used by the PDFgui
 program.  The package also includes interpolation function based on the
 Whittaker-Shannon formula that can be used to resample a PDF or other profile
 function over a new grid.
-
-
-===================
-Disclaimer
-===================
-
-.. literalinclude:: ../../../LICENSE.txt
 
 =======
 Authors
@@ -39,12 +32,13 @@ See the `README <https://github.com/diffpy/diffpy.utils#requirements>`_
 file included with the distribution.
 
 ======================================
-API and Index
+Table of contents
 ======================================
 
 .. toctree::
-   :maxdepth: 3
+   :titlesonly:
 
+   license
    api/diffpy.utils.rst
 
 * :ref:`genindex`
