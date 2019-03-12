@@ -1,8 +1,10 @@
 diffpy.utils.parsers package
 ============================
 
-Submodules
-----------
+.. automodule:: diffpy.utils.parsers
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 diffpy.utils.parsers.loaddata module
 ------------------------------------
@@ -16,15 +18,6 @@ diffpy.utils.parsers.resample module
 ------------------------------------
 
 .. automodule:: diffpy.utils.parsers.resample
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: diffpy.utils.parsers
     :members:
     :undoc-members:
     :show-inheritance:
