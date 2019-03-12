@@ -39,6 +39,7 @@ Table of contents
    :titlesonly:
 
    license
+   release
    api/diffpy.utils.rst
 
 * :ref:`genindex`
