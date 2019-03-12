@@ -1,18 +1,11 @@
-.. diffpy.utils documentation master file, created by
-   sphinx-quickstart on Thu Jan 30 15:49:41 2014.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-
 ####################################################
-diffpy.utils's documentation!
+diffpy.utils documentation!
 ####################################################
-
-Software version |release|.
-
-Last updated |today|.
 
 diffpy.utils - general purpose shared utilities for the diffpy libraries.
+
+| Software version |release|.
+| Last updated |today|.
 
 The diffpy.utils package provides functions for extracting array data from
 variously formatted text files and wx GUI utilities used by the PDFgui
@@ -27,22 +20,22 @@ Disclaimer
 
 .. literalinclude:: ../../../LICENSE.txt
 
-================
-Acknowledgments
-================
+=======
+Authors
+=======
 
-Developers
------------
+diffpy.utils is developed by members of the Billinge Group at
+Columbia University and at Brookhaven National Laboratory including
+Pavol Juhás, Timur Davis, Christopher L. Farrow, Simon J.L. Billinge.
 
-diffpy.Structure is developed and maintained by
-
-.. literalinclude:: ../../../AUTHORS.txt
+For a detailed list of contributors see
+https://github.com/diffpy/diffpy.utils/graphs/contributors.
 
 ======================================
 Installation
 ======================================
 
-See the `README.rst <https://github.com/diffpy/diffpy.utils#requirements>`_
+See the `README <https://github.com/diffpy/diffpy.utils#requirements>`_
 file included with the distribution.
 
 ======================================
