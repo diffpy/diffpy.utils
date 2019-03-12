@@ -40,7 +40,11 @@ Table of contents
 
    license
    release
-   api/diffpy.utils.rst
+   Package API <api/diffpy.utils>
+
+======================================
+Indices
+======================================
 
 * :ref:`genindex`
 * :ref:`search`
