@@ -16,7 +16,7 @@
 import numpy
 
 
-def loadData(filename, minrows=10, **kwargs):
+def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwargs):
     """Find and load data from a text file.
 
     The data reading starts at the first matrix block of at least minrows rows
@@ -26,6 +26,9 @@ def loadData(filename, minrows=10, **kwargs):
     filename -- name of the file we want to load data from.
     minrows  -- minimum number of rows in the first data block.
                 All rows must have the same number of floating point values.
+    headers  -- return also a dictionary of parameters specified in header
+    hdel     -- delimiter for parsing header information
+    hignore  -- ignore header rows beginning with any elements in the hignore list
     usecols  -- zero-based index of columns to be loaded, by default use
                 all detected columns.  The reading skips data blocks that
                 do not have the usecols-specified columns.
@@ -39,6 +42,8 @@ def loadData(filename, minrows=10, **kwargs):
     See also numpy.loadtxt for more details.
     """
     from numpy import array, loadtxt
+    # for storing header data
+    hdata = {}
     # determine the arguments
     delimiter = kwargs.get('delimiter')
     usecols = kwargs.get('usecols')
@@ -72,8 +77,40 @@ def loadData(filename, minrows=10, **kwargs):
         fpos = (0, 0)
         nrows = 0
         for line in fid:
+            # decode line
+            dline = line.decode()
+            # find header information if requested
+            if headers:
+                hpair = dline.split(hdel)
+                flag = True
+                # ensure number of non-blank arguments is two
+                if len(hpair) != 2:
+                    flag = False
+                else:
+                    # ignore if an argument is blank
+                    hpair[0] = hpair[0].strip()  # name of data entry
+                    hpair[1] = hpair[1].strip()  # value of entry
+                    if not hpair[0] or not hpair[1]:
+                        flag = False
+                    else:
+                        # check if row has an ignore tag
+                        if hignore is not None:
+                            for tag in hignore:
+                                taglen = len(tag)
+                                if len(hpair[0]) >= taglen and hpair[0][:taglen] == tag:
+                                    flag = False
+                # add header data
+                if flag:
+                    name = hpair[0]
+                    value = hpair[1]
+                    # can be stored as float if only one decimal
+                    if hpair[1].replace(".", "", 1).isnumeric():
+                        value = float(hpair[1])
+                    # check if data value should be stored as float
+                    hdata.update({name: value})
+            # continue search for the start of datablock
             fpos = (fpos[1], fpos[1] + len(line))
-            line = line.decode()
+            line = dline
             ncv = countcolumnsvalues(line)
             if ncv < mincv:
                 start = None
@@ -98,6 +135,11 @@ def loadData(filename, minrows=10, **kwargs):
             # in case of trailing delimiters.
             kwargs.setdefault('usecols', list(range(ncvblock[0])))
             rv = loadtxt(fid, **kwargs)
+
+    # return headers if requested
+    if headers:
+        return hdata, rv
+    # otherwise do not
     return rv
 
 
