@@ -19,8 +19,9 @@
 # helper functions
 
 def datafile(filename):
-    from pkg_resources import resource_filename
-    rv = resource_filename(__name__, "testdata/" + filename)
-    return rv
+    from importlib.resources import files, as_file
+    ref = files(__package__) / ("testdata/" + filename)
+    with as_file(ref) as rv:
+        return rv
 
 # End of file
