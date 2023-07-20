@@ -11,7 +11,6 @@ if __name__ == '__main__':
         args.extend(sys.argv[1:])
     print('pytest arguments: {}'.format(args))
     # # compute coverage stats for xpdAcq
-    # call pytest and exit with the return code from pytest so that
-    # travis will fail correctly if tests fail
+    # call pytest and exit with the return code from pytest
     exit_res = pytest.main(args)
     sys.exit(exit_res)
