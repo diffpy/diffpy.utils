@@ -14,9 +14,18 @@ exclude_lines =
     ^[ ]*@unittest.skip\b
     ^[ ]{4}unittest.main()
     if __name__ == .__main__.:
+omit =
+    */python?.?/*
+    */site-packages/nose/*
+    # ignore _version.py and versioneer.py
+    .*version.*
+    *_version.py
 
 
 [run]
+source =
+    src/diffpy/utils/
 omit =
     ## exclude debug.py from codecov report
     */tests/debug.py
+
