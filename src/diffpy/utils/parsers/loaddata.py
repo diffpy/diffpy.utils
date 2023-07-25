@@ -103,10 +103,9 @@ def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwar
                 if flag:
                     name = hpair[0]
                     value = hpair[1]
-                    # can be stored as float if only one decimal
-                    if hpair[1].replace(".", "", 1).isnumeric():
-                        value = float(hpair[1])
                     # check if data value should be stored as float
+                    if isfloat(hpair[1]):
+                        value = float(hpair[1])
                     hdata.update({name: value})
             # continue search for the start of datablock
             fpos = (fpos[1], fpos[1] + len(line))
