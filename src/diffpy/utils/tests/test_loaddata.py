@@ -6,9 +6,10 @@
 import unittest
 import numpy
 from diffpy.utils.parsers import loadData
-from diffpy.utils.tests.t_helpers import datafile
+from diffpy.utils.tests.testhelpers import datafile
 
 loaddata01 = datafile('loaddata01.txt')
+loaddatawithheaders = datafile('loaddatawithheaders.txt')
 
 ##############################################################################
 class TestLoadData(unittest.TestCase):
@@ -43,6 +44,25 @@ class TestLoadData(unittest.TestCase):
         d = loadData(loaddata01, usecols=[0], minrows=3)
         self.assertFalse(numpy.array_equal(d1c, d))
         return
+
+
+    def test_loadData_headers(self):
+        """check loadData() with headers options enabled
+        """
+        hignore = ["# ", "// ", "["]  # ignore lines beginning with these strings
+        delimiter = ": "  # what our data should be separated by
+        hdata, rv = loadData(loaddatawithheaders, headers=True, hdel=delimiter, hignore=hignore)
+        # only fourteen lines of data are formatted properly
+        assert len(hdata) == 14
+        # check the following are floats
+        vfloats = ["wavelength", "qmaxinst", "qmin", "qmax", "bgscale"]
+        for name in vfloats:
+            assert isinstance(hdata.get(name), float)
+        # check the following are NOT floats
+        vnfloats = ["composition", "rmax", "rmin", "rstep", "rpoly"]
+        for name in vnfloats:
+            assert not isinstance(hdata.get(name), float)
+
 
 # End of class TestRoutines
 
