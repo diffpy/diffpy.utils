@@ -20,6 +20,8 @@ omit =
     # ignore _version.py and versioneer.py
     .*version.*
     *_version.py
+    # ignore wx directory
+    */wx/*
 
 
 [run]
