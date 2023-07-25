@@ -1,7 +1,7 @@
-.. image:: https://travis-ci.org/diffpy/diffpy.utils.svg?branch=master
-   :target: https://travis-ci.org/diffpy/diffpy.utils
+.. image:: https://github.com/diffpy/diffpy.utils/actions/workflows/main.yml/badge.svg
+   :target: https://github.com/diffpy/diffpy.utils/actions/workflows/main.yml
 
-.. image:: https://codecov.io/gh/diffpy/diffpy.utils/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/diffpy/diffpy.utils/branch/main/graph/badge.svg
   :target: https://codecov.io/gh/diffpy/diffpy.utils
 
 
