@@ -6,7 +6,7 @@
 import unittest
 import numpy
 from diffpy.utils.parsers import loadData
-from diffpy.utils.tests.t_helpers import datafile
+from diffpy.utils.tests.testhelpers import datafile
 
 loaddata01 = datafile('loaddata01.txt')
 
