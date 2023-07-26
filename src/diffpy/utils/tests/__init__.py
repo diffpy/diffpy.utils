@@ -37,14 +37,15 @@ def testsuite(pattern=''):
     import re
     from os.path import dirname
     from itertools import chain
-    from pkg_resources import resource_filename
+    from importlib.resources import files, as_file
     loader = unittest.defaultTestLoader
-    thisdir = resource_filename(__name__, '')
-    depth = __name__.count('.') + 1
-    topdir = thisdir
-    for i in range(depth):
-        topdir = dirname(topdir)
-    suite_all = loader.discover(thisdir, top_level_dir=topdir)
+    ref = files(__package__)
+    with as_file(ref) as thisdir:
+        depth = __name__.count('.') + 1
+        topdir = thisdir
+        for i in range(depth):
+            topdir = dirname(topdir)
+        suite_all = loader.discover(str(thisdir), top_level_dir=topdir)
     # always filter the suite by pattern to test-cover the selection code.
     suite = unittest.TestSuite()
     rx = re.compile(pattern)
