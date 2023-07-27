@@ -17,6 +17,7 @@
 """
 
 from .loaddata import loadData
+from .loadmetafile import load_PDF_into_db, markup_PDF, apply_schema
 from .resample import resample
 
 # silence the pyflakes syntax checker

@@ -1,0 +1,25 @@
+rmin = 0
+rmed = 5
+rmax = 10
+max_num = 10
+min_num = 1
+refinepos_option = N
+mpi_option = Y
+db_option = LOCAL
+pos = 3.5
+spd = 0.1
+qmin = 0
+qmax = 10
+qstep = invalid
+qbroad = 0.2
+qdamp = 0.0001
+stype = Neutron
+stru_str = baddata
+
+0 0
+1 0.00001
+2 0.00003
+3 0.00005
+4 0.00001
+5 -0.00003
+6 -0.00006
