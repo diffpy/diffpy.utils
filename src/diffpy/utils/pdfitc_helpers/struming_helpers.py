@@ -1,4 +1,9 @@
 def strumining_processing(sminputs: dict):
+    """Process metadata dictionary before put into strumining.
+
+    sminputs    -- Dictionary of strumining parameters (either read from loadData or given)
+    """
+
     # preprocessing
     # FIXME: make lowercase and check string inputting
 
