@@ -1,0 +1,17 @@
+{
+  "r": "[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0]",
+  "gr": "[0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6]",
+  "stru_str": "SoMeThInG",
+  "stype": "N",
+  "qdamp": 0.02,
+  "qbroad": 0.02,
+  "qmax": 20,
+  "qmin": 0,
+  "spd": 0,
+  "db_option": "cod",
+  "mpi_option": "n",
+  "refinepos_option": "n",
+  "max_num": 1000,
+  "rmax": 20,
+  "rmin": 1.5
+}

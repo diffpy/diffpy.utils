@@ -21,6 +21,6 @@ from .loadmetafile import load_PDF_into_db, markup_PDF, apply_schema
 from .resample import resample
 
 # silence the pyflakes syntax checker
-assert loadData or resample or True
+assert loadData or load_PDF_into_db or markup_PDF or apply_schema or resample or True
 
 # End of file
