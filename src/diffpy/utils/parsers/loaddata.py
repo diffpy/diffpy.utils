@@ -27,7 +27,7 @@ def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwar
     minrows     -- minimum number of rows in the first data block.
                    All rows must have the same number of floating point values.
     headers     -- when true (default False), the function instead returns
-                   a dictionary of parameters specified in header.
+                   a dictionary of values specified in header.
     hdel        -- (only used when headers enabled) delimiter for parsing header
                    information.
     hignore     -- (only used when headers enabled) ignore header rows beginning
@@ -43,8 +43,9 @@ def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwar
                    Note transposing the loaded array as loadData(FILENAME).T
                    has the same effect.
 
-    Return a numpy array of the data.
-    See also numpy.loadtxt for more details.
+    Return a numpy array of the data. (See also numpy.loadtxt for more details.)
+    If headers enabled, instead returns a dictionary of values read from header
+    information.
     """
     from numpy import array, loadtxt
     # for storing header data
