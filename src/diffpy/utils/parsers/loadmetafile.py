@@ -92,7 +92,7 @@ def markup_PDF(muname, hddata: dict, rv: list):
 
     # gather data
     data = {}
-    data.update({'r': str(list(rv[:, 0])), 'gr': str(list(rv[:, 1]))})
+    data.update({'r': str(list(rv[:, 0])), 'gr': str([list(rv[:, 1]), ])})
     data.update(hddata)
     extension = pathlib.Path(muname).suffix
     if extension not in supported_formats:
