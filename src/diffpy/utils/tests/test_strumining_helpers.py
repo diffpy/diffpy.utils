@@ -1,6 +1,6 @@
 from diffpy.utils.pdfitc_helpers import strumining_processing
-from diffpy.utils.parsers import load_PDF_into_db, markup_PDF, apply_schema
-from diffpy.utils.parsers import loadData
+from diffpy.utils.parsers import markup_PDF, apply_schema
+from diffpy.utils.parsers import loadData, load_header_data
 from diffpy.utils.tests.testhelpers import datafile
 
 import os
@@ -22,13 +22,15 @@ sm_schema = datafile("strumining.json")
 
 def test_sm_preprocessing():
     # simple workflow for neutron data
-    hddata, rv = loadData(nload, headers=True)
+    rv = loadData(nload)
+    hdata = load_header_data(nload)
     hddata = strumining_processing(hddata)
     markup_PDF(neutron_generated, hddata, rv)
     apply_schema(neutron_generated, sm_schema)
 
     # simple workflow for xray data
-    hddata, rv = loadData(xload, headers=True)
+    rv = loadData(xload)
+    hdata = load_header_data(xload)
     hddata = strumining_processing(hddata)
     markup_PDF(xray_generated, hddata, rv)
     apply_schema(xray_generated, sm_schema)

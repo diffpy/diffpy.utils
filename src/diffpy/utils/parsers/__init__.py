@@ -16,7 +16,7 @@
 """Various utilities related to data parsing and manipulation.
 """
 
-from .loaddata import loadData
+from .loaddata import loadData, load_header_data
 from .loadmetafile import load_PDF_into_db, markup_PDF, apply_schema
 from .resample import resample
 
