@@ -1,5 +1,5 @@
 from diffpy.utils.parsers import load_PDF_into_db, markup_PDF, apply_schema
-from diffpy.utils.parsers import loadData, load_header_data
+from diffpy.utils.parsers import loadData
 from diffpy.utils.tests.testhelpers import datafile
 
 import os
@@ -23,8 +23,8 @@ def test_load_gr():
     print(tddbload_list)
     for headerfile in tddbload_list:
         headerfile = os.path.join(tests_dir, "testdata", "dbload", headerfile)
+        hdata = loadData(headerfile, headers=True)
         rv = loadData(headerfile)
-        hdata = load_header_data(headerfile)
         load_PDF_into_db(generatedjson, headerfile, hdata, rv, show_path=False)
     apply_schema(generatedjson, schemaname, multiple_entries=True)
 
@@ -37,8 +37,8 @@ def test_load_gr():
 
 def test_markup_gr():
     # put into json and apply schema
+    hdata = loadData(muload, headers=True)
     rv = loadData(muload)
-    hdata = load_header_data(muload)
     markup_PDF(generatedmu, hdata, rv)
     apply_schema(generatedmu, schemaname)
 
