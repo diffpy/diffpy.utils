@@ -26,7 +26,8 @@ def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwar
     filename -- name of the file we want to load data from.
     minrows  -- minimum number of rows in the first data block.
                 All rows must have the same number of floating point values.
-    headers  -- return also a dictionary of parameters specified in header
+    headers  -- when true (default False), the function instead returns
+                a dictionary of parameters specified in header.
     hdel     -- delimiter for parsing header information
     hignore  -- ignore header rows beginning with any elements in the hignore list
     usecols  -- zero-based index of columns to be loaded, by default use
@@ -124,6 +125,11 @@ def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwar
             # block was found here!
             if nrows >= minrows:
                 break
+
+        # Return header data if requested
+        if headers:
+            return hdata  # Return, so do not proceed to reading datablock
+
         # Return an empty array when no data found.
         # loadtxt would otherwise raise an exception on loading from EOF.
         if start is None:
@@ -134,11 +140,6 @@ def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwar
             # in case of trailing delimiters.
             kwargs.setdefault('usecols', list(range(ncvblock[0])))
             rv = loadtxt(fid, **kwargs)
-
-    # return headers if requested
-    if headers:
-        return hdata, rv
-    # otherwise do not
     return rv
 
 
