@@ -41,10 +41,10 @@ def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwar
     kwargs      -- keyword arguments that are passed to numpy.loadtxt including
                    the following arguments below. (See also numpy.loadtxt for more
                    details.)
-    delimiter   -- delimiter for the data in the block (default None). e.g. for
-                   comma-separated values in the datablock, set delimiter to ','.
+    delimiter   -- delimiter for the data in the block (default use whitespace).
+                   For comma-separated data blocks, set delimiter to ','.
     usecols     -- zero-based index of columns to be loaded, by default use
-                   all detected columns.  The reading skips data blocks that
+                   all detected columns. The reading skips data blocks that
                    do not have the usecols-specified columns.
     unpack      -- return data as a sequence of columns that allows tuple
                    unpacking such as  x, y = loadData(FILENAME, unpack=True).
