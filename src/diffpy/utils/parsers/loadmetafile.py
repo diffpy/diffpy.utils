@@ -80,6 +80,27 @@ def load_PDF_into_db(dbname, pdfname, hddata: dict, rv: list, show_path=True):
     return pdfs
 
 
+def load_from_db(filename):
+    """Load a dictionary from a database file.
+
+    filename    -- database file to load from.
+
+    Returns a dictionary of database information.
+    """
+
+    # check if supported type
+    extension = pathlib.Path(filename).suffix
+    if extension not in supported_formats:
+        raise Exception(f"Format of {filename} is not supported.")
+
+    # json
+    if extension == '.json':
+        with open(filename, 'r') as json_file:
+            j_dict = json.load(json_file)
+
+    return j_dict
+
+
 def markup_PDF(hddata: dict, rv: list, muname=None):
     # FIXME: may be better suited for REST API package, not diffpy.utils
     """Put PDF file information into a dictionary.
