@@ -51,8 +51,8 @@ def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwar
                    Note transposing the loaded array as loadData(FILENAME).T
                    has the same effect.
 
-    Return a numpy array of the data. If headers enabled, instead returns a
-    dictionary of parameters read from the header.
+    Return a numpy array of the data (data_block). If headers enabled, instead returns a
+    dictionary of parameters read from the header (hddata).
     """
     from numpy import array, loadtxt
     # for storing header data
@@ -145,14 +145,14 @@ def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwar
         # Return an empty array when no data found.
         # loadtxt would otherwise raise an exception on loading from EOF.
         if start is None:
-            rv = array([], dtype=float)
+            data_block = array([], dtype=float)
         else:
             fid.seek(start)
             # always use usecols argument so that loadtxt does not crash
             # in case of trailing delimiters.
             kwargs.setdefault('usecols', list(range(ncvblock[0])))
-            rv = loadtxt(fid, **kwargs)
-    return rv
+            data_block = loadtxt(fid, **kwargs)
+    return data_block
 
 
 class TextDataLoader(object):
