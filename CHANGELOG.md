@@ -6,9 +6,6 @@
 
 - CI Coverage.
 - New tests for loadData function.
-
-### Changed
-
 - loadData function now toggleable. Can return either (a) data read from data blocks or (b) header
 information stored above the data block.
 
