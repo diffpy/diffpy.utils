@@ -17,10 +17,11 @@
 """
 
 from .loaddata import loadData
-from .loadmetafile import serialize_data, deserialize_data, apply_schema_to_file, serial_oneline
+from .serialization import serialize_data, deserialize_data
 from .resample import resample
 
 # silence the pyflakes syntax checker
 assert loadData or resample or True
+assert serialize_data or deserialize_data or True
 
 # End of file
