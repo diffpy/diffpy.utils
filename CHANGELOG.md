@@ -1,17 +1,13 @@
 # Release notes
 
-## Version 3.2.0 – 2023-8-**
+## Version 3.2.0 – 2023-08-**
 
 ### Added
 
 - CI Coverage.
 - New tests for loadData function.
-
-### Changed
-
 - loadData function now toggleable. Can return either (a) data read from data blocks or (b) header
 information stored above the data block.
-- Exclude wx from tests.
 
 ### Removed
 
