@@ -1,0 +1,17 @@
+{
+  "r": [0, 1, 2, 3, 4],
+  "gr": [0.1, 0.2, 0.3, 0.4, 0.5],
+  "stru_str": "example",
+  "stype": "N",
+  "qdamp": 0.01,
+  "qbroad": 0.02,
+  "qmax": 10,
+  "qmin": 0,
+  "spd": 0.1,
+  "db_option": "MPD",
+  "mpi_option": "Y",
+  "refinepos_option": "Y",
+  "max_num": 10,
+  "rmax": 10,
+  "rmin": 0
+}
