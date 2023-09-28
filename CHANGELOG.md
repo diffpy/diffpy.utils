@@ -4,6 +4,7 @@
 
 ### Added
 
+- Compatability with Python 3.12, 3.11
 - CI Coverage.
 - New tests for loadData function.
 - loadData function now toggleable. Can return either (a) data read from data blocks or (b) header
