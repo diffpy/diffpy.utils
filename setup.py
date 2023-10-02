@@ -75,7 +75,6 @@ def getversioncfg():
     return cp
 
 versiondata = getversioncfg()
-print(versiondata.get('DEFAULT', 'version'))
 
 with open(os.path.join(MYDIR, 'README.rst')) as fp:
     long_description = fp.read()
