@@ -12,7 +12,7 @@ from setuptools import setup, find_packages
 
 # Use this version when git data are not available, like in git zip archive.
 # Update when tagging a new release.
-FALLBACK_VERSION = '3.2.1'
+FALLBACK_VERSION = '3.2.0'
 
 # versioncfgfile holds version data for git commit hash and date.
 # It must reside in the same directory as version.py.
@@ -82,7 +82,7 @@ with open(os.path.join(MYDIR, 'README.rst')) as fp:
 # define distribution
 setup_args = dict(
     name = "diffpy.utils",
-    version = versiondata.get('DEFAULT', 'version'),
+    version = '3.2.3',
     packages = find_packages(os.path.join(MYDIR, 'src')),
     package_dir = {'' : 'src'},
     test_suite = 'diffpy.utils.tests',
