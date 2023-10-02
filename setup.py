@@ -49,7 +49,7 @@ def getversioncfg():
     cp0.read(gitarchivecfgfile)
     if len(cp0.get('DEFAULT', 'commit')) > 20:
         g = cp0.defaults()
-        mx = re.search(r'\btag: v(\d[^,]*)', g.pop('refnames'))
+        mx = re.search(r'\btag: (\d[^,]*)', g.pop('refnames'))
         if mx:
             g['version'] = mx.group(1)
     # then try to obtain version data from git.
@@ -75,6 +75,7 @@ def getversioncfg():
     return cp
 
 versiondata = getversioncfg()
+print(versiondata.get('DEFAULT', 'version'))
 
 with open(os.path.join(MYDIR, 'README.rst')) as fp:
     long_description = fp.read()
