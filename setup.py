@@ -12,7 +12,7 @@ from setuptools import setup, find_packages
 
 # Use this version when git data are not available, like in git zip archive.
 # Update when tagging a new release.
-FALLBACK_VERSION = '3.2.0'
+FALLBACK_VERSION = '3.2.3'
 
 # versioncfgfile holds version data for git commit hash and date.
 # It must reside in the same directory as version.py.
@@ -27,12 +27,12 @@ PY3 = (sys.version_info[0] == 3)
 def gitinfo():
     from subprocess import Popen, PIPE
     kw = dict(stdout=PIPE, cwd=MYDIR, universal_newlines=True)
-    proc = Popen(['git', 'describe', '--tags', '--match=v[[:digit:]]*'], **kw)
+    proc = Popen(['git', 'describe', '--tags', '--match=[v,V,[:digit:]]*'], **kw)
     desc = proc.stdout.read()
     proc = Popen(['git', 'log', '-1', '--format=%H %ct %ci'], **kw)
     glog = proc.stdout.read()
     rv = {}
-    rv['version'] = '.post'.join(desc.strip().split('-')[:2]).lstrip('v')
+    rv['version'] = '.post'.join(desc.strip().split('-')[:2]).lstrip('v').lstrip('V')
     rv['commit'], rv['timestamp'], rv['date'] = glog.strip().split(None, 2)
     return rv
 
@@ -49,7 +49,7 @@ def getversioncfg():
     cp0.read(gitarchivecfgfile)
     if len(cp0.get('DEFAULT', 'commit')) > 20:
         g = cp0.defaults()
-        mx = re.search(r'\btag: (\d[^,]*)', g.pop('refnames'))
+        mx = re.search(r'\btag: [vV]?(\d[^,]*)', g.pop('refnames'))
         if mx:
             g['version'] = mx.group(1)
     # then try to obtain version data from git.
@@ -82,7 +82,7 @@ with open(os.path.join(MYDIR, 'README.rst')) as fp:
 # define distribution
 setup_args = dict(
     name = "diffpy.utils",
-    version = '3.2.3',
+    version = versiondata.get('DEFAULT', 'version'),
     packages = find_packages(os.path.join(MYDIR, 'src')),
     package_dir = {'' : 'src'},
     test_suite = 'diffpy.utils.tests',

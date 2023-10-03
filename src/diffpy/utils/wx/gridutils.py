@@ -16,8 +16,6 @@
 """Common functions for manipulating wx.grid.Grid.
 """
 
-import wx
-
 
 def getSelectionRows(grid):
     """Indices of the rows that have any cell selected.
