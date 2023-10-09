@@ -16,9 +16,14 @@
 class UnsupportedTypeError(Exception):
     """For file types not supported by our parsers.
 
-    supported_types     -- List of supported types.
-    file                -- file triggering the error.
-    message             -- for writing a custom message.
+    Parameters
+    ----------
+    file
+        Name of file triggering the error.
+    supported_types: list
+        Supported file types.
+    message: str
+        Overwrites default message.
     """
 
     def __init__(self, file, supported_types=None, message=None):
@@ -35,8 +40,12 @@ class UnsupportedTypeError(Exception):
 class ImproperSizeError(Exception):
     """When the size of an object does not match expectations.
 
-    bad_object          -- Object with improper size.
-    message             -- for writing a custom message.
+    Parameters
+    ----------
+    bad_object
+        Object with improper size.
+    message: str
+        Overwrites default message.
     """
 
     def __init__(self, bad_object, message=None):

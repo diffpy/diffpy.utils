@@ -13,11 +13,7 @@
 #
 ##############################################################################
 
-"""Smalled shared functions for use by other diffpy packages.
-
-Subpackages:
-
-parsers  -- various utilities related to data parsing and manipulation.
+"""Smaller shared functions for use by other diffpy packages.
 """
 
 # package version
