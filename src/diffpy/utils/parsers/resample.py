@@ -17,17 +17,36 @@
 
 import numpy
 
+
 # NOTE - this should be faster than resample below and conforms more closely to
 # numpy.interp. I'm keeping resample for legacy reasons.
-def wsinterp(x, xp, fp, left = None, right = None):
+def wsinterp(x, xp, fp, left=None, right=None):
     """One-dimensional Whittaker-Shannon interpolation.
 
-    This uses the Whittaker-Shannon interpolation formula to interpolate the
-    value of fp (array), which is defined over xp (array), at x (array or
-    float).
+    This uses the Whittaker-Shannon interpolation formula to interpolate the value of fp (array), which is defined over
+    xp (array), at x (array or float).
 
-    Returns the interpolated array with dimensions of x.
+    Paramaters
+    ----------
+    x: ndarray
+        Desired range for interpolation.
+    xp: ndarray
+        Defined range for fp.
+    fp: ndarray
+        Function to be interpolated.
+    left: float
+        If given, set fp for x < xp[0] to left. Otherwise, if left is None (default) or not given, set fp for x < xp[0]
+        to fp evaluated at xp[-1].
+    right: float
+        If given, set fp for x > xp[-1] to right. Otherwise, if right is None (default) or not given, set fp for
+        x > xp[-1] to fp evaluated at xp[-1].
 
+    Returns
+    -------
+    float:
+        If input x is a scalar (not an array), return the interpolated value at x.
+    ndarray:
+        If input x is an array, return the interpolated array with dimensions of x.
     """
     scalar = numpy.isscalar(x)
     if scalar:
@@ -41,32 +60,41 @@ def wsinterp(x, xp, fp, left = None, right = None):
     # shape = (nx, nxp), m(v) data spans axis 1
     m = fp * numpy.sinc(v)
     # Sum over m(v) (axis 1)
-    fp_at_x = numpy.sum(m, axis = 1)
+    fp_at_x = numpy.sum(m, axis=1)
 
     # Enforce left and right
-    if left is None: left = fp[0]
+    if left is None:
+        left = fp[0]
     fp_at_x[x < xp[0]] = left
-    if right is None: right = fp[-1]
+    if right is None:
+        right = fp[-1]
     fp_at_x[x > xp[-1]] = right
 
     # Return a float if we got a float
-    if scalar: return float(fp_at_x)
+    if scalar:
+        return float(fp_at_x)
 
     return fp_at_x
+
 
 def resample(r, s, dr):
     """Resample a PDF on a new grid.
 
-    This uses the Whittaker-Shannon interpolation formula to put s1 on a new
-    grid if dr is less than the sampling interval of r1, or linear
-    interpolation if dr is greater than the sampling interval of r1.
+    This uses the Whittaker-Shannon interpolation formula to put s1 on a new grid if dr is less than the sampling
+    interval of r1, or linear interpolation if dr is greater than the sampling interval of r1.
 
-    r       --  The r-grid used for s1
-    s       --  The signal to be resampled
-    dr      --  The new sampling interval
+    Parameters
+    ----------
+    r
+        The r-grid used for s1.
+    s
+        The signal to be resampled.
+    dr
+        The new sampling interval.
 
-    Returns resampled (r, s)
-
+    Returns
+    -------
+    Returns resampled (r, s).
     """
 
     dr0 = r[1] - r[0]

@@ -36,6 +36,10 @@ requirements:
     - pytest
 
 test:
+  # Put any additional test requirements here
+  requires:
+    - pytest
+
   # Python imports
   imports:
     - diffpy
@@ -49,10 +53,6 @@ test:
 
   # You can also put a file called run_test.py in the recipe that will be run
   # at test time.
-
-  requires:
-    # Put any additional test requirements here.  For example
-    # - nose
 
 about:
   home: https://github.com/diffpy/diffpy.utils

@@ -14,8 +14,6 @@
 ##############################################################################
 
 """Utilities related wx Python GUIs.
-
-gridutils    -- selection management in wx.grid.Grid
 """
 
 # End of file

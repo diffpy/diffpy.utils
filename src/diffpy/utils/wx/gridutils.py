@@ -55,8 +55,7 @@ def getSelectionColumns(grid):
 
 def getSelectedCells(grid):
     """Get list of (row, col) pairs of all selected cells.
-    Unlike grid.GetSelectedCells this returns them all no matter
-    how they were selected.
+    Unlike grid.GetSelectedCells this returns them all no matter how they were selected.
     """
     rows = grid.GetNumberRows()
     cols = grid.GetNumberCols()
@@ -82,13 +81,20 @@ def limitSelectionToRows(grid, indices):
     '''Limit selection to the specified row indices.
     No action for empty indices.
 
-    grid     -- instance of wx.grid.Grid
-    indices  -- list of row indices to be selected, must be sorted and unique.
+    Parameters
+    ----------
+    grid
+        instance of wx.grid.Grid
+    indices: list
+        Row indices to be selected, must be sorted and unique.
 
+    Returns
+    -------
     No return value.
     '''
     import bisect
-    if not indices:  return
+    if not indices:
+        return
     rowblocks = _indicesToBlocks(indices)
     cindices = getSelectionColumns(grid) or [grid.GetGridCursorCol()]
     colblocks = _indicesToBlocks(cindices)
@@ -134,16 +140,21 @@ def quickResizeColumns(grid, indices):
 # Local Helpers --------------------------------------------------------------
 
 def _indicesToBlocks(indices):
-    '''Convert a list of integer indices to a list of (start, stop) tuples.
-    The (start, stop) tuple defines a continuous block, where the stop index
-    is included in the block.
+    """Convert a list of integer indices to a list of (start, stop) tuples.
+    The (start, stop) tuple defines a continuous block, where the stop index is included in the block.
 
-    indices  -- list of integer indices, must be unique and sorted.
+    Parameters
+    ----------
+    indices: list
+        Integer indices, must be unique and sorted.
 
-    Return a list of (start, stop) tuples.
-    '''
+    Returns
+    -------
+    list:
+        A list of (start, stop) tuples.
+    """
     rngs = []
-    i0 = -100
+    i0 = indices[0] - 2  # Ensure i0 + 1 < i for first step
     for i in indices:
         if i > i0 + 1:
             rngs.append([i, i])

@@ -1,6 +1,12 @@
 # Release notes
 
-## Version 3.2.0 – 2023-08-**
+## Version 3.2.4 – 2023-10--**
+
+### Added
+
+- New documentation build
+
+## Version 3.2.3 – 2023-10-03
 
 ### Added
 

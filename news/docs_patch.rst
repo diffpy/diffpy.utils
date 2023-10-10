@@ -1,6 +1,6 @@
 **Added:**
 
-* <news item>
+* New documentation build.
 
 **Changed:**
 
