@@ -43,8 +43,10 @@ def wsinterp(x, xp, fp, left=None, right=None):
 
     Returns
     -------
+    float:
+        If input x is a scalar (not an array), return the interpolated value at x.
     ndarray:
-        Returns the interpolated array with dimensions of x.
+        If input x is an array, return the interpolated array with dimensions of x.
     """
     scalar = numpy.isscalar(x)
     if scalar:
@@ -58,12 +60,14 @@ def wsinterp(x, xp, fp, left=None, right=None):
     # shape = (nx, nxp), m(v) data spans axis 1
     m = fp * numpy.sinc(v)
     # Sum over m(v) (axis 1)
-    fp_at_x = numpy.sum(m, axis = 1)
+    fp_at_x = numpy.sum(m, axis=1)
 
     # Enforce left and right
-    if left is None: left = fp[0]
+    if left is None:
+        left = fp[0]
     fp_at_x[x < xp[0]] = left
-    if right is None: right = fp[-1]
+    if right is None:
+        right = fp[-1]
     fp_at_x[x > xp[-1]] = right
 
     # Return a float if we got a float
