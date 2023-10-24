@@ -88,7 +88,7 @@ def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwar
             if usecols is not None:
                 nv = len([float(words[i]) for i in usecols])
             else:
-                nv = len([float(w) for w in words])
+                nv = len([  float(w) for w in words])
         except (IndexError, ValueError):
             nc = nv = 0
         return nc, nv

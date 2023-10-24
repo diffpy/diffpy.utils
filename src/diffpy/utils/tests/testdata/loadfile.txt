@@ -15,7 +15,6 @@ qbroad = 0.2
 qdamp = 0.0001
 stype = Neutron
 stru_str = baddata
-data table = no_table
 
 0 0
 1 0.00001

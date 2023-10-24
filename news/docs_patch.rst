@@ -1,10 +1,12 @@
 **Added:**
 
 * New documentation build.
+* Quickstart tutorial for parsers.
 
 **Changed:**
 
-* <news item>
+* Theme changed from `sphinx_py3doc_enhanced_theme` to `sphinx_rtd_theme`.
+* User now warned when data_table data overwrites hdata (header) data.
 
 **Deprecated:**
 

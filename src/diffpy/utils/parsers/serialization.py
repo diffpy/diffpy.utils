@@ -17,6 +17,7 @@ import pathlib
 import json
 
 from .custom_exceptions import UnsupportedTypeError, ImproperSizeError
+import warnings
 
 # FIXME: add support for yaml, xml
 supported_formats = ['.json']
@@ -64,7 +65,11 @@ def serialize_data(filename, hdata: dict, data_table: list, show_path=True, dt_c
     # title the entry with name of file (taken from end of path)
     title = abs_path.name
 
-    # first add named columns in dt_cols
+    # first add data in hddata dict
+    data.update(hdata)
+
+    # second add named columns in dt_cols
+    # performed second to prioritize overwriting hdata entries with data_table column entries
     named_columns = 0  # initial value
     max_columns = 1  # higher than named_columns to trigger 'data table' entry
     if dt_colnames is not None:
@@ -77,21 +82,18 @@ def serialize_data(filename, hdata: dict, data_table: list, show_path=True, dt_c
         for idx in range(num_col_names):
             colname = dt_colnames[idx]
             if colname is not None:
+                if colname in hdata.keys():
+                    warnings.warn(f'Entry \'{colname}\' in hdata has been overwritten by a data_table entry.',
+                                  RuntimeWarning)
                 data.update({colname: list(data_table[:, idx])})
                 named_columns += 1
 
-    # second add data in hddata dict
-    data.update(hdata)
-
     # finally add data_table as an entry named 'data table' if not all columns were parsed
     if named_columns < max_columns:
-        if 'data table' not in data.keys():
-            data.update({'data table': data_table})
-        else:  # if 'data table' is already a key, keep adding primes to the end
-            dt_name = 'data table'
-            while dt_name in data.keys():
-                dt_name += " prime"
-            data.update({dt_name: data_table})
+        if 'data table' in data.keys():
+            warnings.warn('Entry \'data table\' in hdata has been overwritten by data_table.',
+                          RuntimeWarning)
+        data.update({'data table': data_table})
 
     # parse name using pathlib and generate dictionary entry
     entry = {title: data}
