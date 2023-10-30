@@ -7,11 +7,16 @@ diffpy.utils - general purpose shared utilities for the diffpy libraries.
 | Software version |release|.
 | Last updated |today|.
 
-The diffpy.utils package provides functions for extracting array data from
-variously formatted text files and wx GUI utilities used by the PDFgui
-program.  The package also includes interpolation function based on the
-Whittaker-Shannon formula that can be used to resample a PDF or other profile
-function over a new grid.
+The diffpy.utils package provides general functions for extracting data from variously formatted text files as well as
+some PDF-specific functionality. These include wx GUI utilities used by the PDFgui program and an interpolation function
+based on the Whittaker-Shannon formula for upsampling/downsampling a bandlimited PDF or other profile function.
+
+========
+Examples
+========
+Illustrations of when and how one would use various diffpy.utils functions.
+
+* :ref:`File Data Extraction<Parsers Example>`
 
 =======
 Authors
@@ -40,6 +45,7 @@ Table of contents
 
    license
    release
+   Examples <examples/examples>
    Package API <api/diffpy.utils>
 
 ======================================

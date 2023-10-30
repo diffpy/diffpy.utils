@@ -15,6 +15,7 @@
 
 import pathlib
 import json
+import numpy
 
 from .custom_exceptions import UnsupportedTypeError, ImproperSizeError
 import warnings
@@ -23,7 +24,7 @@ import warnings
 supported_formats = ['.json']
 
 
-def serialize_data(filename, hdata: dict, data_table: list, show_path=True, dt_colnames=None, serial_file=None):
+def serialize_data(filename, hdata: dict, data_table, dt_colnames=None, show_path=True, serial_file=None):
     """Serialize file data into a dictionary. Can also save dictionary into a serial language file. Dictionary is
     formatted as {filename: data}.
 
@@ -35,7 +36,7 @@ def serialize_data(filename, hdata: dict, data_table: list, show_path=True, dt_c
         Name of the file whose data is being serialized.
     hdata: dict
         File metadata (generally related to data table).
-    data_table: list
+    data_table: list or ndarray
         Data table.
     dt_colnames: list
         Names of each column in data_table. Every name in data_table_cols will be put into the Dictionary as a key with
@@ -120,11 +121,18 @@ def serialize_data(filename, hdata: dict, data_table: list, show_path=True, dt_c
 
     # json
     if extension == '.json':
+        # cannot serialize numpy arrays
+        class NumpyEncoder(json.JSONEncoder):
+            def default(self, data_obj):
+                if type(data_obj) is numpy.ndarray:
+                    return data_obj.tolist()
+                return json.JSONEncoder.default(self, data_obj)
+
         # dump if non-existing
         if not existing:
             with open(serial_file, 'w') as jsonfile:
                 file_data = entry  # for return
-                json.dump(file_data, jsonfile, indent=2)
+                json.dump(file_data, jsonfile, indent=2, cls=NumpyEncoder)
 
         # update if existing
         else:
@@ -133,18 +141,21 @@ def serialize_data(filename, hdata: dict, data_table: list, show_path=True, dt_c
                 file_data.update(entry)
             with open(serial_file, 'w') as json_write:
                 # dump to string first for formatting
-                json.dump(file_data, json_write, indent=2)
+                json.dump(file_data, json_write, indent=2, cls=NumpyEncoder)
 
     return file_data
 
 
-def deserialize_data(filename):
+def deserialize_data(filename, filetype=None):
     """Load a dictionary from a serial file.
 
     Parameters
     ----------
     filename
         Serial file to load from.
+
+    filetype
+        For specifying extension type (i.e. '.json').
 
     Returns
     -------
@@ -155,13 +166,23 @@ def deserialize_data(filename):
     # check if supported type
     f = pathlib.Path(filename)
     f_name = f.name
-    extension = f.suffix
-    if extension not in supported_formats:
-        raise UnsupportedTypeError(f_name, supported_formats)
+
+    if filetype is None:
+        extension = f.suffix
+        if extension not in supported_formats:
+            raise UnsupportedTypeError(f_name, supported_formats)
+    else:
+        extension = filetype
+
+    return_dict = {}
 
     # json
     if extension == '.json':
         with open(filename, 'r') as json_file:
             j_dict = json.load(json_file)
+            return_dict = j_dict
 
-    return j_dict
+    if len(return_dict) == 0:
+        warnings.warn(f'Loaded dictionary is empty. Possibly due to improper file type.', RuntimeWarning)
+
+    return return_dict

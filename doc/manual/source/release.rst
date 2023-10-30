@@ -1,3 +1,5 @@
+:tocdepth: 2
+
 .. index:: release notes
 
-.. mdinclude:: ../../../CHANGELOG.md
+.. include:: ../../../CHANGELOG.rst

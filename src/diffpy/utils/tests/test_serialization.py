@@ -42,7 +42,7 @@ def test_load_multiple(tmp_path):
     target_data = deserialize_data(targetjson)
     assert target_data == generated_data
     # ensure file saved properly
-    assert target_data == deserialize_data(generatedjson)
+    assert target_data == deserialize_data(generatedjson, filetype='.json')
 
 
 def test_exceptions():
