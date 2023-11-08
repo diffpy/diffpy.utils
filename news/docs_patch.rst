@@ -1,7 +1,8 @@
 **Added:**
 
 * New documentation build.
-* Quickstart tutorial for parsers.
+* Added examples for file parsers and resampling.
+* Tested for Jupyter Notebook compatibility.
 
 **Changed:**
 
