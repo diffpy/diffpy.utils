@@ -9,7 +9,7 @@ diffpy.utils - general purpose shared utilities for the diffpy libraries.
 
 The diffpy.utils package provides general functions for extracting data from variously formatted text files as well as
 some PDF-specific functionality. These include wx GUI utilities used by the PDFgui program and an interpolation function
-based on the Whittaker-Shannon formula for upsampling/downsampling a bandlimited PDF or other profile function.
+based on the Whittaker-Shannon formula for resampling a bandlimited PDF or other profile function.
 
 ========
 Examples
@@ -17,6 +17,7 @@ Examples
 Illustrations of when and how one would use various diffpy.utils functions.
 
 * :ref:`File Data Extraction<Parsers Example>`
+* :ref:`Resampling & Data Reconstruction<Resample Example>`
 
 =======
 Authors

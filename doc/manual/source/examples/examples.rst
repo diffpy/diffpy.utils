@@ -8,3 +8,4 @@ Landing page for diffpy.utils examples.
 
 .. toctree::
     parsersexample
+    resampleexample
