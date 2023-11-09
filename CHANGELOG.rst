@@ -1,6 +1,6 @@
-=======================
-diffpy.utils Change Log
-=======================
+=============
+Release Notes
+=============
 
 .. current developments
 
