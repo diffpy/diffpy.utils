@@ -12,7 +12,7 @@ def test_wsinterp():
     # Sampling rate
     ssr = 44100**-1  # Standard sampling rate for human-hearable frequencies
     t = ssr
-    n = 5  # Do 6 samples
+    n = 5
     xp = np.array([i*t for i in range(-n, n+1, 1)])
     x = np.array([i*t for i in range(-n-1, n+2, 1)])
 

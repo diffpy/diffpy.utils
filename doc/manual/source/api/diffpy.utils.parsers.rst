@@ -1,3 +1,5 @@
+.. _Parsers Documentation:
+
 diffpy.utils.parsers package
 ============================
 
@@ -5,6 +7,8 @@ diffpy.utils.parsers package
     :members:
     :undoc-members:
     :show-inheritance:
+
+For a sample data extraction workflow, see :ref:`parsers example<Parsers Example>`.
 
 diffpy.utils.parsers.loaddata module
 ------------------------------------

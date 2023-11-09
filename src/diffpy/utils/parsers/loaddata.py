@@ -45,16 +45,19 @@ def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwar
 
     Useful kwargs
     =============
+    comments: str, sequence of str
+        The characters or list of characters used to indicate the start of a comment (default '#').
+        Comment lines are ignored.
     delimiter: str
         Delimiter for the data in the block (default use whitespace). For comma-separated data blocks,
         set delimiter to ','.
-    usecols:
-        Zero-based index of columns to be loaded, by default use all detected columns. The reading skips
-        data blocks that do not have the usecols-specified columns.
     unpack: bool
         Return data as a sequence of columns that allows tuple unpacking such as x, y =
         loadData(FILENAME, unpack=True). Note transposing the loaded array as loadData(FILENAME).T has the same
         effect.
+    usecols:
+        Zero-based index of columns to be loaded, by default use all detected columns. The reading skips
+        data blocks that do not have the usecols-specified columns.
 
     Returns
     -------
@@ -88,7 +91,7 @@ def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwar
             if usecols is not None:
                 nv = len([float(words[i]) for i in usecols])
             else:
-                nv = len([float(w) for w in words])
+                nv = len([  float(w) for w in words])
         except (IndexError, ValueError):
             nc = nv = 0
         return nc, nv

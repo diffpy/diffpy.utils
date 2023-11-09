@@ -15,14 +15,16 @@
 
 import pathlib
 import json
+import numpy
 
 from .custom_exceptions import UnsupportedTypeError, ImproperSizeError
+import warnings
 
 # FIXME: add support for yaml, xml
 supported_formats = ['.json']
 
 
-def serialize_data(filename, hdata: dict, data_table: list, show_path=True, dt_colnames=None, serial_file=None):
+def serialize_data(filename, hdata: dict, data_table, dt_colnames=None, show_path=True, serial_file=None):
     """Serialize file data into a dictionary. Can also save dictionary into a serial language file. Dictionary is
     formatted as {filename: data}.
 
@@ -34,7 +36,7 @@ def serialize_data(filename, hdata: dict, data_table: list, show_path=True, dt_c
         Name of the file whose data is being serialized.
     hdata: dict
         File metadata (generally related to data table).
-    data_table: list
+    data_table: list or ndarray
         Data table.
     dt_colnames: list
         Names of each column in data_table. Every name in data_table_cols will be put into the Dictionary as a key with
@@ -64,7 +66,11 @@ def serialize_data(filename, hdata: dict, data_table: list, show_path=True, dt_c
     # title the entry with name of file (taken from end of path)
     title = abs_path.name
 
-    # first add named columns in dt_cols
+    # first add data in hddata dict
+    data.update(hdata)
+
+    # second add named columns in dt_cols
+    # performed second to prioritize overwriting hdata entries with data_table column entries
     named_columns = 0  # initial value
     max_columns = 1  # higher than named_columns to trigger 'data table' entry
     if dt_colnames is not None:
@@ -77,21 +83,18 @@ def serialize_data(filename, hdata: dict, data_table: list, show_path=True, dt_c
         for idx in range(num_col_names):
             colname = dt_colnames[idx]
             if colname is not None:
+                if colname in hdata.keys():
+                    warnings.warn(f'Entry \'{colname}\' in hdata has been overwritten by a data_table entry.',
+                                  RuntimeWarning)
                 data.update({colname: list(data_table[:, idx])})
                 named_columns += 1
 
-    # second add data in hddata dict
-    data.update(hdata)
-
     # finally add data_table as an entry named 'data table' if not all columns were parsed
     if named_columns < max_columns:
-        if 'data table' not in data.keys():
-            data.update({'data table': data_table})
-        else:  # if 'data table' is already a key, keep adding primes to the end
-            dt_name = 'data table'
-            while dt_name in data.keys():
-                dt_name += " prime"
-            data.update({dt_name: data_table})
+        if 'data table' in data.keys():
+            warnings.warn('Entry \'data table\' in hdata has been overwritten by data_table.',
+                          RuntimeWarning)
+        data.update({'data table': data_table})
 
     # parse name using pathlib and generate dictionary entry
     entry = {title: data}
@@ -118,11 +121,18 @@ def serialize_data(filename, hdata: dict, data_table: list, show_path=True, dt_c
 
     # json
     if extension == '.json':
+        # cannot serialize numpy arrays
+        class NumpyEncoder(json.JSONEncoder):
+            def default(self, data_obj):
+                if type(data_obj) is numpy.ndarray:
+                    return data_obj.tolist()
+                return json.JSONEncoder.default(self, data_obj)
+
         # dump if non-existing
         if not existing:
             with open(serial_file, 'w') as jsonfile:
                 file_data = entry  # for return
-                json.dump(file_data, jsonfile, indent=2)
+                json.dump(file_data, jsonfile, indent=2, cls=NumpyEncoder)
 
         # update if existing
         else:
@@ -131,18 +141,21 @@ def serialize_data(filename, hdata: dict, data_table: list, show_path=True, dt_c
                 file_data.update(entry)
             with open(serial_file, 'w') as json_write:
                 # dump to string first for formatting
-                json.dump(file_data, json_write, indent=2)
+                json.dump(file_data, json_write, indent=2, cls=NumpyEncoder)
 
     return file_data
 
 
-def deserialize_data(filename):
+def deserialize_data(filename, filetype=None):
     """Load a dictionary from a serial file.
 
     Parameters
     ----------
     filename
         Serial file to load from.
+
+    filetype
+        For specifying extension type (i.e. '.json').
 
     Returns
     -------
@@ -153,13 +166,23 @@ def deserialize_data(filename):
     # check if supported type
     f = pathlib.Path(filename)
     f_name = f.name
-    extension = f.suffix
-    if extension not in supported_formats:
-        raise UnsupportedTypeError(f_name, supported_formats)
+
+    if filetype is None:
+        extension = f.suffix
+        if extension not in supported_formats:
+            raise UnsupportedTypeError(f_name, supported_formats)
+    else:
+        extension = filetype
+
+    return_dict = {}
 
     # json
     if extension == '.json':
         with open(filename, 'r') as json_file:
             j_dict = json.load(json_file)
+            return_dict = j_dict
 
-    return j_dict
+    if len(return_dict) == 0:
+        warnings.warn(f'Loaded dictionary is empty. Possibly due to improper file type.', RuntimeWarning)
+
+    return return_dict

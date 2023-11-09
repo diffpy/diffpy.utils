@@ -26,7 +26,7 @@ def wsinterp(x, xp, fp, left=None, right=None):
     This uses the Whittaker-Shannon interpolation formula to interpolate the value of fp (array), which is defined over
     xp (array), at x (array or float).
 
-    Paramaters
+    Parameters
     ----------
     x: ndarray
         Desired range for interpolation.
@@ -72,7 +72,7 @@ def wsinterp(x, xp, fp, left=None, right=None):
 
     # Return a float if we got a float
     if scalar:
-        return float(fp_at_x)
+        return float(fp_at_x[0])
 
     return fp_at_x
 
@@ -97,7 +97,7 @@ def resample(r, s, dr):
     Returns resampled (r, s).
     """
 
-    dr0 = r[1] - r[0]
+    dr0 = r[1] - r[0]  # Constant timestep
 
     if dr0 < dr:
         rnew = numpy.arange(r[0], r[-1]+0.5*dr, dr)
