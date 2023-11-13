@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resampling Example &mdash; diffpy.utils 3.2.4 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=6a3e82c1"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="diffpy.utils package" href="../api/diffpy.utils.html" />
+    <link rel="prev" title="Parsers Example" href="parsersexample.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            diffpy.utils
+          </a>
+              <div class="version">
+                3.2.4
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/diffpy.utils.html">Package API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">diffpy.utils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="examples.html">Examples</a></li>
+      <li class="breadcrumb-item active">Resampling Example</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/resampleexample.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="resampling-example">
+<h1>Resampling Example<a class="headerlink" href="#resampling-example" title="Link to this heading"></a></h1>
+<p>This example will demonstrate how we can use diffpy.utils functions to resample a function on a denser grid.
+Specifically, we will resample the grid of one function to match another for us to easily compare the two.
+Then we will show how this resampling method lets us create a perfect reconstruction of certain functions
+given enough datapoints.</p>
+<ol class="arabic">
+<li><p>To start, unzip <a class="reference download internal" download="" href="../_downloads/62ff72d8f375ac2f72737a5807d10eaf/parserdata.zip"><code class="xref download docutils literal notranslate"><span class="pre">parserdata</span></code></a>. Then, load the data table from <code class="docutils literal notranslate"><span class="pre">Nickel.gr</span></code>
+and <code class="docutils literal notranslate"><span class="pre">NiTarget.gr</span></code>. These datasets are based on data from <a class="reference external" href="https://global.oup.com/academic/product/atomic-pair-distribution-function-analysis-9780198885801?cc=us&amp;lang=en&amp;">Atomic Pair Distribution Function Analysis: A Primer</a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.parsers</span> <span class="kn">import</span> <span class="n">loadData</span>
+<span class="n">nickel_datatable</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to Nickel.gr&gt;&#39;</span><span class="p">)</span>
+<span class="n">nitarget_datatable</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to NiTarget.gr&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each data table has two columns: first is the grid and second is the function value.
+To extract the columns, we can utilize the serialize function …</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.parsers</span> <span class="kn">import</span> <span class="n">serialize_data</span>
+<span class="n">nickel_data</span> <span class="o">=</span> <span class="n">serialize_data</span><span class="p">(</span><span class="s1">&#39;Nickel.gr&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">nickel_datatable</span><span class="p">,</span> <span class="n">dt_colnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;grid&#39;</span><span class="p">,</span> <span class="s1">&#39;func&#39;</span><span class="p">])</span>
+<span class="n">nickel_grid</span> <span class="o">=</span> <span class="n">nickel_data</span><span class="p">[</span><span class="s1">&#39;Nickel.gr&#39;</span><span class="p">][</span><span class="s1">&#39;grid&#39;</span><span class="p">]</span>
+<span class="n">nickel_func</span> <span class="o">=</span> <span class="n">nickel_data</span><span class="p">[</span><span class="s1">&#39;Nickel.gr&#39;</span><span class="p">][</span><span class="s1">&#39;func&#39;</span><span class="p">]</span>
+<span class="n">target_data</span> <span class="o">=</span> <span class="n">serialize_data</span><span class="p">(</span><span class="s1">&#39;NiTarget.gr&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">nitarget_datatable</span><span class="p">,</span> <span class="n">dt_colnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;grid&#39;</span><span class="p">,</span> <span class="s1">&#39;function&#39;</span><span class="p">])</span>
+<span class="n">target_grid</span> <span class="o">=</span> <span class="n">nickel_data</span><span class="p">[</span><span class="s1">&#39;Nickel.gr&#39;</span><span class="p">][</span><span class="s1">&#39;grid&#39;</span><span class="p">]</span>
+<span class="n">target_func</span> <span class="o">=</span> <span class="n">nickel_data</span><span class="p">[</span><span class="s1">&#39;Nickel.gr&#39;</span><span class="p">][</span><span class="s1">&#39;func&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>… or you can use any other column extracting method you prefer.</p>
+</li>
+<li><p>If we plot the two on top of each other</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">target_grid</span><span class="p">,</span> <span class="n">target_func</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nickel_grid</span><span class="p">,</span> <span class="n">nickel_func</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>they look pretty similar, but to truly see the difference, we should plot the difference between the two.
+We may want to run something like …</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">difference</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">target_func</span><span class="p">,</span> <span class="n">nickel_func</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>… but this will only produce the right result if the <code class="docutils literal notranslate"><span class="pre">target_func</span></code> and <code class="docutils literal notranslate"><span class="pre">nickel_func</span></code> are on the same grid.
+Checking the lengths of <code class="docutils literal notranslate"><span class="pre">target_grid</span></code> and <code class="docutils literal notranslate"><span class="pre">nickel_grid</span></code> shows that these grids are clearly distinct.</p>
+</li>
+<li><p>However, we can resample the two functions to be on the same grid. Since both functions have grids spanning
+<code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">60]</span></code>, let us define a new grid …</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">6001</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>… and use the diffpy.utils <code class="docutils literal notranslate"><span class="pre">wsinterp</span></code> function to resample on this grid.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.parsers</span> <span class="kn">import</span> <span class="n">wsinterp</span>
+<span class="n">nickel_resample</span> <span class="o">=</span> <span class="n">wsinterp</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">nickel_grid</span><span class="p">,</span> <span class="n">nickel_func</span><span class="p">)</span>
+<span class="n">target_resample</span> <span class="o">=</span> <span class="n">wsinterp</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">target_grid</span><span class="p">,</span> <span class="n">target_func</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can now plot the difference to see that these two functions are in fact equal.:</p>
+<blockquote>
+<div><p>plt.plot(grid, target_resample - nickel_resample)</p>
+</div></blockquote>
+<p>This is the desired result as the data in <code class="docutils literal notranslate"><span class="pre">Nickel.gr</span></code> is every tenth data point in <code class="docutils literal notranslate"><span class="pre">NiTarget.gr</span></code>.
+This also shows us that <code class="docutils literal notranslate"><span class="pre">wsinterp</span></code> can help us reconstruct a function from incomplete data.</p>
+</li>
+<li><p>In order for our function reconstruction to be perfect, we require that (a) the function is a Fourier transform of a
+band-limited dataset and (b) the original grid has enough equally-spaced datapoints based on the Nyquist sampling
+theorem.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If our function <span class="math notranslate nohighlight">\(F(r)\)</span> is of the form <span class="math notranslate nohighlight">\(F(r) = \int_0^{qmax} f(q)e^{-iqr}dq\)</span> where <span class="math notranslate nohighlight">\(qmax\)</span> is
+the bandlimit, then for a grid spanning <span class="math notranslate nohighlight">\(r \in [rmin, rmax]\)</span>, the Nyquist sampling theorem tells us we
+require at least <span class="math notranslate nohighlight">\(qmax * (rmin - rmax) / \pi\)</span> equally-spaced datapoints.</p></li>
+</ul>
+</div></blockquote>
+<p>In the case of our dataset, our band-limit is <code class="docutils literal notranslate"><span class="pre">qmax=25.0</span></code> and our function spans <span class="math notranslate nohighlight">\(r \in (0.0, 60.0)\)</span>.
+Thus, our original grid requires <span class="math notranslate nohighlight">\(25.0 * 60.0 / \pi &lt; 478\)</span>. Since our grid has <span class="math notranslate nohighlight">\(601\)</span> datapoints, our
+reconstruction was perfect as shown from the comparison between <code class="docutils literal notranslate"><span class="pre">Nickel.gr</span></code> and <code class="docutils literal notranslate"><span class="pre">NiTarget.gr</span></code>.</p>
+</li>
+</ol>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="parsersexample.html" class="btn btn-neutral float-left" title="Parsers Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api/diffpy.utils.html" class="btn btn-neutral float-right" title="diffpy.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Brookhaven National Laboratory.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

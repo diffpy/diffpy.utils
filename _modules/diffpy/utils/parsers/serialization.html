@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>diffpy.utils.parsers.serialization &mdash; diffpy.utils 3.2.4 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=6a3e82c1"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            diffpy.utils
+          </a>
+              <div class="version">
+                3.2.4
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../release.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/diffpy.utils.html">Package API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">diffpy.utils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">diffpy.utils.parsers.serialization</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for diffpy.utils.parsers.serialization</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">##############################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># diffpy.utils      by DANSE Diffraction group</span>
+<span class="c1">#                   Simon J. L. Billinge</span>
+<span class="c1">#                   (c) 2010 The Trustees of Columbia University</span>
+<span class="c1">#                   in the City of New York.  All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># File coded by:</span>
+<span class="c1">#</span>
+<span class="c1"># See AUTHORS.txt for a list of people who contributed.</span>
+<span class="c1"># See LICENSE_DANSE.txt for license information.</span>
+<span class="c1">#</span>
+<span class="c1">##############################################################################</span>
+
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">from</span> <span class="nn">.custom_exceptions</span> <span class="kn">import</span> <span class="n">UnsupportedTypeError</span><span class="p">,</span> <span class="n">ImproperSizeError</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="c1"># FIXME: add support for yaml, xml</span>
+<span class="n">supported_formats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.json&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="serialize_data">
+<a class="viewcode-back" href="../../../../api/diffpy.utils.parsers.html#diffpy.utils.parsers.serialization.serialize_data">[docs]</a>
+<span class="k">def</span> <span class="nf">serialize_data</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">hdata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">data_table</span><span class="p">,</span> <span class="n">dt_colnames</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_path</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">serial_file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Serialize file data into a dictionary. Can also save dictionary into a serial language file. Dictionary is</span>
+<span class="sd">    formatted as {filename: data}.</span>
+
+<span class="sd">    Requires hdata and data_table (can be generated by loadData).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename</span>
+<span class="sd">        Name of the file whose data is being serialized.</span>
+<span class="sd">    hdata: dict</span>
+<span class="sd">        File metadata (generally related to data table).</span>
+<span class="sd">    data_table: list or ndarray</span>
+<span class="sd">        Data table.</span>
+<span class="sd">    dt_colnames: list</span>
+<span class="sd">        Names of each column in data_table. Every name in data_table_cols will be put into the Dictionary as a key with</span>
+<span class="sd">        a value of that column in data_table (stored as a List). Put None for columns without names. If dt_cols has less</span>
+<span class="sd">        non-None entries than columns in data_table, the pair {&#39;data table&#39;: data_table} will be put in the dictionary.</span>
+<span class="sd">        (Default None: only entry {&#39;data table&#39;: data_table} will be added to dictionary.)</span>
+<span class="sd">    show_path: bool</span>
+<span class="sd">        include a path element in the database entry (default True). If &#39;path&#39; is not included in hddata, extract path</span>
+<span class="sd">        from filename.</span>
+<span class="sd">    serial_file</span>
+<span class="sd">        Serial language file to dump dictionary into. If None (defualt), no dumping will occur.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict:</span>
+<span class="sd">        Returns the dictionary loaded from/into the updated database file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># compile data_table and hddata together</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># handle getting name of file for variety of filename types</span>
+    <span class="n">abs_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="c1"># add path to start of data if requested</span>
+    <span class="k">if</span> <span class="n">show_path</span> <span class="ow">and</span> <span class="s1">&#39;path&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hdata</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">abs_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()})</span>
+    <span class="c1"># title the entry with name of file (taken from end of path)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">abs_path</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="c1"># first add data in hddata dict</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">hdata</span><span class="p">)</span>
+
+    <span class="c1"># second add named columns in dt_cols</span>
+    <span class="c1"># performed second to prioritize overwriting hdata entries with data_table column entries</span>
+    <span class="n">named_columns</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># initial value</span>
+    <span class="n">max_columns</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># higher than named_columns to trigger &#39;data table&#39; entry</span>
+    <span class="k">if</span> <span class="n">dt_colnames</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">num_columns</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">data_table</span><span class="p">]</span>
+        <span class="n">max_columns</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">num_columns</span><span class="p">)</span>
+        <span class="n">num_col_names</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dt_colnames</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">max_columns</span> <span class="o">&lt;</span> <span class="n">num_col_names</span><span class="p">:</span>  <span class="c1"># assume numpy.loadtxt gives non-irregular array</span>
+            <span class="k">raise</span> <span class="n">ImproperSizeError</span><span class="p">(</span><span class="s2">&quot;More entries in dt_colnames than columns in data_table.&quot;</span><span class="p">)</span>
+        <span class="n">named_columns</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_col_names</span><span class="p">):</span>
+            <span class="n">colname</span> <span class="o">=</span> <span class="n">dt_colnames</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">colname</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">colname</span> <span class="ow">in</span> <span class="n">hdata</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Entry </span><span class="se">\&#39;</span><span class="si">{</span><span class="n">colname</span><span class="si">}</span><span class="se">\&#39;</span><span class="s1"> in hdata has been overwritten by a data_table entry.&#39;</span><span class="p">,</span>
+                                  <span class="ne">RuntimeWarning</span><span class="p">)</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">colname</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">data_table</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">])})</span>
+                <span class="n">named_columns</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1"># finally add data_table as an entry named &#39;data table&#39; if not all columns were parsed</span>
+    <span class="k">if</span> <span class="n">named_columns</span> <span class="o">&lt;</span> <span class="n">max_columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;data table&#39;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Entry </span><span class="se">\&#39;</span><span class="s1">data table</span><span class="se">\&#39;</span><span class="s1"> in hdata has been overwritten by data_table.&#39;</span><span class="p">,</span>
+                          <span class="ne">RuntimeWarning</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;data table&#39;</span><span class="p">:</span> <span class="n">data_table</span><span class="p">})</span>
+
+    <span class="c1"># parse name using pathlib and generate dictionary entry</span>
+    <span class="n">entry</span> <span class="o">=</span> <span class="p">{</span><span class="n">title</span><span class="p">:</span> <span class="n">data</span><span class="p">}</span>
+
+    <span class="c1"># no save</span>
+    <span class="k">if</span> <span class="n">serial_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">entry</span>
+
+    <span class="c1"># saving/updating file</span>
+    <span class="c1"># check if supported type</span>
+    <span class="n">sf</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">serial_file</span><span class="p">)</span>
+    <span class="n">sf_name</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">extension</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">suffix</span>
+    <span class="k">if</span> <span class="n">extension</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">supported_formats</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">UnsupportedTypeError</span><span class="p">(</span><span class="n">sf_name</span><span class="p">,</span> <span class="n">supported_formats</span><span class="p">)</span>
+
+    <span class="c1"># new file or update</span>
+    <span class="n">existing</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">open</span><span class="p">(</span><span class="n">serial_file</span><span class="p">)</span>
+        <span class="n">existing</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># json</span>
+    <span class="k">if</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;.json&#39;</span><span class="p">:</span>
+        <span class="c1"># cannot serialize numpy arrays</span>
+        <span class="k">class</span> <span class="nc">NumpyEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_obj</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data_obj</span><span class="p">)</span> <span class="ow">is</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">data_obj</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_obj</span><span class="p">)</span>
+
+        <span class="c1"># dump if non-existing</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">existing</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">serial_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">jsonfile</span><span class="p">:</span>
+                <span class="n">file_data</span> <span class="o">=</span> <span class="n">entry</span>  <span class="c1"># for return</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">file_data</span><span class="p">,</span> <span class="n">jsonfile</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">NumpyEncoder</span><span class="p">)</span>
+
+        <span class="c1"># update if existing</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">serial_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_read</span><span class="p">:</span>
+                <span class="n">file_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_read</span><span class="p">)</span>
+                <span class="n">file_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">serial_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_write</span><span class="p">:</span>
+                <span class="c1"># dump to string first for formatting</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">file_data</span><span class="p">,</span> <span class="n">json_write</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">NumpyEncoder</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">file_data</span></div>
+
+
+
+<div class="viewcode-block" id="deserialize_data">
+<a class="viewcode-back" href="../../../../api/diffpy.utils.parsers.html#diffpy.utils.parsers.serialization.deserialize_data">[docs]</a>
+<span class="k">def</span> <span class="nf">deserialize_data</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load a dictionary from a serial file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename</span>
+<span class="sd">        Serial file to load from.</span>
+
+<span class="sd">    filetype</span>
+<span class="sd">        For specifying extension type (i.e. &#39;.json&#39;).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        A dictionary read from a serial file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># check if supported type</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">f_name</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">if</span> <span class="n">filetype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">extension</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">suffix</span>
+        <span class="k">if</span> <span class="n">extension</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">supported_formats</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UnsupportedTypeError</span><span class="p">(</span><span class="n">f_name</span><span class="p">,</span> <span class="n">supported_formats</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">extension</span> <span class="o">=</span> <span class="n">filetype</span>
+
+    <span class="n">return_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># json</span>
+    <span class="k">if</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;.json&#39;</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+            <span class="n">j_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+            <span class="n">return_dict</span> <span class="o">=</span> <span class="n">j_dict</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">return_dict</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Loaded dictionary is empty. Possibly due to improper file type.&#39;</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">return_dict</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Brookhaven National Laboratory.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

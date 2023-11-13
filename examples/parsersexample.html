@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parsers Example &mdash; diffpy.utils 3.2.4 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=6a3e82c1"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Resampling Example" href="resampleexample.html" />
+    <link rel="prev" title="Examples" href="examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            diffpy.utils
+          </a>
+              <div class="version">
+                3.2.4
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/diffpy.utils.html">Package API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">diffpy.utils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="examples.html">Examples</a></li>
+      <li class="breadcrumb-item active">Parsers Example</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/parsersexample.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>Parsers Example<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p>This example will demonstrate how diffpy.utils lets us easily process and serialize files.
+Using the parsers module, we can load file data into simple and easy-to-work-with Python objects.</p>
+<ol class="arabic">
+<li><p>To begin, unzip <a class="reference download internal" download="" href="../_downloads/62ff72d8f375ac2f72737a5807d10eaf/parserdata.zip"><code class="xref download docutils literal notranslate"><span class="pre">parserdata</span></code></a> and take a look at <code class="docutils literal notranslate"><span class="pre">data.txt</span></code>.
+Our goal will be to extract and serialize the data table as well as the parameters listed in the header of this file.</p></li>
+<li><p>To get the data table, we will use the <code class="docutils literal notranslate"><span class="pre">loadData</span></code> function. The default behavior of this
+function is to find and extract a data table from a file.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.parsers</span> <span class="kn">import</span> <span class="n">loadData</span>
+<span class="n">data_table</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>While this will work with most datasets, on our <code class="docutils literal notranslate"><span class="pre">data.txt</span></code> file, we got a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>. The reason for this is
+due to the comments <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">Phase</span> <span class="pre">Transition</span> <span class="pre">Near</span> <span class="pre">This</span> <span class="pre">Temperature</span> <span class="pre">Range</span></code> and <code class="docutils literal notranslate"><span class="pre">--&gt;</span> <span class="pre">Note</span> <span class="pre">Significant</span> <span class="pre">Jump</span> <span class="pre">in</span> <span class="pre">Rw</span> <span class="pre">&lt;--</span></code>
+embedded within the dataset. To fix this, try using the <code class="docutils literal notranslate"><span class="pre">comments</span></code> parameter.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_table</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;--&gt;&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>This parameter tells <code class="docutils literal notranslate"><span class="pre">loadData</span></code> that any lines beginning with <code class="docutils literal notranslate"><span class="pre">$</span></code> and <code class="docutils literal notranslate"><span class="pre">--&gt;</span></code> are just comments and
+more entries in our data table may follow.</p>
+<p>Here are a few other parameters to test out:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">delimiter=','</span></code>: Look for a comma-separated data table. Useful for csv file types.
+However, since <code class="docutils literal notranslate"><span class="pre">data.txt</span></code> is whitespace separated, running</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;--&gt;&#39;</span><span class="p">],</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>returns an empty list.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">minrows=50</span></code>: Only look for data tables with at least 50 rows. Since our data table has much less than that many
+rows, running</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;--&gt;&#39;</span><span class="p">],</span> <span class="n">minrows</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>returns an empty list.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">usecols=[0,</span> <span class="pre">3]</span></code>: Only return the 0th and 3rd columns (zero-indexed) of the data table. For <code class="docutils literal notranslate"><span class="pre">data.txt</span></code>, this
+corresponds to the temperature and rw columns.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;--&gt;&#39;</span><span class="p">],</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p>Next, to get the header information, we can again use <code class="docutils literal notranslate"><span class="pre">loadData</span></code>,
+but this time with the <code class="docutils literal notranslate"><span class="pre">headers</span></code> parameter enabled.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hdata</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;--&gt;&#39;</span><span class="p">],</span> <span class="n">headers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>4) Rather than working with separate <code class="docutils literal notranslate"><span class="pre">data_table</span></code> and <code class="docutils literal notranslate"><span class="pre">hdata</span></code> objects, it may be easier to combine them into a single
+dictionary. We can do so using the <code class="docutils literal notranslate"><span class="pre">serialize_data</span></code> function.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  from diffpy.utils.parsers import serialize_data
+  file_data = serialize_data(&#39;&lt;PATH to data.txt&#39;, hdata, data_table)
+  # File data is a dictionary with a single key
+  # The key is the file name (in our case, &#39;data.txt&#39;)
+  # The entry is a dictionary containing data from hdata and data_table
+  data_dict = file_data[&#39;data.txt&#39;]
+
+This dictionary ``data_dict`` contains all entries in ``hdata`` and an additional entry named
+``data table`` containing ``data_table``. ::
+
+  here_is_the_data_table = data_dict[&#39;data table&#39;]
+
+There is also an option to name columns in the data table and save those columns as entries instead. ::
+
+  data_table_column_names = [&#39;temperature&#39;, &#39;scale&#39;, &#39;stretch&#39;, &#39;rw&#39;]  # names of the columns in data.txt
+  file_data = serialize_data(&#39;&lt;PATH to data.txt&gt;&#39;, hdata, data_table, dt_colnames=data_table_column_names)
+  data_dict = file_data[&#39;data.txt&#39;]
+
+Now we can extract specific data table columns from the dictionary. ::
+
+  data_table_temperature_column = data_dict[&#39;temperature&#39;]
+  data_table_rw_column = data_dict[&#39;rw&#39;]
+</pre></div>
+</div>
+<ol class="arabic" start="5">
+<li><p>When we are done working with the data, we can store it on disc for later use. This can also be done using the
+<code class="docutils literal notranslate"><span class="pre">serialize_data</span></code> function with an additional <code class="docutils literal notranslate"><span class="pre">serial_file</span></code> parameter.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">parsed_file_data</span> <span class="o">=</span> <span class="n">serialize_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">,</span> <span class="n">data_table</span><span class="p">,</span> <span class="n">serial_file</span><span class="o">=</span><span class="s1">&#39;&lt;PATH to serialfile.json&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The returned value, <code class="docutils literal notranslate"><span class="pre">parsed_file_data</span></code>, is the dictionary we just added to <code class="docutils literal notranslate"><span class="pre">serialfile.json</span></code>.
+To extract the data from the serial file, we use <a href="#id2"><span class="problematic" id="id3">``</span></a>deserialize_data’’.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.parsers</span> <span class="kn">import</span> <span class="n">deserialize_data</span>
+<span class="n">parsed_file_data</span> <span class="o">=</span> <span class="n">deserialize_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to serialdata.json&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Finally, <code class="docutils literal notranslate"><span class="pre">serialize_data</span></code> allows us to store data from multiple text file in a single serial file. For one last bit
+of practice, we will extract and add the data from <code class="docutils literal notranslate"><span class="pre">moredata.txt</span></code> into the same <code class="docutils literal notranslate"><span class="pre">serialdata.json</span></code> file.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_table</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to moredata.txt&gt;&#39;</span><span class="p">)</span>
+<span class="n">hdata</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to moredata.txt&gt;&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">serialize_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to moredata.txt&gt;&#39;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">,</span> <span class="n">data_table</span><span class="p">,</span> <span class="n">serial_file</span><span class="o">=</span><span class="s1">&#39;&lt;PATH to serialdata.json&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The serial file <code class="docutils literal notranslate"><span class="pre">serialfile.json</span></code> should now contain two entries: <code class="docutils literal notranslate"><span class="pre">data.txt</span></code> and <code class="docutils literal notranslate"><span class="pre">moredata.txt</span></code>.
+The data from each file can be accessed using</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">serial_data</span> <span class="o">=</span> <span class="n">deserialize_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to serialdata.json&gt;&#39;</span><span class="p">)</span>
+<span class="n">data_txt_data</span> <span class="o">=</span> <span class="n">serial_data</span><span class="p">[</span><span class="s1">&#39;data.txt&#39;</span><span class="p">]</span>  <span class="c1"># Access data.txt data</span>
+<span class="n">moredata_txt_data</span> <span class="o">=</span> <span class="n">serial_data</span><span class="p">[</span><span class="s1">&#39;moredata.txt&#39;</span><span class="p">]</span>  <span class="c1"># Access moredata.txt data</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>For more information, check out the <a class="reference internal" href="../api/diffpy.utils.parsers.html#parsers-documentation"><span class="std std-ref">documentation</span></a> of the <code class="docutils literal notranslate"><span class="pre">parsers</span></code> module.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="resampleexample.html" class="btn btn-neutral float-right" title="Resampling Example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Brookhaven National Laboratory.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
