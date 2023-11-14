@@ -48,13 +48,13 @@ INSTALLATION
 The preferred method is to use Anaconda Python and install from the
 "diffpy" channel of Anaconda packages ::
 
-   conda config --add channels diffpy
+   conda config --add channels conda-forge
    conda install diffpy.utils
 
-Another option is to use ``easy_install`` to download and install the
+Another option is to use ``pip`` to download and install the
 latest release from `Python Package Index <https://pypi.python.org>`_ ::
 
-   easy_install diffpy.utils
+   pip install diffpy.utils
 
 If you prefer to install from sources, obtain the source archive and
 run ::
