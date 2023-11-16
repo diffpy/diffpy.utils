@@ -34,7 +34,7 @@ https://github.com/diffpy/diffpy.utils/graphs/contributors.
 Installation
 ======================================
 
-See the `README <https://github.com/diffpy/diffpy.utils#requirements>`_
+See the `README <https://github.com/diffpy/diffpy.utils#installation>`_
 file included with the distribution.
 
 ======================================

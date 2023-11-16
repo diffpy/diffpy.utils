@@ -33,40 +33,46 @@ The functions in diffpy.utils.wx module require
 
 * ``wxPython``     - GUI toolkit for the Python language
 
-We recommend to use `Miniconda Python <https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html>`_
-as it allows to install the software dependencies together with
-diffpy.utils.  For other Python distributions it is necessary to install
-the required software separately.  As an example, on Ubuntu Linux the
-required software can be installed with ::
-
-   sudo apt-get install python-setuptools python-numpy
-
 
 INSTALLATION
 ------------------------------------------------------------------------
 
-The preferred method is to use Miniconda (or, less preferred, Anaconda) Python
-and install from the "conda-forge" channel of Conda packages ::
+The preferred method is to use `Miniconda Python
+<https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html>`_
+and install from the "conda-forge" channel of Conda packages.
+
+To add "conda-forge" to the conda channels, run the following in a terminal. ::
 
    conda config --add channels conda-forge
-   conda install diffpy.utils
 
-Another option is to use ``pip`` to download and install the
-latest release from `Python Package Index <https://pypi.python.org>`_ ::
+We want to install our packages in a suitable conda environment.
+The following creates and activates a new environment named ``utils`` ::
 
+    conda create -n utils python=3
+    conda activate utils
+
+Then, to fully install ``diffpy.utils`` in our active environment, run ::
+
+    conda install diffpy.utils
+
+Another option is to use ``pip`` to download and install the latest release from
+`Python Package Index <https://pypi.python.org>`_.
+To install using ``pip`` into your ``utils`` environment, we will also have to install dependencies ::
+
+   pip install numpy
    pip install diffpy.utils
 
-If you prefer to install from sources, obtain the source archive and
-run ::
+If you prefer to install from sources, obtain the source archive and run ::
 
    python setup.py install
 
-You may need to use ``sudo`` with system Python as it attempts to
-install to standard system directories.  If sudo is not available, check
-the usage info from ``python setup.py install --help`` for options to
-install to user-writable locations.  The installation integrity can be
-verified by changing to the HOME directory and running ::
+You may need to use ``sudo`` with system Python as it attempts to install to standard system directories.
+If sudo is not available, check the usage info from ``python setup.py install --help`` for options to
+install to user-writable locations.
 
+To check the installation integrity, install pytest. If the following code passes all checks, the install worked! ::
+
+   pip install pytest
    python -m diffpy.utils.tests.run
 
 
