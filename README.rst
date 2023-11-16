@@ -19,21 +19,6 @@ function over a new grid.
 For more information about the diffpy.utils library, see the users manual at
 http://diffpy.github.io/diffpy.utils.
 
-
-REQUIREMENTS
-------------------------------------------------------------------------
-
-The diffpy.utils package requires Python 3.7 or later or 2.7 and
-the following software:
-
-* ``setuptools``   - tools for installing Python packages
-* ``NumPy``        - library for scientific computing with Python
-
-The functions in diffpy.utils.wx module require
-
-* ``wxPython``     - GUI toolkit for the Python language
-
-
 INSTALLATION
 ------------------------------------------------------------------------
 
@@ -62,7 +47,13 @@ To install using ``pip`` into your ``utils`` environment, we will also have to i
    pip install numpy
    pip install diffpy.utils
 
-If you prefer to install from sources, obtain the source archive and run ::
+For those planning to use functions in the ``diffpy.utils.wx`` module, you will also need to install ``wxPython''.
+Both of the following lines will install this package. ::
+
+    conda install wxPython
+    pip install wxPython
+
+If you prefer to install from sources, after installing the dependencies, obtain the source archive and run ::
 
    python setup.py install
 
@@ -70,7 +61,7 @@ You may need to use ``sudo`` with system Python as it attempts to install to sta
 If sudo is not available, check the usage info from ``python setup.py install --help`` for options to
 install to user-writable locations.
 
-To check the installation integrity, install pytest. If the following code passes all checks, the install worked! ::
+To check the installation integrity if the following passes all checks, you are good! ::
 
    pip install pytest
    python -m diffpy.utils.tests.run
