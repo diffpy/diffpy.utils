@@ -33,7 +33,7 @@ The functions in diffpy.utils.wx module require
 
 * ``wxPython``     - GUI toolkit for the Python language
 
-We recommend to use `Anaconda Python <https://www.anaconda.com/download>`_
+We recommend to use `Miniconda Python <https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html>`_
 as it allows to install the software dependencies together with
 diffpy.utils.  For other Python distributions it is necessary to install
 the required software separately.  As an example, on Ubuntu Linux the
@@ -45,8 +45,8 @@ required software can be installed with ::
 INSTALLATION
 ------------------------------------------------------------------------
 
-The preferred method is to use Anaconda Python and install from the
-"diffpy" channel of Anaconda packages ::
+The preferred method is to use Miniconda (or, less preferred, Anaconda) Python
+and install from the "conda-forge" channel of Conda packages ::
 
    conda config --add channels conda-forge
    conda install diffpy.utils
