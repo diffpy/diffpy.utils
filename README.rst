@@ -31,10 +31,10 @@ To add "conda-forge" to the conda channels, run the following in a terminal. ::
    conda config --add channels conda-forge
 
 We want to install our packages in a suitable conda environment.
-The following creates and activates a new environment named ``utils`` ::
+The following creates and activates a new environment named ``diffpy-utils`` ::
 
-    conda create -n utils python=3
-    conda activate utils
+    conda create -n diffpy-utils python=3
+    conda activate diffpy-utils
 
 Then, to fully install ``diffpy.utils`` in our active environment, run ::
 
@@ -42,7 +42,7 @@ Then, to fully install ``diffpy.utils`` in our active environment, run ::
 
 Another option is to use ``pip`` to download and install the latest release from
 `Python Package Index <https://pypi.python.org>`_.
-To install using ``pip`` into your ``utils`` environment, we will also have to install dependencies ::
+To install using ``pip`` into your ``diffpy-utils`` environment, we will also have to install dependencies ::
 
    pip install numpy
    pip install diffpy.utils
@@ -53,15 +53,13 @@ Both of the following lines will install this package. ::
     conda install wxPython
     pip install wxPython
 
-If you prefer to install from sources, after installing the dependencies, obtain the source archive and run ::
+If you prefer to install from sources, after installing the dependencies, obtain the source archive from
+`GitHub<https://github.com/diffpy/diffpy.utils/>`_. Once installed, ``cd`` into your ``diffpy.utils`` directory
+and run the following ::
 
-   python setup.py install
+   pip install -e .
 
-You may need to use ``sudo`` with system Python as it attempts to install to standard system directories.
-If sudo is not available, check the usage info from ``python setup.py install --help`` for options to
-install to user-writable locations.
-
-To check the installation integrity if the following passes all checks, you are good! ::
+To check the installation integrity, if the following passes all checks, you are good! ::
 
    pip install pytest
    python -m diffpy.utils.tests.run
