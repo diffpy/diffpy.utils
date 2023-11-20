@@ -58,16 +58,18 @@ given enough datapoints.
      nickel_resample = wsinterp(grid, nickel_grid, nickel_func)
      target_resample = wsinterp(grid, target_grid, target_func)
 
-   We can now plot the difference to see that these two functions are in fact equal.:
+   We can now plot the difference to see that these two functions are quite similar.:
 
+     plt.plot(grid, target_resample)
+     plt.plot(grid, nickel_resample)
      plt.plot(grid, target_resample - nickel_resample)
 
    This is the desired result as the data in ``Nickel.gr`` is every tenth data point in ``NiTarget.gr``.
    This also shows us that ``wsinterp`` can help us reconstruct a function from incomplete data.
 
-4) In order for our function reconstruction to be perfect, we require that (a) the function is a Fourier transform of a
-   band-limited dataset and (b) the original grid has enough equally-spaced datapoints based on the Nyquist sampling
-   theorem.
+4) In order for our function reconstruction to be perfect up to a truncation error, we require that (a) the function is
+   a Fourier transform of a band-limited dataset and (b) the original grid has enough equally-spaced datapoints based on
+   the Nyquist sampling theorem.
 
      * If our function :math:`F(r)` is of the form :math:`F(r) = \int_0^{qmax} f(q)e^{-iqr}dq` where :math:`qmax` is
        the bandlimit, then for a grid spanning :math:`r \in [rmin, rmax]`, the Nyquist sampling theorem tells us we

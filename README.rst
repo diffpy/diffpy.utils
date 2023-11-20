@@ -19,54 +19,49 @@ function over a new grid.
 For more information about the diffpy.utils library, see the users manual at
 http://diffpy.github.io/diffpy.utils.
 
-
-REQUIREMENTS
-------------------------------------------------------------------------
-
-The diffpy.utils package requires Python 3.7 or later or 2.7 and
-the following software:
-
-* ``setuptools``   - tools for installing Python packages
-* ``NumPy``        - library for scientific computing with Python
-
-The functions in diffpy.utils.wx module require
-
-* ``wxPython``     - GUI toolkit for the Python language
-
-We recommend to use `Anaconda Python <https://www.anaconda.com/download>`_
-as it allows to install the software dependencies together with
-diffpy.utils.  For other Python distributions it is necessary to install
-the required software separately.  As an example, on Ubuntu Linux the
-required software can be installed with ::
-
-   sudo apt-get install python-setuptools python-numpy
-
-
 INSTALLATION
 ------------------------------------------------------------------------
 
-The preferred method is to use Anaconda Python and install from the
-"diffpy" channel of Anaconda packages ::
+The preferred method is to use `Miniconda Python
+<https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html>`_
+and install from the "conda-forge" channel of Conda packages.
 
-   conda config --add channels diffpy
-   conda install diffpy.utils
+To add "conda-forge" to the conda channels, run the following in a terminal. ::
 
-Another option is to use ``easy_install`` to download and install the
-latest release from `Python Package Index <https://pypi.python.org>`_ ::
+   conda config --add channels conda-forge
 
-   easy_install diffpy.utils
+We want to install our packages in a suitable conda environment.
+The following creates and activates a new environment named ``diffpy-utils`` ::
 
-If you prefer to install from sources, obtain the source archive and
-run ::
+    conda create -n diffpy-utils python=3
+    conda activate diffpy-utils
 
-   python setup.py install
+Then, to fully install ``diffpy.utils`` in our active environment, run ::
 
-You may need to use ``sudo`` with system Python as it attempts to
-install to standard system directories.  If sudo is not available, check
-the usage info from ``python setup.py install --help`` for options to
-install to user-writable locations.  The installation integrity can be
-verified by changing to the HOME directory and running ::
+    conda install diffpy.utils
 
+Another option is to use ``pip`` to download and install the latest release from
+`Python Package Index <https://pypi.python.org>`_.
+To install using ``pip`` into your ``diffpy-utils`` environment, we will also have to install dependencies ::
+
+   pip install numpy
+   pip install diffpy.utils
+
+For those planning to use functions in the ``diffpy.utils.wx`` module, you will also need to install ``wxPython''.
+Both of the following lines will install this package. ::
+
+    conda install wxPython
+    pip install wxPython
+
+If you prefer to install from sources, after installing the dependencies, obtain the source archive from
+`GitHub<https://github.com/diffpy/diffpy.utils/>`_. Once installed, ``cd`` into your ``diffpy.utils`` directory
+and run the following ::
+
+   pip install -e .
+
+To check the installation integrity, if the following passes all checks, you are good! ::
+
+   pip install pytest
    python -m diffpy.utils.tests.run
 
 
