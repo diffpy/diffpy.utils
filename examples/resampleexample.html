@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Resampling Example &mdash; diffpy.utils 3.2.4 documentation</title>
+  <title>Resampling Example &mdash; diffpy.utils  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -13,7 +13,7 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=6a3e82c1"></script>
+        <script src="../_static/documentation_options.js?v=8a448e45"></script>
         <script src="../_static/doctools.js?v=888ff710"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -35,9 +35,6 @@
           <a href="../index.html" class="icon icon-home">
             diffpy.utils
           </a>
-              <div class="version">
-                3.2.4
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -131,16 +128,18 @@ Checking the lengths of <code class="docutils literal notranslate"><span class="
 <span class="n">target_resample</span> <span class="o">=</span> <span class="n">wsinterp</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">target_grid</span><span class="p">,</span> <span class="n">target_func</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>We can now plot the difference to see that these two functions are in fact equal.:</p>
+<p>We can now plot the difference to see that these two functions are quite similar.:</p>
 <blockquote>
-<div><p>plt.plot(grid, target_resample - nickel_resample)</p>
+<div><p>plt.plot(grid, target_resample)
+plt.plot(grid, nickel_resample)
+plt.plot(grid, target_resample - nickel_resample)</p>
 </div></blockquote>
 <p>This is the desired result as the data in <code class="docutils literal notranslate"><span class="pre">Nickel.gr</span></code> is every tenth data point in <code class="docutils literal notranslate"><span class="pre">NiTarget.gr</span></code>.
 This also shows us that <code class="docutils literal notranslate"><span class="pre">wsinterp</span></code> can help us reconstruct a function from incomplete data.</p>
 </li>
-<li><p>In order for our function reconstruction to be perfect, we require that (a) the function is a Fourier transform of a
-band-limited dataset and (b) the original grid has enough equally-spaced datapoints based on the Nyquist sampling
-theorem.</p>
+<li><p>In order for our function reconstruction to be perfect up to a truncation error, we require that (a) the function is
+a Fourier transform of a band-limited dataset and (b) the original grid has enough equally-spaced datapoints based on
+the Nyquist sampling theorem.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>If our function <span class="math notranslate nohighlight">\(F(r)\)</span> is of the form <span class="math notranslate nohighlight">\(F(r) = \int_0^{qmax} f(q)e^{-iqr}dq\)</span> where <span class="math notranslate nohighlight">\(qmax\)</span> is
