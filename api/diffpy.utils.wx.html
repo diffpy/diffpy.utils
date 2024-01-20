@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>diffpy.utils.wx package &mdash; diffpy.utils  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>diffpy.utils.wx package &mdash; diffpy.utils 3.2.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=8a448e45"></script>
+        <script src="../_static/documentation_options.js?v=6a3e82c1"></script>
         <script src="../_static/doctools.js?v=888ff710"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -33,6 +35,9 @@
           <a href="../index.html" class="icon icon-home">
             diffpy.utils
           </a>
+              <div class="version">
+                3.2.4
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -76,58 +81,8 @@
   <section id="module-diffpy.utils.wx">
 <span id="diffpy-utils-wx-package"></span><h1>diffpy.utils.wx package<a class="headerlink" href="#module-diffpy.utils.wx" title="Link to this heading"></a></h1>
 <p>Utilities related wx Python GUIs.</p>
-<section id="module-diffpy.utils.wx.gridutils">
-<span id="diffpy-utils-wx-gridutils-module"></span><h2>diffpy.utils.wx.gridutils module<a class="headerlink" href="#module-diffpy.utils.wx.gridutils" title="Link to this heading"></a></h2>
-<p>Common functions for manipulating wx.grid.Grid.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="diffpy.utils.wx.gridutils.getSelectedCells">
-<span class="sig-prename descclassname"><span class="pre">diffpy.utils.wx.gridutils.</span></span><span class="sig-name descname"><span class="pre">getSelectedCells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/wx/gridutils.html#getSelectedCells"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.wx.gridutils.getSelectedCells" title="Link to this definition"></a></dt>
-<dd><p>Get list of (row, col) pairs of all selected cells.
-Unlike grid.GetSelectedCells this returns them all no matter how they were selected.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="diffpy.utils.wx.gridutils.getSelectionColumns">
-<span class="sig-prename descclassname"><span class="pre">diffpy.utils.wx.gridutils.</span></span><span class="sig-name descname"><span class="pre">getSelectionColumns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/wx/gridutils.html#getSelectionColumns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.wx.gridutils.getSelectionColumns" title="Link to this definition"></a></dt>
-<dd><p>Indices of columns that have any cell selected.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="diffpy.utils.wx.gridutils.getSelectionRows">
-<span class="sig-prename descclassname"><span class="pre">diffpy.utils.wx.gridutils.</span></span><span class="sig-name descname"><span class="pre">getSelectionRows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/wx/gridutils.html#getSelectionRows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.wx.gridutils.getSelectionRows" title="Link to this definition"></a></dt>
-<dd><p>Indices of the rows that have any cell selected.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="diffpy.utils.wx.gridutils.limitSelectionToRows">
-<span class="sig-prename descclassname"><span class="pre">diffpy.utils.wx.gridutils.</span></span><span class="sig-name descname"><span class="pre">limitSelectionToRows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/wx/gridutils.html#limitSelectionToRows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.wx.gridutils.limitSelectionToRows" title="Link to this definition"></a></dt>
-<dd><p>Limit selection to the specified row indices.
-No action for empty indices.</p>
-<section id="parameters">
-<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>grid</dt><dd><p>instance of wx.grid.Grid</p>
-</dd>
-<dt>indices: list</dt><dd><p>Row indices to be selected, must be sorted and unique.</p>
-</dd>
-</dl>
-</section>
-<section id="returns">
-<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h3>
-<p>No return value.</p>
-</section>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="diffpy.utils.wx.gridutils.quickResizeColumns">
-<span class="sig-prename descclassname"><span class="pre">diffpy.utils.wx.gridutils.</span></span><span class="sig-name descname"><span class="pre">quickResizeColumns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/wx/gridutils.html#quickResizeColumns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.wx.gridutils.quickResizeColumns" title="Link to this definition"></a></dt>
-<dd><p>Resize the columns that were recently affected by cell changes.</p>
-<p>This is faster than the normal grid AutoSizeColumns, since the latter loops
-over the entire grid. In addition, this will not cause a
-EVT_GRID_CMD_CELL_CHANGE event to be thrown, which can cause recursion.
-This method will only increase column size.</p>
-</dd></dl>
-
+<section id="diffpy-utils-wx-gridutils-module">
+<h2>diffpy.utils.wx.gridutils module<a class="headerlink" href="#diffpy-utils-wx-gridutils-module" title="Link to this heading"></a></h2>
 </section>
 </section>
 
@@ -141,7 +96,7 @@ This method will only increase column size.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, Brookhaven National Laboratory.</p>
+    <p>&#169; Copyright 2024, Brookhaven National Laboratory.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
