@@ -4,6 +4,15 @@ Release Notes
 
 .. current developments
 
+v3.2.5
+====================
+
+**Fixed:**
+
+* Added a wx import to fix module not found error.
+
+
+
 v3.2.4
 ====================
 
