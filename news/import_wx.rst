@@ -16,7 +16,7 @@
 
 **Fixed:**
 
-* <news item>
+* Added wx import statement to fix not found error.
 
 **Security:**
 
