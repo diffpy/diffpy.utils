@@ -54,7 +54,7 @@ Both of the following lines will install this package. ::
     pip install wxPython
 
 If you prefer to install from sources, after installing the dependencies, obtain the source archive from
-`GitHub<https://github.com/diffpy/diffpy.utils/>`_. Once installed, ``cd`` into your ``diffpy.utils`` directory
+`GitHub <https://github.com/diffpy/diffpy.utils/>`_. Once installed, ``cd`` into your ``diffpy.utils`` directory
 and run the following ::
 
    pip install -e .
