@@ -4,6 +4,11 @@ Release Notes
 
 .. current developments
 
+v3.2.6
+====================
+
+
+
 v3.2.5
 ====================
 
