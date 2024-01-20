@@ -47,7 +47,7 @@ To install using ``pip`` into your ``diffpy-utils`` environment, we will also ha
    pip install numpy
    pip install diffpy.utils
 
-For those planning to use functions in the ``diffpy.utils.wx`` module, you will also need to install ``wxPython''.
+For those planning to use functions in the ``diffpy.utils.wx`` module, you will also need to install ``wxPython``.
 Both of the following lines will install this package. ::
 
     conda install wxPython
