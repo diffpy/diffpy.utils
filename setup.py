@@ -59,6 +59,9 @@ def getversioncfg():
             g = gitinfo()
         except OSError:
             pass
+    if len(g['version']) == 0:
+        g['version'] = FALLBACK_VERSION
+
     # finally, check and update the active version file
     cp = RawConfigParser()
     cp.read(versioncfgfile)
