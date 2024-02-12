@@ -55,13 +55,16 @@ def getversioncfg():
     # then try to obtain version data from git.
     gitdir = os.path.join(MYDIR, '.git')
     if os.path.exists(gitdir) or 'GIT_DIR' in os.environ:
+        print(g['version'])
         try:
             g = gitinfo()
         except OSError:
             pass
+    print(g['version'])
     # finally, check and update the active version file
     cp = RawConfigParser()
     cp.read(versioncfgfile)
+    print(cp.defaults(), g['version'])
     d = cp.defaults()
     rewrite = not d or (g['commit'] and (
         g['version'] != d.get('version') or g['commit'] != d.get('commit')))
@@ -83,6 +86,7 @@ with open(os.path.join(MYDIR, 'README.rst')) as fp:
 setup_args = dict(
     name = "diffpy.utils",
     version = versiondata.get('DEFAULT', 'version'),
+    # version = '3.2.4',
     packages = find_packages(os.path.join(MYDIR, 'src')),
     package_dir = {'' : 'src'},
     test_suite = 'diffpy.utils.tests',
