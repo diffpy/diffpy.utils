@@ -26,7 +26,7 @@ class Diffraction_object():
             summed.on_tth[1] = self.on_tth[1] + other
             summed.on_q[1] = self.on_q[1] + other
         elif not isinstance(other, Diffraction_object):
-            raise TypeError(f"I only know how to sum two Scattering_object objects")
+            raise TypeError(f"I only know how to sum two Diffraction_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
             raise RuntimeError(f"objects are not on the same x-grid. You may add them using the self.add method and"
                                f"specifying how to handle the mismatch.")
