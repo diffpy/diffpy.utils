@@ -14,7 +14,7 @@ maintainers = [
 description = "Shared utilities for diffpy packages."
 keywords = ["text data parsers", "wx grid", "diffraction objects"]
 readme = "README.rst"
-requires-python = ">=3.10"
+requires-python = ">=3.8"
 classifiers = [
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
@@ -26,6 +26,8 @@ classifiers = [
         'Operating System :: POSIX',
         'Operating System :: Unix',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
