@@ -63,8 +63,8 @@ copyright = '%Y, Brookhaven National Laboratory'
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
-from setup import versiondata
-fullversion = versiondata.get('DEFAULT', 'version')
+from importlib.metadata import version
+fullversion = version(project)
 # The short X.Y version.
 version = ''.join(fullversion.split('.post')[:1])
 # The full version, including alpha/beta/rc tags.
@@ -77,8 +77,7 @@ release = fullversion
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
 #today = ''
-today_seconds = versiondata.getint('DEFAULT', 'timestamp')
-today = time.strftime('%B %d, %Y', time.localtime(today_seconds))
+today = time.strftime('%B %d, %Y', time.localtime())
 year = today.split()[-1]
 # Else, today_fmt is used as the format for a strftime call.
 #today_fmt = '%B %d, %Y'

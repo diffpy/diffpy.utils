@@ -36,7 +36,7 @@ if __package__ is not None:
     with as_file(ref) as fcfg:
         if not os.path.isfile(fcfg):    # pragma: no cover
             from warnings import warn
-            warn('Package metadata not found, execute "./setup.py egg_info".')
+            warn('Package metadata not found.')
             fcfg = os.devnull
         with open(fcfg) as fp:
             kwords = [[w.strip() for w in line.split(' = ', 1)]

@@ -21,6 +21,7 @@ jobs:
         with:
           repository: diffpy/diffpy.utils
           path: .
+          fetch-depth: 0  # avoid shallow clone with no tags
 
       - name: initialize miniconda
         # this uses a marketplace action that sets up miniconda in a way that makes
