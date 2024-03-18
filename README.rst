@@ -57,7 +57,7 @@ If you prefer to install from sources, after installing the dependencies, obtain
 `GitHub <https://github.com/diffpy/diffpy.utils/>`_. Once installed, ``cd`` into your ``diffpy.utils`` directory
 and run the following ::
 
-   pip install -e .
+   pip install .
 
 To check the installation integrity, if the following passes all checks, you are good! ::
 
@@ -75,9 +75,12 @@ https://github.com/diffpy/diffpy.utils.
 
 Feel free to fork the project and contribute.  To install diffpy.utils
 in a development mode, with its sources being directly used by Python
-rather than copied to a package directory, use ::
+rather than copied to a package directory, use the following in the root
+directory ::
 
-   python setup.py develop --user
+   pip install -e .
+
+Note that this is only supported for `setuptools` version 62.0 and above.
 
 
 CONTACTS
