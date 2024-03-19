@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=62.0"]
+requires = ["setuptools>=62.0", "setuptools-git-versioning<2"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "diffpy.utils"
-version = "3.2.7"
+dynamic=['version']
 authors = [
   { name="Simon J.L. Billinge group", email="simon.billinge@gmail.com" },
 ]
@@ -14,7 +14,7 @@ maintainers = [
 description = "Shared utilities for diffpy packages."
 keywords = ["text data parsers", "wx grid", "diffraction objects"]
 readme = "README.rst"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 classifiers = [
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
@@ -26,7 +26,6 @@ classifiers = [
         'Operating System :: POSIX',
         'Operating System :: Unix',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
@@ -37,6 +36,12 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/diffpy/diffpy.utils/"
 Issues = "https://github.com/diffpy/diffpy.utils/issues"
+
+[tool.setuptools-git-versioning]
+enabled = true
+template = "{tag}"
+dev_template = "{tag}.post{ccount}"
+dirty_template = "{tag}.post{ccount}"
 
 [tool.setuptools.packages.find]
 where = ["src"]  # list of folders that contain the packages (["."] by default)
