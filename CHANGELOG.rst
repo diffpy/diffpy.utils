@@ -4,6 +4,16 @@ Release Notes
 
 .. current developments
 
+v3.3.0
+====================
+
+**Added:**
+
+* Diffraction_objects for easier manipulations of diffraction objects
+* dump method to Diffraction_object
+
+
+
 v3.2.7
 ====================
 
@@ -84,5 +94,3 @@ v3.0.0
 **Deprecated:**
 
 * Variable `__gitsha__` in the `version` module which was renamed to `__git_commit__`.
-
-
