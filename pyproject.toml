@@ -40,8 +40,8 @@ Issues = "https://github.com/diffpy/diffpy.utils/issues"
 [tool.setuptools-git-versioning]
 enabled = true
 template = "{tag}"
-dev_template = "{tag}.post{ccount}"
-dirty_template = "{tag}.post{ccount}"
+dev_template = "{tag}"
+dirty_template = "{tag}"
 
 [tool.setuptools.packages.find]
 where = ["src"]  # list of folders that contain the packages (["."] by default)

@@ -14,7 +14,7 @@ class Diffraction_object():
     def __init__(self, name='', wavelength=None):
         self.name = name
         self.wavelength = wavelength
-        self.scat_quantities = {}
+        self.scat_quantity = ""
         self.on_q = [np.empty(1), np.empty(1)]
         self.on_tth = [np.empty(1), np.empty(1)]
         self.on_d = [np.empty(1), np.empty(1)]
@@ -401,3 +401,21 @@ class Diffraction_object():
         elif xtype.lower() in DQUANTITIES:
             return self.on_d
         pass
+
+    def dump(self, filepath, xtype=None):
+        if xtype is None:
+            xtype = " q"
+        if xtype == "q":
+            data_to_save = np.column_stack((self.on_q[0], self.on_q[1]))
+        elif xtype == "tth":
+            data_to_save = np.column_stack((self.on_tth[0], self.on_tth[1]))
+        else:
+            print(f"WARNING: cannot handle the xtype '{xtype}'")
+
+        with open(filepath, 'w') as f:
+            f.write(f"[Diffraction_object]\nname = {self.name}\nwavelength = {self.wavelength}\n"
+                    f"scat_quantity = {self.scat_quantity}\n")
+            for key, value in self.metadata.items():
+                f.write(f"{key} = {value}\n")
+            f.write("\n#### start data\n")
+            np.savetxt(f, data_to_save, delimiter=" ")
