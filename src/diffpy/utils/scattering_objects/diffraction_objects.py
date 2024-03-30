@@ -19,6 +19,7 @@ class Diffraction_object():
         self.on_tth = [np.empty(1), np.empty(1)]
         self.on_d = [np.empty(1), np.empty(1)]
         self._all_arrays = [self.on_q, self.on_tth]
+        self.metadata = {}
 
     def __add__(self, other):
         summed = deepcopy(self)
@@ -221,7 +222,8 @@ class Diffraction_object():
         if count >= len(self.angles):
             raise IndexError(f"WARNING: no angle {angle} found in angles list")
 
-    def insert_scattering_quantity(self, xarray, yarray, xtype, metadata={}):
+    def insert_scattering_quantity(self, xarray, yarray, xtype, metadata={},
+                                   scat_quantity=None, name=None, wavelength=None):
         f"""
         insert a new scattering quantity into the scattering object
         
@@ -241,7 +243,12 @@ class Diffraction_object():
 
         """
         self.input_xtype = xtype
-        self.metadata = metadata
+        # empty attributes have been defined in the __init__ method so only
+        # set the attributes that are not empty to avoid emptying them by mistake
+        if metadata: self.metadata = metadata
+        if scat_quantity is not None: self.scat_quantity = scat_quantity
+        if name is not None: self.name = name
+        if wavelength is not None: self.wavelength = wavelength
         if xtype.lower() in QQUANTITIES:
             self.on_q = [np.array(xarray),np.array(yarray)]
         elif xtype.lower() in ANGLEQUANTITIES:
@@ -284,7 +291,7 @@ class Diffraction_object():
         q = np.asarray(q)
         wavelength = float(self.wavelength)
         pre_factor = wavelength / (4 * np.pi)
-        return np.rad2deg(2 * np.arcsin(q * pre_factor))
+        return np.rad2deg(2. * np.arcsin(q * pre_factor))
 
     def tth_to_q(self):
         r"""
