@@ -28,10 +28,7 @@ class Diffraction_object():
             if key.startswith("_"):
                 continue
             other_value = getattr(other, key)
-            if isinstance(value, np.ndarray):
-                if not np.array_equal(value, other_value):
-                    return False
-            elif isinstance(value, list) and all(isinstance(i, np.ndarray) for i in value):
+            if isinstance(value, list) and all(isinstance(i, np.ndarray) for i in value):
                 if not all(np.array_equal(i, j) for i, j in zip(value, other_value)):
                     return False
             else:
