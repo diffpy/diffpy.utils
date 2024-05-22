@@ -41,7 +41,7 @@ jobs:
         run: make -C doc/manual html
 
       - name: Deploy
-        if: ${(github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'release'}
+        if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'release' }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
