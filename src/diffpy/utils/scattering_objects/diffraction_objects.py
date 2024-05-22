@@ -21,6 +21,17 @@ class Diffraction_object():
         self._all_arrays = [self.on_q, self.on_tth]
         self.metadata = {}
 
+    def __eq__(self, other):
+        if not isinstance(other, Diffraction_object):
+            return NotImplemented
+        return (self.name == other.name and
+                self.wavelength == other.wavelength and
+                self.scat_quantity == other.scat_quantity and
+                np.array_equal(self.on_q, other.on_q) and
+                np.array_equal(self.on_tth, other.on_tth) and
+                np.array_equal(self.on_d, other.on_d) and
+                self.metadata == other.metadata)
+
     def __add__(self, other):
         summed = deepcopy(self)
         if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
