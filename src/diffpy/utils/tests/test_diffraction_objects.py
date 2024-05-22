@@ -41,6 +41,7 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
 	diffraction_object1.metadata = inputs1[4]
 	diffraction_object2.metadata = inputs2[4]
 	assert (diffraction_object1 == diffraction_object2) == expected
+	assert Diffraction_object() == Diffraction_object()
 
 def test_dump(tmp_path):
 	x, y = np.linspace(0, 10, 11), np.linspace(0, 10, 11)

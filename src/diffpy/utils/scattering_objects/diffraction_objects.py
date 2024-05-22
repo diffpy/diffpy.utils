@@ -20,7 +20,7 @@ class Diffraction_object():
         self.on_d = [np.empty(1), np.empty(1)]
         self._all_arrays = [self.on_q, self.on_tth]
         self.metadata = {}
-
+# list of array, dict
     def __eq__(self, other):
         if not isinstance(other, Diffraction_object):
             return NotImplemented
@@ -28,8 +28,12 @@ class Diffraction_object():
             if key.startswith("_"):
                 continue
             other_value = getattr(other, key)
-            if isinstance(value, list) and all(isinstance(i, np.ndarray) for i in value):
-                if not all(np.array_equal(i, j) for i, j in zip(value, other_value)):
+            if isinstance(value, float):
+                if not (value is None and other_value is None):
+                    if not np.isclose(value, other_value, rtol=1e-5):
+                        return False
+            elif isinstance(value, list) and all(isinstance(i, np.ndarray) for i in value):
+                if not (np.allclose(i, j, rtol=1e-5) for i, j in zip(value, other_value)):
                     return False
             else:
                 if value != other_value:
