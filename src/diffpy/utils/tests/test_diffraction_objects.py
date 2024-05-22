@@ -6,8 +6,8 @@ import pytest
 
 params = [
 	(["", None, "", [], {}], ["", None, "", [], {}], True),	# empty
-	(["test", 0.71, "", [[1,2], [3,4]], {"thing1": 1, "thing2": "thing2"}],
-	 ["test", 0.71, "", [[1,2], [3,4]], {"thing2": "thing2", "thing1": 1}],
+	(["test", 0.71, "x-ray", [[1,2], [3,4]], {"thing1": 1, "thing2": "thing2"}],
+	 ["test", 0.71, "x-ray", [[1,2], [3,4]], {"thing2": "thing2", "thing1": 1}],
 	 True),		# Compare same attributes
 	(["test1", 0.71, "", [[1,2], [3,4]], {"thing1": 1, "thing2": "thing2"}],
 	 ["test2", 0.71, "", [[1,2], [3,4]], {"thing1": 1, "thing2": "thing2"}],

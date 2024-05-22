@@ -24,13 +24,20 @@ class Diffraction_object():
     def __eq__(self, other):
         if not isinstance(other, Diffraction_object):
             return NotImplemented
-        return (self.name == other.name and
-                self.wavelength == other.wavelength and
-                self.scat_quantity == other.scat_quantity and
-                np.array_equal(self.on_q, other.on_q) and
-                np.array_equal(self.on_tth, other.on_tth) and
-                np.array_equal(self.on_d, other.on_d) and
-                self.metadata == other.metadata)
+        for key, value in self.__dict__.items():
+            if key.startswith("_"):
+                continue
+            other_value = getattr(other, key)
+            if isinstance(value, np.ndarray):
+                if not np.array_equal(value, other_value):
+                    return False
+            elif isinstance(value, list) and all(isinstance(i, np.ndarray) for i in value):
+                if not all(np.array_equal(i, j) for i, j in zip(value, other_value)):
+                    return False
+            else:
+                if value != other_value:
+                    return False
+        return True
 
     def __add__(self, other):
         summed = deepcopy(self)
