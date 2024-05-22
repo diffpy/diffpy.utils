@@ -20,20 +20,27 @@ class Diffraction_object():
         self.on_d = [np.empty(1), np.empty(1)]
         self._all_arrays = [self.on_q, self.on_tth]
         self.metadata = {}
-# list of array, dict
+
     def __eq__(self, other):
         if not isinstance(other, Diffraction_object):
             return NotImplemented
-        for key, value in self.__dict__.items():
-            if key.startswith("_"):
-                continue
+
+        attributes_to_test = {"name", "wavelength", "scat_quantity", "on_q", "on_tth", "on_d", "metadata"}
+        self_public_attributes = {key for key, _ in self.__dict__.items() if not key.startswith("_")}
+        other_public_attributes = {key for key, _ in self.__dict__.items() if not key.startswith("_")}
+        if (self_public_attributes != other_public_attributes or
+                attributes_to_test != self_public_attributes):
+            return False
+
+        for key in attributes_to_test:
+            value = getattr(self, key)
             other_value = getattr(other, key)
             if isinstance(value, float):
-                if not (value is None and other_value is None):
-                    if not np.isclose(value, other_value, rtol=1e-5):
-                        return False
+                if (not (value is None and other_value is None) and
+                        (value is None) or (other_value is None) or not np.isclose(value, other_value, rtol=1e-5)):
+                    return False
             elif isinstance(value, list) and all(isinstance(i, np.ndarray) for i in value):
-                if not (np.allclose(i, j, rtol=1e-5) for i, j in zip(value, other_value)):
+                if not all(np.allclose(i, j, rtol=1e-5) for i, j in zip(value, other_value)):
                     return False
             else:
                 if value != other_value:
