@@ -10,7 +10,7 @@ params = [
 	 ["test", 0.71000001, "x-ray", [np.array([1.0000001,2]), np.array([3,4])], {"thing2": "thing2", "thing1": 1}],
 	 True),		# Compare same attributes
 	(["test1", None, "", [], {}], ["test2", None, "", [], {}], False),	# Different names
-	(["", 0.71, "", [], {}], ["", 1.54, "", [], {}], False),			# Different wavelengths
+	(["", 0.71, "", [], {}], ["", 0.711, "", [], {}], False),			# Different wavelengths
 	(["", 0.71, "", [], {}], ["", None, "", [], {}], False),			# Different wavelengths
 	(["", None, "", [], {}], ["", None, "x-ray", [], {}], False),		# Different scat_quantity
 	(["", None, "", [np.array([1,2]), np.array([3,4])], {}],
