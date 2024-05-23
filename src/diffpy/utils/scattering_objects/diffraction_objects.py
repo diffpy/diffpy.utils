@@ -25,9 +25,12 @@ class Diffraction_object():
     def __eq__(self, other):
         if not isinstance(other, Diffraction_object):
             return NotImplemented
-        for key, value in self.__dict__.items():
-            if key.startswith("_"):
-                continue
+        self_attributes = [key for key in self.__dict__ if not key.startswith("_")]
+        other_attributes = [key for key in other.__dict__ if not key.startswith("_")]
+        if not sorted(self_attributes) == sorted(other_attributes):
+            return False
+        for key in self_attributes:
+            value = getattr(self, key)
             other_value = getattr(other, key)
             if isinstance(value, float):
                 if (not (value is None and other_value is None) and

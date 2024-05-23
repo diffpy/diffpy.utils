@@ -75,13 +75,11 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
     diffraction_object2 = Diffraction_object()
     attributes_to_test = ["name", "wavelength", "scat_quantity", "on_q", "on_tth", "on_d", "metadata"]
     diffraction_object1_attributes = [key for key in diffraction_object1.__dict__ if not key.startswith("_")]
-    diffraction_object2_attributes = [key for key in diffraction_object2.__dict__ if not key.startswith("_")]
     for i, attribute in enumerate(attributes_to_test):
         setattr(diffraction_object1, attribute, inputs1[i])
         setattr(diffraction_object2, attribute, inputs2[i])
     assert (diffraction_object1 == diffraction_object2) == expected
     assert sorted(attributes_to_test) == sorted(diffraction_object1_attributes)
-    assert sorted(diffraction_object1_attributes) == sorted(diffraction_object2_attributes)
 
 def test_dump(tmp_path):
 	x, y = np.linspace(0, 10, 11), np.linspace(0, 10, 11)
