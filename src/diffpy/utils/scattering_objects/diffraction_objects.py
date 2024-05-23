@@ -9,6 +9,8 @@ ANGLEQUANTITIES = ["angle","tth", "twotheta", "2theta"]
 DQUANTITIES = ["d", "dspace"]
 XQUANTITIES = ANGLEQUANTITIES + DQUANTITIES + QQUANTITIES
 XUNITS = ["degrees","radians","rad","deg","inv_angs","inv_nm","nm-1","A-1"]
+ATTRIBUTES_TO_TEST = ["name", "wavelength", "scat_quantity", "on_q", "on_tth", "on_d", "metadata"]
+
 
 class Diffraction_object():
     def __init__(self, name='', wavelength=None):
@@ -24,15 +26,7 @@ class Diffraction_object():
     def __eq__(self, other):
         if not isinstance(other, Diffraction_object):
             return NotImplemented
-
-        attributes_to_test = {"name", "wavelength", "scat_quantity", "on_q", "on_tth", "on_d", "metadata"}
-        self_public_attributes = {key for key, _ in self.__dict__.items() if not key.startswith("_")}
-        other_public_attributes = {key for key, _ in self.__dict__.items() if not key.startswith("_")}
-        if (self_public_attributes != other_public_attributes or
-                attributes_to_test != self_public_attributes):
-            return False
-
-        for key in attributes_to_test:
+        for key in ATTRIBUTES_TO_TEST:
             value = getattr(self, key)
             other_value = getattr(other, key)
             if isinstance(value, float):
