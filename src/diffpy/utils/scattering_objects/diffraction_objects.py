@@ -15,9 +15,9 @@ class Diffraction_object():
         self.name = name
         self.wavelength = wavelength
         self.scat_quantity = ""
-        self.on_q = [np.empty(1), np.empty(1)]
-        self.on_tth = [np.empty(1), np.empty(1)]
-        self.on_d = [np.empty(1), np.empty(1)]
+        self.on_q = [np.empty(0), np.empty(0)]
+        self.on_tth = [np.empty(0), np.empty(0)]
+        self.on_d = [np.empty(0), np.empty(0)]
         self._all_arrays = [self.on_q, self.on_tth]
         self.metadata = {}
 
