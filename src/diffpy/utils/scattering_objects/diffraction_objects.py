@@ -9,7 +9,6 @@ ANGLEQUANTITIES = ["angle","tth", "twotheta", "2theta"]
 DQUANTITIES = ["d", "dspace"]
 XQUANTITIES = ANGLEQUANTITIES + DQUANTITIES + QQUANTITIES
 XUNITS = ["degrees","radians","rad","deg","inv_angs","inv_nm","nm-1","A-1"]
-ATTRIBUTES_TO_TEST = ["name", "wavelength", "scat_quantity", "on_q", "on_tth", "on_d", "metadata"]
 
 
 class Diffraction_object():
@@ -26,8 +25,9 @@ class Diffraction_object():
     def __eq__(self, other):
         if not isinstance(other, Diffraction_object):
             return NotImplemented
-        for key in ATTRIBUTES_TO_TEST:
-            value = getattr(self, key)
+        for key, value in self.__dict__.items():
+            if key.startswith("_"):
+                continue
             other_value = getattr(other, key)
             if isinstance(value, float):
                 if (not (value is None and other_value is None) and
