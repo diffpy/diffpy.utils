@@ -46,7 +46,7 @@ params_user_info_with_no_home_conf_file = [
     (["", ""], ["input_username", "input@email.com"], ["input_username", "input@email.com"]),
     (["cli_username", ""], ["", "input@email.com"], ["cli_username", "input@email.com"]),
     (["", "cli@email.com"], ["input_username", ""], ["input_username", "cli@email.com"]),
-    (["cli_busername", "cli@email.com"], ["cli_username", "cli@email.com"], ["cli_username", "cli@email.com"]),
+    (["cli_username", "cli@email.com"], ["cli_username", "cli@email.com"], ["cli_username", "cli@email.com"]),
 ]
 params_user_info_no_conf_file_no_inputs = [
     ([None, None], ["", ""], ["", ""]),

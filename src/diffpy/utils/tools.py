@@ -57,6 +57,7 @@ def get_user_info(args=None):
     two strings on username and email
 
     """
+    config_bool = True
     global_config = load_config(Path().home() / "diffpyconfig.json")
     local_config = load_config(Path().cwd() / "diffpyconfig.json")
     if global_config is None and local_config is None:
