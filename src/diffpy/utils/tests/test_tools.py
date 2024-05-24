@@ -1,43 +1,61 @@
+import argparse
 import json
 import os
-import re
 from pathlib import Path
 
 import pytest
 
-from diffpy.utils.scattering_objects.tools import get_user_info
+from diffpy.utils.tools import get_user_info
 
 
-params_user_info_with_conf_file = [
-    (["", ""], ["home_username", "home@email.com", "cwd_username", "cwd@email.com"]),
-    (["input_username", ""], ["input_username", "home@email.com", "input_username", "cwd@email.com"]),
-    (["", "input@email.com"], ["home_username", "input@email.com", "cwd_username", "input@email.com"]),
-    (["input_username", "input@email.com"], ["input_username", "input@email.com", "input_username", "input@email.com"]),
+params_user_info_with_home_conf_file = [
+    (["", ""], ["home_username", "home@email.com"]),
+    (["cli_username", ""], ["cli_username", "home@email.com"]),
+    (["", "cli@email.com"], ["home_username", "cli@email.com"]),
+    ([None, None], ["home_username", "home@email.com"]),
+    (["cli_username", None], ["cli_username", "home@email.com"]),
+    ([None, "cli@email.com"], ["home_username", "cli@email.com"]),
+    (["cli_username", "cli@email.com"], ["cli_username", "cli@email.com"]),
 ]
-@pytest.mark.parametrize("inputs, expected", params_user_info_with_conf_file)
-def test_load_user_info_with_conf_file(monkeypatch, inputs, expected, user_filesystem):
-    expected_username_home, expected_email_home, expected_username_cwd, expected_email_cwd = expected
-    home_dir = user_filesystem / "home_dir"
-    cwd_dir = user_filesystem / "cwd_dir"
+params_user_info_with_cwd_conf_file = [
+    (["", ""], ["cwd_username", "cwd@email.com"]),
+    (["cli_username", ""], ["cli_username", "cwd@email.com"]),
+    (["", "cli@email.com"], ["cwd_username", "cli@email.com"]),
+    (["cli_username", "cli@email.com"], ["cli_username", "cli@email.com"]),
+]
+params_user_info_with_no_home_conf_file = [
+    ([None, None], ["input_username", "input@email.com", "input_username", "input@email.com"]),
+    (["cli_username", None], ["input_username", "input@email.com"]),
+    ([None, "cli@email.com"], ["input_username", "input@email.com"]),
+    (["", ""], ["input_username", "input@email.com", "input_username", "input@email.com"]),
+    (["cli_username", ""], ["input_username", "input@email.com"]),
+    (["", "cli@email.com"], ["input_username", "input@email.com"]),
+    (["cli_username", "cli@email.com"], ["cli_username", "cli@email.com"]),
+]
+@pytest.mark.parametrize("inputs, expected", params_user_info_with_home_conf_file)
+def test_load_user_info_with_home_conf_file(monkeypatch, inputs, expected, user_filesystem):
+    cwd = Path(user_filesystem)
+    home_dir = cwd / "home_dir"
+    monkeypatch.setattr("pathlib.Path.home", lambda _: home_dir)
+    os.chdir(cwd)
 
-    # conf file is in home directory, not in cwd
-    input_user = iter(inputs)
-    monkeypatch.setattr("builtins.input", lambda _: next(input_user))
-    monkeypatch.setattr("diffpy.utils.scattering_objects.user_config.CWD_CONFIG_PATH", cwd_dir / "diffpyconfig.json")
-    monkeypatch.setattr("diffpy.utils.scattering_objects.user_config.HOME_CONFIG_PATH", home_dir / "diffpyconfig.json")
-    actual_username, actual_email = get_user_info()
-    assert actual_username == expected_username_home
-    assert actual_email == expected_email_home
-
-    # conf file is in cwd
-    cwd_username, cwd_email = "cwd_username", "cwd@email.com"
-    with open(cwd_dir / "diffpyconfig.json", "w") as f:
-        json.dump({"username": cwd_username, "email": cwd_email}, f)
-    input_user = iter(inputs)
-    monkeypatch.setattr("builtins.input", lambda _: next(input_user))
-    actual_username, actual_email = get_user_info()
-    assert actual_username == expected_username_cwd
-    assert actual_email == expected_email_cwd
+    # allow inputs from a cli contained as username and email in an argparse Namespace
+    args = {"username": inputs[0], "email": inputs[1]}
+    expected_username, expected_email = expected
+    config = get_user_info(args)
+    assert config.get("username") == expected_username
+    assert config.get("email") == expected_email
+#
+# def sthgelse():
+#     # conf file is in cwd
+#     cwd_username, cwd_email = "cwd_username", "cwd@email.com"
+#     with open(cwd_dir / "diffpyconfig.json", "w") as f:
+#         json.dump({"username": cwd_username, "email": cwd_email}, f)
+#     input_user = iter(inputs)
+#     monkeypatch.setattr("builtins.input", lambda _: next(input_user))
+#     actual_username, actual_email = get_user_info()
+#     assert actual_username == expected_username_cwd
+#     assert actual_email == expected_email_cwd
 
 
 params_user_info_without_conf_file = [

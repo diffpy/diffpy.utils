@@ -6,10 +6,7 @@ CWD_CONFIG_PATH = Path.cwd() / CONFIG_FILE
 HOME_CONFIG_PATH = Path.home() / CONFIG_FILE
 
 
-def prompt_user_info():
-    username = input("Please enter your username (or press Enter to skip if you already entered before): ")
-    email = input("Please enter your email (or press Enter to skip if you already entered before): ")
-    return username, email
+
 
 
 def find_conf_file():
