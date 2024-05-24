@@ -17,34 +17,60 @@ params_user_info_with_home_conf_file = [
     ([None, "cli@email.com"], ["home_username", "cli@email.com"]),
     (["cli_username", "cli@email.com"], ["cli_username", "cli@email.com"]),
 ]
-params_user_info_with_cwd_conf_file = [
+params_user_info_with_local_conf_file = [
     (["", ""], ["cwd_username", "cwd@email.com"]),
     (["cli_username", ""], ["cli_username", "cwd@email.com"]),
     (["", "cli@email.com"], ["cwd_username", "cli@email.com"]),
+    ([None, None], ["cwd_username", "cwd@email.com"]),
+    (["cli_username", None], ["cli_username", "cwd@email.com"]),
+    ([None, "cli@email.com"], ["cwd_username", "cli@email.com"]),
     (["cli_username", "cli@email.com"], ["cli_username", "cli@email.com"]),
 ]
 params_user_info_with_no_home_conf_file = [
     ([None, None], ["input_username", "input@email.com", "input_username", "input@email.com"]),
-    (["cli_username", None], ["input_username", "input@email.com"]),
-    ([None, "cli@email.com"], ["input_username", "input@email.com"]),
-    (["", ""], ["input_username", "input@email.com", "input_username", "input@email.com"]),
-    (["cli_username", ""], ["input_username", "input@email.com"]),
-    (["", "cli@email.com"], ["input_username", "input@email.com"]),
-    (["cli_username", "cli@email.com"], ["cli_username", "cli@email.com"]),
+    (["cli_username", None], ["input_username", "input@email.com", "cli_username", "input@email.com"]),
+    ([None, "cli@email.com"], ["input_username", "input@email.com", "input_username", "cli@email.com"]),
+    ([None, None], ["input_username", "input@email.com", "input_username", "input@email.com"]),
+    (["cli_username", None], ["input_username", "input@email.com", "cli_username", "input@email.com"]),
+    ([None, "cli@email.com"], ["input_username", "input@email.com", "input_username", "cli@email.com"]),
+    (["cli_username", "cli@email.com"], ["cli_username", "cli@email.com", "cli_username", "cli@email.com"]),
 ]
-@pytest.mark.parametrize("inputs, expected", params_user_info_with_home_conf_file)
-def test_load_user_info_with_home_conf_file(monkeypatch, inputs, expected, user_filesystem):
+def _setup_dirs(monkeypatch,user_filesystem):
     cwd = Path(user_filesystem)
     home_dir = cwd / "home_dir"
     monkeypatch.setattr("pathlib.Path.home", lambda _: home_dir)
     os.chdir(cwd)
-
-    # allow inputs from a cli contained as username and email in an argparse Namespace
+    return home_dir
+def _run_tests(inputs, expected):
     args = {"username": inputs[0], "email": inputs[1]}
     expected_username, expected_email = expected
     config = get_user_info(args)
     assert config.get("username") == expected_username
     assert config.get("email") == expected_email
+
+@pytest.mark.parametrize("inputs, expected", params_user_info_with_home_conf_file)
+def test_load_user_info_with_home_conf_file(monkeypatch, inputs, expected, user_filesystem):
+    _setup_dirs(monkeypatch, user_filesystem)
+    _run_tests(inputs, expected)
+
+@pytest.mark.parametrize("inputs, expected", params_user_info_with_local_conf_file)
+def test_load_user_info_with_local_conf_file(monkeypatch, inputs, expected, user_filesystem):
+    home_dir = _setup_dirs(monkeypatch, user_filesystem)
+    local_config_data = {"username": "cwd_username", "email": "cwd@email.com"}
+    with open(Path(user_filesystem) / "diffpyconfig.json", "w") as f:
+        json.dump(local_config_data, f)
+    _run_tests(inputs, expected)
+    os.remove(Path().home() / "diffpyconfig.json")
+    _run_tests(inputs, expected)
+
+@pytest.mark.parametrize("inputs, expected", params_user_info_with_no_home_conf_file)
+def test_load_user_info_with_local_conf_file(monkeypatch, inputs, expected, user_filesystem):
+    home_dir = _setup_dirs(monkeypatch, user_filesystem)
+    local_config_data = {"username": "cwd_username", "email": "cwd@email.com"}
+    with open(Path(user_filesystem) / "diffpyconfig.json", "w") as f:
+        json.dump(local_config_data, f)
+    _run_tests(inputs, expected)
+
 #
 # def sthgelse():
 #     # conf file is in cwd
