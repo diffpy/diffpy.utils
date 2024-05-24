@@ -10,16 +10,39 @@ DQUANTITIES = ["d", "dspace"]
 XQUANTITIES = ANGLEQUANTITIES + DQUANTITIES + QQUANTITIES
 XUNITS = ["degrees","radians","rad","deg","inv_angs","inv_nm","nm-1","A-1"]
 
+
 class Diffraction_object():
     def __init__(self, name='', wavelength=None):
         self.name = name
         self.wavelength = wavelength
         self.scat_quantity = ""
-        self.on_q = [np.empty(1), np.empty(1)]
-        self.on_tth = [np.empty(1), np.empty(1)]
-        self.on_d = [np.empty(1), np.empty(1)]
+        self.on_q = [np.empty(0), np.empty(0)]
+        self.on_tth = [np.empty(0), np.empty(0)]
+        self.on_d = [np.empty(0), np.empty(0)]
         self._all_arrays = [self.on_q, self.on_tth]
         self.metadata = {}
+
+    def __eq__(self, other):
+        if not isinstance(other, Diffraction_object):
+            return NotImplemented
+        self_attributes = [key for key in self.__dict__ if not key.startswith("_")]
+        other_attributes = [key for key in other.__dict__ if not key.startswith("_")]
+        if not sorted(self_attributes) == sorted(other_attributes):
+            return False
+        for key in self_attributes:
+            value = getattr(self, key)
+            other_value = getattr(other, key)
+            if isinstance(value, float):
+                if (not (value is None and other_value is None) and
+                        (value is None) or (other_value is None) or not np.isclose(value, other_value, rtol=1e-5)):
+                    return False
+            elif isinstance(value, list) and all(isinstance(i, np.ndarray) for i in value):
+                if not all(np.allclose(i, j, rtol=1e-5) for i, j in zip(value, other_value)):
+                    return False
+            else:
+                if value != other_value:
+                    return False
+        return True
 
     def __add__(self, other):
         summed = deepcopy(self)

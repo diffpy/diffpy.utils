@@ -1,6 +1,83 @@
-import numpy as np
 from pathlib import Path
+
+import numpy as np
+import pytest
+
 from diffpy.utils.scattering_objects.diffraction_objects import Diffraction_object
+
+params = [
+    (  # Default
+        ["", None, "", [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], {}],
+        ["", None, "", [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], {}],
+        True,
+    ),
+    (  # Compare same attributes
+        ["test", 0.71, "x-ray", [np.array([1, 2]), np.array([3, 4])], [np.array([1, 2]), np.array([3, 4])],
+         [np.array([1, 2]), np.array([3, 4])], {"thing1": 1, "thing2": "thing2"}],
+        ["test", 0.7100001, "x-ray", [np.array([1.00001, 2.00001]), np.array([3.00001, 4.00001])],
+         [np.array([1.00001, 2.00001]), np.array([3.00001, 4.00001])],
+         [np.array([1.00001, 2.00001]), np.array([3.00001, 4.00001])], {"thing1": 1, "thing2": "thing2"}],
+        True,
+    ),
+    (  # Different names
+        ["test1", None, "", [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], {}],
+        ["test2", None, "", [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], {}],
+        False,
+    ),
+    (  # Different wavelengths
+        ["", 0.71, "", [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], {}],
+        ["", 0.711, "", [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], {}],
+        False,
+    ),
+    (  # Different wavelengths
+        ["", 0.71, "", [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], {}],
+        ["", None, "", [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], {}],
+        False,
+    ),
+    (  # Different scat_quantity
+        ["", None, "", [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], {}],
+        ["", None, "x-ray", [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], {}],
+        False,
+    ),
+    (  # Different on_q
+        ["", None, "", [np.array([1, 2]), np.array([3, 4])], [np.empty(0), np.empty(0)],
+         [np.empty(0), np.empty(0)], {}],
+        ["", None, "", [np.array([1.01, 2]), np.array([3, 4])], [np.empty(0), np.empty(0)],
+         [np.empty(0), np.empty(0)], {}],
+        False,
+    ),
+    (  # Different on_tth
+        ["", None, "", [np.empty(0), np.empty(0)], [np.array([1, 2]), np.array([3, 4])],
+         [np.empty(0), np.empty(0)], {}],
+        ["", None, "", [np.empty(0), np.empty(0)], [np.array([1.01, 2]), np.array([3, 4])],
+         [np.empty(0), np.empty(0)], {}],
+        False,
+    ),
+    (  # Different on_d
+        ["", None, "", [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)],
+         [np.array([1, 2]), np.array([3, 4])], {}],
+        ["", None, "", [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)],
+         [np.array([1.01, 2]), np.array([3, 4])], {}],
+        False,
+    ),
+    (  # Different metadata
+        ["", None, "", [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)],
+         {"thing1": 0, "thing2": "thing2"}],
+        ["", None, "", [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)], [np.empty(0), np.empty(0)],
+         {"thing1": 1, "thing2": "thing2"}],
+        False,
+    ),
+]
+
+@pytest.mark.parametrize("inputs1, inputs2, expected", params)
+def test_diffraction_objects_equality(inputs1, inputs2, expected):
+    diffraction_object1 = Diffraction_object()
+    diffraction_object2 = Diffraction_object()
+    diffraction_object1_attributes = [key for key in diffraction_object1.__dict__ if not key.startswith("_")]
+    for i, attribute in enumerate(diffraction_object1_attributes):
+        setattr(diffraction_object1, attribute, inputs1[i])
+        setattr(diffraction_object2, attribute, inputs2[i])
+    assert (diffraction_object1 == diffraction_object2) == expected
 
 def test_dump(tmp_path):
 	x, y = np.linspace(0, 10, 11), np.linspace(0, 10, 11)
