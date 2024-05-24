@@ -1,4 +1,5 @@
 import json
+import os
 from copy import copy
 from pathlib import Path
 
@@ -8,6 +9,9 @@ def clean_dict(obj):
         if not value:
             del obj[key]
     return obj
+
+def stringify(obj):
+    return obj if obj is not None else ""
 
 def load_config(file_path):
     config_file = Path(file_path).resolve()
@@ -23,6 +27,16 @@ def _sorted_merge(*dicts):
     for d in dicts:
         merged.update(d)
     return merged
+
+def _create_global_config(args):
+    username = input(f"Please enter the name of the user to put in the diffpy global config file "
+                     f"[{args.get("username", "")}]:  ").strip() or args.get("username", "")
+    email = input(f"Please enter the email of the user to put in the diffpy global config file "
+                     f"[{args.get("email", "")}]:  ").strip() or args.get("email", "")
+    return_bool = False if username is None or email is None else True
+    with open(Path().home() / "diffpyconfig.json", "w") as f:
+        f.write(json.dumps({"username": stringify(username), "email": stringify(email)}))
+    return return_bool
 
 def get_user_info(args=None):
     """
@@ -43,31 +57,14 @@ def get_user_info(args=None):
     two strings on username and email
 
     """
-    global_config = load_config(Path().home() / "diffpyconfig.json" )
-    local_config = load_config(Path().cwd() / "diffpyconfig.json" )
-
+    global_config = load_config(Path().home() / "diffpyconfig.json")
+    local_config = load_config(Path().cwd() / "diffpyconfig.json")
+    if global_config is None and local_config is None:
+        config_bool = _create_global_config(args)
+        global_config = load_config(Path().home() / "diffpyconfig.json")
     config = _sorted_merge(clean_dict(global_config), clean_dict(local_config), clean_dict(args))
+    if config_bool is False:
+        os.remove(Path().home() / "diffpyconfig.json")
+        config = {"username": "", "email": ""}
 
     return config
-    # # trigger create global config flow only we don't find any config file
-    # if global_config is None and local_config is None:
-    #     _create_global_config(args)
-    # conf_username, conf_email = read_conf_file()
-    #
-    # no_username = not input_username and not conf_username
-    # no_email = not input_email and not conf_email
-    # if no_username and no_email:
-    #     raise ValueError("Please rerun the program and provide a username and email.")
-    # if no_username:
-    #     raise ValueError("Please rerun the program and provide a username.")
-    # if no_email:
-    #     raise ValueError("Please rerun the program and provide an email.")
-    #
-    # username = input_username or conf_username
-    # email = input_email or conf_email
-    # if "@" not in email:
-    #     raise ValueError("Please rerun the program and provide a valid email.")
-    #
-    # if not conf_username and not conf_email:
-    #     write_conf_file(username, email)
-    # return username, email
