@@ -24,7 +24,7 @@ jobs:
 
       - name: install requirements
         run: >-
-          conda install -n build -c conda-forge 
+          conda install -n build -c conda-forge
           --file requirements/build.txt
           --file requirements/run.txt
           --file requirements/docs.txt

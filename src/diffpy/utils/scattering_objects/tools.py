@@ -1,6 +1,11 @@
 from pathlib import Path
 
-from diffpy.utils.scattering_objects.user_config import prompt_user_info, read_conf_file, write_conf_file
+from diffpy.utils.scattering_objects.user_config import (
+    prompt_user_info,
+    read_conf_file,
+    write_conf_file,
+)
+
 
 def get_user_info():
     """

@@ -4,21 +4,22 @@
 """
 
 import unittest
+
 import numpy
+
 from diffpy.utils.parsers import loadData
 from diffpy.utils.tests.testhelpers import datafile
 
-loaddata01 = datafile('loaddata01.txt')
-loaddatawithheaders = datafile('loaddatawithheaders.txt')
+loaddata01 = datafile("loaddata01.txt")
+loaddatawithheaders = datafile("loaddatawithheaders.txt")
+
 
 ##############################################################################
 class TestLoadData(unittest.TestCase):
-
     def test_loadData_default(self):
-        """check loadData() with default options
-        """
+        """check loadData() with default options"""
         d2c = numpy.array([[3, 31], [4, 32], [5, 33]])
-        self.assertRaises(IOError, loadData, 'doesnotexist')
+        self.assertRaises(IOError, loadData, "doesnotexist")
         # the default minrows=10 makes it read from the third line
         d = loadData(loaddata01)
         self.assertTrue(numpy.array_equal(d2c, d))
@@ -27,15 +28,13 @@ class TestLoadData(unittest.TestCase):
         self.assertTrue(numpy.array_equal(d2c, d))
         # check the effect of usecols effect
         d = loadData(loaddata01, usecols=(0,))
-        self.assertTrue(numpy.array_equal(d2c[:,0], d))
+        self.assertTrue(numpy.array_equal(d2c[:, 0], d))
         d = loadData(loaddata01, usecols=(1,))
-        self.assertTrue(numpy.array_equal(d2c[:,1], d))
+        self.assertTrue(numpy.array_equal(d2c[:, 1], d))
         return
 
-
     def test_loadData_1column(self):
-        """check loading of one-column data.
-        """
+        """check loading of one-column data."""
         d1c = numpy.arange(1, 6)
         d = loadData(loaddata01, usecols=[0], minrows=1)
         self.assertTrue(numpy.array_equal(d1c, d))
@@ -45,13 +44,13 @@ class TestLoadData(unittest.TestCase):
         self.assertFalse(numpy.array_equal(d1c, d))
         return
 
-
     def test_loadData_headers(self):
-        """check loadData() with headers options enabled
-        """
+        """check loadData() with headers options enabled"""
         hignore = ["# ", "// ", "["]  # ignore lines beginning with these strings
         delimiter = ": "  # what our data should be separated by
-        hdata = loadData(loaddatawithheaders, headers=True, hdel=delimiter, hignore=hignore)
+        hdata = loadData(
+            loaddatawithheaders, headers=True, hdel=delimiter, hignore=hignore
+        )
         # only fourteen lines of data are formatted properly
         assert len(hdata) == 14
         # check the following are floats
@@ -66,7 +65,7 @@ class TestLoadData(unittest.TestCase):
 
 # End of class TestRoutines
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
 
 # End of file

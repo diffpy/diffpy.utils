@@ -19,8 +19,8 @@
 import unittest
 
 
-def testsuite(pattern=''):
-    '''Create a unit tests suite for diffpy.utils package.
+def testsuite(pattern=""):
+    """Create a unit tests suite for diffpy.utils package.
 
     Parameters
     ----------
@@ -33,15 +33,16 @@ def testsuite(pattern=''):
     -------
     suite : `unittest.TestSuite`
         The TestSuite object containing the matching tests.
-    '''
+    """
     import re
-    from os.path import dirname
+    from importlib.resources import as_file, files
     from itertools import chain
-    from importlib.resources import files, as_file
+    from os.path import dirname
+
     loader = unittest.defaultTestLoader
     ref = files(__package__)
     with as_file(ref) as thisdir:
-        depth = __name__.count('.') + 1
+        depth = __name__.count(".") + 1
         topdir = thisdir
         for i in range(depth):
             topdir = dirname(topdir)
@@ -51,12 +52,12 @@ def testsuite(pattern=''):
     rx = re.compile(pattern)
     tsuites = list(chain.from_iterable(suite_all))
     tsok = all(isinstance(ts, unittest.TestSuite) for ts in tsuites)
-    if not tsok:    # pragma: no cover
+    if not tsok:  # pragma: no cover
         return suite_all
     tcases = chain.from_iterable(tsuites)
     for tc in tcases:
-        tcwords = tc.id().split('.')
-        shortname = '.'.join(tcwords[-3:])
+        tcwords = tc.id().split(".")
+        shortname = ".".join(tcwords[-3:])
         if rx.search(shortname):
             suite.addTest(tc)
     # verify all tests are found for an empty pattern.
@@ -65,12 +66,12 @@ def testsuite(pattern=''):
 
 
 def test():
-    '''Execute all unit tests for the diffpy.utils package.
+    """Execute all unit tests for the diffpy.utils package.
 
     Returns
     -------
     result : `unittest.TestResult`
-    '''
+    """
     suite = testsuite()
     runner = unittest.TextTestRunner()
     result = runner.run(suite)

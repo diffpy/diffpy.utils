@@ -13,6 +13,7 @@
 #
 ##############################################################################
 
+
 class UnsupportedTypeError(Exception):
     """For file types not supported by our parsers.
 

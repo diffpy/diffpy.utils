@@ -7,8 +7,12 @@ HOME_CONFIG_PATH = Path.home() / CONFIG_FILE
 
 
 def prompt_user_info():
-    username = input("Please enter your username (or press Enter to skip if you already entered before): ")
-    email = input("Please enter your email (or press Enter to skip if you already entered before): ")
+    username = input(
+        "Please enter your username (or press Enter to skip if you already entered before): "
+    )
+    email = input(
+        "Please enter your email (or press Enter to skip if you already entered before): "
+    )
     return username, email
 
 
@@ -26,7 +30,9 @@ def read_conf_file():
         with open(conf_file, "r") as f:
             config = json.load(f)
             if not config.get("username") or not config.get("email"):
-                raise ValueError("Please provide a configuration file with username and email.")
+                raise ValueError(
+                    "Please provide a configuration file with username and email."
+                )
             return config.get("username"), config.get("email")
     return None, None
 
