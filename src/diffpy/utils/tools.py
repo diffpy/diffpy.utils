@@ -4,6 +4,19 @@ from copy import copy
 from pathlib import Path
 
 def clean_dict(obj):
+    """
+    remove keys from the dictionary where the corresponding value is None
+
+    Parameters
+    ----------
+    obj: dict
+        the dictionary to clean. If None, initialize as an empty dictionary
+
+    Returns
+    -------
+    the cleaned dictionary with keys removed where the value is None
+
+    """
     obj = obj if obj is not None else {}
     for key, value in copy(obj).items():
         if not value:
@@ -11,9 +24,34 @@ def clean_dict(obj):
     return obj
 
 def stringify(obj):
+    """
+    convert None to an empty string
+
+    Parameters
+    ----------
+    obj: str
+        the object to convert. If None, return an empty string
+
+    Returns
+    -------
+    the converted string if obj is not None, otherwise an empty string
+    """
     return obj if obj is not None else ""
 
 def load_config(file_path):
+    """
+    load configuration from a json file
+
+    Parameters
+    ----------
+    file_path: Path
+        the path to the configuration file
+
+    Returns
+    -------
+    the configuration dictionary or None if file does not exist
+
+    """
     config_file = Path(file_path).resolve()
     if config_file.is_file():
         with open(config_file, "r") as f:
@@ -30,9 +68,9 @@ def _sorted_merge(*dicts):
 
 def _create_global_config(args):
     username = input(f"Please enter the name of the user to put in the diffpy global config file "
-                     f"[{args.get("username", "")}]:  ").strip() or args.get("username", "")
+                     f"[{args.get('username', '')}]:  ").strip() or args.get("username", "")
     email = input(f"Please enter the email of the user to put in the diffpy global config file "
-                     f"[{args.get("email", "")}]:  ").strip() or args.get("email", "")
+                     f"[{args.get('email', '')}]:  ").strip() or args.get("email", "")
     return_bool = False if username is None or email is None else True
     with open(Path().home() / "diffpyconfig.json", "w") as f:
         f.write(json.dumps({"username": stringify(username), "email": stringify(email)}))
@@ -40,21 +78,21 @@ def _create_global_config(args):
 
 def get_user_info(args=None):
     """
-    Get username and email.
+    get username and email configuration
 
-    Prompt the user to enter username and email.
-    If not provided, read from the config file (first from cwd, and then from home directory).
-    If neither are available, raise a ValueError.
-    Save provided values to the config file if a config file doesn't exist.
+    First attempts to load config file from global and local paths.
+    If neither exists, creates a global config file.
+    It prioritizes values from args, then local, then global.
+    Removes invalid global config file if creation is needed, replacing it with empty username and email.
 
     Parameters
     ----------
     args argparse.Namespace
-        the arguments from the parser
+        the arguments from the parser, default is None
 
     Returns
     -------
-    two strings on username and email
+    the dictionary containing username and email with corresponding values
 
     """
     config_bool = True

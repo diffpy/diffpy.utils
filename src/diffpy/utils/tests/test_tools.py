@@ -46,7 +46,7 @@ params_user_info_with_no_home_conf_file = [
     (["", ""], ["input_username", "input@email.com"], ["input_username", "input@email.com"]),
     (["cli_username", ""], ["", "input@email.com"], ["cli_username", "input@email.com"]),
     (["", "cli@email.com"], ["input_username", ""], ["input_username", "cli@email.com"]),
-    (["cli_username", "cli@email.com"], ["cli_username", "cli@email.com"], ["cli_username", "cli@email.com"]),
+    (["cli_username", "cli@email.com"], ["input_username", "input@email.com"], ["cli_username", "cli@email.com"]),
 ]
 params_user_info_no_conf_file_no_inputs = [
     ([None, None], ["", ""], ["", ""]),
@@ -54,12 +54,12 @@ params_user_info_no_conf_file_no_inputs = [
 
 
 @pytest.mark.parametrize("inputs, expected", params_user_info_with_home_conf_file)
-def test_load_user_info_with_home_conf_file(monkeypatch, inputs, expected, user_filesystem):
+def test_get_user_info_with_home_conf_file(monkeypatch, inputs, expected, user_filesystem):
     _setup_dirs(monkeypatch, user_filesystem)
     _run_tests(inputs, expected)
 
 @pytest.mark.parametrize("inputs, expected", params_user_info_with_local_conf_file)
-def test_load_user_info_with_local_conf_file(monkeypatch, inputs, expected, user_filesystem):
+def test_get_user_info_with_local_conf_file(monkeypatch, inputs, expected, user_filesystem):
     home_dir = _setup_dirs(monkeypatch, user_filesystem)
     local_config_data = {"username": "cwd_username", "email": "cwd@email.com"}
     with open(Path(user_filesystem) / "diffpyconfig.json", "w") as f:
@@ -69,7 +69,7 @@ def test_load_user_info_with_local_conf_file(monkeypatch, inputs, expected, user
     _run_tests(inputs, expected)
 
 @pytest.mark.parametrize("inputsa, inputsb, expected", params_user_info_with_no_home_conf_file)
-def test_load_user_info_with_no_home_conf_file(monkeypatch, inputsa, inputsb, expected, user_filesystem):
+def test_get_user_info_with_no_home_conf_file(monkeypatch, inputsa, inputsb, expected, user_filesystem):
     _setup_dirs(monkeypatch, user_filesystem)
     os.remove(Path().home() / "diffpyconfig.json")
     inp_iter = iter(inputsb)
@@ -80,7 +80,7 @@ def test_load_user_info_with_no_home_conf_file(monkeypatch, inputsa, inputsb, ex
 
 
 @pytest.mark.parametrize("inputsa, inputsb, expected", params_user_info_no_conf_file_no_inputs)
-def test_load_user_info_no_conf_file_no_inputs(monkeypatch, inputsa, inputsb, expected, user_filesystem):
+def test_get_user_info_no_conf_file_no_inputs(monkeypatch, inputsa, inputsb, expected, user_filesystem):
     _setup_dirs(monkeypatch, user_filesystem)
     os.remove(Path().home() / "diffpyconfig.json")
     inp_iter = iter(inputsb)
