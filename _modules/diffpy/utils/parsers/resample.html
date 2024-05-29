@@ -183,30 +183,30 @@
     <span class="n">dr0</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Constant timestep</span>
 
     <span class="k">if</span> <span class="n">dr0</span> <span class="o">&lt;</span> <span class="n">dr</span><span class="p">:</span>
-        <span class="n">rnew</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="n">dr</span><span class="p">,</span> <span class="n">dr</span><span class="p">)</span>
+        <span class="n">rnew</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">dr</span><span class="p">,</span> <span class="n">dr</span><span class="p">)</span>
         <span class="n">snew</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">rnew</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">rnew</span><span class="p">,</span> <span class="n">snew</span>
 
     <span class="k">elif</span> <span class="n">dr0</span> <span class="o">&gt;</span> <span class="n">dr</span><span class="p">:</span>
 
         <span class="c1"># Tried to pad the end of s to dampen, but nothing works.</span>
-        <span class="c1">#m = (s[-1] - s[-2]) / dr0</span>
-        <span class="c1">#b = (s[-2] * r[-1] - s[-1] * r[-2]) / dr0</span>
-        <span class="c1">#rpad = r[-1] + numpy.arange(1, len(s))*dr0</span>
-        <span class="c1">#spad = rpad * m + b</span>
-        <span class="c1">#spad = numpy.concatenate([s,spad])</span>
-        <span class="c1">#rnew = numpy.arange(0, rpad[-1], dr)</span>
-        <span class="c1">#snew = numpy.zeros_like(rnew)</span>
+        <span class="c1"># m = (s[-1] - s[-2]) / dr0</span>
+        <span class="c1"># b = (s[-2] * r[-1] - s[-1] * r[-2]) / dr0</span>
+        <span class="c1"># rpad = r[-1] + numpy.arange(1, len(s))*dr0</span>
+        <span class="c1"># spad = rpad * m + b</span>
+        <span class="c1"># spad = numpy.concatenate([s,spad])</span>
+        <span class="c1"># rnew = numpy.arange(0, rpad[-1], dr)</span>
+        <span class="c1"># snew = numpy.zeros_like(rnew)</span>
         <span class="c1">## Accomodate for the fact that r[0] might not be 0</span>
-        <span class="c1">#u = (rnew-r[0]) / dr0</span>
-        <span class="c1">#for n in range(len(spad)):</span>
+        <span class="c1"># u = (rnew-r[0]) / dr0</span>
+        <span class="c1"># for n in range(len(spad)):</span>
         <span class="c1">#    snew += spad[n] * numpy.sinc(u - n)</span>
 
-        <span class="c1">#sel = numpy.logical_and(rnew &gt;= r[0], rnew &lt;= r[-1])</span>
+        <span class="c1"># sel = numpy.logical_and(rnew &gt;= r[0], rnew &lt;= r[-1])</span>
 
         <span class="n">rnew</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dr</span><span class="p">)</span>
         <span class="n">snew</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">rnew</span><span class="p">)</span>
-        <span class="n">u</span> <span class="o">=</span> <span class="p">(</span><span class="n">rnew</span><span class="o">-</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">dr0</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="p">(</span><span class="n">rnew</span> <span class="o">-</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">dr0</span>
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)):</span>
             <span class="n">snew</span> <span class="o">+=</span> <span class="n">s</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sinc</span><span class="p">(</span><span class="n">u</span> <span class="o">-</span> <span class="n">n</span><span class="p">)</span>
         <span class="n">sel</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">rnew</span> <span class="o">&gt;=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rnew</span> <span class="o">&lt;=</span> <span class="n">r</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
@@ -214,6 +214,7 @@
 
     <span class="c1"># If we got here, then no resampling is required</span>
     <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">s</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
 
 
 <span class="c1"># End of file</span>
