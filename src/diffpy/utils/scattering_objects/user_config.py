@@ -6,9 +6,6 @@ CWD_CONFIG_PATH = Path.cwd() / CONFIG_FILE
 HOME_CONFIG_PATH = Path.home() / CONFIG_FILE
 
 
-
-
-
 def find_conf_file():
     if CWD_CONFIG_PATH.exists() and CWD_CONFIG_PATH.is_file():
         return CWD_CONFIG_PATH
@@ -23,7 +20,9 @@ def read_conf_file():
         with open(conf_file, "r") as f:
             config = json.load(f)
             if not config.get("username") or not config.get("email"):
-                raise ValueError("Please provide a configuration file with username and email.")
+                raise ValueError(
+                    "Please provide a configuration file with username and email."
+                )
             return config.get("username"), config.get("email")
     return None, None
 

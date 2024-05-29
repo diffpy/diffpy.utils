@@ -3,6 +3,7 @@ import os
 from copy import copy
 from pathlib import Path
 
+
 def clean_dict(obj):
     """
     remove keys from the dictionary where the corresponding value is None
@@ -23,6 +24,7 @@ def clean_dict(obj):
             del obj[key]
     return obj
 
+
 def stringify(obj):
     """
     convert None to an empty string
@@ -37,6 +39,7 @@ def stringify(obj):
     the converted string if obj is not None, otherwise an empty string
     """
     return obj if obj is not None else ""
+
 
 def load_config(file_path):
     """
@@ -60,21 +63,30 @@ def load_config(file_path):
     else:
         return None
 
+
 def _sorted_merge(*dicts):
     merged = {}
     for d in dicts:
         merged.update(d)
     return merged
 
+
 def _create_global_config(args):
-    username = input(f"Please enter the name of the user to put in the diffpy global config file "
-                     f"[{args.get('username', '')}]:  ").strip() or args.get("username", "")
-    email = input(f"Please enter the email of the user to put in the diffpy global config file "
-                     f"[{args.get('email', '')}]:  ").strip() or args.get("email", "")
+    username = input(
+        f"Please enter the name of the user to put in the diffpy global config file "
+        f"[{args.get('username', '')}]:  "
+    ).strip() or args.get("username", "")
+    email = input(
+        f"Please enter the email of the user to put in the diffpy global config file "
+        f"[{args.get('email', '')}]:  "
+    ).strip() or args.get("email", "")
     return_bool = False if username is None or email is None else True
     with open(Path().home() / "diffpyconfig.json", "w") as f:
-        f.write(json.dumps({"username": stringify(username), "email": stringify(email)}))
+        f.write(
+            json.dumps({"username": stringify(username), "email": stringify(email)})
+        )
     return return_bool
+
 
 def get_user_info(args=None):
     """
@@ -101,7 +113,9 @@ def get_user_info(args=None):
     if global_config is None and local_config is None:
         config_bool = _create_global_config(args)
         global_config = load_config(Path().home() / "diffpyconfig.json")
-    config = _sorted_merge(clean_dict(global_config), clean_dict(local_config), clean_dict(args))
+    config = _sorted_merge(
+        clean_dict(global_config), clean_dict(local_config), clean_dict(args)
+    )
     if config_bool is False:
         os.remove(Path().home() / "diffpyconfig.json")
         config = {"username": "", "email": ""}
