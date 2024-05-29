@@ -1,5 +1,5 @@
-import pytest
 import numpy as np
+import pytest
 
 from diffpy.utils.parsers.resample import wsinterp
 
@@ -9,7 +9,6 @@ def test_wsinterp():
 
     # Check known points are unchanged by interpolation
     # FIXME: if another SW interp function exists, run comparisons for interpolated points
-
     # Sampling rate
     ssr = 44100**-1  # Standard sampling rate for human-hearable frequencies
     t = ssr

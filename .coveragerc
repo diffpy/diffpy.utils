@@ -30,4 +30,3 @@ source =
 omit =
     ## exclude debug.py from codecov report
     */tests/debug.py
-

@@ -13,12 +13,13 @@
 #
 ##############################################################################
 
-import pathlib
 import json
+import pathlib
+import warnings
+
 import numpy
 
-from .custom_exceptions import UnsupportedTypeError, ImproperSizeError
-import warnings
+from .custom_exceptions import ImproperSizeError, UnsupportedTypeError
 
 # FIXME: add support for yaml, xml
 supported_formats = [".json"]

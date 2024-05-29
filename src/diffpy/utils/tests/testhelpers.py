@@ -20,7 +20,7 @@
 
 
 def datafile(filename):
-    from importlib.resources import files, as_file
+    from importlib.resources import as_file, files
 
     ref = files(__package__) / ("testdata/" + filename)
     with as_file(ref) as rv:

@@ -4,7 +4,9 @@
 """
 
 import unittest
+
 import numpy
+
 from diffpy.utils.parsers import loadData
 from diffpy.utils.tests.testhelpers import datafile
 
@@ -14,7 +16,6 @@ loaddatawithheaders = datafile("loaddatawithheaders.txt")
 
 ##############################################################################
 class TestLoadData(unittest.TestCase):
-
     def test_loadData_default(self):
         """check loadData() with default options"""
         d2c = numpy.array([[3, 31], [4, 32], [5, 33]])

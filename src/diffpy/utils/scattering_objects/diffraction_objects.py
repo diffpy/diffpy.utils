@@ -319,7 +319,7 @@ class Diffraction_object:
     ):
         f"""
         insert a new scattering quantity into the scattering object
-        
+
         Parameters
         ----------
         xarray array-like of floats
@@ -330,7 +330,7 @@ class Diffraction_object:
           the type of quantity for the independent variable from {*XQUANTITIES,}
         metadata: dict
           the metadata in the form of a dictionary of user-supplied key:value pairs
-        
+
         Returns
         -------
 
