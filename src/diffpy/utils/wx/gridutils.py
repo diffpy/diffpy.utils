@@ -20,8 +20,7 @@ import wx
 
 
 def getSelectionRows(grid):
-    """Indices of the rows that have any cell selected.
-    """
+    """Indices of the rows that have any cell selected."""
     rows = grid.GetNumberRows()
     rset = set()
     if grid.GetSelectedCols():
@@ -29,8 +28,7 @@ def getSelectionRows(grid):
     rset.update(grid.GetSelectedRows())
     for r, c in grid.GetSelectedCells():
         rset.add(r)
-    blocks = zip(grid.GetSelectionBlockTopLeft(),
-            grid.GetSelectionBlockBottomRight())
+    blocks = zip(grid.GetSelectionBlockTopLeft(), grid.GetSelectionBlockBottomRight())
     for tl, br in blocks:
         rset.update(range(tl[0], br[0] + 1))
     rv = sorted(rset)
@@ -38,8 +36,7 @@ def getSelectionRows(grid):
 
 
 def getSelectionColumns(grid):
-    """Indices of columns that have any cell selected.
-    """
+    """Indices of columns that have any cell selected."""
     cols = grid.GetNumberCols()
     cset = set()
     if grid.GetSelectedRows():
@@ -47,8 +44,7 @@ def getSelectionColumns(grid):
     cset.update(grid.GetSelectedCols())
     for r, c in grid.GetSelectedCells():
         cset.add(c)
-    blocks = zip(grid.GetSelectionBlockTopLeft(),
-            grid.GetSelectionBlockBottomRight())
+    blocks = zip(grid.GetSelectionBlockTopLeft(), grid.GetSelectionBlockBottomRight())
     for tl, br in blocks:
         cset.update(range(tl[1], br[1] + 1))
     rv = sorted(cset)
@@ -68,8 +64,7 @@ def getSelectedCells(grid):
         rcset.update(zip(cols * [r], allcols))
     for c in grid.GetSelectedCols():
         rcset.update(zip(allrows, rows * [c]))
-    blocks = zip(grid.GetSelectionBlockTopLeft(),
-            grid.GetSelectionBlockBottomRight())
+    blocks = zip(grid.GetSelectionBlockTopLeft(), grid.GetSelectionBlockBottomRight())
     for tl, br in blocks:
         brows = range(tl[0], br[0] + 1)
         bcols = range(tl[1], br[1] + 1)
@@ -80,7 +75,7 @@ def getSelectedCells(grid):
 
 
 def limitSelectionToRows(grid, indices):
-    '''Limit selection to the specified row indices.
+    """Limit selection to the specified row indices.
     No action for empty indices.
 
     Parameters
@@ -93,8 +88,9 @@ def limitSelectionToRows(grid, indices):
     Returns
     -------
     No return value.
-    '''
+    """
     import bisect
+
     if not indices:
         return
     rowblocks = _indicesToBlocks(indices)
@@ -124,22 +120,24 @@ def quickResizeColumns(grid, indices):
     # Get the columns and maximum text width in each one
     dc = wx.ScreenDC()
     maxSize = {}
-    for (i, j) in indices:
+    for i, j in indices:
         if j not in maxSize:
             renderer = grid.GetCellRenderer(i, j)
             attr = grid.GetOrCreateCellAttr(i, j)
             size = renderer.GetBestSize(grid, attr, dc, i, j).width
-            size += 10 # Need a small buffer
+            size += 10  # Need a small buffer
             maxSize[j] = size
 
     grid.BeginBatch()
-    for (j, size) in maxSize.items():
+    for j, size in maxSize.items():
         if size > grid.GetColSize(j):
             grid.SetColSize(j, size)
     grid.EndBatch()
     return
 
+
 # Local Helpers --------------------------------------------------------------
+
 
 def _indicesToBlocks(indices):
     """Convert a list of integer indices to a list of (start, stop) tuples.
@@ -165,5 +163,6 @@ def _indicesToBlocks(indices):
         i0 = i
     rv = [tuple(ij) for ij in rngs]
     return rv
+
 
 # End of file

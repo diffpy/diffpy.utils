@@ -16,7 +16,7 @@
 import numpy
 
 
-def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwargs):
+def loadData(filename, minrows=10, headers=False, hdel="=", hignore=None, **kwargs):
     """Find and load data from a text file.
 
     The data block is identified as the first matrix block of at least minrows rows and constant number of columns.
@@ -67,11 +67,12 @@ def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwar
         If headers are enabled, return a dictionary of parameters read from the header.
     """
     from numpy import array, loadtxt
+
     # for storing header data
     hdata = {}
     # determine the arguments
-    delimiter = kwargs.get('delimiter')
-    usecols = kwargs.get('usecols')
+    delimiter = kwargs.get("delimiter")
+    usecols = kwargs.get("usecols")
     # required at least one column of floating point values
     mincv = (1, 1)
     # but if usecols is specified, require sufficient number of columns
@@ -79,6 +80,7 @@ def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwar
     if usecols is not None:
         hiidx = max(-min(usecols), max(usecols) + 1)
         mincv = (hiidx, len(set(usecols)))
+
     # Check if a line consists of floats only and return their count
     # Return zero if some strings cannot be converted.
     def countcolumnsvalues(line):
@@ -91,12 +93,13 @@ def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwar
             if usecols is not None:
                 nv = len([float(words[i]) for i in usecols])
             else:
-                nv = len([  float(w) for w in words])
+                nv = len([float(w) for w in words])
         except (IndexError, ValueError):
             nc = nv = 0
         return nc, nv
+
     # make sure fid gets cleaned up
-    with open(filename, 'rb') as fid:
+    with open(filename, "rb") as fid:
         # search for the start of datablock
         start = ncvblock = None
         fpos = (0, 0)
@@ -162,7 +165,7 @@ def loadData(filename, minrows=10, headers=False, hdel='=', hignore=None, **kwar
             fid.seek(start)
             # always use usecols argument so that loadtxt does not crash
             # in case of trailing delimiters.
-            kwargs.setdefault('usecols', list(range(ncvblock[0])))
+            kwargs.setdefault("usecols", list(range(ncvblock[0])))
             data_block = loadtxt(fid, **kwargs)
     return data_block
 
@@ -192,17 +195,15 @@ class TextDataLoader(object):
         self._reset()
         return
 
-
     def _reset(self):
-        self.filename = ''
+        self.filename = ""
         self.headers = []
         self.datasets = []
         self._resetvars()
         return
 
-
     def _resetvars(self):
-        self._filename = ''
+        self._filename = ""
         self._lines = None
         self._splitlines = None
         self._words = None
@@ -210,16 +211,14 @@ class TextDataLoader(object):
         self._wordrecs = None
         return
 
-
     def read(self, filename):
         """Open a file and run readfp.
 
         Use if file is not already open for read byte.
         """
-        with open(filename, 'rb') as fp:
+        with open(filename, "rb") as fp:
             self.readfp(fp)
         return
-
 
     def readfp(self, fp, append=False):
         """Get file details.
@@ -233,12 +232,11 @@ class TextDataLoader(object):
         # try to read lines from fp first
         self._lines = fp.readlines()
         # and if good, assign filename
-        self.filename = getattr(fp, 'name', '')
-        self._words = ''.join(self._lines).split()
+        self.filename = getattr(fp, "name", "")
+        self._words = "".join(self._lines).split()
         self._splitlines = [line.split() for line in self._lines]
         self._findDataBlocks()
         return
-
 
     def _findDataBlocks(self):
         mincols = 1
@@ -249,8 +247,10 @@ class TextDataLoader(object):
         nwords = len(self._words)
         # idx - line index, nw0, nw1 - index of the first and last word,
         # nf - number of words, ok - has data
-        self._linerecs = numpy.recarray((nlines,), dtype=[('idx', int),
-            ('nw0', int), ('nw1', int), ('nf', int), ('ok', bool)])
+        self._linerecs = numpy.recarray(
+            (nlines,),
+            dtype=[("idx", int), ("nw0", int), ("nw1", int), ("nf", int), ("ok", bool)],
+        )
         lr = self._linerecs
         lr.idx = numpy.arange(nlines)
         lr.nf = [len(sl) for sl in self._splitlines]
@@ -258,8 +258,16 @@ class TextDataLoader(object):
         lr.nw0 = lr.nw1 - lr.nf
         lr.ok = True
         # word records
-        lw = self._wordrecs = numpy.recarray((nwords,), dtype=[('idx', int),
-            ('line', int), ('col', int), ('ok', bool), ('value', float)])
+        lw = self._wordrecs = numpy.recarray(
+            (nwords,),
+            dtype=[
+                ("idx", int),
+                ("line", int),
+                ("col", int),
+                ("ok", bool),
+                ("value", float),
+            ],
+        )
         lw.idx = numpy.arange(nwords)
         n1 = numpy.zeros(nwords, dtype=bool)
         n1[lr.nw1[:-1]] = True
@@ -290,17 +298,17 @@ class TextDataLoader(object):
         end = numpy.nonzero(oke | blocke)[0]
         rowcounts = end - beg
         assert not numpy.any(rowcounts < 0)
-        goodrows = (rowcounts >= self.minrows)
+        goodrows = rowcounts >= self.minrows
         begend = numpy.transpose([beg, end - 1])[goodrows]
         hbeg = 0
         for dbeg, dend in begend:
             bb1 = lr1[dbeg]
             ee1 = lr1[dend]
             hend = bb1.idx
-            header = ''.join(self._lines[hbeg:hend])
+            header = "".join(self._lines[hbeg:hend])
             hbeg = ee1.idx + 1
             if self.usecols is None:
-                data = numpy.reshape(lw.value[bb1.nw0:ee1.nw1], (-1, bb1.nf))
+                data = numpy.reshape(lw.value[bb1.nw0 : ee1.nw1], (-1, bb1.nf))
             else:
                 tdata = numpy.empty((len(self.usecols), dend - dbeg), dtype=float)
                 for j, trow in zip(self.usecols, tdata):
@@ -311,7 +319,7 @@ class TextDataLoader(object):
             self.datasets.append(data)
         # finish reading to a last header and empty dataset
         if hbeg < len(self._lines):
-            header = ''.join(self._lines[hbeg:])
+            header = "".join(self._lines[hbeg:])
             data = numpy.empty(0, dtype=float)
             self.headers.append(header)
             self.datasets.append(data)
@@ -320,14 +328,15 @@ class TextDataLoader(object):
 
 # End of class TextDataLoader
 
+
 def isfloat(s):
-    '''True if s is convertible to float.
-    '''
+    """True if s is convertible to float."""
     try:
         float(s)
         return True
     except:
         pass
     return False
+
 
 # End of file
