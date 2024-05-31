@@ -85,17 +85,13 @@ params_user_info_no_conf_file_no_inputs = [
 
 
 @pytest.mark.parametrize("inputs, expected", params_user_info_with_home_conf_file)
-def test_get_user_info_with_home_conf_file(
-    monkeypatch, inputs, expected, user_filesystem
-):
+def test_get_user_info_with_home_conf_file(monkeypatch, inputs, expected, user_filesystem):
     _setup_dirs(monkeypatch, user_filesystem)
     _run_tests(inputs, expected)
 
 
 @pytest.mark.parametrize("inputs, expected", params_user_info_with_local_conf_file)
-def test_get_user_info_with_local_conf_file(
-    monkeypatch, inputs, expected, user_filesystem
-):
+def test_get_user_info_with_local_conf_file(monkeypatch, inputs, expected, user_filesystem):
     home_dir = _setup_dirs(monkeypatch, user_filesystem)
     local_config_data = {"username": "cwd_username", "email": "cwd@email.com"}
     with open(Path(user_filesystem) / "diffpyconfig.json", "w") as f:
@@ -105,12 +101,8 @@ def test_get_user_info_with_local_conf_file(
     _run_tests(inputs, expected)
 
 
-@pytest.mark.parametrize(
-    "inputsa, inputsb, expected", params_user_info_with_no_home_conf_file
-)
-def test_get_user_info_with_no_home_conf_file(
-    monkeypatch, inputsa, inputsb, expected, user_filesystem
-):
+@pytest.mark.parametrize("inputsa, inputsb, expected", params_user_info_with_no_home_conf_file)
+def test_get_user_info_with_no_home_conf_file(monkeypatch, inputsa, inputsb, expected, user_filesystem):
     _setup_dirs(monkeypatch, user_filesystem)
     os.remove(Path().home() / "diffpyconfig.json")
     inp_iter = iter(inputsb)
@@ -120,12 +112,8 @@ def test_get_user_info_with_no_home_conf_file(
     assert confile.is_file()
 
 
-@pytest.mark.parametrize(
-    "inputsa, inputsb, expected", params_user_info_no_conf_file_no_inputs
-)
-def test_get_user_info_no_conf_file_no_inputs(
-    monkeypatch, inputsa, inputsb, expected, user_filesystem
-):
+@pytest.mark.parametrize("inputsa, inputsb, expected", params_user_info_no_conf_file_no_inputs)
+def test_get_user_info_no_conf_file_no_inputs(monkeypatch, inputsa, inputsb, expected, user_filesystem):
     _setup_dirs(monkeypatch, user_filesystem)
     os.remove(Path().home() / "diffpyconfig.json")
     inp_iter = iter(inputsb)

@@ -223,9 +223,7 @@ params = [
 def test_diffraction_objects_equality(inputs1, inputs2, expected):
     diffraction_object1 = Diffraction_object()
     diffraction_object2 = Diffraction_object()
-    diffraction_object1_attributes = [
-        key for key in diffraction_object1.__dict__ if not key.startswith("_")
-    ]
+    diffraction_object1_attributes = [key for key in diffraction_object1.__dict__ if not key.startswith("_")]
     for i, attribute in enumerate(diffraction_object1_attributes):
         setattr(diffraction_object1, attribute, inputs1[i])
         setattr(diffraction_object2, attribute, inputs2[i])
@@ -240,9 +238,7 @@ def test_dump(tmp_path):
     test.wavelength = 1.54
     test.name = "test"
     test.scat_quantity = "x-ray"
-    test.insert_scattering_quantity(
-        x, y, "q", metadata={"thing1": 1, "thing2": "thing2"}
-    )
+    test.insert_scattering_quantity(x, y, "q", metadata={"thing1": 1, "thing2": "thing2"})
     test.dump(file, "q")
     with open(file, "r") as f:
         actual = f.read()

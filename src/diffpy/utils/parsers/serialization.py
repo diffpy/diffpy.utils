@@ -13,12 +13,13 @@
 #
 ##############################################################################
 
-import pathlib
 import json
+import pathlib
+import warnings
+
 import numpy
 
-from .custom_exceptions import UnsupportedTypeError, ImproperSizeError
-import warnings
+from .custom_exceptions import ImproperSizeError, UnsupportedTypeError
 
 # FIXME: add support for yaml, xml
 supported_formats = [".json"]
@@ -84,12 +85,8 @@ def serialize_data(
         num_columns = [len(row) for row in data_table]
         max_columns = max(num_columns)
         num_col_names = len(dt_colnames)
-        if (
-            max_columns < num_col_names
-        ):  # assume numpy.loadtxt gives non-irregular array
-            raise ImproperSizeError(
-                "More entries in dt_colnames than columns in data_table."
-            )
+        if max_columns < num_col_names:  # assume numpy.loadtxt gives non-irregular array
+            raise ImproperSizeError("More entries in dt_colnames than columns in data_table.")
         named_columns = 0
         for idx in range(num_col_names):
             colname = dt_colnames[idx]
