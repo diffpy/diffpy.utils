@@ -91,12 +91,13 @@
 <span class="c1">#</span>
 <span class="c1">##############################################################################</span>
 
-<span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span>
 
-<span class="kn">from</span> <span class="nn">.custom_exceptions</span> <span class="kn">import</span> <span class="n">UnsupportedTypeError</span><span class="p">,</span> <span class="n">ImproperSizeError</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">.custom_exceptions</span> <span class="kn">import</span> <span class="n">ImproperSizeError</span><span class="p">,</span> <span class="n">UnsupportedTypeError</span>
 
 <span class="c1"># FIXME: add support for yaml, xml</span>
 <span class="n">supported_formats</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.json&quot;</span><span class="p">]</span>
@@ -164,12 +165,8 @@
         <span class="n">num_columns</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">data_table</span><span class="p">]</span>
         <span class="n">max_columns</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">num_columns</span><span class="p">)</span>
         <span class="n">num_col_names</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dt_colnames</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="n">max_columns</span> <span class="o">&lt;</span> <span class="n">num_col_names</span>
-        <span class="p">):</span>  <span class="c1"># assume numpy.loadtxt gives non-irregular array</span>
-            <span class="k">raise</span> <span class="n">ImproperSizeError</span><span class="p">(</span>
-                <span class="s2">&quot;More entries in dt_colnames than columns in data_table.&quot;</span>
-            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">max_columns</span> <span class="o">&lt;</span> <span class="n">num_col_names</span><span class="p">:</span>  <span class="c1"># assume numpy.loadtxt gives non-irregular array</span>
+            <span class="k">raise</span> <span class="n">ImproperSizeError</span><span class="p">(</span><span class="s2">&quot;More entries in dt_colnames than columns in data_table.&quot;</span><span class="p">)</span>
         <span class="n">named_columns</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_col_names</span><span class="p">):</span>
             <span class="n">colname</span> <span class="o">=</span> <span class="n">dt_colnames</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
