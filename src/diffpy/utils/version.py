@@ -25,9 +25,7 @@ Use `__git_commit__` instead.
 __all__ = ["__date__", "__git_commit__", "__timestamp__", "__version__"]
 
 import os.path
-
-from importlib.resources import files, as_file
-
+from importlib.resources import as_file, files
 
 # obtain version information from the version.cfg file
 cp = dict(version="", date="", commit="", timestamp="0")
@@ -41,9 +39,7 @@ if __package__ is not None:
             fcfg = os.devnull
         with open(fcfg) as fp:
             kwords = [
-                [w.strip() for w in line.split(" = ", 1)]
-                for line in fp
-                if line[:1].isalpha() and " = " in line
+                [w.strip() for w in line.split(" = ", 1)] for line in fp if line[:1].isalpha() and " = " in line
             ]
         assert all(w[0] in cp for w in kwords), "received unrecognized keyword"
         cp.update(kwords)

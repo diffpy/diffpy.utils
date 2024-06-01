@@ -82,9 +82,7 @@ def _create_global_config(args):
     ).strip() or args.get("email", "")
     return_bool = False if username is None or email is None else True
     with open(Path().home() / "diffpyconfig.json", "w") as f:
-        f.write(
-            json.dumps({"username": stringify(username), "email": stringify(email)})
-        )
+        f.write(json.dumps({"username": stringify(username), "email": stringify(email)}))
     return return_bool
 
 
@@ -113,9 +111,7 @@ def get_user_info(args=None):
     if global_config is None and local_config is None:
         config_bool = _create_global_config(args)
         global_config = load_config(Path().home() / "diffpyconfig.json")
-    config = _sorted_merge(
-        clean_dict(global_config), clean_dict(local_config), clean_dict(args)
-    )
+    config = _sorted_merge(clean_dict(global_config), clean_dict(local_config), clean_dict(args))
     if config_bool is False:
         os.remove(Path().home() / "diffpyconfig.json")
         config = {"username": "", "email": ""}

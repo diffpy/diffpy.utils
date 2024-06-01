@@ -1,15 +1,11 @@
-from diffpy.utils.parsers import serialize_data, deserialize_data
-from diffpy.utils.parsers import loadData
-from diffpy.utils.tests.testhelpers import datafile
-
-from diffpy.utils.parsers.custom_exceptions import (
-    UnsupportedTypeError,
-    ImproperSizeError,
-)
-
 import os
-import pytest
+
 import numpy
+import pytest
+
+from diffpy.utils.parsers import deserialize_data, loadData, serialize_data
+from diffpy.utils.parsers.custom_exceptions import ImproperSizeError, UnsupportedTypeError
+from diffpy.utils.tests.testhelpers import datafile
 
 tests_dir = os.path.dirname(os.path.abspath(locals().get("__file__", "file.py")))
 
@@ -29,16 +25,12 @@ def test_load_multiple(tmp_path):
     generated_data = None
     for hfname in tlm_list:
         # gather data using loadData
-        headerfile = os.path.normpath(
-            os.path.join(tests_dir, "testdata", "dbload", hfname)
-        )
+        headerfile = os.path.normpath(os.path.join(tests_dir, "testdata", "dbload", hfname))
         hdata = loadData(headerfile, headers=True)
         data_table = loadData(headerfile)
 
         # check path extraction
-        generated_data = serialize_data(
-            headerfile, hdata, data_table, dt_colnames=["r", "gr"], show_path=True
-        )
+        generated_data = serialize_data(headerfile, hdata, data_table, dt_colnames=["r", "gr"], show_path=True)
         assert headerfile == os.path.normpath(generated_data[hfname].pop("path"))
 
         # rerun without path information and save to file
@@ -70,9 +62,7 @@ def test_exceptions():
 
     # various dt_colnames inputs
     with pytest.raises(ImproperSizeError):
-        serialize_data(
-            loadfile, hdata, data_table, dt_colnames=["one", "two", "three is too many"]
-        )
+        serialize_data(loadfile, hdata, data_table, dt_colnames=["one", "two", "three is too many"])
     # check proper output
     normal = serialize_data(loadfile, hdata, data_table, dt_colnames=["r", "gr"])
     data_name = list(normal.keys())[0]
@@ -80,34 +70,20 @@ def test_exceptions():
     gr_list = normal[data_name]["gr"]
     # three equivalent ways to denote no column names
     missing_parameter = serialize_data(loadfile, hdata, data_table, show_path=False)
-    empty_parameter = serialize_data(
-        loadfile, hdata, data_table, show_path=False, dt_colnames=[]
-    )
-    none_entry_parameter = serialize_data(
-        loadfile, hdata, data_table, show_path=False, dt_colnames=[None, None]
-    )
+    empty_parameter = serialize_data(loadfile, hdata, data_table, show_path=False, dt_colnames=[])
+    none_entry_parameter = serialize_data(loadfile, hdata, data_table, show_path=False, dt_colnames=[None, None])
     # check equivalence
     assert missing_parameter == empty_parameter
     assert missing_parameter == none_entry_parameter
     assert numpy.allclose(missing_parameter[data_name]["data table"], data_table)
     # extract a single column
-    r_extract = serialize_data(
-        loadfile, hdata, data_table, show_path=False, dt_colnames=["r"]
-    )
-    gr_extract = serialize_data(
-        loadfile, hdata, data_table, show_path=False, dt_colnames=[None, "gr"]
-    )
-    incorrect_r_extract = serialize_data(
-        loadfile, hdata, data_table, show_path=False, dt_colnames=[None, "r"]
-    )
+    r_extract = serialize_data(loadfile, hdata, data_table, show_path=False, dt_colnames=["r"])
+    gr_extract = serialize_data(loadfile, hdata, data_table, show_path=False, dt_colnames=[None, "gr"])
+    incorrect_r_extract = serialize_data(loadfile, hdata, data_table, show_path=False, dt_colnames=[None, "r"])
     # check proper columns extracted
-    assert numpy.allclose(
-        gr_extract[data_name]["gr"], incorrect_r_extract[data_name]["r"]
-    )
+    assert numpy.allclose(gr_extract[data_name]["gr"], incorrect_r_extract[data_name]["r"])
     assert "r" not in gr_extract[data_name]
-    assert (
-        "gr" not in r_extract[data_name] and "gr" not in incorrect_r_extract[data_name]
-    )
+    assert "gr" not in r_extract[data_name] and "gr" not in incorrect_r_extract[data_name]
     # check correct values extracted
     assert numpy.allclose(r_extract[data_name]["r"], r_list)
     assert numpy.allclose(gr_extract[data_name]["gr"], gr_list)

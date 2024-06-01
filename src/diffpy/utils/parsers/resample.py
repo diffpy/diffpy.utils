@@ -105,7 +105,6 @@ def resample(r, s, dr):
         return rnew, snew
 
     elif dr0 > dr:
-
         # Tried to pad the end of s to dampen, but nothing works.
         # m = (s[-1] - s[-2]) / dr0
         # b = (s[-2] * r[-1] - s[-1] * r[-2]) / dr0

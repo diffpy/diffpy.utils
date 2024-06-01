@@ -4,7 +4,9 @@
 """
 
 import unittest
+
 import numpy
+
 from diffpy.utils.parsers import loadData
 from diffpy.utils.tests.testhelpers import datafile
 
@@ -14,7 +16,6 @@ loaddatawithheaders = datafile("loaddatawithheaders.txt")
 
 ##############################################################################
 class TestLoadData(unittest.TestCase):
-
     def test_loadData_default(self):
         """check loadData() with default options"""
         d2c = numpy.array([[3, 31], [4, 32], [5, 33]])
@@ -47,9 +48,7 @@ class TestLoadData(unittest.TestCase):
         """check loadData() with headers options enabled"""
         hignore = ["# ", "// ", "["]  # ignore lines beginning with these strings
         delimiter = ": "  # what our data should be separated by
-        hdata = loadData(
-            loaddatawithheaders, headers=True, hdel=delimiter, hignore=hignore
-        )
+        hdata = loadData(loaddatawithheaders, headers=True, hdel=delimiter, hignore=hignore)
         # only fourteen lines of data are formatted properly
         assert len(hdata) == 14
         # check the following are floats

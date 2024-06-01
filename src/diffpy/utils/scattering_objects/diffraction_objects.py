@@ -40,12 +40,8 @@ class Diffraction_object:
                     or not np.isclose(value, other_value, rtol=1e-5)
                 ):
                     return False
-            elif isinstance(value, list) and all(
-                isinstance(i, np.ndarray) for i in value
-            ):
-                if not all(
-                    np.allclose(i, j, rtol=1e-5) for i, j in zip(value, other_value)
-                ):
+            elif isinstance(value, list) and all(isinstance(i, np.ndarray) for i in value):
+                if not all(np.allclose(i, j, rtol=1e-5) for i, j in zip(value, other_value)):
                     return False
             else:
                 if value != other_value:
@@ -54,11 +50,7 @@ class Diffraction_object:
 
     def __add__(self, other):
         summed = deepcopy(self)
-        if (
-            isinstance(other, int)
-            or isinstance(other, float)
-            or isinstance(other, np.ndarray)
-        ):
+        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
             summed.on_tth[1] = self.on_tth[1] + other
             summed.on_q[1] = self.on_q[1] + other
         elif not isinstance(other, Diffraction_object):
@@ -75,11 +67,7 @@ class Diffraction_object:
 
     def __radd__(self, other):
         summed = deepcopy(self)
-        if (
-            isinstance(other, int)
-            or isinstance(other, float)
-            or isinstance(other, np.ndarray)
-        ):
+        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
             summed.on_tth[1] = self.on_tth[1] + other
             summed.on_q[1] = self.on_q[1] + other
         elif not isinstance(other, Diffraction_object):
@@ -96,17 +84,11 @@ class Diffraction_object:
 
     def __sub__(self, other):
         subtracted = deepcopy(self)
-        if (
-            isinstance(other, int)
-            or isinstance(other, float)
-            or isinstance(other, np.ndarray)
-        ):
+        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
             subtracted.on_tth[1] = self.on_tth[1] - other
             subtracted.on_q[1] = self.on_q[1] - other
         elif not isinstance(other, Diffraction_object):
-            raise TypeError(
-                f"I only know how to subtract two Scattering_object objects"
-            )
+            raise TypeError(f"I only know how to subtract two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
             raise RuntimeError(
                 f"objects are not on the same x-grid. You may subtract them using the self.add method and"
@@ -119,17 +101,11 @@ class Diffraction_object:
 
     def __rsub__(self, other):
         subtracted = deepcopy(self)
-        if (
-            isinstance(other, int)
-            or isinstance(other, float)
-            or isinstance(other, np.ndarray)
-        ):
+        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
             subtracted.on_tth[1] = other - self.on_tth[1]
             subtracted.on_q[1] = other - self.on_q[1]
         elif not isinstance(other, Diffraction_object):
-            raise TypeError(
-                f"I only know how to subtract two Scattering_object objects"
-            )
+            raise TypeError(f"I only know how to subtract two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
             raise RuntimeError(
                 f"objects are not on the same x-grid. You may subtract them using the self.add method and"
@@ -142,17 +118,11 @@ class Diffraction_object:
 
     def __mul__(self, other):
         multiplied = deepcopy(self)
-        if (
-            isinstance(other, int)
-            or isinstance(other, float)
-            or isinstance(other, np.ndarray)
-        ):
+        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
             multiplied.on_tth[1] = other * self.on_tth[1]
             multiplied.on_q[1] = other * self.on_q[1]
         elif not isinstance(other, Diffraction_object):
-            raise TypeError(
-                f"I only know how to multiply two Scattering_object objects"
-            )
+            raise TypeError(f"I only know how to multiply two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
             raise RuntimeError(
                 f"objects are not on the same x-grid. You may multiply them using the self.add method and"
@@ -165,11 +135,7 @@ class Diffraction_object:
 
     def __rmul__(self, other):
         multiplied = deepcopy(self)
-        if (
-            isinstance(other, int)
-            or isinstance(other, float)
-            or isinstance(other, np.ndarray)
-        ):
+        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
             multiplied.on_tth[1] = other * self.on_tth[1]
             multiplied.on_q[1] = other * self.on_q[1]
         elif self.on_tth[0].all() != other.on_tth[0].all():
@@ -184,17 +150,11 @@ class Diffraction_object:
 
     def __truediv__(self, other):
         divided = deepcopy(self)
-        if (
-            isinstance(other, int)
-            or isinstance(other, float)
-            or isinstance(other, np.ndarray)
-        ):
+        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
             divided.on_tth[1] = other / self.on_tth[1]
             divided.on_q[1] = other / self.on_q[1]
         elif not isinstance(other, Diffraction_object):
-            raise TypeError(
-                f"I only know how to multiply two Scattering_object objects"
-            )
+            raise TypeError(f"I only know how to multiply two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
             raise RuntimeError(
                 f"objects are not on the same x-grid. You may multiply them using the self.add method and"
@@ -207,11 +167,7 @@ class Diffraction_object:
 
     def __rtruediv__(self, other):
         divided = deepcopy(self)
-        if (
-            isinstance(other, int)
-            or isinstance(other, float)
-            or isinstance(other, np.ndarray)
-        ):
+        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
             divided.on_tth[1] = other / self.on_tth[1]
             divided.on_q[1] = other / self.on_q[1]
         elif self.on_tth[0].all() != other.on_tth[0].all():
@@ -252,13 +208,9 @@ class Diffraction_object:
           the q values in the independent array
 
         """
-        self.qs = self._set_array_from_range(
-            begin_q, end_q, step_size=step_size, n_steps=n_steps
-        )
+        self.qs = self._set_array_from_range(begin_q, end_q, step_size=step_size, n_steps=n_steps)
 
-    def set_angles_from_range(
-        self, begin_angle, end_angle, step_size=None, n_steps=None
-    ):
+    def set_angles_from_range(self, begin_angle, end_angle, step_size=None, n_steps=None):
         """
         create an array of linear spaced angle-values
 
@@ -280,9 +232,7 @@ class Diffraction_object:
           the q values in the independent array
 
         """
-        self.angles = self._set_array_from_range(
-            begin_angle, end_angle, step_size=step_size, n_steps=n_steps
-        )
+        self.angles = self._set_array_from_range(begin_angle, end_angle, step_size=step_size, n_steps=n_steps)
 
     def _set_array_from_range(self, begin, end, step_size=None, n_steps=None):
         if step_size is not None and n_steps is not None:
@@ -319,7 +269,7 @@ class Diffraction_object:
     ):
         f"""
         insert a new scattering quantity into the scattering object
-        
+
         Parameters
         ----------
         xarray array-like of floats
@@ -330,7 +280,7 @@ class Diffraction_object:
           the type of quantity for the independent variable from {*XQUANTITIES,}
         metadata: dict
           the metadata in the form of a dictionary of user-supplied key:value pairs
-        
+
         Returns
         -------
 
