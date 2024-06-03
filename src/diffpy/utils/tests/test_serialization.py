@@ -98,7 +98,7 @@ def test_exceptions():
     hdata = loadData(warningfile, headers=True)
     data_table = loadData(warningfile)
     with pytest.warns(RuntimeWarning) as record:
-        data = serialize_data(
+        serialize_data(
             warningfile,
             hdata,
             data_table,
