@@ -93,3 +93,18 @@ def test_exceptions():
     no_dt = serialize_data(nodt, nodt_hdata, nodt_dt, show_path=False)
     nodt_data_name = list(no_dt.keys())[0]
     assert numpy.allclose(no_dt[nodt_data_name]["data table"], nodt_dt)
+
+    # ensure user is warned when columns are overwritten
+    hdata = loadData(warningfile, headers=True)
+    data_table = loadData(warningfile)
+    with pytest.warns(RuntimeWarning) as record:
+        serialize_data(
+            warningfile,
+            hdata,
+            data_table,
+            show_path=False,
+            dt_colnames=["c1", "c2", "c3"],
+        )
+    assert len(record) == 4
+    for msg in record:
+        assert "overwritten" in msg.message.args[0]
