@@ -17,7 +17,7 @@
 """
 
 from .loaddata import loadData
-from .resample import resample, wsinterp
+from .resample import resample
 from .serialization import deserialize_data, serialize_data
 
 # silence the pyflakes syntax checker
