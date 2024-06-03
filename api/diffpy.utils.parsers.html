@@ -236,13 +236,16 @@ formatted as {filename: data}.</p>
 </dd>
 <dt>data_table: list or ndarray</dt><dd><p>Data table.</p>
 </dd>
-<dt>dt_colnames: list</dt><dd><p>Names of each column in data_table. Every name in data_table_cols will be put into the Dictionary as a key with
-a value of that column in data_table (stored as a List). Put None for columns without names. If dt_cols has less
-non-None entries than columns in data_table, the pair {‘data table’: data_table} will be put in the dictionary.
+<dt>dt_colnames: list</dt><dd><p>Names of each column in data_table. Every name in data_table_cols will be put into the Dictionary
+as a key with a value of that column in data_table (stored as a List). Put None for columns
+without names. If dt_cols has less non-None entries than columns in data_table,
+the pair {‘data table’: data_table} will be put in the dictionary.
 (Default None: only entry {‘data table’: data_table} will be added to dictionary.)</p>
 </dd>
-<dt>show_path: bool</dt><dd><p>include a path element in the database entry (default True). If ‘path’ is not included in hddata, extract path
-from filename.</p>
+<dt>show_path: bool</dt><dd><dl class="simple">
+<dt>include a path element in the database entry (default True). If ‘path’ is not included in hddata,</dt><dd><p>extract path from filename.</p>
+</dd>
+</dl>
 </dd>
 <dt>serial_file</dt><dd><p>Serial language file to dump dictionary into. If None (defualt), no dumping will occur.</p>
 </dd>

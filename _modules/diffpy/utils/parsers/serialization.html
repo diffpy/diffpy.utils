@@ -127,13 +127,14 @@
 <span class="sd">    data_table: list or ndarray</span>
 <span class="sd">        Data table.</span>
 <span class="sd">    dt_colnames: list</span>
-<span class="sd">        Names of each column in data_table. Every name in data_table_cols will be put into the Dictionary as a key with</span>
-<span class="sd">        a value of that column in data_table (stored as a List). Put None for columns without names. If dt_cols has less</span>
-<span class="sd">        non-None entries than columns in data_table, the pair {&#39;data table&#39;: data_table} will be put in the dictionary.</span>
+<span class="sd">        Names of each column in data_table. Every name in data_table_cols will be put into the Dictionary</span>
+<span class="sd">        as a key with a value of that column in data_table (stored as a List). Put None for columns</span>
+<span class="sd">        without names. If dt_cols has less non-None entries than columns in data_table,</span>
+<span class="sd">        the pair {&#39;data table&#39;: data_table} will be put in the dictionary.</span>
 <span class="sd">        (Default None: only entry {&#39;data table&#39;: data_table} will be added to dictionary.)</span>
 <span class="sd">    show_path: bool</span>
-<span class="sd">        include a path element in the database entry (default True). If &#39;path&#39; is not included in hddata, extract path</span>
-<span class="sd">        from filename.</span>
+<span class="sd">        include a path element in the database entry (default True). If &#39;path&#39; is not included in hddata,</span>
+<span class="sd">         extract path from filename.</span>
 <span class="sd">    serial_file</span>
 <span class="sd">        Serial language file to dump dictionary into. If None (defualt), no dumping will occur.</span>
 
@@ -279,7 +280,7 @@
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">return_dict</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Loaded dictionary is empty. Possibly due to improper file type.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Loaded dictionary is empty. Possibly due to improper file type.&quot;</span><span class="p">,</span>
             <span class="ne">RuntimeWarning</span><span class="p">,</span>
         <span class="p">)</span>
 
