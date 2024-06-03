@@ -1,5 +1,14 @@
 default_language_version:
     python: python3
+ci:
+    autofix_commit_msg: |
+        [pre-commit.ci] auto fixes from pre-commit hooks
+    autofix_prs: true
+    autoupdate_branch: 'pre-commit-autoupdate'
+    autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+    autoupdate_schedule: monthly
+    skip: [no-commit-to-branch]
+    submodules: false
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
@@ -25,10 +34,10 @@ repos:
     rev: 0.6.1
     hooks:
       - id: nbstripout
-  - repo: local
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
     hooks:
-      - id: prevent-commit-to-main
+      - id: no-commit-to-branch
         name: Prevent Commit to Main Branch
-        entry: ./prevent_commit_to_main.sh
-        language: script
-        stages: [commit]
+        args: ["--branch", "main"]
+        stages: [pre-commit]
