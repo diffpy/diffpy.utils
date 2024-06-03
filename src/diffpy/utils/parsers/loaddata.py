@@ -280,7 +280,7 @@ class TextDataLoader(object):
         for i, w in enumerate(self._words):
             try:
                 values[i] = float(w)
-            except:
+            except ValueError:
                 lw.ok[i] = False
         # prune lines that have a non-float values:
         lw.values = values
@@ -336,7 +336,7 @@ def isfloat(s):
     try:
         float(s)
         return True
-    except:
+    except ValueError:
         pass
     return False
 
