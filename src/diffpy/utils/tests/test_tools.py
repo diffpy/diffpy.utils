@@ -91,7 +91,6 @@ def test_get_user_info_with_home_conf_file(monkeypatch, inputs, expected, user_f
 
 @pytest.mark.parametrize("inputs, expected", params_user_info_with_local_conf_file)
 def test_get_user_info_with_local_conf_file(monkeypatch, inputs, expected, user_filesystem):
-    home_dir = _setup_dirs(monkeypatch, user_filesystem)
     local_config_data = {"username": "cwd_username", "email": "cwd@email.com"}
     with open(Path(user_filesystem) / "diffpyconfig.json", "w") as f:
         json.dump(local_config_data, f)
