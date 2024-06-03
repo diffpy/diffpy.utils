@@ -27,10 +27,12 @@ def loadData(filename, minrows=10, headers=False, hdel="=", hignore=None, **kwar
     filename
         Name of the file we want to load data from.
     minrows: int
-        Minimum number of rows in the first data block. All rows must have the same number of floating point values.
+        Minimum number of rows in the first data block. All rows must have the same number of floating
+         point values.
     headers: bool
      when False (defualt), the function returns a numpy array of the data in the data block.
-        When True, the function instead returns a dictionary of parameters and their corresponding values parsed from
+        When True, the function instead returns a dictionary of parameters and their corresponding
+         values parsed from
         header (information prior the data block). See hdel and hignore for options to help with parsing header
         information.
     hdel: str
@@ -278,7 +280,7 @@ class TextDataLoader(object):
         for i, w in enumerate(self._words):
             try:
                 values[i] = float(w)
-            except:
+            except ValueError:
                 lw.ok[i] = False
         # prune lines that have a non-float values:
         lw.values = values
@@ -334,7 +336,7 @@ def isfloat(s):
     try:
         float(s)
         return True
-    except:
+    except ValueError:
         pass
     return False
 

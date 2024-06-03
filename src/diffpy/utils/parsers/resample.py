@@ -23,7 +23,8 @@ import numpy
 def wsinterp(x, xp, fp, left=None, right=None):
     """One-dimensional Whittaker-Shannon interpolation.
 
-    This uses the Whittaker-Shannon interpolation formula to interpolate the value of fp (array), which is defined over
+    This uses the Whittaker-Shannon interpolation formula to interpolate the value of fp (array),
+     which is defined over
     xp (array), at x (array or float).
 
     Parameters
@@ -35,7 +36,8 @@ def wsinterp(x, xp, fp, left=None, right=None):
     fp: ndarray
         Function to be interpolated.
     left: float
-        If given, set fp for x < xp[0] to left. Otherwise, if left is None (default) or not given, set fp for x < xp[0]
+        If given, set fp for x < xp[0] to left. Otherwise, if left is None (default) or not given,
+         set fp for x < xp[0]
         to fp evaluated at xp[-1].
     right: float
         If given, set fp for x > xp[-1] to right. Otherwise, if right is None (default) or not given, set fp for
@@ -113,7 +115,7 @@ def resample(r, s, dr):
         # spad = numpy.concatenate([s,spad])
         # rnew = numpy.arange(0, rpad[-1], dr)
         # snew = numpy.zeros_like(rnew)
-        ## Accomodate for the fact that r[0] might not be 0
+        # Accomodate for the fact that r[0] might not be 0
         # u = (rnew-r[0]) / dr0
         # for n in range(len(spad)):
         #    snew += spad[n] * numpy.sinc(u - n)
