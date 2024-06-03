@@ -197,7 +197,7 @@ def deserialize_data(filename, filetype=None):
 
     if len(return_dict) == 0:
         warnings.warn(
-            f"Loaded dictionary is empty. Possibly due to improper file type.",
+            "Loaded dictionary is empty. Possibly due to improper file type.",
             RuntimeWarning,
         )
 
