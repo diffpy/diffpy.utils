@@ -107,10 +107,12 @@
 <span class="sd">    filename</span>
 <span class="sd">        Name of the file we want to load data from.</span>
 <span class="sd">    minrows: int</span>
-<span class="sd">        Minimum number of rows in the first data block. All rows must have the same number of floating point values.</span>
+<span class="sd">        Minimum number of rows in the first data block. All rows must have the same number of floating</span>
+<span class="sd">         point values.</span>
 <span class="sd">    headers: bool</span>
 <span class="sd">     when False (defualt), the function returns a numpy array of the data in the data block.</span>
-<span class="sd">        When True, the function instead returns a dictionary of parameters and their corresponding values parsed from</span>
+<span class="sd">        When True, the function instead returns a dictionary of parameters and their corresponding</span>
+<span class="sd">         values parsed from</span>
 <span class="sd">        header (information prior the data block). See hdel and hignore for options to help with parsing header</span>
 <span class="sd">        information.</span>
 <span class="sd">    hdel: str</span>
@@ -367,7 +369,7 @@
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_words</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                 <span class="n">lw</span><span class="o">.</span><span class="n">ok</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="c1"># prune lines that have a non-float values:</span>
         <span class="n">lw</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span>
@@ -426,7 +428,7 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
         <span class="k">pass</span>
     <span class="k">return</span> <span class="kc">False</span></div>
 
