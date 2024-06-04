@@ -1,8 +1,6 @@
-import uuid
 from copy import deepcopy
 
 import numpy as np
-from numpy import array
 
 QQUANTITIES = ["q"]
 ANGLEQUANTITIES = ["angle", "tth", "twotheta", "2theta"]
