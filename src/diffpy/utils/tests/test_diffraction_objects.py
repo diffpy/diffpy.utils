@@ -1,12 +1,12 @@
-from pathlib import Path
-from datetime import datetime
-
 import importlib.metadata
+from datetime import datetime
+from pathlib import Path
+from unittest.mock import patch
+
 import numpy as np
 import pytest
 
 from diffpy.utils.scattering_objects.diffraction_objects import Diffraction_object
-from unittest.mock import patch
 
 params = [
     (  # Default
@@ -234,8 +234,9 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
 
 
 def test_dump(tmp_path, monkeypatch):
-    monkeypatch.setattr(importlib.metadata, "version",
-                        lambda package_name: "3.3.0" if package_name == "diffpy.utils" else "1.2.3")
+    monkeypatch.setattr(
+        importlib.metadata, "version", lambda package_name: "3.3.0" if package_name == "diffpy.utils" else "1.2.3"
+    )
     with patch("diffpy.utils.scattering_objects.diffraction_objects.datetime") as mock_datetime:
         mock_datetime.now.return_value = datetime(2024, 5, 30, 12, 30, 1)
         x, y = np.linspace(0, 10, 11), np.linspace(0, 10, 11)
@@ -245,9 +246,7 @@ def test_dump(tmp_path, monkeypatch):
         test.wavelength = 1.54
         test.name = "test"
         test.scat_quantity = "x-ray"
-        test.insert_scattering_quantity(
-            x, y, "q", metadata={"thing1": 1, "thing2": "thing2"}
-        )
+        test.insert_scattering_quantity(x, y, "q", metadata={"thing1": 1, "thing2": "thing2"})
 
         # test when metadata does not contain package info and no input for package name
         test.dump(file, "q")

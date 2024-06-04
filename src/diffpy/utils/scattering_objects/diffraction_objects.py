@@ -1,11 +1,12 @@
-import uuid
 import importlib.metadata
+import uuid
 from copy import deepcopy
 from datetime import datetime
-from diffpy.utils.tools import get_package_info
 
 import numpy as np
 from numpy import array
+
+from diffpy.utils.tools import get_package_info
 
 QQUANTITIES = ["q"]
 ANGLEQUANTITIES = ["angle", "tth", "twotheta", "2theta"]

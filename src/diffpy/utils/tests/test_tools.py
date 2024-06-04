@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from diffpy.utils.tools import get_user_info, get_package_info
+from diffpy.utils.tools import get_package_info, get_user_info
 
 
 def _setup_dirs(monkeypatch, user_filesystem):
@@ -129,13 +129,21 @@ params_package_info = [
     ([None, {"thing1": 1}], {"thing1": 1, "package_info": [("diffpy.utils", "3.3.0")]}),
     (["diffpy.utils", None], {"package_info": [("diffpy.utils", "3.3.0")]}),
     (["package1", None], {"package_info": [("package1", "1.2.3"), ("diffpy.utils", "3.3.0")]}),
-    (["package1", {"thing1": 1}], {"thing1": 1, "package_info": [("package1", "1.2.3"), ("diffpy.utils", "3.3.0")]}),
-    (["package1", {"package_info": [("package1", "1.1.0"), ("package2", "3.4.5")]}],
-     {"package_info": [("package1", "1.2.3"), ("diffpy.utils", "3.3.0")]}),
+    (
+        ["package1", {"thing1": 1}],
+        {"thing1": 1, "package_info": [("package1", "1.2.3"), ("diffpy.utils", "3.3.0")]},
+    ),
+    (
+        ["package1", {"package_info": [("package1", "1.1.0"), ("package2", "3.4.5")]}],
+        {"package_info": [("package1", "1.2.3"), ("diffpy.utils", "3.3.0")]},
+    ),
 ]
+
+
 @pytest.mark.parametrize("inputs, expected", params_package_info)
 def test_get_package_info(monkeypatch, inputs, expected):
-    monkeypatch.setattr(importlib.metadata, "version",
-                        lambda package_name: "3.3.0" if package_name == "diffpy.utils" else "1.2.3")
+    monkeypatch.setattr(
+        importlib.metadata, "version", lambda package_name: "3.3.0" if package_name == "diffpy.utils" else "1.2.3"
+    )
     actual_metadata = get_package_info(package_name=inputs[0], metadata=inputs[1])
     assert actual_metadata == expected
