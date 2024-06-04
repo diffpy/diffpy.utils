@@ -226,9 +226,7 @@ params = [
 def test_diffraction_objects_equality(inputs1, inputs2, expected):
     diffraction_object1 = Diffraction_object()
     diffraction_object2 = Diffraction_object()
-    diffraction_object1_attributes = [
-        key for key in diffraction_object1.__dict__ if not key.startswith("_")
-    ]
+    diffraction_object1_attributes = [key for key in diffraction_object1.__dict__ if not key.startswith("_")]
     for i, attribute in enumerate(diffraction_object1_attributes):
         setattr(diffraction_object1, attribute, inputs1[i])
         setattr(diffraction_object2, attribute, inputs2[i])

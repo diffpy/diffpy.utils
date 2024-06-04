@@ -13,12 +13,13 @@
 #
 ##############################################################################
 
-import pathlib
 import json
+import pathlib
+import warnings
+
 import numpy
 
-from .custom_exceptions import UnsupportedTypeError, ImproperSizeError
-import warnings
+from .custom_exceptions import ImproperSizeError, UnsupportedTypeError
 
 # FIXME: add support for yaml, xml
 supported_formats = [".json"]
@@ -46,13 +47,14 @@ def serialize_data(
     data_table: list or ndarray
         Data table.
     dt_colnames: list
-        Names of each column in data_table. Every name in data_table_cols will be put into the Dictionary as a key with
-        a value of that column in data_table (stored as a List). Put None for columns without names. If dt_cols has less
-        non-None entries than columns in data_table, the pair {'data table': data_table} will be put in the dictionary.
+        Names of each column in data_table. Every name in data_table_cols will be put into the Dictionary
+        as a key with a value of that column in data_table (stored as a List). Put None for columns
+        without names. If dt_cols has less non-None entries than columns in data_table,
+        the pair {'data table': data_table} will be put in the dictionary.
         (Default None: only entry {'data table': data_table} will be added to dictionary.)
     show_path: bool
-        include a path element in the database entry (default True). If 'path' is not included in hddata, extract path
-        from filename.
+        include a path element in the database entry (default True). If 'path' is not included in hddata,
+         extract path from filename.
     serial_file
         Serial language file to dump dictionary into. If None (defualt), no dumping will occur.
 
@@ -84,12 +86,8 @@ def serialize_data(
         num_columns = [len(row) for row in data_table]
         max_columns = max(num_columns)
         num_col_names = len(dt_colnames)
-        if (
-            max_columns < num_col_names
-        ):  # assume numpy.loadtxt gives non-irregular array
-            raise ImproperSizeError(
-                "More entries in dt_colnames than columns in data_table."
-            )
+        if max_columns < num_col_names:  # assume numpy.loadtxt gives non-irregular array
+            raise ImproperSizeError("More entries in dt_colnames than columns in data_table.")
         named_columns = 0
         for idx in range(num_col_names):
             colname = dt_colnames[idx]
@@ -199,7 +197,7 @@ def deserialize_data(filename, filetype=None):
 
     if len(return_dict) == 0:
         warnings.warn(
-            f"Loaded dictionary is empty. Possibly due to improper file type.",
+            "Loaded dictionary is empty. Possibly due to improper file type.",
             RuntimeWarning,
         )
 

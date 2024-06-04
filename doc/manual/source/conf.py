@@ -13,8 +13,8 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys
 import os
+import sys
 import time
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -25,9 +25,7 @@ sys.path.insert(0, os.path.abspath("../../.."))
 sys.path.insert(0, os.path.abspath("../../../src"))
 
 # abbreviations
-ab_authors = (
-    "Pavol Juhás, Timur Davis, Christopher L. Farrow, Simon J.L. Billinge group"
-)
+ab_authors = "Pavol Juhás, Timur Davis, Christopher L. Farrow, Simon J.L. Billinge group"
 
 # -- General configuration ------------------------------------------------
 

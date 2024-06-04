@@ -20,9 +20,7 @@ def read_conf_file():
         with open(conf_file, "r") as f:
             config = json.load(f)
             if not config.get("username") or not config.get("email"):
-                raise ValueError(
-                    "Please provide a configuration file with username and email."
-                )
+                raise ValueError("Please provide a configuration file with username and email.")
             return config.get("username"), config.get("email")
     return None, None
 

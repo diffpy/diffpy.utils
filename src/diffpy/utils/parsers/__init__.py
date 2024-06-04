@@ -17,8 +17,8 @@
 """
 
 from .loaddata import loadData
-from .serialization import serialize_data, deserialize_data
-from .resample import wsinterp, resample
+from .resample import resample
+from .serialization import deserialize_data, serialize_data
 
 # silence the pyflakes syntax checker
 assert loadData or resample or True
