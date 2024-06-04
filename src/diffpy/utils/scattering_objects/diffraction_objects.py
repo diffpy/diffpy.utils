@@ -281,7 +281,7 @@ class Diffraction_object:
         yarray array-like of floats
           the dependent variable array
         xtype string
-          the type of quantity for the independent variable from {*XQUANTITIES,}
+          the type of quantity for the independent variable from {*XQUANTITIES, }
         metadata: dict
           the metadata in the form of a dictionary of user-supplied key:value pairs
 
