@@ -176,8 +176,8 @@ class Diffraction_object:
             divided.on_q[1] = other / self.on_q[1]
         elif self.on_tth[0].all() != other.on_tth[0].all():
             raise RuntimeError(
-                f"Diffraction objects are not on the same x-grid. You may multiply them using the self.add method and"
-                f"specifying how to handle the mismatch."
+                f"Diffraction objects are not on the same x-grid. You may multiply them using the self.add"
+                f"method and specifying how to handle the mismatch."
             )
         else:
             divided.on_tth[1] = other.on_tth[1] / self.on_tth[1]
