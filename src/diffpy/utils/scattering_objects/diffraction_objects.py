@@ -5,7 +5,6 @@ import uuid
 from copy import deepcopy
 
 import numpy as np
-from numpy import array
 
 from diffpy.utils.tools import get_package_info
 
