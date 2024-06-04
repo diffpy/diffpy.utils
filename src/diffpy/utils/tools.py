@@ -1,3 +1,4 @@
+import importlib.metadata
 import json
 import os
 from copy import copy
@@ -121,3 +122,29 @@ def get_user_info(args=None):
         config = {"username": "", "email": ""}
 
     return config
+
+
+def get_package_info(package_name=None, metadata=None):
+    """
+    fetches package info (names and versions) and inserts it into (given) metadata, updates if already exists
+
+    Parameters
+    ----------
+    package_name : str or None
+        the name of an additional package to include, usually refers to the package that is calling this function
+    metadata : dict
+        the dictionary to store the package info. If not provided, a new dictionary will be created
+
+    Returns
+    -------
+    the updated metadata dict with package info inserted
+
+    """
+    if metadata is None:
+        metadata = {}
+    package_names = [package_name] if package_name else []
+    if "diffpy.utils" not in package_names:
+        package_names.append("diffpy.utils")
+    package_info = [(package, importlib.metadata.version(package)) for package in package_names]
+    metadata["package_info"] = package_info
+    return metadata

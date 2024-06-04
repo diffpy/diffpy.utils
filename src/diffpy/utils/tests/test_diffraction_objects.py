@@ -235,19 +235,6 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
     assert (diffraction_object1 == diffraction_object2) == expected
 
 
-params_package_info = [
-    (None, "diffpy.utils v3.3.0"),
-    ("diffpy.labpdfproc", "diffpy.labpdfproc v1.2.3, diffpy.utils v3.3.0"),
-]
-@pytest.mark.parametrize("inputs, expected", params_package_info)
-def test_get_package_info(monkeypatch, inputs, expected):
-    monkeypatch.setattr(importlib.metadata, "version",
-                        lambda package_name: "3.3.0" if package_name == "diffpy.utils" else "1.2.3")
-    test = Diffraction_object()
-    test.get_package_info(inputs)
-    assert test.metadata["package_versions"] == expected
-
-
 def test_dump(tmp_path, monkeypatch):
     monkeypatch.setattr(importlib.metadata, "version",
                         lambda package_name: "3.3.0" if package_name == "diffpy.utils" else "1.2.3")
@@ -263,12 +250,50 @@ def test_dump(tmp_path, monkeypatch):
         test.insert_scattering_quantity(
             x, y, "q", metadata={"thing1": 1, "thing2": "thing2"}
         )
+
+        # test when metadata does not contain package info and no input for package name
         test.dump(file, "q")
         with open(file, "r") as f:
             actual = f.read()
         expected = (
             "[Diffraction_object]\nname = test\nwavelength = 1.54\nscat_quantity = x-ray\nthing1 = 1\n"
-            "thing2 = thing2\npackage_versions = diffpy.utils v3.3.0\ncreation_time = 2024-05-30 12:30:01"
+            "thing2 = thing2\npackage_info = [('diffpy.utils', '3.3.0')]\ncreation_time = 2024-05-30 12:30:01"
+            "\n\n#### start data\n0.000000000000000000e+00 0.000000000000000000e+00\n"
+            "1.000000000000000000e+00 1.000000000000000000e+00\n2.000000000000000000e+00 2.000000000000000000e+00\n"
+            "3.000000000000000000e+00 3.000000000000000000e+00\n4.000000000000000000e+00 4.000000000000000000e+00\n"
+            "5.000000000000000000e+00 5.000000000000000000e+00\n"
+            "6.000000000000000000e+00 6.000000000000000000e+00\n7.000000000000000000e+00 7.000000000000000000e+00\n"
+            "8.000000000000000000e+00 8.000000000000000000e+00\n9.000000000000000000e+00 9.000000000000000000e+00\n"
+            "1.000000000000000000e+01 1.000000000000000000e+01\n"
+        )
+        assert actual == expected
+
+        # test when metadata contains package info and has input for package name
+        test.dump(file, "q", "package1")
+        with open(file, "r") as f:
+            actual = f.read()
+        expected = (
+            "[Diffraction_object]\nname = test\nwavelength = 1.54\nscat_quantity = x-ray\nthing1 = 1\n"
+            "thing2 = thing2\npackage_info = [('package1', '1.2.3'), ('diffpy.utils', '3.3.0')]"
+            "\ncreation_time = 2024-05-30 12:30:01"
+            "\n\n#### start data\n0.000000000000000000e+00 0.000000000000000000e+00\n"
+            "1.000000000000000000e+00 1.000000000000000000e+00\n2.000000000000000000e+00 2.000000000000000000e+00\n"
+            "3.000000000000000000e+00 3.000000000000000000e+00\n4.000000000000000000e+00 4.000000000000000000e+00\n"
+            "5.000000000000000000e+00 5.000000000000000000e+00\n"
+            "6.000000000000000000e+00 6.000000000000000000e+00\n7.000000000000000000e+00 7.000000000000000000e+00\n"
+            "8.000000000000000000e+00 8.000000000000000000e+00\n9.000000000000000000e+00 9.000000000000000000e+00\n"
+            "1.000000000000000000e+01 1.000000000000000000e+01\n"
+        )
+        assert actual == expected
+
+        # test when metadata contains package info and no input for package name
+        test.dump(file, "q")
+        with open(file, "r") as f:
+            actual = f.read()
+        expected = (
+            "[Diffraction_object]\nname = test\nwavelength = 1.54\nscat_quantity = x-ray\nthing1 = 1\n"
+            "thing2 = thing2\npackage_info = [('package1', '1.2.3'), ('diffpy.utils', '3.3.0')]"
+            "\ncreation_time = 2024-05-30 12:30:01"
             "\n\n#### start data\n0.000000000000000000e+00 0.000000000000000000e+00\n"
             "1.000000000000000000e+00 1.000000000000000000e+00\n2.000000000000000000e+00 2.000000000000000000e+00\n"
             "3.000000000000000000e+00 3.000000000000000000e+00\n4.000000000000000000e+00 4.000000000000000000e+00\n"

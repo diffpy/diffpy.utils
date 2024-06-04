@@ -2,6 +2,7 @@ import uuid
 import importlib.metadata
 from copy import deepcopy
 from datetime import datetime
+from diffpy.utils.tools import get_package_info
 
 import numpy as np
 from numpy import array
@@ -508,27 +509,7 @@ class Diffraction_object:
             return self.on_d
         pass
 
-    def get_package_info(self, caller_package=None):
-        """
-        fetches package names and versions and inserts them into the metadata of the diffraction object.
-
-        Parameters
-        ----------
-        caller_package : str or None
-            the name of an additional package to include, usually refers to the package that is calling this function
-
-        Returns
-        -------
-
-        """
-        package_names = []
-        if caller_package:
-            package_names.append(caller_package)
-        package_names.append("diffpy.utils")
-        package_versions = [f"{package} v{importlib.metadata.version(package)}" for package in package_names]
-        self.metadata["package_versions"] = ", ".join(package_versions)
-
-    def dump(self, filepath, xtype=None, caller_package=None):
+    def dump(self, filepath, xtype=None, package_name=None):
         if xtype is None:
             xtype = " q"
         if xtype == "q":
@@ -538,7 +519,8 @@ class Diffraction_object:
         else:
             print(f"WARNING: cannot handle the xtype '{xtype}'")
 
-        self.get_package_info(caller_package)
+        if "package_info" not in self.metadata.keys() or package_name is not None:
+            self.metadata = get_package_info(package_name=package_name, metadata=self.metadata)
         self.metadata["creation_time"] = datetime.now()
 
         with open(filepath, "w") as f:
