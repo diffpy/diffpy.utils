@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from diffpy.utils.tools import get_user_info, get_package_info
+from diffpy.utils.tools import get_package_info, get_user_info
 
 
 def _setup_dirs(monkeypatch, user_filesystem):
@@ -127,11 +127,17 @@ def test_get_user_info_no_conf_file_no_inputs(monkeypatch, inputsa, inputsb, exp
 params_package_info = [
     (["package1", None], {"package_info": {("package1", "1.2.3")}}),
     (["package1", {"thing1": 1}], {"thing1": 1, "package_info": {("package1", "1.2.3")}}),
-    (["package1", {"package_info": {("package2", "3.4.5")}}],
-     {"package_info": {("package1", "1.2.3"), ("package2", "3.4.5")}}),
-    (["package1", {"package_info": {("package1", "1.1.0"), ("package2", "3.4.5")}}],
-     {"package_info": {("package1", "1.2.3"), ("package2", "3.4.5")}}),
+    (
+        ["package1", {"package_info": {("package2", "3.4.5")}}],
+        {"package_info": {("package1", "1.2.3"), ("package2", "3.4.5")}},
+    ),
+    (
+        ["package1", {"package_info": {("package1", "1.1.0"), ("package2", "3.4.5")}}],
+        {"package_info": {("package1", "1.2.3"), ("package2", "3.4.5")}},
+    ),
 ]
+
+
 @pytest.mark.parametrize("inputs, expected", params_package_info)
 def test_get_package_info(monkeypatch, inputs, expected):
     monkeypatch.setattr("importlib.metadata.version", lambda _: "1.2.3")

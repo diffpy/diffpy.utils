@@ -1,15 +1,12 @@
 import datetime
-from pathlib import Path
-
 import importlib.metadata
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import numpy as np
 import pytest
 
 from diffpy.utils.scattering_objects.diffraction_objects import Diffraction_object
-from unittest.mock import MagicMock
 
 params = [
     (  # Default
@@ -249,9 +246,7 @@ def test_dump(tmp_path, monkeypatch):
     test.wavelength = 1.54
     test.name = "test"
     test.scat_quantity = "x-ray"
-    test.insert_scattering_quantity(
-        x, y, "q", metadata={"thing1": 1, "thing2": "thing2"}
-    )
+    test.insert_scattering_quantity(x, y, "q", metadata={"thing1": 1, "thing2": "thing2"})
     test.dump(file, "q")
     with open(file, "r") as f:
         actual = f.read()

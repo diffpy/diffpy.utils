@@ -143,6 +143,7 @@ def get_package_info(package_name, metadata=None):
     """
     metadata = metadata or {}
     package_version = importlib.metadata.version(package_name)
-    metadata["package_info"] = {pkg for pkg in metadata.setdefault("package_info", set())
-                                if pkg[0] != package_name} | {(package_name, package_version)}
+    metadata["package_info"] = {
+        pkg for pkg in metadata.setdefault("package_info", set()) if pkg[0] != package_name
+    } | {(package_name, package_version)}
     return metadata
