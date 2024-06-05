@@ -1,7 +1,8 @@
+import uuid
+import datetime
 import importlib.metadata
 import uuid
 from copy import deepcopy
-from datetime import datetime
 
 import numpy as np
 from numpy import array
@@ -460,7 +461,7 @@ class Diffraction_object:
             return self.on_d
         pass
 
-    def dump(self, filepath, xtype=None, package_name=None):
+    def dump(self, filepath, xtype=None):
         if xtype is None:
             xtype = " q"
         if xtype == "q":
@@ -470,9 +471,8 @@ class Diffraction_object:
         else:
             print(f"WARNING: cannot handle the xtype '{xtype}'")
 
-        if "package_info" not in self.metadata.keys() or package_name is not None:
-            self.metadata = get_package_info(package_name=package_name, metadata=self.metadata)
-        self.metadata["creation_time"] = datetime.now()
+        self.metadata.update(get_package_info(package_name="diffpy.utils", metadata=self.metadata))
+        self.metadata["creation_time"] = datetime.datetime.now()
 
         with open(filepath, "w") as f:
             f.write(

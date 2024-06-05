@@ -120,14 +120,14 @@ def get_user_info(args=None):
     return config
 
 
-def get_package_info(package_name=None, metadata=None):
+def get_package_info(package_name, metadata=None):
     """
-    fetches package info (names and versions) and inserts it into (given) metadata, updates if already exists
+    fetches package info (names and versions) and inserts it into (given) metadata, updating if already exists
 
     Parameters
     ----------
-    package_name : str or None
-        the name of an additional package to include, usually refers to the package that is calling this function
+    package_name : str
+        the name of the package
     metadata : dict
         the dictionary to store the package info. If not provided, a new dictionary will be created
 
@@ -135,12 +135,14 @@ def get_package_info(package_name=None, metadata=None):
     -------
     the updated metadata dict with package info inserted
 
+    Examples
+    -------
+    >>> get_package_info("package1")
+    >>> {"package_info": {"package1", "1.0.0"}}
+
     """
-    if metadata is None:
-        metadata = {}
-    package_names = [package_name] if package_name else []
-    if "diffpy.utils" not in package_names:
-        package_names.append("diffpy.utils")
-    package_info = [(package, importlib.metadata.version(package)) for package in package_names]
-    metadata["package_info"] = package_info
+    metadata = metadata or {}
+    package_version = importlib.metadata.version(package_name)
+    metadata["package_info"] = {pkg for pkg in metadata.setdefault("package_info", set())
+                                if pkg[0] != package_name} | {(package_name, package_version)}
     return metadata
