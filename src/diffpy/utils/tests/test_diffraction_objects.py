@@ -1,8 +1,8 @@
-from freezegun import freeze_time
 from pathlib import Path
 
 import numpy as np
 import pytest
+from freezegun import freeze_time
 
 from diffpy.utils.scattering_objects.diffraction_objects import Diffraction_object
 
@@ -239,8 +239,10 @@ def test_dump(tmp_path, mocker):
     test.wavelength = 1.54
     test.name = "test"
     test.scat_quantity = "x-ray"
-    test.insert_scattering_quantity(x, y, "q", metadata={"thing1": 1, "thing2": "thing2", "package_info": {'package2': '3.4.5'}})
-    with mocker.patch('importlib.metadata.version', return_value='3.3.0'), freeze_time("2012-01-14"):
+    test.insert_scattering_quantity(
+        x, y, "q", metadata={"thing1": 1, "thing2": "thing2", "package_info": {"package2": "3.4.5"}}
+    )
+    with mocker.patch("importlib.metadata.version", return_value="3.3.0"), freeze_time("2012-01-14"):
         test.dump(file, "q")
     with open(file, "r") as f:
         actual = f.read()
