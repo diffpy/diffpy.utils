@@ -3,3 +3,5 @@ pytest
 codecov
 coverage
 pytest-env
+pytest-mock
+freezegun

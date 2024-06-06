@@ -2,6 +2,7 @@ from pathlib import Path
 
 import numpy as np
 import pytest
+from freezegun import freeze_time
 
 from diffpy.utils.scattering_objects.diffraction_objects import Diffraction_object
 
@@ -230,7 +231,7 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
     assert (diffraction_object1 == diffraction_object2) == expected
 
 
-def test_dump(tmp_path):
+def test_dump(tmp_path, mocker):
     x, y = np.linspace(0, 10, 11), np.linspace(0, 10, 11)
     directory = Path(tmp_path)
     file = directory / "testfile"
@@ -238,14 +239,17 @@ def test_dump(tmp_path):
     test.wavelength = 1.54
     test.name = "test"
     test.scat_quantity = "x-ray"
-    test.insert_scattering_quantity(x, y, "q", metadata={"thing1": 1, "thing2": "thing2"})
-    test.dump(file, "q")
+    test.insert_scattering_quantity(
+        x, y, "q", metadata={"thing1": 1, "thing2": "thing2", "package_info": {"package2": "3.4.5"}}
+    )
+    with mocker.patch("importlib.metadata.version", return_value="3.3.0"), freeze_time("2012-01-14"):
+        test.dump(file, "q")
     with open(file, "r") as f:
         actual = f.read()
     expected = (
         "[Diffraction_object]\nname = test\nwavelength = 1.54\nscat_quantity = x-ray\nthing1 = 1\n"
-        "thing2 = thing2\npackage_info = [('package1', '1.2.3'), ('diffpy.utils', '3.3.0')]\n"
-        "creation_time = 2024-05-30 12:30:01\n\n#### start data\n0.000000000000000000e+00 0.000000000000000000e+00\n"
+        "thing2 = thing2\npackage_info = {'package2': '3.4.5', 'diffpy.utils': '3.3.0'}\n"
+        "creation_time = 2012-01-14 00:00:00\n\n#### start data\n0.000000000000000000e+00 0.000000000000000000e+00\n"
         "1.000000000000000000e+00 1.000000000000000000e+00\n2.000000000000000000e+00 2.000000000000000000e+00\n"
         "3.000000000000000000e+00 3.000000000000000000e+00\n4.000000000000000000e+00 4.000000000000000000e+00\n"
         "5.000000000000000000e+00 5.000000000000000000e+00\n"
