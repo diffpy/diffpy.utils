@@ -1,6 +1,9 @@
 from copy import deepcopy
-
+import datetime
+import importlib.metadata
 import numpy as np
+
+from diffpy.utils.tools import get_package_info
 
 QQUANTITIES = ["q"]
 ANGLEQUANTITIES = ["angle", "tth", "twotheta", "2theta"]
@@ -463,6 +466,8 @@ class Diffraction_object:
             data_to_save = np.column_stack((self.on_tth[0], self.on_tth[1]))
         else:
             print(f"WARNING: cannot handle the xtype '{xtype}'")
+        self.metadata.update(get_package_info("diffpy.utils", metadata=self.metadata))
+        self.metadata["creation_time"] = datetime.datetime.now()
 
         with open(filepath, "w") as f:
             f.write(
