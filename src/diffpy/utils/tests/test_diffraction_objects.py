@@ -244,7 +244,8 @@ def test_dump(tmp_path):
         actual = f.read()
     expected = (
         "[Diffraction_object]\nname = test\nwavelength = 1.54\nscat_quantity = x-ray\nthing1 = 1\n"
-        "thing2 = thing2\n\n#### start data\n0.000000000000000000e+00 0.000000000000000000e+00\n"
+        "thing2 = thing2\npackage_info = [('package1', '1.2.3'), ('diffpy.utils', '3.3.0')]\n"
+        "creation_time = 2024-05-30 12:30:01\n\n#### start data\n0.000000000000000000e+00 0.000000000000000000e+00\n"
         "1.000000000000000000e+00 1.000000000000000000e+00\n2.000000000000000000e+00 2.000000000000000000e+00\n"
         "3.000000000000000000e+00 3.000000000000000000e+00\n4.000000000000000000e+00 4.000000000000000000e+00\n"
         "5.000000000000000000e+00 5.000000000000000000e+00\n"
