@@ -119,6 +119,7 @@ def get_user_info(args=None):
 
     return config
 
+
 def get_package_info(package_names, metadata=None):
     """
     fetches package version and updates it into (given) metadata
