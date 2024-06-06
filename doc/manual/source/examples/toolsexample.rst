@@ -5,7 +5,7 @@
 Tools Example
 #############
 
-This example will demonstrate how diffpy.utils allows us to load and manage username and email information.
+This example will demonstrate how diffpy.utils allows us to load and manage user and package information.
 Using the tools module, we can efficiently get them in terms of a dictionary.
 
 1) We have the function ``get_user_info`` that neatly returns a dictionary containing the username and email.
@@ -43,5 +43,32 @@ Using the tools module, we can efficiently get them in terms of a dictionary.
 
    This updates the email to "new@email.com" while fetching the username from inputs or the configuration files.
 
+3) We also have the function ``get_package_info``, which inserts or updates package names and versions
+   in the given metadata dictionary under the key "package_info".
+   It stores the package information as {"package_info": {"package_name": "version_number"}}.
+   This function can be used as follows. ::
 
-By using this function, we ensure that user information is correctly loaded, merged, and saved.
+    from diffpy.utils.tools import get_user_info
+    package_metadata = get_package_info("diffpy.utils")
+
+   You can also specify a specific metadata dictionary to store the information. ::
+
+    existing_dict = {"key": "value"}
+    existing_dict.update(get_package_info("diffpy.utils", metadata=existing_dict))
+
+   In this case, the function inserts the package info into ``existing_dict``.
+
+   If you want to specify package other than "diffpy.utils",
+   "diffpy.utils" is automatically included in the package info. ::
+
+    existing_dict.update(get_package_info("new_package", metadata=existing_dict))
+
+   The package info will then contain information for both "diffpy.utils" and "new_package".
+
+4) We can also use ``get_package_info`` with diffraction objects to update the package information. ::
+
+    from diffpy.utils.scattering_objects.diffraction_objects import Diffraction_object
+    example = Diffraction_object()
+    example.metadata.update(get_package_info("diffpy.utils", metadata=example.metadata))
+
+By using this module, we ensure that user and package information is correctly loaded, merged, and saved.
