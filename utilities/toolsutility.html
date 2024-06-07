@@ -78,12 +78,20 @@
              
   <section id="id1">
 <h1>Tools Utility<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">diffpy.utils.tools</span></code> module contains tool functions for use with diffpy apps.
-One of these functions, <code class="docutils literal notranslate"><span class="pre">get_user_info</span></code>, is designed for managing and tracking username and email information.
-This function helps storing this data in a <code class="docutils literal notranslate"><span class="pre">diffpyconfig.json</span></code> file.</p>
-<p>Users can use the module to simplify the process of loading, merging, and saving information consistently and easily.
+<p>The <code class="docutils literal notranslate"><span class="pre">diffpy.utils.tools</span></code> module provides tool functions for use with diffpy apps.</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">get_uder_info</span></code>: This function is designed for managing and tracking username and email information.</p></li>
+</ol>
+<p>Developers can use this function to simplify the process of loading, merging, and saving information consistently and easily.
 Additionally, it saves the effort of re-entering information, and allows overriding current information by
 passing parameters.</p>
+<p>2) <code class="docutils literal notranslate"><span class="pre">get_package_info</span></code>: This function loads package name and version information into a dictionary.
+It updates the package information under the key “package_info” in the format {“package_name”: “version_number”},
+resulting in an entry in the passed metadata dictionary that looks like
+<a href="#id2"><span class="problematic" id="id3">`</span></a>{“package_info”: {“package1”: “version_number1”, “package2”: “version_number2”} if the function is called more than
+once.</p>
+<p>Users can use these functions to track and manage versions of packages that can later be stored, for example, in an output
+file header.</p>
 </section>
 
 

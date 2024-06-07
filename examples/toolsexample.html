@@ -78,7 +78,7 @@
              
   <section id="id1">
 <h1>Tools Example<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
-<p>This example will demonstrate how diffpy.utils allows us to load and manage username and email information.
+<p>This example will demonstrate how diffpy.utils allows us to conveniently load and manage user and package information.
 Using the tools module, we can efficiently get them in terms of a dictionary.</p>
 <ol class="arabic">
 <li><p>We have the function <code class="docutils literal notranslate"><span class="pre">get_user_info</span></code> that neatly returns a dictionary containing the username and email.
@@ -87,22 +87,22 @@ You can use this function without arguments.</p>
 <span class="n">user_info</span> <span class="o">=</span> <span class="n">get_user_info</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>This function will first attempt to load configuration files
-from both the current working directory and the home directory.
-If no configuration files exist, it prompts for user input and creates a configuration file in the home directory.
-It prioritizes prompted user inputs, then current working directory, and finally home directory.
-If no configuration files or inputs are found, this function creates a configuration in the home directory
-with empty values for username and email stored as a dictionary.</p>
+<p>This function will first attempt to load the information from configuration files looking first in
+the current working directory and then in the user’s home directory.
+If no configuration files exist, it prompts for user input and creates a configuration file in the home directory
+so that the next time the program is run it will no longer have to prompt the user.
+It can be passed user information which overrides looking in config files, and so could be passed
+information that is entered through a gui or command line interface to override default information at runtime.
+It prioritizes prompted user inputs, then current working directory config file, and finally home directory config file.</p>
+<p>The function returns a dictionary containing the username and email information.</p>
 </li>
-<li><p>You can also override existing values by passing a dictionary to the function.</p>
+<li><p>You can also override existing values by passing a dictionary to the function with the keys <cite>“username”</cite> and <cite>“email”</cite></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">new_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;new_username&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;new@example.com&quot;</span><span class="p">}</span>
 <span class="n">new_user_info</span> <span class="o">=</span> <span class="n">get_user_info</span><span class="p">(</span><span class="n">new_args</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Here, the function returns a dictionary containing the new arguments.
-If no configuration files exist, it prompts for inputs again. The arguments passed here also override input values.
-The updated arguments will not be saved in files.</p>
-<p>You can update only the username or email individually, for example</p>
+</li>
+<li><p>You can update only the username or email individually, for example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">new_username</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">new_username</span><span class="p">}</span>
 <span class="n">new_user_info</span> <span class="o">=</span> <span class="n">get_user_info</span><span class="p">(</span><span class="n">new_username</span><span class="p">)</span>
 </pre></div>
@@ -116,7 +116,25 @@ Similarly, you can update only the email.</p>
 <p>This updates the email to “<a class="reference external" href="mailto:new&#37;&#52;&#48;email&#46;com">new<span>&#64;</span>email<span>&#46;</span>com</a>” while fetching the username from inputs or the configuration files.</p>
 </li>
 </ol>
-<p>By using this function, we ensure that user information is correctly loaded, merged, and saved.</p>
+<ol class="arabic" start="3">
+<li><p>We also have the function <code class="docutils literal notranslate"><span class="pre">get_package_info</span></code>, which inserts or updates package names and versions
+in the given metadata dictionary under the key “package_info”.
+It stores the package information as {“package_info”: {“package_name”: “version_number”}}.
+This function can be used as follows.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.tools</span> <span class="kn">import</span> <span class="n">get_user_info</span>
+<span class="n">package_metadata</span> <span class="o">=</span> <span class="n">get_package_info</span><span class="p">(</span><span class="s2">&quot;my_package&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also specify an existing dictionary to be updated with the information.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>existing_dict = {&quot;key&quot;: &quot;value&quot;}
+updated_dict = get_package_info(&quot;my_package&quot;, metadata=existing_dict))
+
+note that `&quot;diffpy.utils&quot;` is automatically included in the package info since the `get_user_info` function is
+part of diffpy.utils.
+</pre></div>
+</div>
+</li>
+</ol>
 </section>
 
 
