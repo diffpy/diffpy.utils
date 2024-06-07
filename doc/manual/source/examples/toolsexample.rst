@@ -5,7 +5,7 @@
 Tools Example
 #############
 
-This example will demonstrate how diffpy.utils allows us to load and manage user and package information.
+This example will demonstrate how diffpy.utils allows us to conveniently load and manage user and package information.
 Using the tools module, we can efficiently get them in terms of a dictionary.
 
 1) We have the function ``get_user_info`` that neatly returns a dictionary containing the username and email.
@@ -14,23 +14,22 @@ Using the tools module, we can efficiently get them in terms of a dictionary.
     from diffpy.utils.tools import get_user_info
     user_info = get_user_info()
 
-   This function will first attempt to load configuration files
-   from both the current working directory and the home directory.
-   If no configuration files exist, it prompts for user input and creates a configuration file in the home directory.
-   It prioritizes prompted user inputs, then current working directory, and finally home directory.
-   If no configuration files or inputs are found, this function creates a configuration in the home directory
-   with empty values for username and email stored as a dictionary.
+   This function will first attempt to load the information from configuration files looking first in
+   the current working directory and then in the user's home directory.
+   If no configuration files exist, it prompts for user input and creates a configuration file in the home directory
+   so that the next time the program is run it will no longer have to prompt the user.
+   It can be passed user information which overrides looking in config files, and so could be passed
+   information that is entered through a gui or command line interface to override default information at runtime.
+   It prioritizes prompted user inputs, then current working directory config file, and finally home directory config file.
 
-2) You can also override existing values by passing a dictionary to the function. ::
+   The function returns a dictionary containing the username and email information.
+
+2) You can also override existing values by passing a dictionary to the function with the keys `"username"` and `"email"` ::
 
     new_args = {"username": "new_username", "email": "new@example.com"}
     new_user_info = get_user_info(new_args)
 
-   Here, the function returns a dictionary containing the new arguments.
-   If no configuration files exist, it prompts for inputs again. The arguments passed here also override input values.
-   The updated arguments will not be saved in files.
-
-   You can update only the username or email individually, for example ::
+3) You can update only the username or email individually, for example ::
 
     new_username = {"username": new_username}
     new_user_info = get_user_info(new_username)
@@ -49,26 +48,12 @@ Using the tools module, we can efficiently get them in terms of a dictionary.
    This function can be used as follows. ::
 
     from diffpy.utils.tools import get_user_info
-    package_metadata = get_package_info("diffpy.utils")
+    package_metadata = get_package_info("my_package")
 
-   You can also specify a specific metadata dictionary to store the information. ::
+   You can also specify an existing dictionary to be updated with the information. ::
 
     existing_dict = {"key": "value"}
-    existing_dict.update(get_package_info("diffpy.utils", metadata=existing_dict))
+    updated_dict = get_package_info("my_package", metadata=existing_dict))
 
-   In this case, the function inserts the package info into ``existing_dict``.
-
-   If you want to specify package other than "diffpy.utils",
-   "diffpy.utils" is automatically included in the package info. ::
-
-    existing_dict.update(get_package_info("new_package", metadata=existing_dict))
-
-   The package info will then contain information for both "diffpy.utils" and "new_package".
-
-4) We can also use ``get_package_info`` with diffraction objects to update the package information. ::
-
-    from diffpy.utils.scattering_objects.diffraction_objects import Diffraction_object
-    example = Diffraction_object()
-    example.metadata.update(get_package_info("diffpy.utils", metadata=example.metadata))
-
-By using this module, we ensure that user and package information is correctly loaded, merged, and saved.
+    note that `"diffpy.utils"` is automatically included in the package info since the `get_user_info` function is
+    part of diffpy.utils. 
