@@ -1,4 +1,4 @@
-import importlib
+import importlib.metadata
 import json
 import os
 from copy import copy
