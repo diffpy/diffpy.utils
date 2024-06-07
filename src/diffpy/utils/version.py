@@ -20,6 +20,7 @@
 
 # obtain version information
 from importlib.metadata import version
+
 __version__ = version("diffpy.utils")
 
 # End of file
