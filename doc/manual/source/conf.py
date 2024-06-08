@@ -25,7 +25,9 @@ sys.path.insert(0, os.path.abspath("../../.."))
 sys.path.insert(0, os.path.abspath("../../../src"))
 
 # abbreviations
-ab_authors = "Pavol Juhás, Timur Davis, Christopher L. Farrow, Simon J.L. Billinge group"
+ab_authors = (
+    "Pavol Juhás, Timur Davis, Christopher L. Farrow, Simon J.L. Billinge group"
+)
 
 # -- General configuration ------------------------------------------------
 

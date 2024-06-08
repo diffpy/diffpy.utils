@@ -85,13 +85,17 @@ params_user_info_no_conf_file_no_inputs = [
 
 
 @pytest.mark.parametrize("inputs, expected", params_user_info_with_home_conf_file)
-def test_get_user_info_with_home_conf_file(monkeypatch, inputs, expected, user_filesystem):
+def test_get_user_info_with_home_conf_file(
+    monkeypatch, inputs, expected, user_filesystem
+):
     _setup_dirs(monkeypatch, user_filesystem)
     _run_tests(inputs, expected)
 
 
 @pytest.mark.parametrize("inputs, expected", params_user_info_with_local_conf_file)
-def test_get_user_info_with_local_conf_file(monkeypatch, inputs, expected, user_filesystem):
+def test_get_user_info_with_local_conf_file(
+    monkeypatch, inputs, expected, user_filesystem
+):
     _setup_dirs(monkeypatch, user_filesystem)
     local_config_data = {"username": "cwd_username", "email": "cwd@email.com"}
     with open(Path(user_filesystem) / "diffpyconfig.json", "w") as f:
@@ -101,8 +105,12 @@ def test_get_user_info_with_local_conf_file(monkeypatch, inputs, expected, user_
     _run_tests(inputs, expected)
 
 
-@pytest.mark.parametrize("inputsa, inputsb, expected", params_user_info_with_no_home_conf_file)
-def test_get_user_info_with_no_home_conf_file(monkeypatch, inputsa, inputsb, expected, user_filesystem):
+@pytest.mark.parametrize(
+    "inputsa, inputsb, expected", params_user_info_with_no_home_conf_file
+)
+def test_get_user_info_with_no_home_conf_file(
+    monkeypatch, inputsa, inputsb, expected, user_filesystem
+):
     _setup_dirs(monkeypatch, user_filesystem)
     os.remove(Path().home() / "diffpyconfig.json")
     inp_iter = iter(inputsb)
@@ -112,8 +120,12 @@ def test_get_user_info_with_no_home_conf_file(monkeypatch, inputsa, inputsb, exp
     assert confile.is_file()
 
 
-@pytest.mark.parametrize("inputsa, inputsb, expected", params_user_info_no_conf_file_no_inputs)
-def test_get_user_info_no_conf_file_no_inputs(monkeypatch, inputsa, inputsb, expected, user_filesystem):
+@pytest.mark.parametrize(
+    "inputsa, inputsb, expected", params_user_info_no_conf_file_no_inputs
+)
+def test_get_user_info_no_conf_file_no_inputs(
+    monkeypatch, inputsa, inputsb, expected, user_filesystem
+):
     _setup_dirs(monkeypatch, user_filesystem)
     os.remove(Path().home() / "diffpyconfig.json")
     inp_iter = iter(inputsb)
@@ -125,11 +137,23 @@ def test_get_user_info_no_conf_file_no_inputs(monkeypatch, inputsa, inputsb, exp
 
 params_package_info = [
     (["diffpy.utils", None], {"package_info": {"diffpy.utils": "3.3.0"}}),
-    (["package1", None], {"package_info": {"package1": "1.2.3", "diffpy.utils": "3.3.0"}}),
-    (["package1", {"thing1": 1}], {"thing1": 1, "package_info": {"package1": "1.2.3", "diffpy.utils": "3.3.0"}}),
+    (
+        ["package1", None],
+        {"package_info": {"package1": "1.2.3", "diffpy.utils": "3.3.0"}},
+    ),
+    (
+        ["package1", {"thing1": 1}],
+        {"thing1": 1, "package_info": {"package1": "1.2.3", "diffpy.utils": "3.3.0"}},
+    ),
     (
         ["package1", {"package_info": {"package1": "1.1.0", "package2": "3.4.5"}}],
-        {"package_info": {"package1": "1.2.3", "package2": "3.4.5", "diffpy.utils": "3.3.0"}},
+        {
+            "package_info": {
+                "package1": "1.2.3",
+                "package2": "3.4.5",
+                "diffpy.utils": "3.3.0",
+            }
+        },
     ),
 ]
 
@@ -137,7 +161,9 @@ params_package_info = [
 @pytest.mark.parametrize("inputs, expected", params_package_info)
 def test_get_package_info(monkeypatch, inputs, expected):
     monkeypatch.setattr(
-        importlib.metadata, "version", lambda package_name: "3.3.0" if package_name == "diffpy.utils" else "1.2.3"
+        importlib.metadata,
+        "version",
+        lambda package_name: "3.3.0" if package_name == "diffpy.utils" else "1.2.3",
     )
     actual_metadata = get_package_info(inputs[0], metadata=inputs[1])
     assert actual_metadata == expected

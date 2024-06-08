@@ -48,7 +48,9 @@ class TestLoadData(unittest.TestCase):
         """check loadData() with headers options enabled"""
         hignore = ["# ", "// ", "["]  # ignore lines beginning with these strings
         delimiter = ": "  # what our data should be separated by
-        hdata = loadData(loaddatawithheaders, headers=True, hdel=delimiter, hignore=hignore)
+        hdata = loadData(
+            loaddatawithheaders, headers=True, hdel=delimiter, hignore=hignore
+        )
         # only fourteen lines of data are formatted properly
         assert len(hdata) == 14
         # check the following are floats

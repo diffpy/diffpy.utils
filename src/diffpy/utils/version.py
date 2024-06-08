@@ -39,7 +39,9 @@ if __package__ is not None:
             fcfg = os.devnull
         with open(fcfg) as fp:
             kwords = [
-                [w.strip() for w in line.split(" = ", 1)] for line in fp if line[:1].isalpha() and " = " in line
+                [w.strip() for w in line.split(" = ", 1)]
+                for line in fp
+                if line[:1].isalpha() and " = " in line
             ]
         assert all(w[0] in cp for w in kwords), "received unrecognized keyword"
         cp.update(kwords)
