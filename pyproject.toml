@@ -50,7 +50,7 @@ exclude = ["diffpy.utils.tests*"]  # exclude packages matching these glob patter
 namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
 
 [tool.black]
-line-length = 115
+line-length = 88
 include = '\.pyi?$'
 exclude = '''
 /(
