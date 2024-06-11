@@ -16,9 +16,10 @@
 """Smaller shared functions for use by other diffpy packages.
 """
 
+from diffpy.utils.tools import get_package_info, get_user_info
+
 # package version
 from diffpy.utils.version import __version__
-from diffpy.utils.tools import get_package_info, get_user_info
 
 # silence the pyflakes syntax checker
 assert __version__ or True
