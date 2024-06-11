@@ -22,8 +22,8 @@ from diffpy.utils.tools import get_package_info, get_user_info
 from diffpy.utils.version import __version__
 
 __tools__ = [
-  get_package_info,
-  get_user_info,
+    get_package_info,
+    get_user_info,
 ]
 
 # silence the pyflakes syntax checker
