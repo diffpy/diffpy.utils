@@ -98,8 +98,8 @@ def get_user_info(args=None):
 
     Parameters
     ----------
-    args argparse.Namespace
-        the arguments from the parser, default is None
+    args dict
+        the dictionary containing username and email from cli inputs, default values are None
 
     Returns
     -------
