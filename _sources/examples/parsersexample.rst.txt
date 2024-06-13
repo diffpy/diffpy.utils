@@ -1,6 +1,6 @@
 .. _Parsers Example:
 
-:tocdepth: 2
+:tocdepth: -1
 
 Parsers Example
 ###############
@@ -51,7 +51,7 @@ Using the parsers module, we can load file data into simple and easy-to-work-wit
      hdata = loadData('<PATH to data.txt>', comments=['$', '-->'], headers=True)
 
 4) Rather than working with separate ``data_table`` and ``hdata`` objects, it may be easier to combine them into a single
-dictionary. We can do so using the ``serialize_data`` function. ::
+   dictionary. We can do so using the ``serialize_data`` function. ::
 
      from diffpy.utils.parsers import serialize_data
      file_data = serialize_data('<PATH to data.txt', hdata, data_table)
@@ -82,7 +82,7 @@ dictionary. We can do so using the ``serialize_data`` function. ::
      parsed_file_data = serialize_data('<PATH to data.txt>', hdata, data_table, serial_file='<PATH to serialfile.json>')
 
    The returned value, ``parsed_file_data``, is the dictionary we just added to ``serialfile.json``.
-   To extract the data from the serial file, we use ``deserialize_data''. ::
+   To extract the data from the serial file, we use ``deserialize_data``. ::
 
      from diffpy.utils.parsers import deserialize_data
      parsed_file_data = deserialize_data('<PATH to serialdata.json>')

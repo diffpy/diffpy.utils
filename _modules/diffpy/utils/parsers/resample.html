@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>diffpy.utils.parsers.resample &mdash; diffpy.utils 3.3.1 documentation</title>
+  <title>diffpy.utils.parsers.resample &mdash; diffpy.utils 3.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
 
@@ -14,7 +14,7 @@
   
         <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../../_static/documentation_options.js?v=6f23fdb8"></script>
+        <script src="../../../../_static/documentation_options.js?v=237dbe43"></script>
         <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
@@ -34,7 +34,7 @@
             diffpy.utils
           </a>
               <div class="version">
-                3.3.1
+                3.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
@@ -47,6 +47,7 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../release.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../utilities/utilities.html">Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/diffpy.utils.html">Package API</a></li>
 </ul>
@@ -104,8 +105,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;One-dimensional Whittaker-Shannon interpolation.</span>
 
 <span class="sd">    This uses the Whittaker-Shannon interpolation formula to interpolate the value of fp (array),</span>
-<span class="sd">     which is defined over</span>
-<span class="sd">    xp (array), at x (array or float).</span>
+<span class="sd">    which is defined over xp (array), at x (array or float).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -117,8 +117,7 @@
 <span class="sd">        Function to be interpolated.</span>
 <span class="sd">    left: float</span>
 <span class="sd">        If given, set fp for x &lt; xp[0] to left. Otherwise, if left is None (default) or not given,</span>
-<span class="sd">         set fp for x &lt; xp[0]</span>
-<span class="sd">        to fp evaluated at xp[-1].</span>
+<span class="sd">        set fp for x &lt; xp[0] to fp evaluated at xp[-1].</span>
 <span class="sd">    right: float</span>
 <span class="sd">        If given, set fp for x &gt; xp[-1] to right. Otherwise, if right is None (default) or not given, set fp for</span>
 <span class="sd">        x &gt; xp[-1] to fp evaluated at xp[-1].</span>

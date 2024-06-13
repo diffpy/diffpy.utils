@@ -1,6 +1,6 @@
 .. _Tools Example:
 
-:tocdepth: 2
+:tocdepth: -1
 
 Tools Example
 #############
@@ -24,7 +24,7 @@ Using the tools module, we can efficiently get them in terms of a dictionary.
 
    The function returns a dictionary containing the username and email information.
 
-2) You can also override existing values by passing a dictionary to the function with the keys `"username"` and `"email"` ::
+2) You can also override existing values by passing a dictionary to the function with the keys ``"username"`` and ``"email"`` ::
 
     new_args = {"username": "new_username", "email": "new@example.com"}
     new_user_info = get_user_info(new_args)
@@ -37,12 +37,12 @@ Using the tools module, we can efficiently get them in terms of a dictionary.
    This updates username to "new_username" while fetching the email from inputs or the configuration files.
    Similarly, you can update only the email. ::
 
-    new_email = {"email": new@email.com}
-    new_user_info = get_user_info(new_email)
+     new_email = {"email": new@email.com}
+     new_user_info = get_user_info(new_email)
 
    This updates the email to "new@email.com" while fetching the username from inputs or the configuration files.
 
-3) We also have the function ``get_package_info``, which inserts or updates package names and versions
+4) We also have the function ``get_package_info``, which inserts or updates package names and versions
    in the given metadata dictionary under the key "package_info".
    It stores the package information as {"package_info": {"package_name": "version_number"}}.
    This function can be used as follows. ::
@@ -55,5 +55,5 @@ Using the tools module, we can efficiently get them in terms of a dictionary.
     existing_dict = {"key": "value"}
     updated_dict = get_package_info("my_package", metadata=existing_dict))
 
-    note that `"diffpy.utils"` is automatically included in the package info since the `get_user_info` function is
-    part of diffpy.utils. 
+   note that `"diffpy.utils"` is automatically included in the package info since the `get_user_info` function is
+   part of diffpy.utils. 

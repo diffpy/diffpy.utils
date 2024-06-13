@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Parsers Example &mdash; diffpy.utils 3.3.1 documentation</title>
+  <title>Parsers Example &mdash; diffpy.utils 3.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=6f23fdb8"></script>
+        <script src="../_static/documentation_options.js?v=237dbe43"></script>
         <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -37,7 +37,7 @@
             diffpy.utils
           </a>
               <div class="version">
-                3.3.1
+                3.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -47,10 +47,16 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../release.html">Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utilities/utilities.html">Utilities</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="examples.html">Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Parsers Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resampleexample.html">Resampling Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="toolsexample.html">Tools Example</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../api/diffpy.utils.html">Package API</a></li>
 </ul>
 
@@ -130,41 +136,40 @@ but this time with the <code class="docutils literal notranslate"><span class="p
 </pre></div>
 </div>
 </li>
-</ol>
-<p>4) Rather than working with separate <code class="docutils literal notranslate"><span class="pre">data_table</span></code> and <code class="docutils literal notranslate"><span class="pre">hdata</span></code> objects, it may be easier to combine them into a single
+<li><p>Rather than working with separate <code class="docutils literal notranslate"><span class="pre">data_table</span></code> and <code class="docutils literal notranslate"><span class="pre">hdata</span></code> objects, it may be easier to combine them into a single
 dictionary. We can do so using the <code class="docutils literal notranslate"><span class="pre">serialize_data</span></code> function.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  from diffpy.utils.parsers import serialize_data
-  file_data = serialize_data(&#39;&lt;PATH to data.txt&#39;, hdata, data_table)
-  # File data is a dictionary with a single key
-  # The key is the file name (in our case, &#39;data.txt&#39;)
-  # The entry is a dictionary containing data from hdata and data_table
-  data_dict = file_data[&#39;data.txt&#39;]
-
-This dictionary ``data_dict`` contains all entries in ``hdata`` and an additional entry named
-``data table`` containing ``data_table``. ::
-
-  here_is_the_data_table = data_dict[&#39;data table&#39;]
-
-There is also an option to name columns in the data table and save those columns as entries instead. ::
-
-  data_table_column_names = [&#39;temperature&#39;, &#39;scale&#39;, &#39;stretch&#39;, &#39;rw&#39;]  # names of the columns in data.txt
-  file_data = serialize_data(&#39;&lt;PATH to data.txt&gt;&#39;, hdata, data_table, dt_colnames=data_table_column_names)
-  data_dict = file_data[&#39;data.txt&#39;]
-
-Now we can extract specific data table columns from the dictionary. ::
-
-  data_table_temperature_column = data_dict[&#39;temperature&#39;]
-  data_table_rw_column = data_dict[&#39;rw&#39;]
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.parsers</span> <span class="kn">import</span> <span class="n">serialize_data</span>
+<span class="n">file_data</span> <span class="o">=</span> <span class="n">serialize_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&#39;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">,</span> <span class="n">data_table</span><span class="p">)</span>
+<span class="c1"># File data is a dictionary with a single key</span>
+<span class="c1"># The key is the file name (in our case, &#39;data.txt&#39;)</span>
+<span class="c1"># The entry is a dictionary containing data from hdata and data_table</span>
+<span class="n">data_dict</span> <span class="o">=</span> <span class="n">file_data</span><span class="p">[</span><span class="s1">&#39;data.txt&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
-<ol class="arabic" start="5">
+<p>This dictionary <code class="docutils literal notranslate"><span class="pre">data_dict</span></code> contains all entries in <code class="docutils literal notranslate"><span class="pre">hdata</span></code> and an additional entry named
+<code class="docutils literal notranslate"><span class="pre">data</span> <span class="pre">table</span></code> containing <code class="docutils literal notranslate"><span class="pre">data_table</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">here_is_the_data_table</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;data table&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>There is also an option to name columns in the data table and save those columns as entries instead.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_table_column_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="s1">&#39;stretch&#39;</span><span class="p">,</span> <span class="s1">&#39;rw&#39;</span><span class="p">]</span>  <span class="c1"># names of the columns in data.txt</span>
+<span class="n">file_data</span> <span class="o">=</span> <span class="n">serialize_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">,</span> <span class="n">data_table</span><span class="p">,</span> <span class="n">dt_colnames</span><span class="o">=</span><span class="n">data_table_column_names</span><span class="p">)</span>
+<span class="n">data_dict</span> <span class="o">=</span> <span class="n">file_data</span><span class="p">[</span><span class="s1">&#39;data.txt&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Now we can extract specific data table columns from the dictionary.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_table_temperature_column</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span>
+<span class="n">data_table_rw_column</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;rw&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
 <li><p>When we are done working with the data, we can store it on disc for later use. This can also be done using the
 <code class="docutils literal notranslate"><span class="pre">serialize_data</span></code> function with an additional <code class="docutils literal notranslate"><span class="pre">serial_file</span></code> parameter.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">parsed_file_data</span> <span class="o">=</span> <span class="n">serialize_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">,</span> <span class="n">data_table</span><span class="p">,</span> <span class="n">serial_file</span><span class="o">=</span><span class="s1">&#39;&lt;PATH to serialfile.json&gt;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The returned value, <code class="docutils literal notranslate"><span class="pre">parsed_file_data</span></code>, is the dictionary we just added to <code class="docutils literal notranslate"><span class="pre">serialfile.json</span></code>.
-To extract the data from the serial file, we use <a href="#id2"><span class="problematic" id="id3">``</span></a>deserialize_data’’.</p>
+To extract the data from the serial file, we use <code class="docutils literal notranslate"><span class="pre">deserialize_data</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.parsers</span> <span class="kn">import</span> <span class="n">deserialize_data</span>
 <span class="n">parsed_file_data</span> <span class="o">=</span> <span class="n">deserialize_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to serialdata.json&gt;&#39;</span><span class="p">)</span>
 </pre></div>
