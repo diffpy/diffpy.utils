@@ -11,4 +11,5 @@ Check the :ref:`examples<Examples>` provided for how to use these.
    :depth: 2
 
 .. include:: parsersutility.rst
+.. include:: resampleutility.rst
 .. include:: toolsutility.rst
