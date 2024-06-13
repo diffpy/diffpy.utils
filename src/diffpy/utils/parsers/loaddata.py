@@ -28,13 +28,12 @@ def loadData(filename, minrows=10, headers=False, hdel="=", hignore=None, **kwar
         Name of the file we want to load data from.
     minrows: int
         Minimum number of rows in the first data block. All rows must have the same number of floating
-         point values.
+        point values.
     headers: bool
-     when False (defualt), the function returns a numpy array of the data in the data block.
+        when False (defualt), the function returns a numpy array of the data in the data block.
         When True, the function instead returns a dictionary of parameters and their corresponding
-         values parsed from
-        header (information prior the data block). See hdel and hignore for options to help with parsing header
-        information.
+        values parsed from header (information prior the data block). See hdel and hignore for options
+        to help with parsing header information.
     hdel: str
         (Only used when headers enabled.) Delimiter for parsing header information (default '='). e.g. using
         default hdel, the line 'parameter = p_value' is put into the dictionary as {parameter: p_value}.
