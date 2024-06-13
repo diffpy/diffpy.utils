@@ -4,6 +4,24 @@ Release Notes
 
 .. current developments
 
+3.4.0
+=====
+
+**Added:**
+
+* utility for handling the capture of username and email for diffpy applications
+* __eq__ method into Diffraction_object so we can equation two instances of a diffraction object
+
+**Changed:**
+
+* diffraction_object.dump now adds creation time and diffpy.utils version number to the output file
+
+**Fixed:**
+
+* fixed inadvertent overwrite of attributes on self.insert_scattering_quantity()
+
+
+
 v3.3.0
 ====================
 
