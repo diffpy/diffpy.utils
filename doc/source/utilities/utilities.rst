@@ -10,4 +10,5 @@ Check the :ref:`examples<Examples>` provided for how to use these.
 .. contents::
    :depth: 2
 
+.. include:: parsersutility.rst
 .. include:: toolsutility.rst

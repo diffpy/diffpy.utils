@@ -19,10 +19,10 @@ Subpackages
 Submodules
 ----------
 
-diffpy.utils.version module
----------------------------
+diffpy.utils.tools module
+-------------------------
 
-.. automodule:: diffpy.utils.version
+.. automodule:: diffpy.utils.tools
     :members:
     :undoc-members:
     :show-inheritance:
