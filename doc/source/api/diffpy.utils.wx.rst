@@ -1,3 +1,5 @@
+.. _wx Python Utilities Documentation
+
 diffpy.utils.wx package
 =======================
 
