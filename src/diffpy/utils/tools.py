@@ -7,16 +7,17 @@ from pathlib import Path
 
 def clean_dict(obj):
     """
-    remove keys from the dictionary where the corresponding value is None
+    Remove keys from the dictionary where the corresponding value is None.
 
     Parameters
     ----------
     obj: dict
-        the dictionary to clean. If None, initialize as an empty dictionary
+        The dictionary to clean. If None, initialize as an empty dictionary.
 
     Returns
     -------
-    the cleaned dictionary with keys removed where the value is None
+    dict:
+        The cleaned dictionary with keys removed where the value is None.
 
     """
     obj = obj if obj is not None else {}
@@ -28,32 +29,34 @@ def clean_dict(obj):
 
 def stringify(obj):
     """
-    convert None to an empty string
+    Convert None to an empty string.
 
     Parameters
     ----------
     obj: str
-        the object to convert. If None, return an empty string
+        The object to convert. If None, return an empty string.
 
     Returns
     -------
-    the converted string if obj is not None, otherwise an empty string
+    str or None:
+        The converted string if obj is not None, otherwise an empty string.
     """
     return obj if obj is not None else ""
 
 
 def load_config(file_path):
     """
-    load configuration from a json file
+    Load configuration from a .json file.
 
     Parameters
     ----------
     file_path: Path
-        the path to the configuration file
+        The path to the configuration file.
 
     Returns
     -------
-    the configuration dictionary or None if file does not exist
+    dict:
+        The configuration dictionary or None if file does not exist.
 
     """
     config_file = Path(file_path).resolve()
@@ -89,7 +92,7 @@ def _create_global_config(args):
 
 def get_user_info(args=None):
     """
-    get username and email configuration
+    Get username and email configuration.
 
     First attempts to load config file from global and local paths.
     If neither exists, creates a global config file.
@@ -99,11 +102,12 @@ def get_user_info(args=None):
     Parameters
     ----------
     args argparse.Namespace
-        the arguments from the parser, default is None
+        The arguments from the parser, default is None.
 
     Returns
     -------
-    the dictionary containing username and email with corresponding values
+    dict or None:
+        The dictionary containing username and email with corresponding values.
 
     """
     config_bool = True
@@ -122,19 +126,20 @@ def get_user_info(args=None):
 
 def get_package_info(package_names, metadata=None):
     """
-    fetches package version and updates it into (given) metadata
+    Fetches package version and updates it into (given) metadata.
 
-    package info stored in metadata as {'package_info': {'package_name': 'version_number'}}
+    Package info stored in metadata as {'package_info': {'package_name': 'version_number'}}.
 
     ----------
     package_name : str or list
-        the name of the package(s) to retrieve the version number for
+        The name of the package(s) to retrieve the version number for.
     metadata : dict
-        the dictionary to store the package info. If not provided, a new dictionary will be created
+        The dictionary to store the package info. If not provided, a new dictionary will be created.
 
     Returns
     -------
-    the updated metadata dict with package info inserted
+    dict:
+        The updated metadata dict with package info inserted.
 
     """
     if metadata is None:

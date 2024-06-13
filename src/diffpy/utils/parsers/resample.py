@@ -24,8 +24,7 @@ def wsinterp(x, xp, fp, left=None, right=None):
     """One-dimensional Whittaker-Shannon interpolation.
 
     This uses the Whittaker-Shannon interpolation formula to interpolate the value of fp (array),
-     which is defined over
-    xp (array), at x (array or float).
+    which is defined over xp (array), at x (array or float).
 
     Parameters
     ----------
@@ -37,8 +36,7 @@ def wsinterp(x, xp, fp, left=None, right=None):
         Function to be interpolated.
     left: float
         If given, set fp for x < xp[0] to left. Otherwise, if left is None (default) or not given,
-         set fp for x < xp[0]
-        to fp evaluated at xp[-1].
+        set fp for x < xp[0] to fp evaluated at xp[-1].
     right: float
         If given, set fp for x > xp[-1] to right. Otherwise, if right is None (default) or not given, set fp for
         x > xp[-1] to fp evaluated at xp[-1].
