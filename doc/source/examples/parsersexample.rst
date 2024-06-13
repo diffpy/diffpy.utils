@@ -1,6 +1,6 @@
 .. _Parsers Example:
 
-:tocdepth: 2
+:tocdepth: -1
 
 Parsers Example
 ###############

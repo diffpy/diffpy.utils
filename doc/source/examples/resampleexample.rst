@@ -1,6 +1,6 @@
 .. _Resample Example:
 
-:tocdepth: 2
+:tocdepth: -1
 
 Resampling Example
 ##################
