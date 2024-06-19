@@ -11,6 +11,11 @@ DQUANTITIES = ["d", "dspace"]
 XQUANTITIES = ANGLEQUANTITIES + DQUANTITIES + QQUANTITIES
 XUNITS = ["degrees", "radians", "rad", "deg", "inv_angs", "inv_nm", "nm-1", "A-1"]
 
+x_grid_emsg = (
+    "objects are not on the same x-grid. You may add them using the self.add method "
+    "and specifying how to handle the mismatch."
+)
+
 
 class Diffraction_object:
     def __init__(self, name="", wavelength=None):
@@ -66,8 +71,8 @@ class Diffraction_object:
             raise TypeError("I only know how to sum two Diffraction_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
             raise RuntimeError(
-                "objects are not on the same x-grid. You may add them using the self.add method and"
-                "specifying how to handle the mismatch."
+                "objects are not on the same x-grid. You may add them using the "
+                "self.add method and specifying how to handle the mismatch."
             )
         else:
             summed.on_tth[1] = self.on_tth[1] + other.on_tth[1]
@@ -86,10 +91,7 @@ class Diffraction_object:
         elif not isinstance(other, Diffraction_object):
             raise TypeError("I only know how to sum two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(
-                "objects are not on the same x-grid. You may add them using the self.add method and"
-                "specifying how to handle the mismatch."
-            )
+            raise RuntimeError(x_grid_emsg)
         else:
             summed.on_tth[1] = self.on_tth[1] + other.on_tth[1]
             summed.on_q[1] = self.on_q[1] + other.on_q[1]
@@ -107,10 +109,7 @@ class Diffraction_object:
         elif not isinstance(other, Diffraction_object):
             raise TypeError("I only know how to subtract two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(
-                "objects are not on the same x-grid. You may subtract them using the self.add method and"
-                "specifying how to handle the mismatch."
-            )
+            raise RuntimeError(x_grid_emsg)
         else:
             subtracted.on_tth[1] = self.on_tth[1] - other.on_tth[1]
             subtracted.on_q[1] = self.on_q[1] - other.on_q[1]
@@ -128,10 +127,7 @@ class Diffraction_object:
         elif not isinstance(other, Diffraction_object):
             raise TypeError("I only know how to subtract two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(
-                "objects are not on the same x-grid. You may subtract them using the self.add method and"
-                "specifying how to handle the mismatch."
-            )
+            raise RuntimeError(x_grid_emsg)
         else:
             subtracted.on_tth[1] = other.on_tth[1] - self.on_tth[1]
             subtracted.on_q[1] = other.on_q[1] - self.on_q[1]
@@ -149,10 +145,7 @@ class Diffraction_object:
         elif not isinstance(other, Diffraction_object):
             raise TypeError("I only know how to multiply two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(
-                "objects are not on the same x-grid. You may multiply them using the self.add method and"
-                "specifying how to handle the mismatch."
-            )
+            raise RuntimeError(x_grid_emsg)
         else:
             multiplied.on_tth[1] = self.on_tth[1] * other.on_tth[1]
             multiplied.on_q[1] = self.on_q[1] * other.on_q[1]
@@ -168,10 +161,7 @@ class Diffraction_object:
             multiplied.on_tth[1] = other * self.on_tth[1]
             multiplied.on_q[1] = other * self.on_q[1]
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(
-                "objects are not on the same x-grid. You may multiply them using the self.add method and"
-                "specifying how to handle the mismatch."
-            )
+            raise RuntimeError(x_grid_emsg)
         else:
             multiplied.on_tth[1] = self.on_tth[1] * other.on_tth[1]
             multiplied.on_q[1] = self.on_q[1] * other.on_q[1]
@@ -189,10 +179,7 @@ class Diffraction_object:
         elif not isinstance(other, Diffraction_object):
             raise TypeError("I only know how to multiply two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(
-                "objects are not on the same x-grid. You may multiply them using the self.add method and"
-                "specifying how to handle the mismatch."
-            )
+            raise RuntimeError(x_grid_emsg)
         else:
             divided.on_tth[1] = self.on_tth[1] / other.on_tth[1]
             divided.on_q[1] = self.on_q[1] / other.on_q[1]
@@ -208,10 +195,7 @@ class Diffraction_object:
             divided.on_tth[1] = other / self.on_tth[1]
             divided.on_q[1] = other / self.on_q[1]
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(
-                "Diffraction objects are not on the same x-grid. You may multiply them using the self.add"
-                "method and specifying how to handle the mismatch."
-            )
+            raise RuntimeError(x_grid_emsg)
         else:
             divided.on_tth[1] = other.on_tth[1] / self.on_tth[1]
             divided.on_q[1] = other.on_q[1] / self.on_q[1]
@@ -234,9 +218,11 @@ class Diffraction_object:
         end_q float
           the ending angle
         step_size float
-          the size of the step between points.  Only specify step_size or n_steps, not both
+          the size of the step between points.  Only specify step_size
+          or n_steps, not both
         n_steps integer
-          the number of steps.  Odd numbers are preferred. Only specify step_size or n_steps, not both
+          the number of steps.  Odd numbers are preferred. Only specify
+          step_size or n_steps, not both
 
         Returns
         -------
@@ -262,9 +248,11 @@ class Diffraction_object:
         end_angle float
           the ending angle
         step_size float
-          the size of the step between points.  Only specify step_size or n_steps, not both
+          the size of the step between points.  Only specify step_size or
+          n_steps, not both
         n_steps integer
-          the number of steps.  Odd numbers are preferred. Only specify step_size or n_steps, not both
+          the number of steps.  Odd numbers are preferred. Only specify
+          step_size or n_steps, not both
 
         Returns
         -------
@@ -280,8 +268,8 @@ class Diffraction_object:
     def _set_array_from_range(self, begin, end, step_size=None, n_steps=None):
         if step_size is not None and n_steps is not None:
             print(
-                "WARNING: both step_size and n_steps have been given.  n_steps will be used and step_size will be "
-                "reset."
+                "WARNING: both step_size and n_steps have been given.  "
+                "n_steps will be used and step_size will be reset."
             )
             array = np.linspace(begin, end, n_steps)
         elif step_size is not None:
@@ -446,18 +434,21 @@ class Diffraction_object:
 
     def scale_to(self, target_diff_object, xtype=None, xvalue=None):
         f"""
-        returns a new diffraction object which is the current object but recaled in y to the target
+        returns a new diffraction object which is the current object
+         but
+        rescaled in y to the target
 
         Parameters
         ----------
         target_diff_object: Diffraction_object
-          the diffractoin object you want to scale the current one on to
+          the diffraction object you want to scale the current one on to
         xtype: string, optional.  Default is Q
           the xtype, from {XQUANTITIES}, that you will specify a point from to scale to
         xvalue: float. Default is the midpoint of the array
-          the y-value in the target at this x-value will be used as the factor to scale to.
-          The entire array is scaled be the factor that places on on top of the other at that point.
-          xvalue does not have to be in the x-array, the point closest to this point will be used for the scaling.
+          the y-value in the target at this x-value will be used as the factor
+          to scale to.  The entire array is scaled by the factor that places on
+          top of the other at that point. xvalue does not have to be in the
+          x-array, the point closest to this point will be used for the scaling.
 
         Returns
         -------
@@ -482,7 +473,9 @@ class Diffraction_object:
 
     def on_xtype(self, xtype):
         """
-        return a 2D np array with x in the first column and y in the second for x of type type
+        return a 2D np array with x in the first column and y in the second
+        for x of type type
+
         Parameters
         ----------
         xtype
@@ -513,7 +506,8 @@ class Diffraction_object:
 
         with open(filepath, "w") as f:
             f.write(
-                f"[Diffraction_object]\nname = {self.name}\nwavelength = {self.wavelength}\n"
+                f"[Diffraction_object]\nname = {self.name}\nwavelength = "
+                f"{self.wavelength}\n"
                 f"scat_quantity = {self.scat_quantity}\n"
             )
             for key, value in self.metadata.items():
