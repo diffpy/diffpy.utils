@@ -11,6 +11,11 @@ DQUANTITIES = ["d", "dspace"]
 XQUANTITIES = ANGLEQUANTITIES + DQUANTITIES + QQUANTITIES
 XUNITS = ["degrees", "radians", "rad", "deg", "inv_angs", "inv_nm", "nm-1", "A-1"]
 
+x_grid_emsg = (
+    "objects are not on the same x-grid. You may add them using the self.add method "
+    "and specifying how to handle the mismatch."
+)
+
 
 class Diffraction_object:
     def __init__(self, name="", wavelength=None):
@@ -57,10 +62,7 @@ class Diffraction_object:
         elif not isinstance(other, Diffraction_object):
             raise TypeError("I only know how to sum two Diffraction_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(
-                "objects are not on the same x-grid. You may add them using the self.add method and"
-                "specifying how to handle the mismatch."
-            )
+            raise RuntimeError(x_grid_emsg)
         else:
             summed.on_tth[1] = self.on_tth[1] + other.on_tth[1]
             summed.on_q[1] = self.on_q[1] + other.on_q[1]
@@ -74,10 +76,7 @@ class Diffraction_object:
         elif not isinstance(other, Diffraction_object):
             raise TypeError("I only know how to sum two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(
-                "objects are not on the same x-grid. You may add them using the self.add method and"
-                "specifying how to handle the mismatch."
-            )
+            raise RuntimeError(x_grid_emsg)
         else:
             summed.on_tth[1] = self.on_tth[1] + other.on_tth[1]
             summed.on_q[1] = self.on_q[1] + other.on_q[1]
@@ -91,10 +90,7 @@ class Diffraction_object:
         elif not isinstance(other, Diffraction_object):
             raise TypeError("I only know how to subtract two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(
-                "objects are not on the same x-grid. You may subtract them using the self.add method and"
-                "specifying how to handle the mismatch."
-            )
+            raise RuntimeError(x_grid_emsg)
         else:
             subtracted.on_tth[1] = self.on_tth[1] - other.on_tth[1]
             subtracted.on_q[1] = self.on_q[1] - other.on_q[1]
@@ -108,10 +104,7 @@ class Diffraction_object:
         elif not isinstance(other, Diffraction_object):
             raise TypeError("I only know how to subtract two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(
-                "objects are not on the same x-grid. You may subtract them using the self.add method and"
-                "specifying how to handle the mismatch."
-            )
+            raise RuntimeError(x_grid_emsg)
         else:
             subtracted.on_tth[1] = other.on_tth[1] - self.on_tth[1]
             subtracted.on_q[1] = other.on_q[1] - self.on_q[1]
@@ -125,10 +118,7 @@ class Diffraction_object:
         elif not isinstance(other, Diffraction_object):
             raise TypeError("I only know how to multiply two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(
-                "objects are not on the same x-grid. You may multiply them using the self.add method and"
-                "specifying how to handle the mismatch."
-            )
+            raise RuntimeError(x_grid_emsg)
         else:
             multiplied.on_tth[1] = self.on_tth[1] * other.on_tth[1]
             multiplied.on_q[1] = self.on_q[1] * other.on_q[1]
@@ -140,10 +130,7 @@ class Diffraction_object:
             multiplied.on_tth[1] = other * self.on_tth[1]
             multiplied.on_q[1] = other * self.on_q[1]
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(
-                "objects are not on the same x-grid. You may multiply them using the self.add method and"
-                "specifying how to handle the mismatch."
-            )
+            raise RuntimeError(x_grid_emsg)
         else:
             multiplied.on_tth[1] = self.on_tth[1] * other.on_tth[1]
             multiplied.on_q[1] = self.on_q[1] * other.on_q[1]
@@ -157,10 +144,7 @@ class Diffraction_object:
         elif not isinstance(other, Diffraction_object):
             raise TypeError("I only know how to multiply two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(
-                "objects are not on the same x-grid. You may multiply them using the self.add method and"
-                "specifying how to handle the mismatch."
-            )
+            raise RuntimeError(x_grid_emsg)
         else:
             divided.on_tth[1] = self.on_tth[1] / other.on_tth[1]
             divided.on_q[1] = self.on_q[1] / other.on_q[1]
@@ -172,10 +156,7 @@ class Diffraction_object:
             divided.on_tth[1] = other / self.on_tth[1]
             divided.on_q[1] = other / self.on_q[1]
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(
-                "Diffraction objects are not on the same x-grid. You may multiply them using the self.add"
-                "method and specifying how to handle the mismatch."
-            )
+            raise RuntimeError(x_grid_emsg)
         else:
             divided.on_tth[1] = other.on_tth[1] / self.on_tth[1]
             divided.on_q[1] = other.on_q[1] / self.on_q[1]
