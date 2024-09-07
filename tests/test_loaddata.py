@@ -4,9 +4,9 @@
 """
 
 import unittest
-import pytest
 
 import numpy
+import pytest
 
 from diffpy.utils.parsers import loadData
 
@@ -16,7 +16,7 @@ class TestLoadData(unittest.TestCase):
     @pytest.fixture(autouse=True)
     def prepare_fixture(self, datafile):
         self.datafile = datafile
-        
+
     def test_loadData_default(self):
         """check loadData() with default options"""
         loaddata01 = self.datafile("loaddata01.txt")
