@@ -1,15 +1,7 @@
 recursive-include src *
+recursive-include tests *
 include AUTHORS.txt LICENSE*.txt README.rst
-recursive-exclude src *.py[co]
-global-exclude .gitattributes .gitignore .gitarchive.cfg
-global-exclude .DS_Store
 
-# Avoid user content in setup.cfg to make distribution reproducible.
-exclude setup.cfg
-
-# Exclude git-tracked files spuriously added by setuptools_scm
-exclude .coveragerc
-exclude .travis*
-prune conda-recipe
-prune devutils
-prune doc
+# Exclude all bytecode files and __pycache__ directories
+recursive-exclude src *.pyc *.pyo __pycache__/
+recursive-exclude tests *.pyc *.pyo __pycache__/
