@@ -6,18 +6,20 @@
 import unittest
 
 import numpy
+import pytest
 
 from diffpy.utils.parsers import loadData
-from diffpy.utils.tests.testhelpers import datafile
-
-loaddata01 = datafile("loaddata01.txt")
-loaddatawithheaders = datafile("loaddatawithheaders.txt")
 
 
 ##############################################################################
 class TestLoadData(unittest.TestCase):
+    @pytest.fixture(autouse=True)
+    def prepare_fixture(self, datafile):
+        self.datafile = datafile
+
     def test_loadData_default(self):
         """check loadData() with default options"""
+        loaddata01 = self.datafile("loaddata01.txt")
         d2c = numpy.array([[3, 31], [4, 32], [5, 33]])
         self.assertRaises(IOError, loadData, "doesnotexist")
         # the default minrows=10 makes it read from the third line
@@ -35,6 +37,7 @@ class TestLoadData(unittest.TestCase):
 
     def test_loadData_1column(self):
         """check loading of one-column data."""
+        loaddata01 = self.datafile("loaddata01.txt")
         d1c = numpy.arange(1, 6)
         d = loadData(loaddata01, usecols=[0], minrows=1)
         self.assertTrue(numpy.array_equal(d1c, d))
@@ -46,6 +49,7 @@ class TestLoadData(unittest.TestCase):
 
     def test_loadData_headers(self):
         """check loadData() with headers options enabled"""
+        loaddatawithheaders = self.datafile("loaddatawithheaders.txt")
         hignore = ["# ", "// ", "["]  # ignore lines beginning with these strings
         delimiter = ": "  # what our data should be separated by
         hdata = loadData(loaddatawithheaders, headers=True, hdel=delimiter, hignore=hignore)

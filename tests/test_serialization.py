@@ -5,21 +5,15 @@ import pytest
 
 from diffpy.utils.parsers import deserialize_data, loadData, serialize_data
 from diffpy.utils.parsers.custom_exceptions import ImproperSizeError, UnsupportedTypeError
-from diffpy.utils.tests.testhelpers import datafile
 
 tests_dir = os.path.dirname(os.path.abspath(locals().get("__file__", "file.py")))
 
-targetjson = datafile("targetjson.json")
-schemaname = datafile("strumining.json")
-wrongtype = datafile("wrong.type")
-loadfile = datafile("loadfile.txt")
-warningfile = datafile("generatewarnings.txt")
-nodt = datafile("loaddatawithheaders.txt")
 
-
-def test_load_multiple(tmp_path):
-    # generate json and apply schema
+def test_load_multiple(tmp_path, datafile):
+    # Load test data
+    targetjson = datafile("targetjson.json")
     generatedjson = tmp_path / "generated_serialization.json"
+
     tlm_list = os.listdir(os.path.join(tests_dir, "testdata", "dbload"))
     tlm_list.sort()
     generated_data = None
@@ -50,7 +44,12 @@ def test_load_multiple(tmp_path):
     assert target_data == deserialize_data(generatedjson, filetype=".json")
 
 
-def test_exceptions():
+def test_exceptions(datafile):
+    # Load test data
+    wrongtype = datafile("wrong.type")
+    loadfile = datafile("loadfile.txt")
+    warningfile = datafile("generatewarnings.txt")
+    nodt = datafile("loaddatawithheaders.txt")
     hdata = loadData(loadfile, headers=True)
     data_table = loadData(loadfile)
 
