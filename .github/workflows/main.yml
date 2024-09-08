@@ -1,55 +1,42 @@
-name: CI
+name: Test
 
 on:
   push:
     branches:
       - main
-      - CI
   pull_request:
   workflow_dispatch:
 
-jobs:
-  miniconda:
-    name: Miniconda ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-        matrix:
-            os: ["ubuntu-latest"]
-    steps:
-      - name: check out diffpy.utils
-        uses: actions/checkout@v3
-        with:
-          repository: diffpy/diffpy.utils
-          path: .
-          fetch-depth: 0  # avoid shallow clone with no tags
+defaults:
+  run:
+    shell: bash -l {0}
 
-      - name: initialize miniconda
-        # this uses a marketplace action that sets up miniconda in a way that makes
-        # it easier to use.  I tried setting it up without this and it was a pain
-        uses: conda-incubator/setup-miniconda@v2
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out diffpy.utils
+        uses: actions/checkout@v4
+
+      - name: Initialize miniconda
+        uses: conda-incubator/setup-miniconda@v3
         with:
           activate-environment: test
-          # environment.yml file is needed by this action.  Because I don't want
-          # maintain this but rather maintain the requirements files it just has
-          # basic things in it like conda and pip
-          environment-file: ./environment.yml
-          python-version: 3
+          auto-update-conda: true
+          environment-file: environment.yml
           auto-activate-base: false
 
-      - name: install diffpy.utils requirements
-        shell: bash -l {0}
+      - name: Conda config
+        run: >-
+          conda config --set always_yes yes
+          --set changeps1 no
+
+      - name: Install diffpy.utils and requirements
         run: |
-          conda config --set always_yes yes --set changeps1 no
-          conda config --add channels conda-forge
-          conda activate test
           conda install --file requirements/run.txt
           conda install --file requirements/test.txt
-          pip install .
+          python -m pip install -r requirements/pip.txt
+          python -m pip install . --no-deps
 
       - name: Validate diffpy.utils
-        shell: bash -l {0}
-        run: |
-          conda activate test
-          coverage run run_tests.py
-          coverage report -m
-          codecov
+        run: python -m pytest
