@@ -7,7 +7,7 @@ on:
     types:
     - prereleased
     - published
-  workflow_dispatch: null
+  workflow_dispatch:
 jobs:
   coverage:
     uses: Billingegroup/release-scripts/.github/workflows/_codecov.yml@main
