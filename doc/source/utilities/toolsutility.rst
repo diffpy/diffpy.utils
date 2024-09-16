@@ -17,7 +17,7 @@ The ``diffpy.utils.tools`` module provides tool functions for use with diffpy ap
   ``{"package_info": {"package1": "version_number1", "package2": "version_number2"}`` if the function is called more than
   once.
 
-  Users can use these functions to track and manage versions of packages that can later be stored, for example, in an output 
-  file header. 
+  Users can use these functions to track and manage versions of packages that can later be stored, for example, in an output
+  file header.
 
 For a more in-depth tutorial for how to use these tools, click :ref:`here <Tools Example>`.
