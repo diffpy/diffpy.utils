@@ -1,8 +1,10 @@
-####################################################
-diffpy.utils documentation
-####################################################
+#######
+|title|
+#######
 
-diffpy.utils - general purpose shared utilities for the diffpy libraries.
+.. |title| replace:: diffpy.utils documentation
+
+diffpy.utils - Shared utilities for diffpy packages.
 
 | Software version |release|.
 | Last updated |today|.
@@ -28,22 +30,22 @@ Authors
 
 diffpy.utils is developed by members of the Billinge Group at
 Columbia University and at Brookhaven National Laboratory including
-Pavol Juhás, Timur Davis, Christopher L. Farrow, Simon J.L. Billinge.
+Pavol Juhás, Christopher L. Farrow, the Billinge Group
+and its community contributors.
 
 For a detailed list of contributors see
 https://github.com/diffpy/diffpy.utils/graphs/contributors.
 
-======================================
+============
 Installation
-======================================
+============
 
 See the `README <https://github.com/diffpy/diffpy.utils#installation>`_
 file included with the distribution.
 
-======================================
+=================
 Table of contents
-======================================
-
+=================
 .. toctree::
    :titlesonly:
 
@@ -53,9 +55,9 @@ Table of contents
    Examples <examples/examples>
    Package API <api/diffpy.utils>
 
-======================================
+=======
 Indices
-======================================
+=======
 
 * :ref:`genindex`
 * :ref:`search`

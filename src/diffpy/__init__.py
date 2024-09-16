@@ -5,11 +5,15 @@
 #                   Simon J. L. Billinge
 #                   (c) 2010 The Trustees of Columbia University
 #                   in the City of New York.  All rights reserved.
+# (c) 2024 The Trustees of Columbia University in the City of New York.
+# All rights reserved.
 #
-# File coded by:    Pavol Juhas
+# File coded by: Billinge Group members and community contributors.
 #
-# See AUTHORS.txt for a list of people who contributed.
-# See LICENSE_DANSE.txt for license information.
+# See GitHub contributions for a more detailed list of contributors.
+# https://github.com/diffpy/diffpy.utils/graphs/contributors
+#
+# See LICENSE.rst for license information.
 #
 ##############################################################################
 
@@ -22,6 +26,5 @@ Blank namespace package.
 from pkgutil import extend_path
 
 __path__ = extend_path(__path__, __name__)
-
 
 # End of file
