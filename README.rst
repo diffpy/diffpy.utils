@@ -35,7 +35,7 @@
 .. |Tracking| image:: https://img.shields.io/badge/issue_tracking-github-blue
         :target: https://github.com/diffpy/diffpy.utils/issues
 
-diffpy.utils
+diffpy.utils Package
 ========================================================================
 
 General purpose shared utilities for the diffpy libraries.
