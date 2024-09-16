@@ -28,4 +28,3 @@ diffpy.utils.tools module
     :members:
     :undoc-members:
     :show-inheritance:
-

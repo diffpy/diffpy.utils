@@ -26,4 +26,3 @@ diffpy.utils.scattering_objects.diffraction_objects module
     :members:
     :undoc-members:
     :show-inheritance:
-

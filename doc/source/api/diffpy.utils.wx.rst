@@ -18,4 +18,3 @@ diffpy.utils.wx.gridutils module
     :members:
     :undoc-members:
     :show-inheritance:
-
