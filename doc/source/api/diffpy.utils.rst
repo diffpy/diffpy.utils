@@ -12,15 +12,17 @@ Subpackages
 -----------
 
 .. toctree::
+    :titlesonly:
 
     diffpy.utils.parsers
     diffpy.utils.wx
+    diffpy.utils.scattering_objects
 
 Submodules
 ----------
 
 diffpy.utils.tools module
--------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: diffpy.utils.tools
     :members:
