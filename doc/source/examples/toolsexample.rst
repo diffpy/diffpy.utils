@@ -56,4 +56,4 @@ Using the tools module, we can efficiently get them in terms of a dictionary.
     updated_dict = get_package_info("my_package", metadata=existing_dict))
 
    note that `"diffpy.utils"` is automatically included in the package info since the `get_user_info` function is
-   part of diffpy.utils. 
+   part of diffpy.utils.

@@ -13,20 +13,20 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import os
 import sys
 import time
 from importlib.metadata import version
+from pathlib import Path
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-# sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, os.path.abspath("../.."))
-sys.path.insert(0, os.path.abspath("../../src"))
+# documentation root, use Path().resolve() to make it absolute, like shown here.
+# sys.path.insert(0, str(Path(".").resolve()))
+sys.path.insert(0, str(Path("../..").resolve()))
+sys.path.insert(0, str(Path("../../src").resolve()))
 
 # abbreviations
-ab_authors = "Pavol Juhás, Timur Davis, Christopher L. Farrow, Simon J.L. Billinge group"
+ab_authors = "Pavol Juhás, Christopher L. Farrow, Billinge Group members and community contributors"
 
 # -- General configuration ------------------------------------------------
 
@@ -38,8 +38,11 @@ ab_authors = "Pavol Juhás, Timur Davis, Christopher L. Farrow, Simon J.L. Billi
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx.ext.intersphinx",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.todo",
     "sphinx.ext.viewcode",
+    "sphinx.ext.intersphinx",
+    "sphinx_rtd_theme",
     "m2r",
 ]
 
@@ -59,7 +62,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "diffpy.utils"
-copyright = "%Y, Brookhaven National Laboratory"
+copyright = "%Y, The Trustees of Columbia University in the City of New York"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -199,7 +202,8 @@ html_theme_options = {
 # html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "diffpyutilsdoc"
+basename = "diffpy.utils".replace(" ", "").replace(".", "")
+htmlhelp_basename = basename + "doc"
 
 
 # -- Options for LaTeX output ---------------------------------------------
