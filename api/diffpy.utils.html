@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>diffpy.utils package &mdash; diffpy.utils 3.4.0 documentation</title>
+  <title>diffpy.utils package &mdash; diffpy.utils 3.4.1rc0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -15,9 +15,10 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=237dbe43"></script>
+        <script src="../_static/documentation_options.js?v=6d4d0801"></script>
         <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +38,7 @@
             diffpy.utils
           </a>
               <div class="version">
-                3.4.0
+                3.4.1rc0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -55,6 +56,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Package API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="diffpy.utils.parsers.html">diffpy.utils.parsers package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="diffpy.utils.wx.html">diffpy.utils.wx package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diffpy.utils.scattering_objects.html">diffpy.utils.scattering_objects package</a></li>
 </ul>
 </li>
 </ul>
@@ -85,64 +87,36 @@
              
   <section id="module-diffpy.utils">
 <span id="diffpy-utils-package"></span><h1>diffpy.utils package<a class="headerlink" href="#module-diffpy.utils" title="Link to this heading"></a></h1>
-<p>Smaller shared functions for use by other diffpy packages.</p>
+<p>Shared utilities for diffpy packages</p>
 <section id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="diffpy.utils.parsers.html">diffpy.utils.parsers package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="diffpy.utils.parsers.html#module-diffpy.utils.parsers.loaddata">diffpy.utils.parsers.loaddata module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="diffpy.utils.parsers.html#diffpy.utils.parsers.loaddata.TextDataLoader"><code class="docutils literal notranslate"><span class="pre">TextDataLoader</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="diffpy.utils.parsers.html#diffpy.utils.parsers.loaddata.TextDataLoader.read"><code class="docutils literal notranslate"><span class="pre">TextDataLoader.read()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="diffpy.utils.parsers.html#diffpy.utils.parsers.loaddata.TextDataLoader.readfp"><code class="docutils literal notranslate"><span class="pre">TextDataLoader.readfp()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="diffpy.utils.parsers.html#diffpy.utils.parsers.loaddata.isfloat"><code class="docutils literal notranslate"><span class="pre">isfloat()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="diffpy.utils.parsers.html#diffpy.utils.parsers.loaddata.loadData"><code class="docutils literal notranslate"><span class="pre">loadData()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="diffpy.utils.parsers.html#module-diffpy.utils.parsers.serialization">diffpy.utils.parsers.serialization module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="diffpy.utils.parsers.html#diffpy.utils.parsers.serialization.deserialize_data"><code class="docutils literal notranslate"><span class="pre">deserialize_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="diffpy.utils.parsers.html#diffpy.utils.parsers.serialization.serialize_data"><code class="docutils literal notranslate"><span class="pre">serialize_data()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="diffpy.utils.parsers.html#module-diffpy.utils.parsers.resample">diffpy.utils.parsers.resample module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="diffpy.utils.parsers.html#diffpy.utils.parsers.resample.resample"><code class="docutils literal notranslate"><span class="pre">resample()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="diffpy.utils.parsers.html#diffpy.utils.parsers.resample.wsinterp"><code class="docutils literal notranslate"><span class="pre">wsinterp()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="diffpy.utils.wx.html">diffpy.utils.wx package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="diffpy.utils.wx.html#diffpy-utils-wx-gridutils-module">diffpy.utils.wx.gridutils module</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="diffpy.utils.parsers.html">diffpy.utils.parsers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diffpy.utils.wx.html">diffpy.utils.wx package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diffpy.utils.scattering_objects.html">diffpy.utils.scattering_objects package</a></li>
 </ul>
 </div>
 </section>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
-</section>
 <section id="module-diffpy.utils.tools">
-<span id="diffpy-utils-tools-module"></span><h2>diffpy.utils.tools module<a class="headerlink" href="#module-diffpy.utils.tools" title="Link to this heading"></a></h2>
+<span id="diffpy-utils-tools-module"></span><h3>diffpy.utils.tools module<a class="headerlink" href="#module-diffpy.utils.tools" title="Link to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="diffpy.utils.tools.clean_dict">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.tools.</span></span><span class="sig-name descname"><span class="pre">clean_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/tools.html#clean_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.tools.clean_dict" title="Link to this definition"></a></dt>
 <dd><p>Remove keys from the dictionary where the corresponding value is None.</p>
-<section id="parameters">
-<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>obj: dict</dt><dd><p>The dictionary to clean. If None, initialize as an empty dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<em>dict</em>) – The dictionary to clean. If None, initialize as an empty dictionary.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The cleaned dictionary with keys removed where the value is None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
-</section>
-<section id="returns">
-<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>dict:</dt><dd><p>The cleaned dictionary with keys removed where the value is None.</p>
-</dd>
-</dl>
-</section>
 </dd></dl>
 
 <dl class="py function">
@@ -154,13 +128,14 @@
 <dt>metadata<span class="classifier">dict</span></dt><dd><p>The dictionary to store the package info. If not provided, a new dictionary will be created.</p>
 </dd>
 </dl>
-<section id="id1">
-<h3>Returns<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>dict:</dt><dd><p>The updated metadata dict with package info inserted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The updated metadata dict with package info inserted.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 <dl class="py function">
@@ -171,62 +146,54 @@
 If neither exists, creates a global config file.
 It prioritizes values from args, then local, then global.
 Removes invalid global config file if creation is needed, replacing it with empty username and email.</p>
-<section id="id2">
-<h3>Parameters<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>args argparse.Namespace</dt><dd><p>The arguments from the parser, default is None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>argparse.Namespace</strong> (<em>args</em>) – The arguments from the parser, default is None.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The dictionary containing username and email with corresponding values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict or None</p>
 </dd>
 </dl>
-</section>
-<section id="id3">
-<h3>Returns<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>dict or None:</dt><dd><p>The dictionary containing username and email with corresponding values.</p>
-</dd>
-</dl>
-</section>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="diffpy.utils.tools.load_config">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.tools.</span></span><span class="sig-name descname"><span class="pre">load_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/tools.html#load_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.tools.load_config" title="Link to this definition"></a></dt>
 <dd><p>Load configuration from a .json file.</p>
-<section id="id4">
-<h3>Parameters<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>file_path: Path</dt><dd><p>The path to the configuration file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>Path</em>) – The path to the configuration file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The configuration dictionary or None if file does not exist.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
-</section>
-<section id="id5">
-<h3>Returns<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>dict:</dt><dd><p>The configuration dictionary or None if file does not exist.</p>
-</dd>
-</dl>
-</section>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="diffpy.utils.tools.stringify">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.tools.</span></span><span class="sig-name descname"><span class="pre">stringify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/tools.html#stringify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.tools.stringify" title="Link to this definition"></a></dt>
 <dd><p>Convert None to an empty string.</p>
-<section id="id6">
-<h3>Parameters<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>obj: str</dt><dd><p>The object to convert. If None, return an empty string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<em>str</em>) – The object to convert. If None, return an empty string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The converted string if obj is not None, otherwise an empty string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str or None</p>
 </dd>
 </dl>
-</section>
-<section id="id7">
-<h3>Returns<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>str or None:</dt><dd><p>The converted string if obj is not None, otherwise an empty string.</p>
-</dd>
-</dl>
-</section>
 </dd></dl>
 
+</section>
 </section>
 </section>
 
@@ -241,7 +208,7 @@ Removes invalid global config file if creation is needed, replacing it with empt
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, Brookhaven National Laboratory.</p>
+    <p>&#169; Copyright 2024, The Trustees of Columbia University in the City of New York.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

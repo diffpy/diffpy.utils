@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>diffpy.utils.parsers package &mdash; diffpy.utils 3.4.0 documentation</title>
+  <title>diffpy.utils.parsers package &mdash; diffpy.utils 3.4.1rc0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=237dbe43"></script>
+        <script src="../_static/documentation_options.js?v=6d4d0801"></script>
         <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -37,7 +37,7 @@
             diffpy.utils
           </a>
               <div class="version">
-                3.4.0
+                3.4.1rc0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -55,6 +55,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="diffpy.utils.html">Package API</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">diffpy.utils.parsers package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="diffpy.utils.wx.html">diffpy.utils.wx package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diffpy.utils.scattering_objects.html">diffpy.utils.scattering_objects package</a></li>
 </ul>
 </li>
 </ul>
@@ -85,24 +86,76 @@
            <div itemprop="articleBody">
              
   <section id="module-diffpy.utils.parsers">
-<span id="diffpy-utils-parsers-package"></span><span id="parsers-documentation"></span><h1>diffpy.utils.parsers package<a class="headerlink" href="#module-diffpy.utils.parsers" title="Link to this heading"></a></h1>
+<span id="diffpy-utils-parsers-package"></span><h1>diffpy.utils.parsers package<a class="headerlink" href="#module-diffpy.utils.parsers" title="Link to this heading"></a></h1>
 <p>Various utilities related to data parsing and manipulation.</p>
-<p>For a sample data extraction workflow, see <a class="reference internal" href="../examples/parsersexample.html#parsers-example"><span class="std std-ref">parsers example</span></a>.</p>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+<section id="module-diffpy.utils.parsers.resample">
+<span id="diffpy-utils-parsers-resample-module"></span><h3>diffpy.utils.parsers.resample module<a class="headerlink" href="#module-diffpy.utils.parsers.resample" title="Link to this heading"></a></h3>
+<p>Various utilities related to data parsing and manipulation.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="diffpy.utils.parsers.resample.resample">
+<span class="sig-prename descclassname"><span class="pre">diffpy.utils.parsers.resample.</span></span><span class="sig-name descname"><span class="pre">resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/parsers/resample.html#resample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.parsers.resample.resample" title="Link to this definition"></a></dt>
+<dd><p>Resample a PDF on a new grid.</p>
+<p>This uses the Whittaker-Shannon interpolation formula to put s1 on a new grid if dr is less than the sampling
+interval of r1, or linear interpolation if dr is greater than the sampling interval of r1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> – The r-grid used for s1.</p></li>
+<li><p><strong>s</strong> – The signal to be resampled.</p></li>
+<li><p><strong>dr</strong> – The new sampling interval.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns resampled (r, s).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="diffpy.utils.parsers.resample.wsinterp">
+<span class="sig-prename descclassname"><span class="pre">diffpy.utils.parsers.resample.</span></span><span class="sig-name descname"><span class="pre">wsinterp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/parsers/resample.html#wsinterp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.parsers.resample.wsinterp" title="Link to this definition"></a></dt>
+<dd><p>One-dimensional Whittaker-Shannon interpolation.</p>
+<p>This uses the Whittaker-Shannon interpolation formula to interpolate the value of fp (array),
+which is defined over xp (array), at x (array or float).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – Desired range for interpolation.</p></li>
+<li><p><strong>xp</strong> (<em>ndarray</em>) – Defined range for fp.</p></li>
+<li><p><strong>fp</strong> (<em>ndarray</em>) – Function to be interpolated.</p></li>
+<li><p><strong>left</strong> (<em>float</em>) – If given, set fp for x &lt; xp[0] to left. Otherwise, if left is None (default) or not given,
+set fp for x &lt; xp[0] to fp evaluated at xp[-1].</p></li>
+<li><p><strong>right</strong> (<em>float</em>) – If given, set fp for x &gt; xp[-1] to right. Otherwise, if right is None (default) or not given, set fp for
+x &gt; xp[-1] to fp evaluated at xp[-1].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>float</em> – If input x is a scalar (not an array), return the interpolated value at x.</p></li>
+<li><p><em>ndarray</em> – If input x is an array, return the interpolated array with dimensions of x.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="module-diffpy.utils.parsers.loaddata">
-<span id="diffpy-utils-parsers-loaddata-module"></span><h2>diffpy.utils.parsers.loaddata module<a class="headerlink" href="#module-diffpy.utils.parsers.loaddata" title="Link to this heading"></a></h2>
+<span id="diffpy-utils-parsers-loaddata-module"></span><h3>diffpy.utils.parsers.loaddata module<a class="headerlink" href="#module-diffpy.utils.parsers.loaddata" title="Link to this heading"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="diffpy.utils.parsers.loaddata.TextDataLoader">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">diffpy.utils.parsers.loaddata.</span></span><span class="sig-name descname"><span class="pre">TextDataLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minrows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usecols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skiprows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/parsers/loaddata.html#TextDataLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.parsers.loaddata.TextDataLoader" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Smart loading of a text data with possibly multiple datasets.</p>
-<section id="parameters">
-<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>minrows: int</dt><dd><p>Minimum number of rows in the first data block. (Default 10.)</p>
-</dd>
-<dt>usecols: tuple</dt><dd><p>Which columns in our dataset to use. Ignores all other columns. If None (default), use all columns.</p>
-</dd>
-<dt>skiprows</dt><dd><p>Rows in dataset to skip. (Currently not functional.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>minrows</strong> (<em>int</em>) – Minimum number of rows in the first data block. (Default 10.)</p></li>
+<li><p><strong>usecols</strong> (<em>tuple</em>) – Which columns in our dataset to use. Ignores all other columns. If None (default), use all columns.</p></li>
+<li><p><strong>skiprows</strong> – Rows in dataset to skip. (Currently not functional.)</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py method">
@@ -126,7 +179,6 @@
 </dl>
 </dd></dl>
 
-</section>
 </dd></dl>
 
 <dl class="py function">
@@ -141,82 +193,100 @@
 <dd><p>Find and load data from a text file.</p>
 <p>The data block is identified as the first matrix block of at least minrows rows and constant number of columns.
 This seems to work for most of the datafiles including those generated by diffpy programs.</p>
-<section id="id1">
-<h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>filename</dt><dd><p>Name of the file we want to load data from.</p>
-</dd>
-<dt>minrows: int</dt><dd><p>Minimum number of rows in the first data block. All rows must have the same number of floating
-point values.</p>
-</dd>
-<dt>headers: bool</dt><dd><p>when False (defualt), the function returns a numpy array of the data in the data block.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – Name of the file we want to load data from.</p></li>
+<li><p><strong>minrows</strong> (<em>int</em>) – Minimum number of rows in the first data block. All rows must have the same number of floating
+point values.</p></li>
+<li><p><strong>headers</strong> (<em>bool</em>) – when False (defualt), the function returns a numpy array of the data in the data block.
 When True, the function instead returns a dictionary of parameters and their corresponding
 values parsed from header (information prior the data block). See hdel and hignore for options
-to help with parsing header information.</p>
-</dd>
-<dt>hdel: str</dt><dd><p>(Only used when headers enabled.) Delimiter for parsing header information (default ‘=’). e.g. using
-default hdel, the line ‘parameter = p_value’ is put into the dictionary as {parameter: p_value}.</p>
-</dd>
-<dt>hignore: list</dt><dd><p>(Only used when headers enabled.) Ignore header rows beginning with any elements in hignore.
-e.g. hignore=[’# ‘, ‘[’] causes the following lines to be skipped: ‘# qmax=10’, ‘[defaults]’.</p>
-</dd>
-<dt>kwargs:</dt><dd><p>Keyword arguments that are passed to numpy.loadtxt including the following arguments below. (See
-numpy.loadtxt for more details.) Only pass kwargs used by numpy.loadtxt.</p>
-</dd>
-</dl>
-<section id="useful-kwargs">
-<h4>Useful kwargs<a class="headerlink" href="#useful-kwargs" title="Link to this heading"></a></h4>
-<dl class="simple">
-<dt>comments: str, sequence of str</dt><dd><p>The characters or list of characters used to indicate the start of a comment (default ‘#’).
-Comment lines are ignored.</p>
-</dd>
-<dt>delimiter: str</dt><dd><p>Delimiter for the data in the block (default use whitespace). For comma-separated data blocks,
-set delimiter to ‘,’.</p>
-</dd>
-<dt>unpack: bool</dt><dd><p>Return data as a sequence of columns that allows tuple unpacking such as x, y =
+to help with parsing header information.</p></li>
+<li><p><strong>hdel</strong> (<em>str</em>) – (Only used when headers enabled.) Delimiter for parsing header information (default ‘=’). e.g. using
+default hdel, the line ‘parameter = p_value’ is put into the dictionary as {parameter: p_value}.</p></li>
+<li><p><strong>hignore</strong> (<em>list</em>) – (Only used when headers enabled.) Ignore header rows beginning with any elements in hignore.
+e.g. hignore=[’# ‘, ‘[’] causes the following lines to be skipped: ‘# qmax=10’, ‘[defaults]’.</p></li>
+<li><p><strong>kwargs</strong> (<em>Useful</em>) – Keyword arguments that are passed to numpy.loadtxt including the following arguments below. (See
+numpy.loadtxt for more details.) Only pass kwargs used by numpy.loadtxt.</p></li>
+<li><p><strong>kwargs</strong></p></li>
+<li><p><strong>=============</strong></p></li>
+<li><p><strong>comments</strong> (<em>str</em><em>, </em><em>sequence</em><em> of </em><em>str</em>) – The characters or list of characters used to indicate the start of a comment (default ‘#’).
+Comment lines are ignored.</p></li>
+<li><p><strong>delimiter</strong> (<em>str</em>) – Delimiter for the data in the block (default use whitespace). For comma-separated data blocks,
+set delimiter to ‘,’.</p></li>
+<li><p><strong>unpack</strong> (<em>bool</em>) – Return data as a sequence of columns that allows tuple unpacking such as x, y =
 loadData(FILENAME, unpack=True). Note transposing the loaded array as loadData(FILENAME).T has the same
-effect.</p>
+effect.</p></li>
+<li><p><strong>usecols</strong> – Zero-based index of columns to be loaded, by default use all detected columns. The reading skips
+data blocks that do not have the usecols-specified columns.</p></li>
+</ul>
 </dd>
-<dt>usecols:</dt><dd><p>Zero-based index of columns to be loaded, by default use all detected columns. The reading skips
-data blocks that do not have the usecols-specified columns.</p>
-</dd>
-</dl>
-</section>
-</section>
-<section id="returns">
-<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>data_block: ndarray</dt><dd><p>A numpy array containing the found data block. (This is not returned if headers is enabled.)</p>
-</dd>
-<dt>hdata: dict</dt><dd><p>If headers are enabled, return a dictionary of parameters read from the header.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>data_block</strong> (<em>ndarray</em>) – A numpy array containing the found data block. (This is not returned if headers is enabled.)</p></li>
+<li><p><strong>hdata</strong> (<em>dict</em>) – If headers are enabled, return a dictionary of parameters read from the header.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
+</dd></dl>
+
 </section>
+<section id="module-diffpy.utils.parsers.custom_exceptions">
+<span id="diffpy-utils-parsers-custom-exceptions-module"></span><h3>diffpy.utils.parsers.custom_exceptions module<a class="headerlink" href="#module-diffpy.utils.parsers.custom_exceptions" title="Link to this heading"></a></h3>
+<dl class="py exception">
+<dt class="sig sig-object py" id="diffpy.utils.parsers.custom_exceptions.ImproperSizeError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">diffpy.utils.parsers.custom_exceptions.</span></span><span class="sig-name descname"><span class="pre">ImproperSizeError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bad_object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/parsers/custom_exceptions.html#ImproperSizeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.parsers.custom_exceptions.ImproperSizeError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>When the size of an object does not match expectations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bad_object</strong> – Object with improper size.</p></li>
+<li><p><strong>message</strong> (<em>str</em>) – Overwrites default message.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="diffpy.utils.parsers.custom_exceptions.UnsupportedTypeError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">diffpy.utils.parsers.custom_exceptions.</span></span><span class="sig-name descname"><span class="pre">UnsupportedTypeError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supported_types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/parsers/custom_exceptions.html#UnsupportedTypeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.parsers.custom_exceptions.UnsupportedTypeError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>For file types not supported by our parsers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> – Name of file triggering the error.</p></li>
+<li><p><strong>supported_types</strong> (<em>list</em>) – Supported file types.</p></li>
+<li><p><strong>message</strong> (<em>str</em>) – Overwrites default message.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
 <section id="module-diffpy.utils.parsers.serialization">
-<span id="diffpy-utils-parsers-serialization-module"></span><h2>diffpy.utils.parsers.serialization module<a class="headerlink" href="#module-diffpy.utils.parsers.serialization" title="Link to this heading"></a></h2>
+<span id="diffpy-utils-parsers-serialization-module"></span><h3>diffpy.utils.parsers.serialization module<a class="headerlink" href="#module-diffpy.utils.parsers.serialization" title="Link to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="diffpy.utils.parsers.serialization.deserialize_data">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.parsers.serialization.</span></span><span class="sig-name descname"><span class="pre">deserialize_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filetype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/parsers/serialization.html#deserialize_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.parsers.serialization.deserialize_data" title="Link to this definition"></a></dt>
 <dd><p>Load a dictionary from a serial file.</p>
-<section id="id2">
-<h3>Parameters<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>filename</dt><dd><p>Serial file to load from.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – Serial file to load from.</p></li>
+<li><p><strong>filetype</strong> – For specifying extension type (i.e. ‘.json’).</p></li>
+</ul>
 </dd>
-<dt>filetype</dt><dd><p>For specifying extension type (i.e. ‘.json’).</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary read from a serial file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
-</section>
-<section id="id3">
-<h3>Returns<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>dict</dt><dd><p>A dictionary read from a serial file.</p>
-</dd>
-</dl>
-</section>
 </dd></dl>
 
 <dl class="py function">
@@ -225,100 +295,35 @@ data blocks that do not have the usecols-specified columns.</p>
 <dd><p>Serialize file data into a dictionary. Can also save dictionary into a serial language file. Dictionary is
 formatted as {filename: data}.</p>
 <p>Requires hdata and data_table (can be generated by loadData).</p>
-<section id="id4">
-<h3>Parameters<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>filename</dt><dd><p>Name of the file whose data is being serialized.</p>
-</dd>
-<dt>hdata: dict</dt><dd><p>File metadata (generally related to data table).</p>
-</dd>
-<dt>data_table: list or ndarray</dt><dd><p>Data table.</p>
-</dd>
-<dt>dt_colnames: list</dt><dd><p>Names of each column in data_table. Every name in data_table_cols will be put into the Dictionary
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – Name of the file whose data is being serialized.</p></li>
+<li><p><strong>hdata</strong> (<em>dict</em>) – File metadata (generally related to data table).</p></li>
+<li><p><strong>data_table</strong> (<em>list</em><em> or </em><em>ndarray</em>) – Data table.</p></li>
+<li><p><strong>dt_colnames</strong> (<em>list</em>) – Names of each column in data_table. Every name in data_table_cols will be put into the Dictionary
 as a key with a value of that column in data_table (stored as a List). Put None for columns
 without names. If dt_cols has less non-None entries than columns in data_table,
 the pair {‘data table’: data_table} will be put in the dictionary.
-(Default None: only entry {‘data table’: data_table} will be added to dictionary.)</p>
-</dd>
-<dt>show_path: bool</dt><dd><dl class="simple">
+(Default None: only entry {‘data table’: data_table} will be added to dictionary.)</p></li>
+<li><p><strong>show_path</strong> (<em>bool</em>) – <dl class="simple">
 <dt>include a path element in the database entry (default True). If ‘path’ is not included in hddata,</dt><dd><p>extract path from filename.</p>
 </dd>
 </dl>
+</p></li>
+<li><p><strong>serial_file</strong> – Serial language file to dump dictionary into. If None (defualt), no dumping will occur.</p></li>
+</ul>
 </dd>
-<dt>serial_file</dt><dd><p>Serial language file to dump dictionary into. If None (defualt), no dumping will occur.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the dictionary loaded from/into the updated database file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
-</section>
-<section id="id5">
-<h3>Returns<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>dict:</dt><dd><p>Returns the dictionary loaded from/into the updated database file.</p>
-</dd>
-</dl>
-</section>
 </dd></dl>
 
 </section>
-<section id="module-diffpy.utils.parsers.resample">
-<span id="diffpy-utils-parsers-resample-module"></span><h2>diffpy.utils.parsers.resample module<a class="headerlink" href="#module-diffpy.utils.parsers.resample" title="Link to this heading"></a></h2>
-<p>Various utilities related to data parsing and manipulation.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="diffpy.utils.parsers.resample.resample">
-<span class="sig-prename descclassname"><span class="pre">diffpy.utils.parsers.resample.</span></span><span class="sig-name descname"><span class="pre">resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/parsers/resample.html#resample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.parsers.resample.resample" title="Link to this definition"></a></dt>
-<dd><p>Resample a PDF on a new grid.</p>
-<p>This uses the Whittaker-Shannon interpolation formula to put s1 on a new grid if dr is less than the sampling
-interval of r1, or linear interpolation if dr is greater than the sampling interval of r1.</p>
-<section id="id6">
-<h3>Parameters<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>r</dt><dd><p>The r-grid used for s1.</p>
-</dd>
-<dt>s</dt><dd><p>The signal to be resampled.</p>
-</dd>
-<dt>dr</dt><dd><p>The new sampling interval.</p>
-</dd>
-</dl>
-</section>
-<section id="id7">
-<h3>Returns<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
-<p>Returns resampled (r, s).</p>
-</section>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="diffpy.utils.parsers.resample.wsinterp">
-<span class="sig-prename descclassname"><span class="pre">diffpy.utils.parsers.resample.</span></span><span class="sig-name descname"><span class="pre">wsinterp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/parsers/resample.html#wsinterp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.parsers.resample.wsinterp" title="Link to this definition"></a></dt>
-<dd><p>One-dimensional Whittaker-Shannon interpolation.</p>
-<p>This uses the Whittaker-Shannon interpolation formula to interpolate the value of fp (array),
-which is defined over xp (array), at x (array or float).</p>
-<section id="id8">
-<h3>Parameters<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>x: ndarray</dt><dd><p>Desired range for interpolation.</p>
-</dd>
-<dt>xp: ndarray</dt><dd><p>Defined range for fp.</p>
-</dd>
-<dt>fp: ndarray</dt><dd><p>Function to be interpolated.</p>
-</dd>
-<dt>left: float</dt><dd><p>If given, set fp for x &lt; xp[0] to left. Otherwise, if left is None (default) or not given,
-set fp for x &lt; xp[0] to fp evaluated at xp[-1].</p>
-</dd>
-<dt>right: float</dt><dd><p>If given, set fp for x &gt; xp[-1] to right. Otherwise, if right is None (default) or not given, set fp for
-x &gt; xp[-1] to fp evaluated at xp[-1].</p>
-</dd>
-</dl>
-</section>
-<section id="id9">
-<h3>Returns<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>float:</dt><dd><p>If input x is a scalar (not an array), return the interpolated value at x.</p>
-</dd>
-<dt>ndarray:</dt><dd><p>If input x is an array, return the interpolated array with dimensions of x.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
 </section>
 </section>
 
@@ -333,7 +338,7 @@ x &gt; xp[-1] to fp evaluated at xp[-1].</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, Brookhaven National Laboratory.</p>
+    <p>&#169; Copyright 2024, The Trustees of Columbia University in the City of New York.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

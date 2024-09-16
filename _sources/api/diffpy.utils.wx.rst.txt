@@ -1,4 +1,4 @@
-.. _wx Python Utilities Documentation
+:tocdepth: -1
 
 diffpy.utils.wx package
 =======================
@@ -8,8 +8,11 @@ diffpy.utils.wx package
     :undoc-members:
     :show-inheritance:
 
+Submodules
+----------
+
 diffpy.utils.wx.gridutils module
---------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: diffpy.utils.wx.gridutils
     :members:
