@@ -17,3 +17,4 @@ jobs:
       project: diffpy.utils
       c_extension: false
       headless: false
+    secrets: inherit
