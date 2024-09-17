@@ -4,14 +4,6 @@ Release Notes
 
 .. current developments
 
-3.4.1
-=====
-
-**Fixed:**
-
-* Updated package structure to new group standard
-
-
 
 3.4.0
 =====
