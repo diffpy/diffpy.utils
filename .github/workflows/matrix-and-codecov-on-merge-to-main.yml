@@ -17,4 +17,5 @@ jobs:
       project: diffpy.utils
       c_extension: false
       headless: false
-    secrets: inherit
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
