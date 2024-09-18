@@ -236,18 +236,20 @@ def test_dump(tmp_path, mocker):
     directory = Path(tmp_path)
     file = directory / "testfile"
     test = Diffraction_object()
-    test.wavelength = 1.54
+    test.wavelength = 1.01
     test.name = "test"
     test.scat_quantity = "x-ray"
     test.insert_scattering_quantity(
         x, y, "q", metadata={"thing1": 1, "thing2": "thing2", "package_info": {"package2": "3.4.5"}}
     )
+
+    
     with mocker.patch("importlib.metadata.version", return_value="3.3.0"), freeze_time("2012-01-14"):
         test.dump(file, "q")
     with open(file, "r") as f:
         actual = f.read()
     expected = (
-        "[Diffraction_object]\nname = test\nwavelength = 1.54\nscat_quantity = x-ray\nthing1 = 1\n"
+        "[Diffraction_object]\nname = test\nwavelength = 1.01\nscat_quantity = x-ray\nthing1 = 1\n"
         "thing2 = thing2\npackage_info = {'package2': '3.4.5', 'diffpy.utils': '3.3.0'}\n"
         "creation_time = 2012-01-14 00:00:00\n\n"
         "#### start data\n0.000000000000000000e+00 0.000000000000000000e+00\n"
@@ -262,4 +264,5 @@ def test_dump(tmp_path, mocker):
         "9.000000000000000000e+00 9.000000000000000000e+00\n"
         "1.000000000000000000e+01 1.000000000000000000e+01\n"
     )
+
     assert actual == expected
