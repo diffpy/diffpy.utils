@@ -53,6 +53,11 @@ If you use diffpy.utils in a scientific publication, we would like you to cite t
 
         diffpy.utils Package, https://github.com/diffpy/diffpy.utils
 
+Documentation
+-------------
+
+Documentation may be found at, https://diffy.github.io/diffpy.utils
+
 Installation
 ------------
 
