@@ -4,6 +4,23 @@ Release Notes
 
 .. current developments
 
+3.4.2
+=====
+
+**Added:**
+
+* link docs in the README
+
+**Changed:**
+
+* removed need to install requirements separately when pip installing.
+
+**Fixed:**
+
+* Updated package structure to new group standard
+
+
+
 
 3.4.0
 =====
