@@ -56,7 +56,7 @@ If you use diffpy.utils in a scientific publication, we would like you to cite t
 Documentation
 -------------
 
-Documentation may be found at, https://diffy.github.io/diffpy.utils
+Documentation may be found at, https://diffpy.github.io/diffpy.utils
 
 Installation
 ------------
