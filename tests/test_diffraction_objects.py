@@ -243,9 +243,10 @@ def test_dump(tmp_path, mocker):
         x, y, "q", metadata={"thing1": 1, "thing2": "thing2", "package_info": {"package2": "3.4.5"}}
     )
 
-    
-    with mocker.patch("importlib.metadata.version", return_value="3.3.0"), freeze_time("2012-01-14"):
+    mocker.patch("importlib.metadata.version", return_value="3.3.0")
+    with freeze_time("2012-01-14"):
         test.dump(file, "q")
+
     with open(file, "r") as f:
         actual = f.read()
     expected = (
