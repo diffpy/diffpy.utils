@@ -241,7 +241,6 @@ def test_dump(tmp_path, mocker):
     test.name = "test"
     test.scat_quantity = "x-ray"
 
-    # Setup the testing environment to capture warnings triggered by an invalid arcsin input
     with warnings.catch_warnings(record=True) as captured_warnings:
         # Configure the warnings system to capture all warnings
         warnings.simplefilter("always")
@@ -251,15 +250,14 @@ def test_dump(tmp_path, mocker):
             x, y, "q", metadata={"thing1": 1, "thing2": "thing2", "package_info": {"package2": "3.4.5"}}
         )
 
-        # Verify that at least one RuntimeWarning is raised due to the arcsin domain error from wavelength 1.54
+        # Verify that at least one RuntimeWarning is raised due to the arcsin error from wavelength 1.54
         assert any(
             isinstance(w.message, RuntimeWarning) for w in captured_warnings
         ), "Expected a RuntimeWarning due to invalid arcsin input value from the wavelength set to 1.54"
 
-        # Ensure that exactly one warning was captured to confirm that no additional unexpected warnings are raised
+        # Ensure that exactly one warning was captured
         assert len(captured_warnings) == 1, "Expected exactly one warning to be captured"
 
-    # Patch the version lookup to control the external dependency in the test environment
     mocker.patch("importlib.metadata.version", return_value="3.3.0")
 
     with freeze_time("2012-01-14"):
