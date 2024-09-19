@@ -53,6 +53,11 @@ If you use diffpy.utils in a scientific publication, we would like you to cite t
 
         diffpy.utils Package, https://github.com/diffpy/diffpy.utils
 
+Documentation
+-------------
+
+Documentation may be found at, https://diffpy.github.io/diffpy.utils
+
 Installation
 ------------
 
@@ -76,11 +81,7 @@ Then, to fully install ``diffpy.utils`` in our active environment, run ::
 
 Another option is to use ``pip`` to download and install the latest release from
 `Python Package Index <https://pypi.python.org>`_.
-To install using ``pip`` into your ``diffpy.utils_env`` environment, we will also have to install dependencies ::
-
-        pip install -r https://raw.githubusercontent.com/diffpy/diffpy.utils/main/requirements/run.txt
-
-and then install the package ::
+To install using ``pip`` into your ``diffpy.utils_env`` environment type ::
 
         pip install diffpy.utils
 
