@@ -262,7 +262,6 @@ def test_dump(tmp_path, mocker):
     # Patch the version lookup to control the external dependency in the test environment
     mocker.patch("importlib.metadata.version", return_value="3.3.0")
 
-
     with freeze_time("2012-01-14"):
         test.dump(file, "q")
 
