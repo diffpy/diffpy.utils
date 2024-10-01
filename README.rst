@@ -50,9 +50,16 @@ program.
 Citation
 --------
 
-If you use diffpy.utils in a scientific publication, we would like you to cite this package as
+If you use this program for a scientific research that leads
+to publication, we ask that you acknowledge use of the program
+by citing the following paper in your publication:
 
-        diffpy.utils Package, https://github.com/diffpy/diffpy.utils
+   P. Juhás, C. L. Farrow, X. Yang, K. R. Knox and S. J. L. Billinge,
+   `Complex modeling: a strategy and software program for combining
+   multiple information sources to solve ill posed structure and
+   nanostructure inverse problems
+   <http://dx.doi.org/10.1107/S2053273315014473>`__,
+   *Acta Crystallogr. A* **71**, 562-568 (2015).
 
 Documentation
 -------------
