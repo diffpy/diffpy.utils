@@ -1,3 +1,4 @@
+import warnings
 from pathlib import Path
 
 import numpy as np
@@ -239,11 +240,29 @@ def test_dump(tmp_path, mocker):
     test.wavelength = 1.54
     test.name = "test"
     test.scat_quantity = "x-ray"
-    test.insert_scattering_quantity(
-        x, y, "q", metadata={"thing1": 1, "thing2": "thing2", "package_info": {"package2": "3.4.5"}}
-    )
-    with mocker.patch("importlib.metadata.version", return_value="3.3.0"), freeze_time("2012-01-14"):
+
+    with warnings.catch_warnings(record=True) as captured_warnings:
+        # Configure the warnings system to capture all warnings
+        warnings.simplefilter("always")
+
+        # Perform the method call that is expected to trigger the RuntimeWarning due to the specified wavelength
+        test.insert_scattering_quantity(
+            x, y, "q", metadata={"thing1": 1, "thing2": "thing2", "package_info": {"package2": "3.4.5"}}
+        )
+
+        # Verify that at least one RuntimeWarning is raised due to the arcsin error from wavelength 1.54
+        assert any(
+            isinstance(w.message, RuntimeWarning) for w in captured_warnings
+        ), "Expected a RuntimeWarning due to invalid arcsin input value from the wavelength set to 1.54"
+
+        # Ensure that exactly one warning was captured
+        assert len(captured_warnings) == 1, "Expected exactly one warning to be captured"
+
+    mocker.patch("importlib.metadata.version", return_value="3.3.0")
+
+    with freeze_time("2012-01-14"):
         test.dump(file, "q")
+
     with open(file, "r") as f:
         actual = f.read()
     expected = (
@@ -262,4 +281,5 @@ def test_dump(tmp_path, mocker):
         "9.000000000000000000e+00 9.000000000000000000e+00\n"
         "1.000000000000000000e+01 1.000000000000000000e+01\n"
     )
+
     assert actual == expected
