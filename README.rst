@@ -47,6 +47,8 @@ function over a new grid, `Diffraction_objects` for conveniently manipulating
 diffraction data, and some wx GUI utilities used by the PDFgui
 program.
 
+Maybe can be added some examples or a brief explanation on how can these data be manipulated.
+
 Citation
 --------
 
