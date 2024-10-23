@@ -80,16 +80,18 @@ To add "conda-forge" to the conda channels, run the following in a terminal. ::
 We want to install our packages in a suitable conda environment.
 The following creates and activates a new environment named ``diffpy.utils_env`` ::
 
-        conda create -n diffpy.utils_env python=3
+        conda create -n diffpy.utils_env diffpy.utils
         conda activate diffpy.utils_env
 
-Then, to fully install ``diffpy.utils`` in our active environment, run ::
+To confirm that the installation was successful, type ::
 
-        conda install diffpy.utils
+        python -c "import diffpy.utils; print(diffpy.utils.__version__)"
 
-Another option is to use ``pip`` to download and install the latest release from
+The output should print the latest version displayed on the badges above.
+
+If the above does not work, you can use ``pip`` to download and install the latest release from
 `Python Package Index <https://pypi.python.org>`_.
-To install using ``pip`` into your ``diffpy.utils_env`` environment type ::
+To install using ``pip`` into your ``diffpy.utils_env`` environment, type ::
 
         pip install diffpy.utils
 
@@ -99,12 +101,17 @@ and run the following ::
 
         pip install .
 
+Getting Started
+---------------
+
+You may consult our `online documentation <https://diffpy.github.io/diffpy.utils>`_ for tutorials and API references.
+
 Support and Contribute
 ----------------------
 
 `Diffpy user group <https://groups.google.com/g/diffpy-users>`_ is the discussion forum for general questions and discussions about the use of diffpy.utils. Please join the diffpy.utils users community by joining the Google group. The diffpy.utils project welcomes your expertise and enthusiasm!
 
-If you see a bug or want to request a feature, please `report it as an issue <https://github.com/diffpy/diffpy.utils/issues>`_ and/or `submit a fix as a PR <https://github.com/diffpy/diffpy.utils/pulls>`_. You can also post it to the `Diffpy user group <https://groups.google.com/g/diffpy-users>`_.
+If you see a bug or want to request a feature, please `report it as an issue <https://github.com/diffpy/diffpy.utils/issues>`_ and/or `submit a fix as a PR <https://github.com/diffpy/diffpy.utils/pulls>`_. You can also post it to the `Diffpy user group <https://groups.google.com/g/diffpy-users>`_. 
 
 Feel free to fork the project and contribute. To install diffpy.utils
 in a development mode, with its sources being directly used by Python
