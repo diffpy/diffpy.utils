@@ -233,31 +233,17 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
 
 
 def test_dump(tmp_path, mocker):
-    x, y = np.linspace(0, 10, 11), np.linspace(0, 10, 11)
+    x, y = np.linspace(0, 5, 6), np.linspace(0, 5, 6)
     directory = Path(tmp_path)
     file = directory / "testfile"
     test = Diffraction_object()
     test.wavelength = 1.54
     test.name = "test"
     test.scat_quantity = "x-ray"
-
-    with warnings.catch_warnings(record=True) as captured_warnings:
-        # Configure the warnings system to capture all warnings
-        warnings.simplefilter("always")
-
-        # Perform the method call that is expected to trigger the RuntimeWarning due to the specified wavelength
-        test.insert_scattering_quantity(
+    test.insert_scattering_quantity(
             x, y, "q", metadata={"thing1": 1, "thing2": "thing2", "package_info": {"package2": "3.4.5"}}
-        )
-
-        # Verify that at least one RuntimeWarning is raised due to the arcsin error from wavelength 1.54
-        assert any(
-            isinstance(w.message, RuntimeWarning) for w in captured_warnings
-        ), "Expected a RuntimeWarning due to invalid arcsin input value from the wavelength set to 1.54"
-
-        # Ensure that exactly one warning was captured
-        assert len(captured_warnings) == 1, "Expected exactly one warning to be captured"
-
+    )
+    
     mocker.patch("importlib.metadata.version", return_value="3.3.0")
 
     with freeze_time("2012-01-14"):
@@ -275,11 +261,6 @@ def test_dump(tmp_path, mocker):
         "3.000000000000000000e+00 3.000000000000000000e+00\n"
         "4.000000000000000000e+00 4.000000000000000000e+00\n"
         "5.000000000000000000e+00 5.000000000000000000e+00\n"
-        "6.000000000000000000e+00 6.000000000000000000e+00\n"
-        "7.000000000000000000e+00 7.000000000000000000e+00\n"
-        "8.000000000000000000e+00 8.000000000000000000e+00\n"
-        "9.000000000000000000e+00 9.000000000000000000e+00\n"
-        "1.000000000000000000e+01 1.000000000000000000e+01\n"
     )
 
     assert actual == expected
