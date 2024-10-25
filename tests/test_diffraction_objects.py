@@ -241,9 +241,9 @@ def test_dump(tmp_path, mocker):
     test.name = "test"
     test.scat_quantity = "x-ray"
     test.insert_scattering_quantity(
-            x, y, "q", metadata={"thing1": 1, "thing2": "thing2", "package_info": {"package2": "3.4.5"}}
+        x, y, "q", metadata={"thing1": 1, "thing2": "thing2", "package_info": {"package2": "3.4.5"}}
     )
-    
+
     mocker.patch("importlib.metadata.version", return_value="3.3.0")
 
     with freeze_time("2012-01-14"):
