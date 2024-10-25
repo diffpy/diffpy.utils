@@ -232,7 +232,7 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
 
 
 def test_dump(tmp_path, mocker):
-    x, y = np.linspace(0, 10, 11), np.linspace(0, 10, 11)
+    x, y = np.linspace(0, 5, 6), np.linspace(0, 5, 6)
     directory = Path(tmp_path)
     file = directory / "testfile"
     test = Diffraction_object()
@@ -242,8 +242,12 @@ def test_dump(tmp_path, mocker):
     test.insert_scattering_quantity(
         x, y, "q", metadata={"thing1": 1, "thing2": "thing2", "package_info": {"package2": "3.4.5"}}
     )
-    with mocker.patch("importlib.metadata.version", return_value="3.3.0"), freeze_time("2012-01-14"):
+
+    mocker.patch("importlib.metadata.version", return_value="3.3.0")
+
+    with freeze_time("2012-01-14"):
         test.dump(file, "q")
+
     with open(file, "r") as f:
         actual = f.read()
     expected = (
@@ -256,10 +260,6 @@ def test_dump(tmp_path, mocker):
         "3.000000000000000000e+00 3.000000000000000000e+00\n"
         "4.000000000000000000e+00 4.000000000000000000e+00\n"
         "5.000000000000000000e+00 5.000000000000000000e+00\n"
-        "6.000000000000000000e+00 6.000000000000000000e+00\n"
-        "7.000000000000000000e+00 7.000000000000000000e+00\n"
-        "8.000000000000000000e+00 8.000000000000000000e+00\n"
-        "9.000000000000000000e+00 9.000000000000000000e+00\n"
-        "1.000000000000000000e+01 1.000000000000000000e+01\n"
     )
+
     assert actual == expected
