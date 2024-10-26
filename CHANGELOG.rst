@@ -4,6 +4,21 @@ Release Notes
 
 .. current developments
 
+3.4.3
+=====
+
+**Added:**
+
+* Diffraction_objects mentioned in the README
+
+**Fixed:**
+
+* Recut to group's package standard, fix installation, add GitHub release workflow
+* setuptools-git-versioning from <2.0 to >= 2.0 in pyproject.toml
+* Two Pytest warnings due to numpy and pytest mocker in test_dump function
+* Add pip dependencies under pip.txt and conda dependencies under conda.txt
+
+
 3.4.2
 =====
 
