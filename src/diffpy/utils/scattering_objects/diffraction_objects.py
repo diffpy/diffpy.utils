@@ -463,13 +463,24 @@ class Diffraction_object:
         if xtype == "q":
             self.on_tth[0] = self.q_to_tth()
             self.on_tth[1] = master_array[1]
+            self.on_d[0] = self.q_to_d()
+            self.on_d[1] = master_array[1]
         if xtype == "tth":
             self.on_q[0] = self.tth_to_q()
+            self.on_q[1] = master_array[1]
+            self.on_d[0] = self.tth_to_d()
+            self.on_d[1] = master_array[1]
+        if xtype == "d":
+            self.on_tth[0] = self.d_to_tth()
+            self.on_tth[1] = master_array[1]
+            self.on_q[0] = self.d_to_q()
             self.on_q[1] = master_array[1]
         self.tthmin = self.on_tth[0][0]
         self.tthmax = self.on_tth[0][-1]
         self.qmin = self.on_q[0][0]
         self.qmax = self.on_q[0][-1]
+        self.dmin = self.on_d[0][0]
+        self.dmax = self.on_d[0][-1]
 
     def _get_original_array(self):
         if self.input_xtype in QQUANTITIES:
