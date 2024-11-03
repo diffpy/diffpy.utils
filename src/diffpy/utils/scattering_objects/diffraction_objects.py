@@ -362,6 +362,102 @@ class Diffraction_object:
         pre_factor = (4 * np.pi) / wavelength
         return pre_factor * np.sin(two_theta / 2)
 
+    def q_to_d(self):
+        r"""
+        Helper function to convert q to d using :math:`d = \frac{2 \pi}{q}`
+
+        adds a small value (epsilon = 1e-10) to `q` where `q` is close to zero to avoid division by zero
+
+        Parameters
+        ----------
+        q : array
+            An array of :math:`q` values
+
+        Returns
+        -------
+        d : array
+            An array of :math:`d` values in the inverse of the units of ``wavelength``
+        """
+        epsilon = 1e-10
+        q = np.asarray(self.on_q[0])
+        q = np.where(np.abs(q) < epsilon, q + epsilon, q)
+        return (2 * np.pi) / q
+
+    def d_to_q(self):
+        r"""
+        Helper function to convert d to q using :math:`q = \frac{2 \pi}{d}`
+
+        adds a small value (epsilon = 1e-10) to `d` where `d` is close to zero to avoid division by zero
+
+        Parameters
+        ----------
+        d : array
+            An array of :math:`d` values
+
+        Returns
+        -------
+        q : array
+            An array of :math:`q` values in the inverse of the units of ``wavelength``
+        """
+        epsilon = 1e-10
+        d = np.asarray(self.on_d[0])
+        d = np.where(np.abs(d) < epsilon, d + epsilon, d)
+        return (2 * np.pi) / d
+
+    def tth_to_d(self):
+        r"""
+        Helper function to convert two-theta to d
+
+        uses the formula .. math:: d = \frac{\lambda}{2 \sin\left(\frac{2\theta}{2}\right)},
+        and adds a small value (epsilon = 1e-10) to sin where sin is close to zero to avoid division by zero
+
+        Parameters
+        ----------
+        two_theta : array
+            An array of :math:`2\theta` values in units of degrees
+
+        wavelength : float
+            Wavelength of the incoming x-rays
+
+        Returns
+        -------
+        d : array
+            An array of :math:`d` values in the inverse of the units
+            of ``wavelength``
+        """
+        epsilon = 1e-10
+        two_theta = np.asarray(np.deg2rad(self.on_tth[0]))
+        wavelength = float(self.wavelength)
+        sin_two_theta = np.sin(two_theta / 2)
+        sin_two_theta = np.where(np.abs(sin_two_theta) < epsilon, sin_two_theta + epsilon, sin_two_theta)
+        return wavelength / (2 * sin_two_theta)
+
+    def d_to_tth(self):
+        r"""
+        Helper function to convert d to two-theta
+
+        uses the formula .. math:: 2\theta = 2 \arcsin\left(\frac{\lambda}{2d}\right),
+        and adds a small value (epsilon = 1e-10) to `d` where `d` is close to zero to avoid division by zero
+
+        Parameters
+        ----------
+        d : array
+            An array of :math:`d` values
+
+        wavelength : float
+            Wavelength of the incoming x-rays
+
+        Returns
+        -------
+        two_theta : array
+            An array of :math:`2\theta` values in radians
+        """
+        epsilon = 1e-10
+        d = np.asarray(self.on_d[0])
+        d = np.where(np.abs(d) < epsilon, d + epsilon, d)
+        wavelength = float(self.wavelength)
+        return np.rad2deg(2.0 * np.arcsin(wavelength / (2 * d)))
+
     def set_all_arrays(self):
         master_array, xtype = self._get_original_array()
         if xtype == "q":
