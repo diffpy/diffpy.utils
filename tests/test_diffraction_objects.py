@@ -231,6 +231,56 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
     assert (diffraction_object1 == diffraction_object2) == expected
 
 
+def test_q_to_tth():
+    actual = Diffraction_object(wavelength=0.71)
+    setattr(actual, "on_q", [[0, 4.58087], [1, 1]])
+    actual_tth = actual.q_to_tth()
+    expected_tth = [0, 30]
+    assert np.allclose(actual_tth, expected_tth)
+
+
+def test_tth_to_q():
+    actual = Diffraction_object(wavelength=0.71)
+    setattr(actual, "on_tth", [[0, 30], [1, 1]])
+    actual_q = actual.tth_to_q()
+    expected_q = [0, 4.58087]
+    assert np.allclose(actual_q, expected_q)
+
+
+def test_q_to_d():
+    actual = Diffraction_object(wavelength=0.71)
+    setattr(actual, "on_q", [[0, 4.58087], [1, 1]])
+    actual_d = actual.q_to_d()
+    expected_d = [62831853071.8, 1.37161]
+    assert np.allclose(actual_d, expected_d)
+
+
+def test_d_to_q():
+    actual = Diffraction_object(wavelength=0.71)
+    setattr(actual, "on_d", [[1e10, 1.37161], [1, 1]])
+    actual_q = actual.d_to_q()
+    expected_q = [0, 4.58087]
+    assert np.allclose(actual_q, expected_q)
+
+
+def test_tth_to_d():
+    actual = Diffraction_object(wavelength=0.71)
+    setattr(actual, "on_tth", [[0, 30], [1, 1]])
+    actual_d = actual.tth_to_d()
+    expected_d = [3550000000, 1.37161]
+    assert np.allclose(actual_d, expected_d)
+
+
+def test_d_to_tth():
+    actual = Diffraction_object(wavelength=0.71)
+    setattr(actual, "on_d", [[1e10, 1.37161], [1, 1]])
+    actual_tth = actual.d_to_tth()
+    expected_tth = [0, 30]
+    assert np.allclose(actual_tth, expected_tth)
+
+
+#def test_set_all_arrays():
+
 def test_dump(tmp_path, mocker):
     x, y = np.linspace(0, 5, 6), np.linspace(0, 5, 6)
     directory = Path(tmp_path)
