@@ -279,7 +279,36 @@ def test_d_to_tth():
     assert np.allclose(actual_tth, expected_tth)
 
 
-#def test_set_all_arrays():
+params_array = [
+    (["q", "on_q", [4.58087, 8.84956], [1, 2]]),
+    (["tth", "on_tth", [30, 60], [1, 2]]),
+    (["d", "on_d", [1.37161, 0.71], [1, 2]]),
+]
+
+
+@pytest.mark.parametrize("inputs", params_array)
+def test_set_all_arrays(inputs):
+    input_xtype, on_xtype, xarray, yarray = inputs
+    expected_values = {
+        "on_tth": [np.array([30, 60]), np.array([1, 2])],
+        "on_q": [np.array([4.58087, 8.84956]), np.array([1, 2])],
+        "on_d": [np.array([1.37161, 0.71]), np.array([1, 2])],
+        "tthmin": 30,
+        "tthmax": 60,
+        "qmin": 4.58087,
+        "qmax": 8.84956,
+        "dmin": 1.37161,
+        "dmax": 0.71,
+    }
+
+    actual = Diffraction_object(wavelength=0.71)
+    setattr(actual, "input_xtype", input_xtype)
+    setattr(actual, on_xtype, [xarray, yarray])
+    actual.set_all_arrays()
+    for attr, expected in expected_values.items():
+        actual_value = getattr(actual, attr)
+        assert np.allclose(actual_value, expected)
+
 
 def test_dump(tmp_path, mocker):
     x, y = np.linspace(0, 5, 6), np.linspace(0, 5, 6)
