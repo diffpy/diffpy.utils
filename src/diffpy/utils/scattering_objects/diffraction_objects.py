@@ -283,7 +283,7 @@ class Diffraction_object:
         elif xtype.lower() in ANGLEQUANTITIES:
             self.on_tth = [np.array(xarray), np.array(yarray)]
         elif xtype.lower() in DQUANTITIES:
-            self.on_tth = [np.array(xarray), np.array(yarray)]
+            self.on_d = [np.array(xarray), np.array(yarray)]
         self.set_all_arrays()
 
     def q_to_tth(self):
