@@ -115,7 +115,9 @@ def get_user_info(args=None):
     global_config = load_config(Path().home() / "diffpyconfig.json")
     local_config = load_config(Path().cwd() / "diffpyconfig.json")
     if global_config is None and local_config is None:
-        warnings.warn("No global config file, please follow prompts below.")
+        warnings.warn("No global config file, please follow prompts below. "
+                      "The global config file is very important in crediting your work in the future. "
+                      "For more information, please refer to www.diffpy.org/diffpy.utils/examples/toolsexample.html")
         config_bool = _create_global_config(args)
         global_config = load_config(Path().home() / "diffpyconfig.json")
     config = _sorted_merge(clean_dict(global_config), clean_dict(local_config), clean_dict(args))
