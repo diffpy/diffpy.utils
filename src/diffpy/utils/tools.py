@@ -1,9 +1,9 @@
 import importlib.metadata
 import json
 import os
+import warnings
 from copy import copy
 from pathlib import Path
-import warnings
 
 
 def clean_dict(obj):
