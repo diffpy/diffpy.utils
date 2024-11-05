@@ -3,6 +3,7 @@ import json
 import os
 from copy import copy
 from pathlib import Path
+import warnings
 
 
 def clean_dict(obj):
@@ -114,6 +115,7 @@ def get_user_info(args=None):
     global_config = load_config(Path().home() / "diffpyconfig.json")
     local_config = load_config(Path().cwd() / "diffpyconfig.json")
     if global_config is None and local_config is None:
+        warnings.warn("No global config file, please follow prompts below. For more information, refer to www.diffpy.org/diffpy.utils/")
         config_bool = _create_global_config(args)
         global_config = load_config(Path().home() / "diffpyconfig.json")
     config = _sorted_merge(clean_dict(global_config), clean_dict(local_config), clean_dict(args))
