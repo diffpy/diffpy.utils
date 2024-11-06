@@ -1,7 +1,6 @@
 import importlib.metadata
 import json
 import os
-import warnings
 from copy import copy
 from pathlib import Path
 
@@ -78,11 +77,11 @@ def _sorted_merge(*dicts):
 
 def _create_global_config(args):
     username = input(
-        f"Please enter the name of the user to put in the diffpy global config file "
+        f"Please enter the name of the user would want future work to be credited to "
         f"[{args.get('username', '')}]:  "
     ).strip() or args.get("username", "")
     email = input(
-        f"Please enter the email of the user to put in the diffpy global config file "
+        f"Please enter the email of the user "
         f"[{args.get('email', '')}]:  "
     ).strip() or args.get("email", "")
     return_bool = False if username is None or email is None else True
@@ -115,9 +114,8 @@ def get_user_info(args=None):
     global_config = load_config(Path().home() / "diffpyconfig.json")
     local_config = load_config(Path().cwd() / "diffpyconfig.json")
     if global_config is None and local_config is None:
-        warnings.warn(
+        print(
             "No global config file, please follow prompts below. "
-            "The global config file is very important in crediting your work in the future. "
             "For more information, please refer to www.diffpy.org/diffpy.utils/examples/toolsexample.html"
         )
         config_bool = _create_global_config(args)
