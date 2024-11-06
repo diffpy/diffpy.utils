@@ -77,11 +77,11 @@ def _sorted_merge(*dicts):
 
 def _create_global_config(args):
     username = input(
-        f"Please enter the name of the user would want future work to be credited to "
+        f"Please enter the name you would want future work to be credited to "
         f"[{args.get('username', '')}]:  "
     ).strip() or args.get("username", "")
     email = input(
-        f"Please enter the email of the user "
+        f"Please enter the your email "
         f"[{args.get('email', '')}]:  "
     ).strip() or args.get("email", "")
     return_bool = False if username is None or email is None else True
@@ -115,7 +115,11 @@ def get_user_info(args=None):
     local_config = load_config(Path().cwd() / "diffpyconfig.json")
     if global_config is None and local_config is None:
         print(
-            "No global config file, please follow prompts below. "
+            "No global configuration file was found containing information about the user to associate with the data. "
+            "By following the prompts below you can add your name and email to this file on the current computer and "
+            "your name will be automatically associated with subsequent diffpy data by default. "
+            "This is not recommended on a shared or public computer. "
+            "You will only have to do that once. "
             "For more information, please refer to www.diffpy.org/diffpy.utils/examples/toolsexample.html"
         )
         config_bool = _create_global_config(args)
