@@ -111,11 +111,12 @@ def get_user_info(args=None):
     local_config = load_config(Path().cwd() / "diffpyconfig.json")
     if global_config is None and local_config is None:
         print(
-            "No global configuration file was found containing information about the user to associate with the data. "
-            "By following the prompts below you can add your name and email to this file on the current computer and "
-            "your name will be automatically associated with subsequent diffpy data by default. "
+            "No global configuration file was found containing "
+            "information about the user to associate with the data.\n"
+            "By following the prompts below you can add your name and email to this file on the current"
+            " computer and your name will be automatically associated with subsequent diffpy data by default.\n"
             "This is not recommended on a shared or public computer. "
-            "You will only have to do that once. "
+            "You will only have to do that once.\n"
             "For more information, please refer to www.diffpy.org/diffpy.utils/examples/toolsexample.html"
         )
         config_bool = _create_global_config(args)
