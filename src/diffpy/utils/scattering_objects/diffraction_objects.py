@@ -445,6 +445,8 @@ class Diffraction_object:
             data_to_save = np.column_stack((self.on_q[0], self.on_q[1]))
         elif xtype == "tth":
             data_to_save = np.column_stack((self.on_tth[0], self.on_tth[1]))
+        elif xtype == "d":
+            data_to_save = np.column_stack((self.on_d[0], self.on_d[1]))
         else:
             print(f"WARNING: cannot handle the xtype '{xtype}'")
         self.metadata.update(get_package_info("diffpy.utils", metadata=self.metadata))
