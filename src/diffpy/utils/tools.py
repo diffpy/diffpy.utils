@@ -77,13 +77,9 @@ def _sorted_merge(*dicts):
 
 def _create_global_config(args):
     username = input(
-        f"Please enter the name you would want future work to be credited to "
-        f"[{args.get('username', '')}]:  "
+        f"Please enter the name you would want future work to be credited to " f"[{args.get('username', '')}]:  "
     ).strip() or args.get("username", "")
-    email = input(
-        f"Please enter the your email "
-        f"[{args.get('email', '')}]:  "
-    ).strip() or args.get("email", "")
+    email = input(f"Please enter the your email " f"[{args.get('email', '')}]:  ").strip() or args.get("email", "")
     return_bool = False if username is None or email is None else True
     with open(Path().home() / "diffpyconfig.json", "w") as f:
         f.write(json.dumps({"username": stringify(username), "email": stringify(email)}))
