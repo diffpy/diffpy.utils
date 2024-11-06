@@ -30,7 +30,7 @@ def loadData(filename, minrows=10, headers=False, hdel="=", hignore=None, **kwar
         Minimum number of rows in the first data block. All rows must have the same number of floating
         point values.
     headers: bool
-        when False (defualt), the function returns a numpy array of the data in the data block.
+        when False (default), the function returns a numpy array of the data in the data block.
         When True, the function instead returns a dictionary of parameters and their corresponding
         values parsed from header (information prior the data block). See hdel and hignore for options
         to help with parsing header information.

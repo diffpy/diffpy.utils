@@ -56,7 +56,7 @@ def serialize_data(
         include a path element in the database entry (default True). If 'path' is not included in hddata,
          extract path from filename.
     serial_file
-        Serial language file to dump dictionary into. If None (defualt), no dumping will occur.
+        Serial language file to dump dictionary into. If None (default), no dumping will occur.
 
     Returns
     -------
