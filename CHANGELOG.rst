@@ -90,7 +90,7 @@ v3.2.3
 
 **Added:**
 
-* Compatability with Python 3.12.0rc3, 3.11.
+* Compatibility with Python 3.12.0rc3, 3.11.
 * CI Coverage.
 * New tests for loadData function.
 * loadData function now toggleable. Can return either (a) data read from data blocks or (b) header information stored

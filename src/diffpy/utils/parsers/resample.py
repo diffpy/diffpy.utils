@@ -113,7 +113,7 @@ def resample(r, s, dr):
         # spad = numpy.concatenate([s,spad])
         # rnew = numpy.arange(0, rpad[-1], dr)
         # snew = numpy.zeros_like(rnew)
-        # Accomodate for the fact that r[0] might not be 0
+        # Accommodate for the fact that r[0] might not be 0
         # u = (rnew-r[0]) / dr0
         # for n in range(len(spad)):
         #    snew += spad[n] * numpy.sinc(u - n)
