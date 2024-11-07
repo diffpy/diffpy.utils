@@ -4,7 +4,7 @@
 
 **Changed:**
 
-* Moved resampler out of parsers, new path is diffpy.utils.resample
+* Moved resampler out of parsers, new path is diffpy.utils.resampler
 
 **Deprecated:**
 
@@ -12,11 +12,11 @@
 
 **Removed:**
 
-* <news item>
+* Relative imports in parser's __init__.py
 
 **Fixed:**
 
-* <news item>
+* File and function names are now all in PEP8 format
 
 **Security:**
 
