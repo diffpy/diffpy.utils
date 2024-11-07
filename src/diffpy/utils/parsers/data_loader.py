@@ -16,7 +16,7 @@
 import numpy
 
 
-def loadData(filename, minrows=10, headers=False, hdel="=", hignore=None, **kwargs):
+def load_data(filename, minrows=10, headers=False, hdel="=", hignore=None, **kwargs):
     """Find and load data from a text file.
 
     The data block is identified as the first matrix block of at least minrows rows and constant number of columns.

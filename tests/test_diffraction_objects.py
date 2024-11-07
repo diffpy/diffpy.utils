@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 from freezegun import freeze_time
 
-from diffpy.utils.scattering_objects.diffraction_objects import Diffraction_object
+from diffpy.utils.scattering_objects.diffraction_objects import diffraction_object
 
 params = [
     (  # Default
@@ -222,8 +222,8 @@ params = [
 
 @pytest.mark.parametrize("inputs1, inputs2, expected", params)
 def test_diffraction_objects_equality(inputs1, inputs2, expected):
-    diffraction_object1 = Diffraction_object()
-    diffraction_object2 = Diffraction_object()
+    diffraction_object1 = diffraction_object()
+    diffraction_object2 = diffraction_object()
     diffraction_object1_attributes = [key for key in diffraction_object1.__dict__ if not key.startswith("_")]
     for i, attribute in enumerate(diffraction_object1_attributes):
         setattr(diffraction_object1, attribute, inputs1[i])
@@ -235,7 +235,7 @@ def test_dump(tmp_path, mocker):
     x, y = np.linspace(0, 5, 6), np.linspace(0, 5, 6)
     directory = Path(tmp_path)
     file = directory / "testfile"
-    test = Diffraction_object()
+    test = diffraction_object()
     test.wavelength = 1.54
     test.name = "test"
     test.scat_quantity = "x-ray"

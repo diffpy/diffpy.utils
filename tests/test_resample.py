@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from diffpy.utils.resample import wsinterp
+from diffpy.utils.resampler import wsinterp
 
 
 def test_wsinterp():
