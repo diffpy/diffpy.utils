@@ -6,7 +6,7 @@ on:
     - main
 
 jobs:
-  check-for-news:
+  check-news-items:
     uses: Billingegroup/release-scripts/.github/workflows/_check-news-item.yml@v0
     with:
       project: diffpy.utils
