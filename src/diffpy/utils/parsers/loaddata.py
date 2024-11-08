@@ -16,7 +16,7 @@
 import numpy
 
 
-def load_data(filename, minrows=10, headers=False, hdel="=", hignore=None, **kwargs):
+def loadData(filename, minrows=10, headers=False, hdel="=", hignore=None, **kwargs):
     """Find and load data from a text file.
 
     The data block is identified as the first matrix block of at least minrows rows and constant number of columns.
@@ -54,7 +54,7 @@ def load_data(filename, minrows=10, headers=False, hdel="=", hignore=None, **kwa
         set delimiter to ','.
     unpack: bool
         Return data as a sequence of columns that allows tuple unpacking such as x, y =
-        load_data(FILENAME, unpack=True). Note transposing the loaded array as load_data(FILENAME).T has the same
+        loadData(FILENAME, unpack=True). Note transposing the loaded array as loadData(FILENAME).T has the same
         effect.
     usecols:
         Zero-based index of columns to be loaded, by default use all detected columns. The reading skips
@@ -226,7 +226,7 @@ class TextDataLoader(object):
 
         File details include:
          *  File name.
-         *  All data blocks findable by load_data.
+         *  All data blocks findable by loadData.
          *  Headers (if present) for each data block. (Generally the headers contain column name information).
         """
         self._reset()

@@ -17,7 +17,7 @@ x_grid_emsg = (
 )
 
 
-class DiffractionObject:
+class Diffraction_object:
     def __init__(self, name="", wavelength=None):
         self.name = name
         self.wavelength = wavelength
@@ -29,7 +29,7 @@ class DiffractionObject:
         self.metadata = {}
 
     def __eq__(self, other):
-        if not isinstance(other, DiffractionObject):
+        if not isinstance(other, Diffraction_object):
             return NotImplemented
         self_attributes = [key for key in self.__dict__ if not key.startswith("_")]
         other_attributes = [key for key in other.__dict__ if not key.startswith("_")]
@@ -59,8 +59,8 @@ class DiffractionObject:
         if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
             summed.on_tth[1] = self.on_tth[1] + other
             summed.on_q[1] = self.on_q[1] + other
-        elif not isinstance(other, DiffractionObject):
-            raise TypeError("I only know how to sum two DiffractionObject objects")
+        elif not isinstance(other, Diffraction_object):
+            raise TypeError("I only know how to sum two Diffraction_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
             raise RuntimeError(x_grid_emsg)
         else:
@@ -73,7 +73,7 @@ class DiffractionObject:
         if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
             summed.on_tth[1] = self.on_tth[1] + other
             summed.on_q[1] = self.on_q[1] + other
-        elif not isinstance(other, DiffractionObject):
+        elif not isinstance(other, Diffraction_object):
             raise TypeError("I only know how to sum two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
             raise RuntimeError(x_grid_emsg)
@@ -87,7 +87,7 @@ class DiffractionObject:
         if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
             subtracted.on_tth[1] = self.on_tth[1] - other
             subtracted.on_q[1] = self.on_q[1] - other
-        elif not isinstance(other, DiffractionObject):
+        elif not isinstance(other, Diffraction_object):
             raise TypeError("I only know how to subtract two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
             raise RuntimeError(x_grid_emsg)
@@ -101,7 +101,7 @@ class DiffractionObject:
         if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
             subtracted.on_tth[1] = other - self.on_tth[1]
             subtracted.on_q[1] = other - self.on_q[1]
-        elif not isinstance(other, DiffractionObject):
+        elif not isinstance(other, Diffraction_object):
             raise TypeError("I only know how to subtract two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
             raise RuntimeError(x_grid_emsg)
@@ -115,7 +115,7 @@ class DiffractionObject:
         if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
             multiplied.on_tth[1] = other * self.on_tth[1]
             multiplied.on_q[1] = other * self.on_q[1]
-        elif not isinstance(other, DiffractionObject):
+        elif not isinstance(other, Diffraction_object):
             raise TypeError("I only know how to multiply two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
             raise RuntimeError(x_grid_emsg)
@@ -141,7 +141,7 @@ class DiffractionObject:
         if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
             divided.on_tth[1] = other / self.on_tth[1]
             divided.on_q[1] = other / self.on_q[1]
-        elif not isinstance(other, DiffractionObject):
+        elif not isinstance(other, Diffraction_object):
             raise TypeError("I only know how to multiply two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
             raise RuntimeError(x_grid_emsg)
@@ -389,7 +389,7 @@ class DiffractionObject:
 
         Parameters
         ----------
-        target_diff_object: DiffractionObject
+        target_diff_object: Diffraction_object
           the diffractoin object you want to scale the current one on to
         xtype: string, optional.  Default is Q
           the xtype, from {XQUANTITIES}, that you will specify a point from to scale to
@@ -400,7 +400,7 @@ class DiffractionObject:
 
         Returns
         -------
-        the rescaled DiffractionObject as a new object
+        the rescaled Diffraction_object as a new object
 
         """
         scaled = deepcopy(self)
@@ -454,7 +454,7 @@ class DiffractionObject:
 
         with open(filepath, "w") as f:
             f.write(
-                f"[DiffractionObject]\nname = {self.name}\nwavelength = {self.wavelength}\n"
+                f"[Diffraction_object]\nname = {self.name}\nwavelength = {self.wavelength}\n"
                 f"scat_quantity = {self.scat_quantity}\n"
             )
             for key, value in self.metadata.items():
