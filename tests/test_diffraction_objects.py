@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 from freezegun import freeze_time
 
-from diffpy.utils.scattering_objects.diffraction_objects import DiffractionObject
+from diffpy.utils.scattering_objects.diffraction_objects import Diffraction_object
 
 params = [
     (  # Default
@@ -222,8 +222,8 @@ params = [
 
 @pytest.mark.parametrize("inputs1, inputs2, expected", params)
 def test_diffraction_objects_equality(inputs1, inputs2, expected):
-    diffraction_object1 = DiffractionObject()
-    diffraction_object2 = DiffractionObject()
+    diffraction_object1 = Diffraction_object()
+    diffraction_object2 = Diffraction_object()
     diffraction_object1_attributes = [key for key in diffraction_object1.__dict__ if not key.startswith("_")]
     for i, attribute in enumerate(diffraction_object1_attributes):
         setattr(diffraction_object1, attribute, inputs1[i])
@@ -235,7 +235,7 @@ def test_dump(tmp_path, mocker):
     x, y = np.linspace(0, 5, 6), np.linspace(0, 5, 6)
     directory = Path(tmp_path)
     file = directory / "testfile"
-    test = DiffractionObject()
+    test = Diffraction_object()
     test.wavelength = 1.54
     test.name = "test"
     test.scat_quantity = "x-ray"
@@ -251,7 +251,7 @@ def test_dump(tmp_path, mocker):
     with open(file, "r") as f:
         actual = f.read()
     expected = (
-        "[DiffractionObject]\nname = test\nwavelength = 1.54\nscat_quantity = x-ray\nthing1 = 1\n"
+        "[Diffraction_object]\nname = test\nwavelength = 1.54\nscat_quantity = x-ray\nthing1 = 1\n"
         "thing2 = thing2\npackage_info = {'package2': '3.4.5', 'diffpy.utils': '3.3.0'}\n"
         "creation_time = 2012-01-14 00:00:00\n\n"
         "#### start data\n0.000000000000000000e+00 0.000000000000000000e+00\n"
