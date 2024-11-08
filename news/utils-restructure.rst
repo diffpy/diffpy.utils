@@ -16,7 +16,7 @@
 
 **Fixed:**
 
-* File and function names are now all in PEP8 format
+* <news item>
 
 **Security:**
 

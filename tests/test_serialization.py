@@ -3,8 +3,9 @@ import os
 import numpy
 import pytest
 
-from diffpy.utils.parsers import deserialize_data, loadData, serialize_data
 from diffpy.utils.parsers.custom_exceptions import ImproperSizeError, UnsupportedTypeError
+from diffpy.utils.parsers.loaddata import loadData
+from diffpy.utils.parsers.serialization import deserialize_data, serialize_data
 
 tests_dir = os.path.dirname(os.path.abspath(locals().get("__file__", "file.py")))
 
