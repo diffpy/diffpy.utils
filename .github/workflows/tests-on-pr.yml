@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  tests-on-pr:
+  validate:
     uses: Billingegroup/release-scripts/.github/workflows/_tests-on-pr.yml@v0
     with:
       project: diffpy.utils
