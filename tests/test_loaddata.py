@@ -8,7 +8,7 @@ import unittest
 import numpy
 import pytest
 
-from diffpy.utils.parsers import loadData
+from diffpy.utils.parsers.loaddata import loadData
 
 
 ##############################################################################
