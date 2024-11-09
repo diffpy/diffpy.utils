@@ -1,6 +1,7 @@
 import datetime
-from copy import deepcopy
 import warnings
+from copy import deepcopy
+
 import numpy as np
 
 from diffpy.utils.tools import get_package_info
@@ -24,12 +25,14 @@ class Diffraction_object:
         `Diffraction_object` will be removed in diffpy.utils 3.6.0, it is replaced by
         `DiffractionObject` to follow the class naming convention.
     """
+
     warnings.warn(
         "Diffraction_object` will be removed in diffpy.utils 3.6.0, it is replaced by "
         "DiffractionObject` to follow the class naming convention.",
         DeprecationWarning,
         stacklevel=2,
     )
+
     def __init__(self, name="", wavelength=None):
         self.name = name
         self.wavelength = wavelength
