@@ -16,12 +16,4 @@
 """Various utilities related to data parsing and manipulation.
 """
 
-from .loaddata import loadData
-from .resample import resample
-from .serialization import deserialize_data, serialize_data
-
-# silence the pyflakes syntax checker
-assert loadData or resample or True
-assert serialize_data or deserialize_data or True
-
 # End of file
