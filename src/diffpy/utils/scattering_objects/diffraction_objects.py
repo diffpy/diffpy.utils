@@ -19,15 +19,15 @@ x_grid_emsg = (
 
 
 class Diffraction_object:
-    """FIXME: Add class docstring.
+    """A class to represent and manipulate data associated with diffraction experiments.
 
     .. deprecated:: 3.5.1
-        `Diffraction_object` will be removed in diffpy.utils 3.6.0, it is replaced by
+        `Diffraction_object` is deprecated and will be removed in diffpy.utils 3.6.0. It is replaced by
         `DiffractionObject` to follow the class naming convention.
     """
 
     warnings.warn(
-        "Diffraction_object` will be removed in diffpy.utils 3.6.0, it is replaced by "
+        "Diffraction_object` is deprecated and will be removed in diffpy.utils 3.6.0, It is replaced by "
         "DiffractionObject` to follow the class naming convention.",
         DeprecationWarning,
         stacklevel=2,
