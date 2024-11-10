@@ -263,4 +263,3 @@ def test_dump(tmp_path, mocker):
     )
 
     assert actual == expected
-
