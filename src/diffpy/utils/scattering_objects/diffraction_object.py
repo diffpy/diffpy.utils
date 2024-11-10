@@ -45,32 +45,6 @@ class DiffractionObject:
         A list containing two numpy arrays: [d-spacing values, Intensities].
     metadata : dict
         Dictionary containing additional metadata about the diffraction data.
-
-    Methods
-    -------
-    set_angles_from_list(angles_list)
-        Set the angular data for the experiment from a predefined list of angles.
-    set_qs_from_range(begin_q, end_q, step_size=None, n_steps=None)
-        Define Q values linearly spaced within the specified range. If step_size is provided,
-        n_steps is ignored.
-    set_angles_from_range(begin_angle, end_angle, step_size=None, n_steps=None)
-        Define angle values linearly spaced within the specified range. If step_size is provided,
-        n_steps is ignored.
-    insert_scattering_quantity(xarray, yarray, xtype, metadata=None, scat_quantity=None, name=None,
-    wavelength=None)
-        Insert a new scattering quantity into the object with optional metadata. Additional optional
-        parameters include scat_quantity, name, and wavelength.
-    q_to_tth()
-        Convert Q values to two-theta angles using the specified wavelength.
-    tth_to_q()
-        Convert two-theta angles to Q values using the specified wavelength.
-    scale_to(target_diff_object, xtype=None, xvalue=None)
-        Return a new diffraction object with rescaled intensity values.
-    on_xtype(xtype)
-        Return the data arrays associated with a given x-type (Q, two-theta, or d-spacing).
-    dump(filepath, xtype=None)
-        Save the data to a specified file, allowing selection of the data type to be saved.
-        xtype defaults to 'q' if not specified.
     """
 
     def __init__(self, name="", wavelength=None):

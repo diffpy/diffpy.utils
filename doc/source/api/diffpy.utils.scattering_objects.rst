@@ -26,3 +26,12 @@ diffpy.utils.scattering_objects.diffraction_objects module
     :members:
     :undoc-members:
     :show-inheritance:
+
+
+diffpy.utils.scattering_objects.diffraction_object module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: diffpy.utils.scattering_objects.diffraction_object
+    :members:
+    :undoc-members:
+    :show-inheritance:
