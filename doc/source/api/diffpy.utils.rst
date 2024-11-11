@@ -36,4 +36,3 @@ diffpy.utils.resampler module
     :members:
     :undoc-members:
     :show-inheritance:
-

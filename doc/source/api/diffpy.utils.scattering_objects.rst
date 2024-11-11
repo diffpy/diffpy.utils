@@ -26,4 +26,3 @@ diffpy.utils.scattering_objects.user_config module
     :members:
     :undoc-members:
     :show-inheritance:
-
