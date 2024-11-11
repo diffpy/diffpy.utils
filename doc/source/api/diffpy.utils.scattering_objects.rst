@@ -11,6 +11,14 @@ diffpy.utils.scattering_objects package
 Submodules
 ----------
 
+diffpy.utils.scattering_objects.diffraction_objects module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: diffpy.utils.scattering_objects.diffraction_objects
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 diffpy.utils.scattering_objects.user_config module
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -19,10 +27,3 @@ diffpy.utils.scattering_objects.user_config module
     :undoc-members:
     :show-inheritance:
 
-diffpy.utils.scattering_objects.diffraction_objects module
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. automodule:: diffpy.utils.scattering_objects.diffraction_objects
-    :members:
-    :undoc-members:
-    :show-inheritance:

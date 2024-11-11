@@ -11,10 +11,10 @@ diffpy.utils.parsers package
 Submodules
 ----------
 
-diffpy.utils.parsers.resample module
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+diffpy.utils.parsers.serialization module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. automodule:: diffpy.utils.parsers.resample
+.. automodule:: diffpy.utils.parsers.serialization
     :members:
     :undoc-members:
     :show-inheritance:
@@ -35,10 +35,3 @@ diffpy.utils.parsers.custom_exceptions module
     :undoc-members:
     :show-inheritance:
 
-diffpy.utils.parsers.serialization module
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. automodule:: diffpy.utils.parsers.serialization
-    :members:
-    :undoc-members:
-    :show-inheritance:

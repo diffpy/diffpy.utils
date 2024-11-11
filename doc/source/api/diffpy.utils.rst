@@ -28,3 +28,12 @@ diffpy.utils.tools module
     :members:
     :undoc-members:
     :show-inheritance:
+
+diffpy.utils.resampler module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: diffpy.utils.resampler
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
