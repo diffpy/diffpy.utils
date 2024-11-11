@@ -15,14 +15,14 @@ given enough datapoints.
    <https://global.oup.com/academic/product/atomic-pair-distribution-function-analysis-9780198885801?cc=us&lang=en&>`_.
    ::
 
-     from diffpy.utils.parsers import loadData
+     from diffpy.utils.parsers.loaddata import loadData
      nickel_datatable = loadData('<PATH to Nickel.gr>')
      nitarget_datatable = loadData('<PATH to NiTarget.gr>')
 
    Each data table has two columns: first is the grid and second is the function value.
    To extract the columns, we can utilize the serialize function ... ::
 
-     from diffpy.utils.parsers import serialize_data
+     from diffpy.utils.parsers.serialization import serialize_data
      nickel_data = serialize_data('Nickel.gr', {}, nickel_datatable, dt_colnames=['grid', 'func'])
      nickel_grid = nickel_data['Nickel.gr']['grid']
      nickel_func = nickel_data['Nickel.gr']['func']
@@ -54,7 +54,7 @@ given enough datapoints.
 
    ... and use the diffpy.utils ``wsinterp`` function to resample on this grid.::
 
-     from diffpy.utils.parsers import wsinterp
+     from diffpy.utils.resampler import wsinterp
      nickel_resample = wsinterp(grid, nickel_grid, nickel_func)
      target_resample = wsinterp(grid, target_grid, target_func)
 

@@ -1,6 +1,6 @@
 :tocdepth: -1
 
-diffpy.utils.scattering_objects package
+diffpy.utils.scattering-objects package
 =======================================
 
 .. automodule:: diffpy.utils.scattering_objects
