@@ -13,7 +13,7 @@ assignees: ""
 - [ ] License information is verified as correct. If you are unsure, please comment below.
 - [ ] Locally rendered documentation contains all appropriate pages, including API references (check no modules are
   missing), tutorials, and other human written text is up-to-date with any changes in the code.
-- [ ] Installation instructions in the README, documentation and on the website (e.g., diffpy.org) are updated. 
+- [ ] Installation instructions in the README, documentation and on the website (e.g., diffpy.org) are updated.
 - [ ] Successfully run any tutorial examples or do functional testing with the latest Python version.
 - [ ] Grammar and writing quality are checked (no typos).
 
@@ -21,7 +21,7 @@ Please mention @sbillinge here when you are ready for PyPI/GitHub release. Inclu
 
 ### PyPI/GitHub  full-release preparation checklist:
 - [ ] Create a new conda environment and install the rc from pypi (`pip install <package-name>=??`)
-- [ ] License information at Pypi is verified as correct. 
+- [ ] License information at Pypi is verified as correct.
 - [ ] Docs deployed successfully to `<package-name>.github.io`
 - [ ] Successfully run all tests, tutorial examples or do functional testing
 
