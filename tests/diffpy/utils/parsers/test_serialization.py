@@ -7,20 +7,19 @@ from diffpy.utils.parsers.custom_exceptions import ImproperSizeError, Unsupporte
 from diffpy.utils.parsers.loaddata import loadData
 from diffpy.utils.parsers.serialization import deserialize_data, serialize_data
 
-tests_dir = os.path.dirname(os.path.abspath(locals().get("__file__", "file.py")))
-
 
 def test_load_multiple(tmp_path, datafile):
     # Load test data
     targetjson = datafile("targetjson.json")
     generatedjson = tmp_path / "generated_serialization.json"
 
-    tlm_list = os.listdir(os.path.join(tests_dir, "testdata", "dbload"))
-    tlm_list.sort()
+    dbload_dir = os.path.dirname(datafile("dbload/e1.gr"))
+    tlm_list = sorted(os.listdir(dbload_dir))
+
     generated_data = None
     for hfname in tlm_list:
         # gather data using loadData
-        headerfile = os.path.normpath(os.path.join(tests_dir, "testdata", "dbload", hfname))
+        headerfile = os.path.join(dbload_dir, hfname)
         hdata = loadData(headerfile, headers=True)
         data_table = loadData(headerfile)
 

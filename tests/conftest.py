@@ -22,8 +22,9 @@ def user_filesystem(tmp_path):
 @pytest.fixture
 def datafile():
     """Fixture to dynamically load any test file."""
+    base_path = Path(__file__).parent / "testdata"  # Adjusted base path
 
     def _load(filename):
-        return "tests/testdata/" + filename
+        return str(base_path / filename)
 
     return _load
