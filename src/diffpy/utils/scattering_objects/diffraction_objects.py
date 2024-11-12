@@ -366,9 +366,7 @@ class Diffraction_object:
 
     def q_to_d(self):
         r"""
-        Helper function to convert q to d using :math:`d = \frac{2 \pi}{q}`
-
-        adds a small value (epsilon = 1e-10) to `q` where `q` is close to zero to avoid division by zero
+        Helper function to convert q to d using :math:`d = \frac{2 \pi}{q}`, set dmax to DMAX=100
 
         Parameters
         ----------
@@ -387,9 +385,7 @@ class Diffraction_object:
 
     def d_to_q(self):
         r"""
-        Helper function to convert d to q using :math:`q = \frac{2 \pi}{d}`
-
-        adds a small value (epsilon = 1e-10) to `d` where `d` is close to zero to avoid division by zero
+        Helper function to convert d to q using :math:`q = \frac{2 \pi}{d}`, set qmax to QMAX=40
 
         Parameters
         ----------
@@ -410,8 +406,7 @@ class Diffraction_object:
         r"""
         Helper function to convert two-theta to d
 
-        uses the formula .. math:: d = \frac{\lambda}{2 \sin\left(\frac{2\theta}{2}\right)},
-        and adds a small value (epsilon = 1e-10) to sin where sin is close to zero to avoid division by zero
+        uses the formula .. math:: d = \frac{\lambda}{2 \sin\left(\frac{2\theta}{2}\right)}, set dmax to DMAX=100
 
         Parameters
         ----------
@@ -438,8 +433,7 @@ class Diffraction_object:
         r"""
         Helper function to convert d to two-theta
 
-        uses the formula .. math:: 2\theta = 2 \arcsin\left(\frac{\lambda}{2d}\right),
-        and adds a small value (epsilon = 1e-10) to `d` where `d` is close to zero to avoid division by zero
+        uses the formula .. math:: 2\theta = 2 \arcsin\left(\frac{\lambda}{2d}\right), set tth to 180 when d=0
 
         Parameters
         ----------
@@ -465,17 +459,17 @@ class Diffraction_object:
             self.on_tth[0] = self.q_to_tth()
             self.on_tth[1] = master_array[1]
             self.on_d[0] = self.q_to_d()
-            self.on_d[1] = master_array[1]
+            self.on_d[1] = master_array[1][::-1]
         if xtype == "tth":
             self.on_q[0] = self.tth_to_q()
             self.on_q[1] = master_array[1]
             self.on_d[0] = self.tth_to_d()
-            self.on_d[1] = master_array[1]
+            self.on_d[1] = master_array[1][::-1]
         if xtype == "d":
             self.on_tth[0] = self.d_to_tth()
-            self.on_tth[1] = master_array[1]
+            self.on_tth[1] = master_array[1][::-1]
             self.on_q[0] = self.d_to_q()
-            self.on_q[1] = master_array[1]
+            self.on_q[1] = master_array[1][::-1]
         self.tthmin = self.on_tth[0][0]
         self.tthmax = self.on_tth[0][-1]
         self.qmin = self.on_q[0][0]
