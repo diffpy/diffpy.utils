@@ -232,34 +232,38 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
 
 
 def test_q_to_tth():
-    actual = Diffraction_object(wavelength=0.71)
-    setattr(actual, "on_q", [[0, 4.58087], [1, 1]])
+    actual = Diffraction_object(wavelength=4 * np.pi)
+    setattr(actual, "on_q", [[0, 0.2, 0.4, 0.6, 0.8, 1], [1, 2, 3, 4, 5, 6]])
     actual_tth = actual.q_to_tth()
-    expected_tth = [0, 30]
+    # expected tth values are 2 * arcsin(q)
+    expected_tth = [0, 23.07392, 47.15636, 73.73980, 106.26020, 180]
     assert np.allclose(actual_tth, expected_tth)
 
 
 def test_tth_to_q():
-    actual = Diffraction_object(wavelength=0.71)
-    setattr(actual, "on_tth", [[0, 30], [1, 1]])
+    actual = Diffraction_object(wavelength=4 * np.pi)
+    setattr(actual, "on_tth", [[0, 30, 60, 90, 120, 180], [1, 2, 3, 4, 5, 6]])
     actual_q = actual.tth_to_q()
-    expected_q = [0, 4.58087]
+    # expected q vales are sin15, sin30, sin45, sin60, sin90
+    expected_q = [0, 0.258819, 0.5, 0.707107, 0.866025, 1]
     assert np.allclose(actual_q, expected_q)
 
 
 def test_q_to_d():
     actual = Diffraction_object(wavelength=0.71)
-    setattr(actual, "on_q", [[0, 4.58087], [1, 1]])
+    setattr(actual, "on_q", [[0, np.pi, 2 * np.pi, 3 * np.pi, 4 * np.pi, 5 * np.pi], [1, 2, 3, 4, 5, 6]])
     actual_d = actual.q_to_d()
-    expected_d = [62831853071.8, 1.37161]
+    # expected d values are DMAX=100, 2/1, 2/2, 2/3, 2/4, 2/5, and in reverse order
+    expected_d = [0.4, 0.5, 0.66667, 1, 2, 100]
     assert np.allclose(actual_d, expected_d)
 
 
 def test_d_to_q():
-    actual = Diffraction_object(wavelength=0.71)
-    setattr(actual, "on_d", [[1e10, 1.37161], [1, 1]])
+    actual = Diffraction_object(wavelength=1)
+    setattr(actual, "on_d", [[0, np.pi, 2 * np.pi, 3 * np.pi, 4 * np.pi, 5 * np.pi], [1, 2, 3, 4, 5, 6]])
     actual_q = actual.d_to_q()
-    expected_q = [0, 4.58087]
+    # expected q values are QMAX=40, 2/1, 2/2, 2/3, 2/4, 2/5, and in reverse order
+    expected_q = [0.4, 0.5, 0.66667, 1, 2, 40]
     assert np.allclose(actual_q, expected_q)
 
 

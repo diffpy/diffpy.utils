@@ -10,6 +10,8 @@ ANGLEQUANTITIES = ["angle", "tth", "twotheta", "2theta"]
 DQUANTITIES = ["d", "dspace"]
 XQUANTITIES = ANGLEQUANTITIES + DQUANTITIES + QQUANTITIES
 XUNITS = ["degrees", "radians", "rad", "deg", "inv_angs", "inv_nm", "nm-1", "A-1"]
+QMAX = 40
+DMAX = 100
 
 x_grid_emsg = (
     "objects are not on the same x-grid. You may add them using the self.add method "
@@ -378,10 +380,10 @@ class Diffraction_object:
         d : array
             The array of :math:`d` values in the inverse of the units of ``wavelength``
         """
-        epsilon = 1e-10
         q = np.asarray(self.on_q[0])
-        q = np.where(np.abs(q) < epsilon, q + epsilon, q)
-        return (2 * np.pi) / q
+        d = np.where(q != 0, (2 * np.pi) / q, np.inf)
+        d = np.minimum(d, DMAX)
+        return d[::-1]
 
     def d_to_q(self):
         r"""
@@ -399,10 +401,10 @@ class Diffraction_object:
         q : array
             The array of :math:`q` values in the inverse of the units of ``wavelength``
         """
-        epsilon = 1e-10
         d = np.asarray(self.on_d[0])
-        d = np.where(np.abs(d) < epsilon, d + epsilon, d)
-        return (2 * np.pi) / d
+        q = np.where(d != 0, (2 * np.pi) / d, np.inf)
+        q = np.minimum(q, QMAX)
+        return q[::-1]
 
     def tth_to_d(self):
         r"""
