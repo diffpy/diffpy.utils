@@ -305,7 +305,7 @@ class Diffraction_object:
         Parameters
         ----------
         q : array
-            An array of :math:`q` values
+            The array of :math:`q` values
 
         wavelength : float
             Wavelength of the incoming x-rays
@@ -315,7 +315,7 @@ class Diffraction_object:
         Returns
         -------
         two_theta : array
-            An array of :math:`2\theta` values in radians
+            The array of :math:`2\theta` values in radians
         """
         q = self.on_q[0]
         q = np.asarray(q)
@@ -344,7 +344,7 @@ class Diffraction_object:
         Parameters
         ----------
         two_theta : array
-            An array of :math:`2\theta` values in units of degrees
+            The array of :math:`2\theta` values in units of degrees
 
         wavelength : float
             Wavelength of the incoming x-rays
@@ -354,7 +354,7 @@ class Diffraction_object:
         Returns
         -------
         q : array
-            An array of :math:`q` values in the inverse of the units
+            The array of :math:`q` values in the inverse of the units
             of ``wavelength``
         """
         two_theta = np.asarray(np.deg2rad(self.on_tth[0]))
@@ -371,12 +371,12 @@ class Diffraction_object:
         Parameters
         ----------
         q : array
-            An array of :math:`q` values
+            The array of :math:`q` values
 
         Returns
         -------
         d : array
-            An array of :math:`d` values in the inverse of the units of ``wavelength``
+            The array of :math:`d` values in the inverse of the units of ``wavelength``
         """
         epsilon = 1e-10
         q = np.asarray(self.on_q[0])
@@ -392,12 +392,12 @@ class Diffraction_object:
         Parameters
         ----------
         d : array
-            An array of :math:`d` values
+            The array of :math:`d` values
 
         Returns
         -------
         q : array
-            An array of :math:`q` values in the inverse of the units of ``wavelength``
+            The array of :math:`q` values in the inverse of the units of ``wavelength``
         """
         epsilon = 1e-10
         d = np.asarray(self.on_d[0])
@@ -414,7 +414,7 @@ class Diffraction_object:
         Parameters
         ----------
         two_theta : array
-            An array of :math:`2\theta` values in units of degrees
+            The array of :math:`2\theta` values in units of degrees
 
         wavelength : float
             Wavelength of the incoming x-rays
@@ -422,7 +422,7 @@ class Diffraction_object:
         Returns
         -------
         d : array
-            An array of :math:`d` values in the inverse of the units
+            The array of :math:`d` values in the inverse of the units
             of ``wavelength``
         """
         epsilon = 1e-10
@@ -442,7 +442,7 @@ class Diffraction_object:
         Parameters
         ----------
         d : array
-            An array of :math:`d` values
+            The array of :math:`d` values
 
         wavelength : float
             Wavelength of the incoming x-rays
@@ -450,7 +450,7 @@ class Diffraction_object:
         Returns
         -------
         two_theta : array
-            An array of :math:`2\theta` values in radians
+            The array of :math:`2\theta` values in radians
         """
         epsilon = 1e-10
         d = np.asarray(self.on_d[0])
