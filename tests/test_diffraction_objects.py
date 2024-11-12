@@ -268,18 +268,21 @@ def test_d_to_q():
 
 
 def test_tth_to_d():
-    actual = Diffraction_object(wavelength=0.71)
-    setattr(actual, "on_tth", [[0, 30], [1, 1]])
+    actual = Diffraction_object(wavelength=2)
+    setattr(actual, "on_tth", [[0, 30, 60, 90, 120, 180], [1, 2, 3, 4, 5, 6]])
     actual_d = actual.tth_to_d()
-    expected_d = [3550000000, 1.37161]
+    # expected d values are DMAX=100, 1/sin15, 1/sin30, 1/sin45, 1/sin60, 1/sin90, in reverse order
+    expected_d = [1, 1.1547, 1.41421, 2, 3.8637, 100]
     assert np.allclose(actual_d, expected_d)
 
 
 def test_d_to_tth():
-    actual = Diffraction_object(wavelength=0.71)
-    setattr(actual, "on_d", [[1e10, 1.37161], [1, 1]])
+    actual = Diffraction_object(wavelength=2)
+    setattr(actual, "on_d", [[0, 2, 4, 6, 8, 100], [1, 2, 3, 4, 5, 6]])
     actual_tth = actual.d_to_tth()
-    expected_tth = [0, 30]
+    # expected tth values are 2*arcsin(1/d), in reverse order
+    # when d is really small we have tth to be 180
+    expected_tth = [1.14593, 14.36151, 19.18814, 28.95502, 60, 180]
     assert np.allclose(actual_tth, expected_tth)
 
 

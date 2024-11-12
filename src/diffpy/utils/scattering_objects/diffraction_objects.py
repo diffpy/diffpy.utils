@@ -427,12 +427,12 @@ class Diffraction_object:
             The array of :math:`d` values in the inverse of the units
             of ``wavelength``
         """
-        epsilon = 1e-10
         two_theta = np.asarray(np.deg2rad(self.on_tth[0]))
         wavelength = float(self.wavelength)
         sin_two_theta = np.sin(two_theta / 2)
-        sin_two_theta = np.where(np.abs(sin_two_theta) < epsilon, sin_two_theta + epsilon, sin_two_theta)
-        return wavelength / (2 * sin_two_theta)
+        d = np.where(sin_two_theta != 0, wavelength / (2 * sin_two_theta), np.inf)
+        d = np.minimum(d, DMAX)
+        return d[::-1]
 
     def d_to_tth(self):
         r"""
@@ -454,11 +454,10 @@ class Diffraction_object:
         two_theta : array
             The array of :math:`2\theta` values in radians
         """
-        epsilon = 1e-10
         d = np.asarray(self.on_d[0])
-        d = np.where(np.abs(d) < epsilon, d + epsilon, d)
         wavelength = float(self.wavelength)
-        return np.rad2deg(2.0 * np.arcsin(wavelength / (2 * d)))
+        tth = np.where(d != 0, np.rad2deg(2.0 * np.arcsin(wavelength / (2 * d))), 180)
+        return tth[::-1]
 
     def set_all_arrays(self):
         master_array, xtype = self._get_original_array()
