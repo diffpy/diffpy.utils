@@ -200,7 +200,7 @@ class DiffractionObject:
 
     def set_qs_from_range(self, begin_q, end_q, step_size=None, n_steps=None):
         """
-        create an array of linear spaced Q-values
+        create an array of linearly spaced Q-values
 
         Parameters
         ----------
@@ -224,7 +224,7 @@ class DiffractionObject:
 
     def set_angles_from_range(self, begin_angle, end_angle, step_size=None, n_steps=None):
         """
-        create an array of linear spaced angle-values
+        create an array of linearly spaced angle-values
 
         Parameters
         ----------
