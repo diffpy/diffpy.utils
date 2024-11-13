@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import numpy
 import pytest
@@ -13,19 +14,18 @@ def test_load_multiple(tmp_path, datafile):
     targetjson = datafile("targetjson.json")
     generatedjson = tmp_path / "generated_serialization.json"
 
-    dbload_dir = os.path.dirname(datafile("dbload/e1.gr"))
-    tlm_list = sorted(os.listdir(dbload_dir))
+    dbload_dir = datafile("dbload")
+    tlm_list = sorted(dbload_dir.glob("*.gr"))
 
     generated_data = None
-    for hfname in tlm_list:
+    for headerfile in tlm_list:
         # gather data using loadData
-        headerfile = os.path.join(dbload_dir, hfname)
         hdata = loadData(headerfile, headers=True)
         data_table = loadData(headerfile)
 
         # check path extraction
         generated_data = serialize_data(headerfile, hdata, data_table, dt_colnames=["r", "gr"], show_path=True)
-        assert headerfile == os.path.normpath(generated_data[hfname].pop("path"))
+        assert headerfile == Path(generated_data[headerfile.name].pop("path"))
 
         # rerun without path information and save to file
         generated_data = serialize_data(

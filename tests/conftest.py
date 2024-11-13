@@ -25,6 +25,6 @@ def datafile():
     base_path = Path(__file__).parent / "testdata"  # Adjusted base path
 
     def _load(filename):
-        return str(base_path / filename)
+        return base_path / filename
 
     return _load
