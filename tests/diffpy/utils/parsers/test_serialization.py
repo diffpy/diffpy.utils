@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 import numpy
 import pytest
@@ -7,26 +7,24 @@ from diffpy.utils.parsers.custom_exceptions import ImproperSizeError, Unsupporte
 from diffpy.utils.parsers.loaddata import loadData
 from diffpy.utils.parsers.serialization import deserialize_data, serialize_data
 
-tests_dir = os.path.dirname(os.path.abspath(locals().get("__file__", "file.py")))
-
 
 def test_load_multiple(tmp_path, datafile):
     # Load test data
     targetjson = datafile("targetjson.json")
     generatedjson = tmp_path / "generated_serialization.json"
 
-    tlm_list = os.listdir(os.path.join(tests_dir, "testdata", "dbload"))
-    tlm_list.sort()
+    dbload_dir = datafile("dbload")
+    tlm_list = sorted(dbload_dir.glob("*.gr"))
+
     generated_data = None
-    for hfname in tlm_list:
+    for headerfile in tlm_list:
         # gather data using loadData
-        headerfile = os.path.normpath(os.path.join(tests_dir, "testdata", "dbload", hfname))
         hdata = loadData(headerfile, headers=True)
         data_table = loadData(headerfile)
 
         # check path extraction
         generated_data = serialize_data(headerfile, hdata, data_table, dt_colnames=["r", "gr"], show_path=True)
-        assert headerfile == os.path.normpath(generated_data[hfname].pop("path"))
+        assert headerfile == Path(generated_data[headerfile.name].pop("path"))
 
         # rerun without path information and save to file
         generated_data = serialize_data(
