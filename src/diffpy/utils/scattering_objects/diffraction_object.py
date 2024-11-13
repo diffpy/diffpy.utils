@@ -20,31 +20,32 @@ x_grid_emsg = (
 class DiffractionObject:
     """
     A class to manipulate diffraction data, supporting basic arithmetic operations and
-    conversions between different diffraction data metrics such as Q, two-theta, and d-spacing.
+    conversions between independent variables such as Q, two-theta,
+    and d-spacing.
 
     Parameters
     ----------
     name : str, optional
-        Identifier for the diffraction object. Defaults to an empty string.
+        The name or identifier for the diffraction experiment.
     wavelength : float, optional
-        Wavelength of the radiation used in the diffraction experiment. Defaults to None.
+        The wavelength of the radiation used in the diffraction experiment. Defaults to None.
 
     Attributes
     ----------
     name : str
-        Name or identifier for the diffraction experiment.
+        The name or identifier for the diffraction experiment.
     wavelength : float
-        Wavelength of the incoming x-rays.
+        The wavelength of the incoming x-rays.
     scat_quantity : str
-        Description of the type of scattering data stored.
+        The description of the type of scattering data stored.
     on_q : list of numpy.ndarray
-        A list containing two numpy arrays: [Q values, Intensities].
+        The list containing two numpy arrays: [Q values, Intensities].
     on_tth : list of numpy.ndarray
-        A list containing two numpy arrays: [two-theta angles, Intensities].
+        The list containing two numpy arrays: [two-theta angles, Intensities].
     on_d : list of numpy.ndarray
-        A list containing two numpy arrays: [d-spacing values, Intensities].
+        The list containing two numpy arrays: [d-spacing values, Intensities].
     metadata : dict
-        Dictionary containing additional metadata about the diffraction data.
+        The dictionary containing additional metadata about the diffraction data.
     """
 
     def __init__(self, name="", wavelength=None):
@@ -284,13 +285,13 @@ class DiffractionObject:
         Parameters
         ----------
         xarray array-like of floats
-          the independent variable array
+          The independent variable array
         yarray array-like of floats
-          the dependent variable array
+          The dependent variable array
         xtype string
-          the type of quantity for the independent variable from {*XQUANTITIES, }
+          The type of quantity for the independent variable from {*XQUANTITIES, }
         metadata: dict
-          the metadata in the form of a dictionary of user-supplied key:value pairs
+          The metadata in the form of a dictionary of user-supplied key:value pairs
 
         Returns
         -------
@@ -334,10 +335,10 @@ class DiffractionObject:
         Parameters
         ----------
         q : array
-            An array of :math:`q` values
+            The array of :math:`q` values
 
         wavelength : float
-            Wavelength of the incoming x-rays
+            The Wavelength of the incoming x-rays
 
         Function adapted from scikit-beam.  Thanks to those developers
 
@@ -373,17 +374,17 @@ class DiffractionObject:
         Parameters
         ----------
         two_theta : array
-            An array of :math:`2\theta` values in units of degrees
+            The array of :math:`2\theta` values in units of degrees
 
         wavelength : float
-            Wavelength of the incoming x-rays
+            The wavelength of the incoming x-rays
 
         Function adapted from scikit-beam.  Thanks to those developers.
 
         Returns
         -------
         q : array
-            An array of :math:`q` values in the inverse of the units
+            The array of :math:`q` values in the inverse of the units
             of ``wavelength``
         """
         two_theta = np.asarray(np.deg2rad(self.on_tth[0]))
@@ -419,11 +420,11 @@ class DiffractionObject:
         Parameters
         ----------
         target_diff_object: DiffractionObject
-          the diffractoin object you want to scale the current one on to
+          The diffractoin object you want to scale the current one on to
         xtype: string, optional.  Default is Q
-          the xtype, from {XQUANTITIES}, that you will specify a point from to scale to
+          The xtype, from {XQUANTITIES}, that you will specify a point from to scale to
         xvalue: float. Default is the midpoint of the array
-          the y-value in the target at this x-value will be used as the factor to scale to.
+          The y-value in the target at this x-value will be used as the factor to scale to.
           The entire array is scaled be the factor that places on on top of the other at that point.
           xvalue does not have to be in the x-array, the point closest to this point will be used for the scaling.
 
