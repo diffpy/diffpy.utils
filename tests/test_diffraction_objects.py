@@ -232,23 +232,38 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
 
 
 def test_q_to_tth():
+    # valid q values including edge cases when q=0 or 1, expected tth values are 2 * arcsin(q)
     actual = Diffraction_object(wavelength=4 * np.pi)
-    setattr(actual, "on_q", [[0, 0.2, 0.4, 0.6, 0.8, 1, 40, 60], [1, 2, 3, 4, 5, 6, 7, 8]])
+    setattr(actual, "on_q", [[0, 0.2, 0.4, 0.6, 0.8, 1], [1, 2, 3, 4, 5, 6]])
     actual_tth = actual.q_to_tth()
-    # expected tth values are 2 * arcsin(q)
-    # when q gets large, we set tth = 180
-    # we allow q to exceed QMAX for user inputs
-    expected_tth = [0, 23.07392, 47.15636, 73.73980, 106.26020, 180, 180, 180]
+    expected_tth = [0, 23.07392, 47.15636, 73.73980, 106.26020, 180]
     assert np.allclose(actual_tth, expected_tth)
 
 
+def test_q_to_tth_bad():
+    # invalid q values when arcsin value is not in the range of [-1, 1]
+    actual = Diffraction_object(wavelength=4 * np.pi)
+    setattr(actual, "on_q", [[0.6, 0.8, 1, 1.2], [1, 2, 3, 4]])
+    with pytest.raises(ValueError):
+        actual.q_to_tth()
+
+
 def test_tth_to_q():
+    # valid tth values including edge cases when tth=0 or 180 degree,
+    # expected q vales are sin15, sin30, sin45, sin60, sin90
     actual = Diffraction_object(wavelength=4 * np.pi)
     setattr(actual, "on_tth", [[0, 30, 60, 90, 120, 180], [1, 2, 3, 4, 5, 6]])
     actual_q = actual.tth_to_q()
-    # expected q vales are sin15, sin30, sin45, sin60, sin90
     expected_q = [0, 0.258819, 0.5, 0.707107, 0.866025, 1]
     assert np.allclose(actual_q, expected_q)
+
+
+def test_tth_to_q_bad():
+    # invalid tth values > 180 degree
+    actual = Diffraction_object(wavelength=4 * np.pi)
+    setattr(actual, "on_tth", [[0, 30, 60, 90, 120, 181], [1, 2, 3, 4, 5, 6]])
+    with pytest.raises(ValueError):
+        actual.tth_to_q()
 
 
 def test_q_to_d():
@@ -270,12 +285,21 @@ def test_d_to_q():
 
 
 def test_tth_to_d():
+    # valid tth values including edge cases when tth=0 or 180 degree,
+    # expected d values are DMAX=100, 1/sin15, 1/sin30, 1/sin45, 1/sin60, 1/sin90, in reverse order
     actual = Diffraction_object(wavelength=2)
     setattr(actual, "on_tth", [[0, 30, 60, 90, 120, 180], [1, 2, 3, 4, 5, 6]])
     actual_d = actual.tth_to_d()
-    # expected d values are DMAX=100, 1/sin15, 1/sin30, 1/sin45, 1/sin60, 1/sin90, in reverse order
     expected_d = [1, 1.1547, 1.41421, 2, 3.8637, 100]
     assert np.allclose(actual_d, expected_d)
+
+
+def test_tth_to_d_bad():
+    # invalid tth values > 180 degree
+    actual = Diffraction_object(wavelength=2)
+    setattr(actual, "on_tth", [[0, 30, 60, 90, 120, 181], [1, 2, 3, 4, 5, 6]])
+    with pytest.raises(ValueError):
+        actual.tth_to_d()
 
 
 def test_d_to_tth():
@@ -289,6 +313,15 @@ def test_d_to_tth():
     assert np.allclose(actual_tth, expected_tth)
 
 
+def test_d_to_tth_bad():
+    # invalid d values when arcsin value is not in the range of [-1, 1]
+    actual = Diffraction_object(wavelength=2)
+    setattr(actual, "on_d", [[0, 10, 20, 30], [1, 2, 3, 4]])
+    with pytest.raises(ValueError):
+        actual.d_to_tth()
+
+
+# Inputs cover a good valid range and provide the same expected values, ensuring conversion precision.
 params_array = [
     (["tth", "on_tth", [30, 60, 90, 120, 150], [1, 2, 3, 4, 5]]),
     (["q", "on_q", [1.626208, 3.141593, 4.442883, 5.441398, 6.069091], [1, 2, 3, 4, 5]]),

@@ -323,9 +323,11 @@ class Diffraction_object:
         q = np.asarray(q)
         wavelength = float(self.wavelength)
         pre_factor = wavelength / (4 * np.pi)
-        # limit q * pre_factor to 1 to avoid invalid input to arcsin
-        arcsin_value = np.where(q * pre_factor <= 1, q * pre_factor, 1)
-        return np.rad2deg(2.0 * np.arcsin(arcsin_value))
+        if np.any(np.abs(q * pre_factor) > 1):
+            raise ValueError(
+                "Invalid input for arcsin: some values exceed the range [-1, 1]. " "Check wavelength or q values."
+            )
+        return np.rad2deg(2.0 * np.arcsin(q * pre_factor))
 
     def tth_to_q(self):
         r"""
@@ -362,6 +364,8 @@ class Diffraction_object:
             of ``wavelength``
         """
         two_theta = np.asarray(np.deg2rad(self.on_tth[0]))
+        if np.any(two_theta > np.pi):
+            raise ValueError("Two theta exceeds 180 degrees.")
         wavelength = float(self.wavelength)
         pre_factor = (4 * np.pi) / wavelength
         return pre_factor * np.sin(two_theta / 2)
@@ -425,6 +429,8 @@ class Diffraction_object:
             of ``wavelength``
         """
         two_theta = np.asarray(np.deg2rad(self.on_tth[0]))
+        if np.any(two_theta > np.pi):
+            raise ValueError("Two theta exceeds 180 degrees.")
         wavelength = float(self.wavelength)
         sin_two_theta = np.sin(two_theta / 2)
         d = np.where(sin_two_theta != 0, wavelength / (2 * sin_two_theta), np.inf)
@@ -452,7 +458,11 @@ class Diffraction_object:
         """
         d = np.asarray(self.on_d[0])
         wavelength = float(self.wavelength)
-        pre_factor = np.where(d != 0, wavelength / (2 * d), 1)
+        pre_factor = wavelength / (2 * d)
+        if np.any(np.abs(pre_factor) > 1):
+            raise ValueError(
+                "Invalid input for arcsin: some values exceed the range [-1, 1]. " "Check wavelength or d values."
+            )
         return np.rad2deg(2.0 * np.arcsin(pre_factor))[::-1]
 
     def set_all_arrays(self):
