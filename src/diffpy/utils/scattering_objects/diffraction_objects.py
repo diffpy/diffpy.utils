@@ -323,7 +323,9 @@ class Diffraction_object:
         q = np.asarray(q)
         wavelength = float(self.wavelength)
         pre_factor = wavelength / (4 * np.pi)
-        return np.rad2deg(2.0 * np.arcsin(q * pre_factor))
+        # limit q * pre_factor to 1 to avoid invalid input to arcsin
+        arcsin_value = np.where(q * pre_factor <= 1, q * pre_factor, 1)
+        return np.rad2deg(2.0 * np.arcsin(arcsin_value))
 
     def tth_to_q(self):
         r"""
@@ -450,8 +452,8 @@ class Diffraction_object:
         """
         d = np.asarray(self.on_d[0])
         wavelength = float(self.wavelength)
-        tth = np.where(d != 0, np.rad2deg(2.0 * np.arcsin(wavelength / (2 * d))), 180)
-        return tth[::-1]
+        pre_factor = np.where(d != 0, wavelength / (2 * d), 1)
+        return np.rad2deg(2.0 * np.arcsin(pre_factor))[::-1]
 
     def set_all_arrays(self):
         master_array, xtype = self._get_original_array()
@@ -459,17 +461,17 @@ class Diffraction_object:
             self.on_tth[0] = self.q_to_tth()
             self.on_tth[1] = master_array[1]
             self.on_d[0] = self.q_to_d()
-            self.on_d[1] = master_array[1][::-1]
+            self.on_d[1] = master_array[1]
         if xtype == "tth":
             self.on_q[0] = self.tth_to_q()
             self.on_q[1] = master_array[1]
             self.on_d[0] = self.tth_to_d()
-            self.on_d[1] = master_array[1][::-1]
+            self.on_d[1] = master_array[1]
         if xtype == "d":
             self.on_tth[0] = self.d_to_tth()
-            self.on_tth[1] = master_array[1][::-1]
+            self.on_tth[1] = master_array[1]
             self.on_q[0] = self.d_to_q()
-            self.on_q[1] = master_array[1][::-1]
+            self.on_q[1] = master_array[1]
         self.tthmin = self.on_tth[0][0]
         self.tthmax = self.on_tth[0][-1]
         self.qmin = self.on_q[0][0]
