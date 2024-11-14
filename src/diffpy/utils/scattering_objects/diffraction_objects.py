@@ -1,6 +1,7 @@
 import datetime
-from copy import deepcopy
 import warnings
+from copy import deepcopy
+
 import numpy as np
 
 from diffpy.utils.tools import get_package_info
@@ -24,14 +25,14 @@ class Diffraction_object:
         `Diffraction_object` is deprecated and will be removed in diffpy.utils 3.6.0. It is replaced by
         `DiffractionObject` to follow the class naming convention.
     """
-    
+
     warnings.warn(
         "Diffraction_object` is deprecated and will be removed in diffpy.utils 3.6.0, It is replaced by "
         "DiffractionObject` to follow the class naming convention.",
         DeprecationWarning,
         stacklevel=2,
     )
-    
+
     def __init__(self, name="", wavelength=None):
         self.name = name
         self.wavelength = wavelength
@@ -475,25 +476,6 @@ class Diffraction_object:
                 f.write(f"{key} = {value}\n")
             f.write("\n#### start data\n")
             np.savetxt(f, data_to_save, delimiter=" ")
-
-
-import datetime
-from copy import deepcopy
-
-import numpy as np
-
-from diffpy.utils.tools import get_package_info
-
-QQUANTITIES = ["q"]
-ANGLEQUANTITIES = ["angle", "tth", "twotheta", "2theta"]
-DQUANTITIES = ["d", "dspace"]
-XQUANTITIES = ANGLEQUANTITIES + DQUANTITIES + QQUANTITIES
-XUNITS = ["degrees", "radians", "rad", "deg", "inv_angs", "inv_nm", "nm-1", "A-1"]
-
-x_grid_emsg = (
-    "objects are not on the same x-grid. You may add them using the self.add method "
-    "and specifying how to handle the mismatch."
-)
 
 
 class DiffractionObject:
