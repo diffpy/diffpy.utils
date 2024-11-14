@@ -233,10 +233,12 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
 
 def test_q_to_tth():
     actual = Diffraction_object(wavelength=4 * np.pi)
-    setattr(actual, "on_q", [[0, 0.2, 0.4, 0.6, 0.8, 1], [1, 2, 3, 4, 5, 6]])
+    setattr(actual, "on_q", [[0, 0.2, 0.4, 0.6, 0.8, 1, 40, 60], [1, 2, 3, 4, 5, 6, 7, 8]])
     actual_tth = actual.q_to_tth()
     # expected tth values are 2 * arcsin(q)
-    expected_tth = [0, 23.07392, 47.15636, 73.73980, 106.26020, 180]
+    # when q gets large, we set tth = 180
+    # we allow q to exceed QMAX for user inputs
+    expected_tth = [0, 23.07392, 47.15636, 73.73980, 106.26020, 180, 180, 180]
     assert np.allclose(actual_tth, expected_tth)
 
 
@@ -278,18 +280,19 @@ def test_tth_to_d():
 
 def test_d_to_tth():
     actual = Diffraction_object(wavelength=2)
-    setattr(actual, "on_d", [[0, 2, 4, 6, 8, 100], [1, 2, 3, 4, 5, 6]])
+    setattr(actual, "on_d", [[0, 2, 4, 6, 8, 100, 200], [1, 2, 3, 4, 5, 6, 7]])
     actual_tth = actual.d_to_tth()
     # expected tth values are 2*arcsin(1/d), in reverse order
     # when d is 0, we set tth to 180
-    expected_tth = [1.14593, 14.36151, 19.18814, 28.95502, 60, 180]
+    # we allow d to exceed DMAX=100 for user inputs
+    expected_tth = [0.57296, 1.14593, 14.36151, 19.18814, 28.95502, 60, 180]
     assert np.allclose(actual_tth, expected_tth)
 
 
 params_array = [
-    (["q", "on_q", [4.58087, 8.84956], [1, 2]]),
-    (["tth", "on_tth", [30, 60], [1, 2]]),
-    (["d", "on_d", [1.37161, 0.71], [1, 2]]),
+    (["tth", "on_tth", [30, 60, 90, 120, 150], [1, 2, 3, 4, 5]]),
+    (["q", "on_q", [1.626208, 3.141593, 4.442883, 5.441398, 6.069091], [1, 2, 3, 4, 5]]),
+    (["d", "on_d", [1.035276, 1.154701, 1.414214, 2, 3.863703], [1, 2, 3, 4, 5]]),
 ]
 
 
@@ -297,18 +300,18 @@ params_array = [
 def test_set_all_arrays(inputs):
     input_xtype, on_xtype, xarray, yarray = inputs
     expected_values = {
-        "on_tth": [np.array([30, 60]), np.array([1, 2])],
-        "on_q": [np.array([4.58087, 8.84956]), np.array([1, 2])],
-        "on_d": [np.array([1.37161, 0.71]), np.array([1, 2])],
+        "on_tth": [np.array([30, 60, 90, 120, 150]), np.array([1, 2, 3, 4, 5])],
+        "on_q": [np.array([1.626208, 3.141593, 4.442883, 5.441398, 6.069091]), np.array([1, 2, 3, 4, 5])],
+        "on_d": [np.array([1.035276, 1.154701, 1.414214, 2, 3.863703]), np.array([1, 2, 3, 4, 5])],
         "tthmin": 30,
-        "tthmax": 60,
-        "qmin": 4.58087,
-        "qmax": 8.84956,
-        "dmin": 1.37161,
-        "dmax": 0.71,
+        "tthmax": 150,
+        "qmin": 1.626208,
+        "qmax": 6.069091,
+        "dmin": 1.035276,
+        "dmax": 3.863703,
     }
 
-    actual = Diffraction_object(wavelength=0.71)
+    actual = Diffraction_object(wavelength=2)
     setattr(actual, "input_xtype", input_xtype)
     setattr(actual, on_xtype, [xarray, yarray])
     actual.set_all_arrays()
