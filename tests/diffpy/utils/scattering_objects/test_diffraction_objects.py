@@ -231,6 +231,42 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
     assert (diffraction_object1 == diffraction_object2) == expected
 
 
+def test_q_to_tth():
+    # valid q values including edge cases when q=0 or 1
+    # expected tth values are 2*arcsin(q)
+    actual = DiffractionObject(wavelength=4 * np.pi)
+    setattr(actual, "on_q", [[0, 0.2, 0.4, 0.6, 0.8, 1], [1, 2, 3, 4, 5, 6]])
+    actual_tth = actual.q_to_tth()
+    expected_tth = [0, 23.07392, 47.15636, 73.73980, 106.26020, 180]
+    assert np.allclose(actual_tth, expected_tth)
+
+
+def test_q_to_tth_bad():
+    # invalid q values when arcsin value is not in the range of [-1, 1]
+    actual = DiffractionObject(wavelength=4 * np.pi)
+    setattr(actual, "on_q", [[0.6, 0.8, 1, 1.2], [1, 2, 3, 4]])
+    with pytest.raises(ValueError):
+        actual.q_to_tth()
+
+
+def test_tth_to_q():
+    # valid tth values including edge cases when tth=0 or 180 degree
+    # expected q vales are sin15, sin30, sin45, sin60, sin90
+    actual = DiffractionObject(wavelength=4 * np.pi)
+    setattr(actual, "on_tth", [[0, 30, 60, 90, 120, 180], [1, 2, 3, 4, 5, 6]])
+    actual_q = actual.tth_to_q()
+    expected_q = [0, 0.258819, 0.5, 0.707107, 0.866025, 1]
+    assert np.allclose(actual_q, expected_q)
+
+
+def test_tth_to_q_bad():
+    # invalid tth value of > 180 degree
+    actual = DiffractionObject(wavelength=4 * np.pi)
+    setattr(actual, "on_tth", [[0, 30, 60, 90, 120, 181], [1, 2, 3, 4, 5, 6]])
+    with pytest.raises(ValueError):
+        actual.tth_to_q()
+
+
 def test_dump(tmp_path, mocker):
     x, y = np.linspace(0, 5, 6), np.linspace(0, 5, 6)
     directory = Path(tmp_path)
