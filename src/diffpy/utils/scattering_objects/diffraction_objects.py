@@ -763,25 +763,29 @@ class DiffractionObject:
 
             2\theta_n = 2 \arcsin\left(\frac{\lambda q}{4 \pi}\right)
 
+        Function adapted from scikit-beam.  Thanks to those developers
+
         Parameters
         ----------
         q : array
-            An array of :math:`q` values
+            The array of :math:`q` values
 
         wavelength : float
             Wavelength of the incoming x-rays
 
-        Function adapted from scikit-beam.  Thanks to those developers
-
         Returns
         -------
         two_theta : array
-            An array of :math:`2\theta` values in radians
+            The array of :math:`2\theta` values in radians
         """
         q = self.on_q[0]
         q = np.asarray(q)
         wavelength = float(self.wavelength)
         pre_factor = wavelength / (4 * np.pi)
+        if np.any(np.abs(q * pre_factor) > 1):
+            raise ValueError(
+                "Invalid input for arcsin: some values exceed the range [-1, 1]. Check wavelength or q values."
+            )
         return np.rad2deg(2.0 * np.arcsin(q * pre_factor))
 
     def tth_to_q(self):
@@ -800,25 +804,25 @@ class DiffractionObject:
 
             q = \frac{4 \pi \sin\left(\frac{2\theta}{2}\right)}{\lambda}
 
-
+        Function adapted from scikit-beam.  Thanks to those developers.
 
         Parameters
         ----------
         two_theta : array
-            An array of :math:`2\theta` values in units of degrees
+            The array of :math:`2\theta` values in units of degrees
 
         wavelength : float
             Wavelength of the incoming x-rays
 
-        Function adapted from scikit-beam.  Thanks to those developers.
-
         Returns
         -------
         q : array
-            An array of :math:`q` values in the inverse of the units
+            The array of :math:`q` values in the inverse of the units
             of ``wavelength``
         """
         two_theta = np.asarray(np.deg2rad(self.on_tth[0]))
+        if np.any(two_theta > np.pi):
+            raise ValueError("Two theta exceeds 180 degrees.")
         wavelength = float(self.wavelength)
         pre_factor = (4 * np.pi) / wavelength
         return pre_factor * np.sin(two_theta / 2)
