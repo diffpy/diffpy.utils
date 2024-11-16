@@ -48,8 +48,6 @@ def test_loadData_1column(datafile):
     d = loadData(loaddata01, usecols=[0], minrows=3)
     assert not np.array_equal(d1c, d)
 
-    return
-
 
 def test_loadData_headers(datafile):
     """check loadData() with headers options enabled"""
@@ -60,7 +58,6 @@ def test_loadData_headers(datafile):
     # Load data with headers
     hdata = loadData(loaddatawithheaders, headers=True, hdel=delimiter, hignore=hignore)
 
-    # Assertions using pytest
     # Only fourteen lines of data are formatted properly
     assert len(hdata) == 14
 
