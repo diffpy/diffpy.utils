@@ -13,6 +13,8 @@
 #
 ##############################################################################
 
+import os
+
 import numpy
 
 
@@ -98,6 +100,10 @@ def loadData(filename, minrows=10, headers=False, hdel="=", hignore=None, **kwar
         except (IndexError, ValueError):
             nc = nv = 0
         return nc, nv
+
+    # Check if file exists before trying to open
+    if not os.path.exists(filename):
+        raise IOError(f"File {filename} cannot be found. Please rerun the program specifying a valid filename.")
 
     # make sure fid gets cleaned up
     with open(filename, "rb") as fid:

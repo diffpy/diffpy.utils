@@ -15,8 +15,11 @@ def test_loadData_default(datafile):
     d2c = np.array([[3, 31], [4, 32], [5, 33]])
 
     with pytest.raises(IOError) as err:
-        loadData("doesnotexist")
-    assert "No such file or directory" in str(err.value)
+        loadData("doesnotexist.txt")
+    assert (
+        str(err.value)
+        == "File doesnotexist.txt cannot be found. Please rerun the program specifying a valid filename."
+    )
 
     # The default minrows=10 makes it read from the third line
     d = loadData(loaddata01)
