@@ -232,7 +232,7 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
 
 
 def test_q_to_tth():
-    # valid q values including edge cases when q=0 or 1
+    # valid q values including edge cases when q=0 or tth=180 after converting
     # expected tth values are 2*arcsin(q)
     actual = DiffractionObject(wavelength=4 * np.pi)
     setattr(actual, "on_q", [[0, 0.2, 0.4, 0.6, 0.8, 1], [1, 2, 3, 4, 5, 6]])
@@ -242,7 +242,7 @@ def test_q_to_tth():
 
 
 def test_q_to_tth_bad():
-    # invalid q values when arcsin value is not in the range of [-1, 1]
+    # invalid wavelength or q values when arcsin value is not in the range of [-1, 1]
     actual = DiffractionObject(wavelength=4 * np.pi)
     setattr(actual, "on_q", [[0.6, 0.8, 1, 1.2], [1, 2, 3, 4]])
     with pytest.raises(ValueError):

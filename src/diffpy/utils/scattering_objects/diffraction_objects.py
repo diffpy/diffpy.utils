@@ -783,9 +783,7 @@ class DiffractionObject:
         wavelength = float(self.wavelength)
         pre_factor = wavelength / (4 * np.pi)
         if np.any(np.abs(q * pre_factor) > 1):
-            raise ValueError(
-                "Invalid input for arcsin: some values exceed the range [-1, 1]. Check wavelength or q values."
-            )
+            raise ValueError("Please check if you entered an incorrect wavelength or q value.")
         return np.rad2deg(2.0 * np.arcsin(q * pre_factor))
 
     def tth_to_q(self):
@@ -822,7 +820,10 @@ class DiffractionObject:
         """
         two_theta = np.asarray(np.deg2rad(self.on_tth[0]))
         if np.any(two_theta > np.pi):
-            raise ValueError("Two theta exceeds 180 degrees.")
+            raise ValueError(
+                "Two theta exceeds 180 degrees. Please check if invalid values were entered "
+                "or if degrees were incorrectly specified as radians."
+            )
         wavelength = float(self.wavelength)
         pre_factor = (4 * np.pi) / wavelength
         return pre_factor * np.sin(two_theta / 2)
