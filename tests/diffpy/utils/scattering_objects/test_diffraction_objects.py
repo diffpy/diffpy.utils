@@ -232,8 +232,8 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
 
 
 def test_q_to_tth():
-    # valid q values including edge cases when q=0 or tth=180 after converting
-    # expected tth values are 2*arcsin(q)
+    # Valid q values that should result in 0-180 tth values after conversion
+    # expected tth values are 2*arcsin(q) in degrees
     actual = DiffractionObject(wavelength=4 * np.pi)
     setattr(actual, "on_q", [[0, 0.2, 0.4, 0.6, 0.8, 1], [1, 2, 3, 4, 5, 6]])
     actual_tth = actual.q_to_tth()
@@ -241,16 +241,43 @@ def test_q_to_tth():
     assert np.allclose(actual_tth, expected_tth)
 
 
-def test_q_to_tth_bad():
-    # invalid wavelength or q values when arcsin value is not in the range of [-1, 1]
-    actual = DiffractionObject(wavelength=4 * np.pi)
-    setattr(actual, "on_q", [[0.6, 0.8, 1, 1.2], [1, 2, 3, 4]])
+params_q_to_tth_bad = [
+    # UC1: user did not specify wavelength
+    (
+        [None, [0, 0.2, 0.4, 0.6, 0.8, 1]],
+        "Wavelength is not specified. Please provide a valid wavelength, "
+        "e.g., DiffractionObject(wavelength=0.71).",
+    ),
+    # UC2: user specified invalid q values that result in tth > 180 degrees
+    (
+        [4 * np.pi, [0.2, 0.4, 0.6, 0.8, 1, 1.2]],
+        "Wavelength * q > 4 * pi. Please check if you entered an incorrect wavelength or q value.",
+    ),
+    # UC3: user specified a wrong wavelength that result in tth > 180 degrees
+    (
+        [100, [0, 0.2, 0.4, 0.6, 0.8, 1]],
+        "Wavelength * q > 4 * pi. Please check if you entered an incorrect wavelength or q value.",
+    ),
+    # UC4: user specified an empty q array
+    ([4 * np.pi, []], "Q array is empty. Please provide valid q values."),
+    # UC5: user specified a non-numeric value in q array
+    (
+        [4 * np.pi, [0, 0.2, 0.4, 0.6, 0.8, "invalid"]],
+        "Invalid value found in q array. Please ensure all values are numeric.",
+    ),
+]
+
+
+@pytest.mark.parametrize("inputs, expected", params_q_to_tth_bad)
+def test_q_to_tth_bad(inputs, expected):
+    actual = DiffractionObject(wavelength=inputs[0])
+    setattr(actual, "on_q", [inputs[1], [1, 2, 3, 4, 5, 6]])
     with pytest.raises(ValueError):
         actual.q_to_tth()
 
 
 def test_tth_to_q():
-    # valid tth values including edge cases when tth=0 or 180 degree
+    # Valid tth values between 0-180 degrees
     # expected q vales are sin15, sin30, sin45, sin60, sin90
     actual = DiffractionObject(wavelength=4 * np.pi)
     setattr(actual, "on_tth", [[0, 30, 60, 90, 120, 180], [1, 2, 3, 4, 5, 6]])
@@ -259,11 +286,39 @@ def test_tth_to_q():
     assert np.allclose(actual_q, expected_q)
 
 
-def test_tth_to_q_bad():
-    # invalid tth value of > 180 degree
-    actual = DiffractionObject(wavelength=4 * np.pi)
-    setattr(actual, "on_tth", [[0, 30, 60, 90, 120, 181], [1, 2, 3, 4, 5, 6]])
-    with pytest.raises(ValueError):
+params_tth_to_q_bad = [
+    # UC1: user did not specify wavelength
+    (
+        [None, [0, 30, 60, 90, 120, 180]],
+        "Wavelength is not specified. Please provide a valid wavelength, "
+        "e.g., DiffractionObject(wavelength=0.71).",
+    ),
+    # UC2: user specified an invalid tth value of > 180 degrees
+    (
+        [4 * np.pi, [0, 30, 60, 90, 120, 181]],
+        "Two theta exceeds 180 degrees. Please check the input values for errors.",
+    ),
+    # UC3: user did not specify wavelength and specified invalid tth values
+    (
+        [None, [0, 30, 60, 90, 120, 181]],
+        "Wavelength is not specified. Please provide a valid wavelength, "
+        "e.g., DiffractionObject(wavelength=0.71).",
+    ),
+    # UC4: user specified an empty two theta array
+    ([4 * np.pi, []], "Two theta array is empty. Please provide valid two theta values."),
+    # UC5: user specified a non-numeric value in two theta array
+    (
+        [4 * np.pi, [0, 30, 60, 90, 120, "invalid"]],
+        "Invalid value found in two theta array. Please ensure all values are numeric.",
+    ),
+]
+
+
+@pytest.mark.parametrize("inputs, expected", params_tth_to_q_bad)
+def test_tth_to_q_bad(inputs, expected):
+    actual = DiffractionObject(wavelength=inputs[0])
+    setattr(actual, "on_tth", [inputs[1], [1, 2, 3, 4, 5, 6]])
+    with pytest.raises(ValueError, match=expected):
         actual.tth_to_q()
 
 
