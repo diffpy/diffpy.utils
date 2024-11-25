@@ -241,8 +241,10 @@ def _test_valid_diffraction_objects(actual_diffraction_object, function, expecte
         assert str(warn_record[0].message) == (
             "INFO: no wavelength has been specified. You can continue "
             "to use the DiffractionObject but some of its powerful features "
-            "will not be available. To specify a wavelength, you can use "
-            "DiffractionObject(wavelength=0.71)."
+            "will not be available. To specify a wavelength, set "
+            "diffraction_object.wavelength = [number], "
+            "where diffraction_object is the variable name of you Diffraction Object, "
+            "and number is the wavelength in angstroms."
         )
     actual_array = getattr(actual_diffraction_object, function)()
     return np.allclose(actual_array, expected_array)
@@ -289,7 +291,7 @@ params_q_to_tth_bad = [
         [
             ValueError,
             "The supplied q-array and wavelength will result in an impossible two-theta. "
-            "Please check these values and re-instantiate the DiffractionObject.",
+            "Please check these values and re-instantiate the DiffractionObject with correct values.",
         ],
     ),
     # UC2: user specified a wrong wavelength that result in tth > 180 degrees
@@ -304,12 +306,12 @@ params_q_to_tth_bad = [
     # UC3: user specified a q array that does not match the length of intensity array (without wavelength)
     (
         [None, [0, 0.2, 0.4, 0.6, 0.8, 1], [1, 2, 3, 4, 5]],
-        [IndexError, "Please ensure q array and intensity array are the same length."],
+        [RuntimeError, "Please ensure q array and intensity array are the same length."],
     ),
     # UC4: user specified a q array that does not match the length of intensity array (with wavelength)
     (
         [4 * np.pi, [0, 0.2, 0.4, 0.6, 0.8, 1], [1, 2, 3, 4, 5]],
-        [IndexError, "Please ensure q array and intensity array are the same length."],
+        [RuntimeError, "Please ensure q array and intensity array are the same length."],
     ),
     # UC5: user specified a non-numeric value in q array (without wavelength)
     (
@@ -379,12 +381,12 @@ params_tth_to_q_bad = [
     # UC3: user specified a two theta array that does not match the length of intensity array (without wavelength)
     (
         [None, [0, 30, 60, 90, 120], [1, 2, 3, 4, 5, 6]],
-        [IndexError, "Please ensure two theta array and intensity array are the same length."],
+        [RuntimeError, "Please ensure two theta array and intensity array are the same length."],
     ),
     # UC4: user specified a two theta array that does not match the length of intensity array (with wavelength)
     (
         [4 * np.pi, [0, 30, 60, 90, 120], [1, 2, 3, 4, 5, 6]],
-        [IndexError, "Please ensure two theta array and intensity array are the same length."],
+        [RuntimeError, "Please ensure two theta array and intensity array are the same length."],
     ),
     # UC5: user specified a non-numeric value in two theta array (without wavelength)
     (
