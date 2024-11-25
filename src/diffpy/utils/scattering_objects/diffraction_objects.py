@@ -17,6 +17,23 @@ x_grid_emsg = (
     "and specifying how to handle the mismatch."
 )
 
+wavelength_warning_emsg = (
+    "INFO: no wavelength has been specified. You can continue "
+    "to use the DiffractionObject but some of its powerful features "
+    "will not be available. To specify a wavelength, set "
+    "diffraction_object.wavelength = [number], "
+    "where diffraction_object is the variable name of you Diffraction Object, "
+    "and number is the wavelength in angstroms."
+)
+
+length_mismatch_emsg = "Please ensure {array_name} array and intensity array are of the same length."
+non_numeric_value_emsg = "Invalid value found in {array_name} array. Please ensure all values are numeric."
+invalid_tth_emsg = "Two theta exceeds 180 degrees. Please check the input values for errors."
+invalid_q_or_wavelength_emsg = (
+    "The supplied q-array and wavelength will result in an impossible two-theta. "
+    "Please check these values and re-instantiate the DiffractionObject with correct values."
+)
+
 
 class Diffraction_object:
     """A class to represent and manipulate data associated with diffraction experiments.
@@ -778,12 +795,20 @@ class DiffractionObject:
         two_theta : array
             The array of :math:`2\theta` values in radians
         """
+        for i, value in enumerate(self.on_q[0]):
+            if not isinstance(value, (int, float)):
+                raise TypeError(non_numeric_value_emsg.format(array_name="q"))
+        if len(self.on_q[0]) != len(self.on_q[1]):
+            raise RuntimeError(length_mismatch_emsg.format(array_name="q"))
+        if self.wavelength is None:
+            warnings.warn(wavelength_warning_emsg, UserWarning)
+            return np.empty(0)
         q = self.on_q[0]
         q = np.asarray(q)
         wavelength = float(self.wavelength)
         pre_factor = wavelength / (4 * np.pi)
         if np.any(np.abs(q * pre_factor) > 1):
-            raise ValueError("Please check if you entered an incorrect wavelength or q value.")
+            raise ValueError(invalid_q_or_wavelength_emsg)
         return np.rad2deg(2.0 * np.arcsin(q * pre_factor))
 
     def tth_to_q(self):
@@ -818,12 +843,17 @@ class DiffractionObject:
             The array of :math:`q` values in the inverse of the units
             of ``wavelength``
         """
+        for i, value in enumerate(self.on_tth[0]):
+            if not isinstance(value, (int, float)):
+                raise TypeError(non_numeric_value_emsg.format(array_name="two theta"))
+        if len(self.on_tth[0]) != len(self.on_tth[1]):
+            raise RuntimeError(length_mismatch_emsg.format(array_name="two theta"))
         two_theta = np.asarray(np.deg2rad(self.on_tth[0]))
         if np.any(two_theta > np.pi):
-            raise ValueError(
-                "Two theta exceeds 180 degrees. Please check if invalid values were entered "
-                "or if degrees were incorrectly specified as radians."
-            )
+            raise ValueError(invalid_tth_emsg)
+        if self.wavelength is None:
+            warnings.warn(wavelength_warning_emsg, UserWarning)
+            return np.empty(0)
         wavelength = float(self.wavelength)
         pre_factor = (4 * np.pi) / wavelength
         return pre_factor * np.sin(two_theta / 2)

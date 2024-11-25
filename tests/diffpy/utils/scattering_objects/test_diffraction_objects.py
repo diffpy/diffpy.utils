@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 from freezegun import freeze_time
 
-from diffpy.utils.scattering_objects.diffraction_objects import DiffractionObject
+from diffpy.utils.scattering_objects.diffraction_objects import DiffractionObject, wavelength_warning_emsg
 
 params = [
     (  # Default
@@ -238,35 +238,18 @@ def _test_valid_diffraction_objects(actual_diffraction_object, function, expecte
     if actual_diffraction_object.wavelength is None:
         with pytest.warns(UserWarning) as warn_record:
             getattr(actual_diffraction_object, function)()
-        assert str(warn_record[0].message) == (
-            "INFO: no wavelength has been specified. You can continue "
-            "to use the DiffractionObject but some of its powerful features "
-            "will not be available. To specify a wavelength, set "
-            "diffraction_object.wavelength = [number], "
-            "where diffraction_object is the variable name of you Diffraction Object, "
-            "and number is the wavelength in angstroms."
-        )
+        assert str(warn_record[0].message) == wavelength_warning_emsg
     actual_array = getattr(actual_diffraction_object, function)()
     return np.allclose(actual_array, expected_array)
 
 
 params_q_to_tth = [
     # UC1: User specified empty q values (without wavelength)
-    (
-        [None, [], []],
-        [[]],
-    ),
+    ([None, [], []], [[]]),
     # UC2: User specified empty q values (with wavelength)
-    (
-        [4 * np.pi, [], []],
-        [[]],
-    ),
+    ([4 * np.pi, [], []], [[]]),
     # UC3: User specified valid q values (without wavelength)
-    # expected tth values are 2*arcsin(q) in degrees
-    (
-        [None, [0, 0.2, 0.4, 0.6, 0.8, 1], [1, 2, 3, 4, 5, 6]],
-        [[]],
-    ),
+    ([None, [0, 0.2, 0.4, 0.6, 0.8, 1], [1, 2, 3, 4, 5, 6]], [[]]),
     # UC4: User specified valid q values (with wavelength)
     # expected tth values are 2*arcsin(q) in degrees
     (
@@ -300,18 +283,18 @@ params_q_to_tth_bad = [
         [
             ValueError,
             "The supplied q-array and wavelength will result in an impossible two-theta. "
-            "Please check these values and re-instantiate the DiffractionObject.",
+            "Please check these values and re-instantiate the DiffractionObject with correct values.",
         ],
     ),
     # UC3: user specified a q array that does not match the length of intensity array (without wavelength)
     (
         [None, [0, 0.2, 0.4, 0.6, 0.8, 1], [1, 2, 3, 4, 5]],
-        [RuntimeError, "Please ensure q array and intensity array are the same length."],
+        [RuntimeError, "Please ensure q array and intensity array are of the same length."],
     ),
     # UC4: user specified a q array that does not match the length of intensity array (with wavelength)
     (
         [4 * np.pi, [0, 0.2, 0.4, 0.6, 0.8, 1], [1, 2, 3, 4, 5]],
-        [RuntimeError, "Please ensure q array and intensity array are the same length."],
+        [RuntimeError, "Please ensure q array and intensity array are of the same length."],
     ),
     # UC5: user specified a non-numeric value in q array (without wavelength)
     (
@@ -336,15 +319,9 @@ def test_q_to_tth_bad(inputs, expected):
 
 params_tth_to_q = [
     # UC1: User specified empty tth values (without wavelength)
-    (
-        [None, [], []],
-        [[]],
-    ),
+    ([None, [], []], [[]]),
     # UC2: User specified empty tth values (with wavelength)
-    (
-        [4 * np.pi, [], []],
-        [[]],
-    ),
+    ([4 * np.pi, [], []], [[]]),
     # UC3: User specified valid tth values between 0-180 degrees (without wavelength)
     (
         [None, [0, 30, 60, 90, 120, 180], [1, 2, 3, 4, 5, 6]],
@@ -352,10 +329,7 @@ params_tth_to_q = [
     ),
     # UC4: User specified valid tth values between 0-180 degrees (with wavelength)
     # expected q vales are sin15, sin30, sin45, sin60, sin90
-    (
-        [4 * np.pi, [0, 30, 60, 90, 120, 180], [1, 2, 3, 4, 5, 6]],
-        [[0, 0.258819, 0.5, 0.707107, 0.866025, 1]],
-    ),
+    ([4 * np.pi, [0, 30, 60, 90, 120, 180], [1, 2, 3, 4, 5, 6]], [[0, 0.258819, 0.5, 0.707107, 0.866025, 1]]),
 ]
 
 
@@ -381,12 +355,12 @@ params_tth_to_q_bad = [
     # UC3: user specified a two theta array that does not match the length of intensity array (without wavelength)
     (
         [None, [0, 30, 60, 90, 120], [1, 2, 3, 4, 5, 6]],
-        [RuntimeError, "Please ensure two theta array and intensity array are the same length."],
+        [RuntimeError, "Please ensure two theta array and intensity array are of the same length."],
     ),
     # UC4: user specified a two theta array that does not match the length of intensity array (with wavelength)
     (
         [4 * np.pi, [0, 30, 60, 90, 120], [1, 2, 3, 4, 5, 6]],
-        [RuntimeError, "Please ensure two theta array and intensity array are the same length."],
+        [RuntimeError, "Please ensure two theta array and intensity array are of the same length."],
     ),
     # UC5: user specified a non-numeric value in two theta array (without wavelength)
     (
