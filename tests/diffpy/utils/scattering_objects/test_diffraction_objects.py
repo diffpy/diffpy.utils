@@ -232,9 +232,6 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
 
 
 def _test_valid_diffraction_objects(actual_diffraction_object, function, expected_array):
-    """Checks the behavior of the DiffractionObject:
-    when there is no wavelength, we expect the correct warning message and output,
-    otherwise, we only check the output matches the expected array."""
     if actual_diffraction_object.wavelength is None:
         with pytest.warns(UserWarning) as warn_record:
             getattr(actual_diffraction_object, function)()
