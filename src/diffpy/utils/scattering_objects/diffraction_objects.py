@@ -5,6 +5,7 @@ from copy import deepcopy
 import numpy as np
 
 from diffpy.utils.tools import get_package_info
+from diffpy.utils.transforms import q_to_tth, tth_to_q
 
 QQUANTITIES = ["q"]
 ANGLEQUANTITIES = ["angle", "tth", "twotheta", "2theta"]
@@ -15,23 +16,6 @@ XUNITS = ["degrees", "radians", "rad", "deg", "inv_angs", "inv_nm", "nm-1", "A-1
 x_grid_emsg = (
     "objects are not on the same x-grid. You may add them using the self.add method "
     "and specifying how to handle the mismatch."
-)
-
-wavelength_warning_emsg = (
-    "INFO: no wavelength has been specified. You can continue "
-    "to use the DiffractionObject but some of its powerful features "
-    "will not be available. To specify a wavelength, set "
-    "diffraction_object.wavelength = [number], "
-    "where diffraction_object is the variable name of you Diffraction Object, "
-    "and number is the wavelength in angstroms."
-)
-
-length_mismatch_emsg = "Please ensure {array_name} array and intensity array are of the same length."
-non_numeric_value_emsg = "Invalid value found in {array_name} array. Please ensure all values are numeric."
-invalid_tth_emsg = "Two theta exceeds 180 degrees. Please check the input values for errors."
-invalid_q_or_wavelength_emsg = (
-    "The supplied q-array and wavelength will result in an impossible two-theta. "
-    "Please check these values and re-instantiate the DiffractionObject with correct values."
 )
 
 
@@ -54,9 +38,9 @@ class Diffraction_object:
         self.name = name
         self.wavelength = wavelength
         self.scat_quantity = ""
-        self.on_q = [np.empty(0), np.empty(0)]
-        self.on_tth = [np.empty(0), np.empty(0)]
-        self.on_d = [np.empty(0), np.empty(0)]
+        self.on_q = np.array([np.empty(0), np.empty(0)])
+        self.on_tth = np.array([np.empty(0), np.empty(0)])
+        self.on_d = np.array([np.empty(0), np.empty(0)])
         self._all_arrays = [self.on_q, self.on_tth]
         self.metadata = {}
 
@@ -311,97 +295,19 @@ class Diffraction_object:
         if wavelength is not None:
             self.wavelength = wavelength
         if xtype.lower() in QQUANTITIES:
-            self.on_q = [np.array(xarray), np.array(yarray)]
+            self.on_q = np.array([xarray, yarray])
         elif xtype.lower() in ANGLEQUANTITIES:
-            self.on_tth = [np.array(xarray), np.array(yarray)]
+            self.on_tth = np.array([xarray, yarray])
         elif xtype.lower() in DQUANTITIES:
-            self.on_tth = [np.array(xarray), np.array(yarray)]
+            self.on_tth = np.array([xarray, yarray])
         self.set_all_arrays()
-
-    def q_to_tth(self):
-        r"""
-        Helper function to convert q to two-theta.
-
-        By definition the relationship is:
-
-        .. math::
-
-            \sin\left(\frac{2\theta}{2}\right) = \frac{\lambda q}{4 \pi}
-
-        thus
-
-        .. math::
-
-            2\theta_n = 2 \arcsin\left(\frac{\lambda q}{4 \pi}\right)
-
-        Parameters
-        ----------
-        q : array
-            An array of :math:`q` values
-
-        wavelength : float
-            Wavelength of the incoming x-rays
-
-        Function adapted from scikit-beam.  Thanks to those developers
-
-        Returns
-        -------
-        two_theta : array
-            An array of :math:`2\theta` values in radians
-        """
-        q = self.on_q[0]
-        q = np.asarray(q)
-        wavelength = float(self.wavelength)
-        pre_factor = wavelength / (4 * np.pi)
-        return np.rad2deg(2.0 * np.arcsin(q * pre_factor))
-
-    def tth_to_q(self):
-        r"""
-        Helper function to convert two-theta to q
-
-        By definition the relationship is
-
-        .. math::
-
-            \sin\left(\frac{2\theta}{2}\right) = \frac{\lambda q}{4 \pi}
-
-        thus
-
-        .. math::
-
-            q = \frac{4 \pi \sin\left(\frac{2\theta}{2}\right)}{\lambda}
-
-
-
-        Parameters
-        ----------
-        two_theta : array
-            An array of :math:`2\theta` values in units of degrees
-
-        wavelength : float
-            Wavelength of the incoming x-rays
-
-        Function adapted from scikit-beam.  Thanks to those developers.
-
-        Returns
-        -------
-        q : array
-            An array of :math:`q` values in the inverse of the units
-            of ``wavelength``
-        """
-        two_theta = np.asarray(np.deg2rad(self.on_tth[0]))
-        wavelength = float(self.wavelength)
-        pre_factor = (4 * np.pi) / wavelength
-        return pre_factor * np.sin(two_theta / 2)
 
     def set_all_arrays(self):
         master_array, xtype = self._get_original_array()
         if xtype == "q":
-            self.on_tth[0] = self.q_to_tth()
-            self.on_tth[1] = master_array[1]
-        if xtype == "tth":
-            self.on_q[0] = self.tth_to_q()
-            self.on_q[1] = master_array[1]
+            self.on_tth = q_to_tth(self.on_q, self.wavelength)
+        elif xtype == "tth":
+            self.on_q = tth_to_q(self.on_tth, self.wavelength)
         self.tthmin = self.on_tth[0][0]
         self.tthmax = self.on_tth[0][-1]
         self.qmin = self.on_q[0][0]
@@ -500,9 +406,9 @@ class DiffractionObject:
         self.name = name
         self.wavelength = wavelength
         self.scat_quantity = ""
-        self.on_q = [np.empty(0), np.empty(0)]
-        self.on_tth = [np.empty(0), np.empty(0)]
-        self.on_d = [np.empty(0), np.empty(0)]
+        self.on_q = np.empty((2, 0), dtype=np.float64)
+        self.on_tth = np.empty((2, 0), dtype=np.float64)
+        self.on_d = np.empty((2, 0), dtype=np.float64)
         self._all_arrays = [self.on_q, self.on_tth]
         self.metadata = {}
 
@@ -757,115 +663,19 @@ class DiffractionObject:
         if wavelength is not None:
             self.wavelength = wavelength
         if xtype.lower() in QQUANTITIES:
-            self.on_q = [np.array(xarray), np.array(yarray)]
+            self.on_q = np.array([xarray, yarray])
         elif xtype.lower() in ANGLEQUANTITIES:
-            self.on_tth = [np.array(xarray), np.array(yarray)]
-        elif xtype.lower() in DQUANTITIES:
-            self.on_tth = [np.array(xarray), np.array(yarray)]
+            self.on_tth = np.array([xarray, yarray])
+        elif xtype.lower() in DQUANTITIES:  # Fixme when d is implemented.  This here as a placeholder
+            self.on_tth = np.array([xarray, yarray])
         self.set_all_arrays()
-
-    def q_to_tth(self):
-        r"""
-        Helper function to convert q to two-theta.
-
-        By definition the relationship is:
-
-        .. math::
-
-            \sin\left(\frac{2\theta}{2}\right) = \frac{\lambda q}{4 \pi}
-
-        thus
-
-        .. math::
-
-            2\theta_n = 2 \arcsin\left(\frac{\lambda q}{4 \pi}\right)
-
-        Function adapted from scikit-beam.  Thanks to those developers
-
-        Parameters
-        ----------
-        q : array
-            The array of :math:`q` values
-
-        wavelength : float
-            Wavelength of the incoming x-rays
-
-        Returns
-        -------
-        two_theta : array
-            The array of :math:`2\theta` values in radians
-        """
-        for i, value in enumerate(self.on_q[0]):
-            if not isinstance(value, (int, float)):
-                raise TypeError(non_numeric_value_emsg.format(array_name="q"))
-        if len(self.on_q[0]) != len(self.on_q[1]):
-            raise RuntimeError(length_mismatch_emsg.format(array_name="q"))
-        if self.wavelength is None:
-            warnings.warn(wavelength_warning_emsg, UserWarning)
-            return np.empty(0)
-        q = self.on_q[0]
-        q = np.asarray(q)
-        wavelength = float(self.wavelength)
-        pre_factor = wavelength / (4 * np.pi)
-        if np.any(np.abs(q * pre_factor) > 1):
-            raise ValueError(invalid_q_or_wavelength_emsg)
-        return np.rad2deg(2.0 * np.arcsin(q * pre_factor))
-
-    def tth_to_q(self):
-        r"""
-        Helper function to convert two-theta to q
-
-        By definition the relationship is
-
-        .. math::
-
-            \sin\left(\frac{2\theta}{2}\right) = \frac{\lambda q}{4 \pi}
-
-        thus
-
-        .. math::
-
-            q = \frac{4 \pi \sin\left(\frac{2\theta}{2}\right)}{\lambda}
-
-        Function adapted from scikit-beam.  Thanks to those developers.
-
-        Parameters
-        ----------
-        two_theta : array
-            The array of :math:`2\theta` values in units of degrees
-
-        wavelength : float
-            Wavelength of the incoming x-rays
-
-        Returns
-        -------
-        q : array
-            The array of :math:`q` values in the inverse of the units
-            of ``wavelength``
-        """
-        for i, value in enumerate(self.on_tth[0]):
-            if not isinstance(value, (int, float)):
-                raise TypeError(non_numeric_value_emsg.format(array_name="two theta"))
-        if len(self.on_tth[0]) != len(self.on_tth[1]):
-            raise RuntimeError(length_mismatch_emsg.format(array_name="two theta"))
-        two_theta = np.asarray(np.deg2rad(self.on_tth[0]))
-        if np.any(two_theta > np.pi):
-            raise ValueError(invalid_tth_emsg)
-        if self.wavelength is None:
-            warnings.warn(wavelength_warning_emsg, UserWarning)
-            return np.empty(0)
-        wavelength = float(self.wavelength)
-        pre_factor = (4 * np.pi) / wavelength
-        return pre_factor * np.sin(two_theta / 2)
 
     def set_all_arrays(self):
         master_array, xtype = self._get_original_array()
         if xtype == "q":
-            self.on_tth[0] = self.q_to_tth()
-            self.on_tth[1] = master_array[1]
-        if xtype == "tth":
-            self.on_q[0] = self.tth_to_q()
-            self.on_q[1] = master_array[1]
+            self.on_tth = q_to_tth(self.on_q, self.wavelength)
+        elif xtype == "tth":
+            self.on_q = tth_to_q(self.on_tth, self.wavelength)
         self.tthmin = self.on_tth[0][0]
         self.tthmax = self.on_tth[0][-1]
         self.qmin = self.on_q[0][0]
