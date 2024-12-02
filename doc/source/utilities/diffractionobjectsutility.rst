@@ -3,7 +3,7 @@
 Diffraction Objects Utility
 ===========================
 
-The ``diffpy.utils.scattering_objects.diffraction_objects`` module provides functions
+The ``diffpy.utils.diffraction_objects`` module provides functions
 for managing and analyzing diffraction data, including angle-space conversions
 and interactions between diffraction data.
 
