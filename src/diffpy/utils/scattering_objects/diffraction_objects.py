@@ -742,7 +742,8 @@ class DiffractionObject:
             return self.on_q
         elif xtype.lower() in DQUANTITIES:
             return self.on_d
-        pass
+        else:
+            raise ValueError(f"Unknown xtype: {xtype}. Allowed xtypes are {*XQUANTITIES, }.")
 
     def dump(self, filepath, xtype=None):
         if xtype is None:
