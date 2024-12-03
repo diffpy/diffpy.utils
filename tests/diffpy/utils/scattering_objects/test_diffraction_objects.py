@@ -241,6 +241,24 @@ def _test_valid_diffraction_objects(actual_diffraction_object, function, expecte
     return np.allclose(actual_array, expected_array)
 
 
+def test_get_angle_index():
+    test = DiffractionObject()
+    test.angles = np.array([10, 20, 30, 40, 50, 60])
+    actual_angle_index = test.get_angle_index(angle=10)
+    assert actual_angle_index == 0
+
+
+def test_get_angle_index_bad():
+    test = DiffractionObject()
+    # empty angles list
+    with pytest.raises(IndexError, match="WARNING: no angle 11 found in angles list."):
+        test.get_angle_index(angle=11)
+    # pre-defined angles list
+    test.angles = np.array([10, 20, 30, 40, 50, 60])
+    with pytest.raises(IndexError, match="WARNING: no angle 11 found in angles list."):
+        test.get_angle_index(angle=11)
+
+
 def test_dump(tmp_path, mocker):
     x, y = np.linspace(0, 5, 6), np.linspace(0, 5, 6)
     directory = Path(tmp_path)

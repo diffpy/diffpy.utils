@@ -614,14 +614,24 @@ class DiffractionObject:
         return array
 
     def get_angle_index(self, angle):
-        count = 0
+        """
+        returns the index of a given angle in the angles list
+
+        Parameters
+        ----------
+        angle float
+            the angle to search for
+
+        Returns
+        -------
+        the index of the angle in the angles list
+        """
+        if not hasattr(self, "angles"):
+            self.angles = np.array([])
         for i, target in enumerate(self.angles):
             if angle == target:
                 return i
-            else:
-                count += 1
-        if count >= len(self.angles):
-            raise IndexError(f"WARNING: no angle {angle} found in angles list")
+        raise IndexError(f"WARNING: no angle {angle} found in angles list.")
 
     def insert_scattering_quantity(
         self,
