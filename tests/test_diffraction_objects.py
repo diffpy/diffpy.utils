@@ -241,15 +241,15 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
 params_on_xtype = [
     (
         [
-            np.array([1, 2, 3, 4, 5, 6]),  # intensity array
+            np.array([100, 200, 300, 400, 500, 600]),  # intensity array
             np.array([0, 30, 60, 90, 120, 180]),  # tth array
             np.array([1, 2, 3, 4, 5, 6]),  # q array
             np.array([10, 20, 30, 40, 50, 60]),  # d array
         ],
         [
-            np.array([[0, 30, 60, 90, 120, 180], [1, 2, 3, 4, 5, 6]]),  # expected on_tth
-            np.array([[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6]]),  # expected on_q
-            np.array([[10, 20, 30, 40, 50, 60], [1, 2, 3, 4, 5, 6]]),  # expected on_d
+            np.array([[0, 30, 60, 90, 120, 180], [100, 200, 300, 400, 500, 600]]),  # expected on_tth
+            np.array([[1, 2, 3, 4, 5, 6], [100, 200, 300, 400, 500, 600]]),  # expected on_q
+            np.array([[10, 20, 30, 40, 50, 60], [100, 200, 300, 400, 500, 600]]),  # expected on_d
         ],
     )
 ]
