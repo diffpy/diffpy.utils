@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 from freezegun import freeze_time
 
-from diffpy.utils.scattering_objects.diffraction_objects import (
+from diffpy.utils.diffraction_objects import (
     ANGLEQUANTITIES,
     DQUANTITIES,
     QQUANTITIES,

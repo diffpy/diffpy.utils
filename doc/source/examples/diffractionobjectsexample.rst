@@ -6,7 +6,7 @@ Diffraction Objects Example
 ###########################
 
 This example will demonstrate how to use the ``DiffractionObject`` class in the
-``diffpy.utils.scattering_objects.diffraction_objects`` module to process and analyze diffraction data.
+``diffpy.utils.diffraction_objects`` module to process and analyze diffraction data.
 
 1) Assuming we have created a ``DiffractionObject`` called my_diffraction_pattern from a measured diffraction pattern,
    and we have specified the wavelength (see Section ??, to be added),
@@ -20,7 +20,7 @@ This example will demonstrate how to use the ``DiffractionObject`` class in the
    To load the converted array, you can either call ``test.q_to_tth()`` or ``test.on_q[0]``. ::
 
     # Example: convert tth to q
-    from diffpy.utils.scattering_objects.diffraction_objects import DiffractionObject
+    from diffpy.utils.diffraction_objects import DiffractionObject
     my_diffraction_pattern.on_tth = [[0, 30, 60, 90, 120, 180], [1, 2, 3, 4, 5, 6]]
     my_diffraction_pattern.tth_to_q()
 
