@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 from freezegun import freeze_time
 
-from diffpy.utils.scattering_objects.diffraction_objects import DiffractionObject
+from diffpy.utils.diffraction_objects import DiffractionObject
 from diffpy.utils.transforms import wavelength_warning_emsg
 
 params = [
