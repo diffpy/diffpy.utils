@@ -248,25 +248,27 @@ class DiffractionObject:
             array = np.linspace(begin, end, n_steps)
         return array
 
-    def get_angle_index(self, angle):
+    def get_array_index(self, xtype, value):
         """
-        returns the index of a given angle in the angles list
+        returns the index of a given value in the array associated with the specified xtype
 
         Parameters
         ----------
-        angle float
-            the angle to search for
+        xtype str
+            the xtype used to access the array
+        value float
+            the target value to search for
 
         Returns
         -------
-        the index of the angle in the angles list
+        the index of the value in the array
         """
-        if not hasattr(self, "angles"):
-            self.angles = np.array([])
-        for i, target in enumerate(self.angles):
-            if angle == target:
+        if self.on_xtype(xtype) is None:
+            raise ValueError(_xtype_wmsg(xtype))
+        for i, target in enumerate(self.on_xtype(xtype)[0]):
+            if value == target:
                 return i
-        raise IndexError(f"WARNING: no angle {angle} found in angles list.")
+        raise IndexError(f"WARNING: no matching value {value} found in the {xtype} array.")
 
     def _set_xarrays(self, xarray, xtype):
         self.all_arrays = np.empty(shape=(len(xarray), 4))

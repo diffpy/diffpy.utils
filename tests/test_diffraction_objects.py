@@ -1,10 +1,11 @@
+import re
 from pathlib import Path
 
 import numpy as np
 import pytest
 from freezegun import freeze_time
 
-from diffpy.utils.diffraction_objects import DiffractionObject
+from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
 from diffpy.utils.transforms import wavelength_warning_emsg
 
 
@@ -212,21 +213,41 @@ def _test_valid_diffraction_objects(actual_diffraction_object, function, expecte
 
 
 def test_get_angle_index():
-    test = DiffractionObject()
-    test.angles = np.array([10, 20, 30, 40, 50, 60])
-    actual_angle_index = test.get_angle_index(angle=10)
-    assert actual_angle_index == 0
+    test = DiffractionObject(
+        wavelength=0.71, xarray=np.array([30, 60, 90]), yarray=np.array([1, 2, 3]), xtype="tth"
+    )
+    actual_index = test.get_array_index(xtype="tth", value=30)
+    assert actual_index == 0
 
 
-def test_get_angle_index_bad():
-    test = DiffractionObject()
-    # empty angles list
-    with pytest.raises(IndexError, match="WARNING: no angle 11 found in angles list."):
-        test.get_angle_index(angle=11)
-    # pre-defined angles list
-    test.angles = np.array([10, 20, 30, 40, 50, 60])
-    with pytest.raises(IndexError, match="WARNING: no angle 11 found in angles list."):
-        test.get_angle_index(angle=11)
+params_index_bad = [
+    # UC1: empty array
+    (
+        [0.71, np.array([]), np.array([]), "tth", "tth", 10],
+        [IndexError, "WARNING: no matching value 10 found in the tth array."],
+    ),
+    # UC2: invalid xtype
+    (
+        [None, np.array([]), np.array([]), "tth", "invalid", 10],
+        [
+            ValueError,
+            f"WARNING: I don't know how to handle the xtype, 'invalid'.  "
+            f"Please rerun specifying an xtype from {*XQUANTITIES, }",
+        ],
+    ),
+    # UC3: pre-defined array with non-matching value
+    (
+        [0.71, np.array([30, 60, 90]), np.array([1, 2, 3]), "tth", "q", 30],
+        [IndexError, "WARNING: no matching value 30 found in the q array."],
+    ),
+]
+
+
+@pytest.mark.parametrize("inputs, expected", params_index_bad)
+def test_get_angle_index_bad(inputs, expected):
+    test = DiffractionObject(wavelength=inputs[0], xarray=inputs[1], yarray=inputs[2], xtype=inputs[3])
+    with pytest.raises(expected[0], match=re.escape(expected[1])):
+        test.get_array_index(xtype=inputs[4], value=inputs[5])
 
 
 def test_dump(tmp_path, mocker):
