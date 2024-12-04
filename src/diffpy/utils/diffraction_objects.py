@@ -21,14 +21,14 @@ x_grid_emsg = (
 
 def _xtype_wmsg(xtype):
     return (
-        f"WARNING: I don't know how to handle the xtype, '{xtype}'.  Please rerun specifying and "
+        f"WARNING: I don't know how to handle the xtype, '{xtype}'.  Please rerun specifying an "
         f"xtype from {*XQUANTITIES, }"
     )
 
 
 class DiffractionObject:
     def __init__(
-        self, name=None, wavelength=None, scat_quantity=None, metadata=None, xarray=None, yarray=None, xtype=""
+        self, name=None, wavelength=None, scat_quantity=None, metadata=None, xarray=None, yarray=None, xtype=None
     ):
         if name is None:
             name = ""
@@ -36,6 +36,8 @@ class DiffractionObject:
         if metadata is None:
             metadata = {}
         self.metadata = metadata
+        if xtype is None:
+            xtype = ""
         self.scat_quantity = scat_quantity
         self.wavelength = wavelength
 
@@ -282,6 +284,10 @@ class DiffractionObject:
         xarray,
         yarray,
         xtype,
+        metadata={},
+        scat_quantity=None,
+        name=None,
+        wavelength=None,
     ):
         f"""
         insert a new scattering quantity into the scattering object
@@ -294,14 +300,27 @@ class DiffractionObject:
           the dependent variable array
         xtype string
           the type of quantity for the independent variable from {*XQUANTITIES, }
+        metadata, scat_quantity, name and wavelength are optional.  They have the same
+        meaning as in the constructor. Values will only be overwritten if non-empty values are passed.
 
         Returns
         -------
+        Nothing.  Updates the object in place.
 
         """
         self._set_xarrays(xarray, xtype)
         self.all_arrays[:, 0] = yarray
         self.input_xtype = xtype
+        # only update these optional values if non-empty quantities are passed to avoid overwriting
+        # valid data inadvertently
+        if metadata:
+            self.metadata = metadata
+        if scat_quantity is not None:
+            self.scat_quantity = scat_quantity
+        if name is not None:
+            self.name = name
+        if wavelength is not None:
+            self.wavelength = wavelength
 
     def _get_original_array(self):
         if self.input_xtype in QQUANTITIES:
