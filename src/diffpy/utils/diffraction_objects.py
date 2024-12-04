@@ -394,7 +394,7 @@ class DiffractionObject:
         elif xtype.lower() in DQUANTITIES:
             return self.on_d()
         else:
-            warnings.warn(_xtype_wmsg(xtype))
+            raise ValueError(_xtype_wmsg(xtype))
 
     def dump(self, filepath, xtype=None):
         if xtype is None:

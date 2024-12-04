@@ -5,13 +5,7 @@ import numpy as np
 import pytest
 from freezegun import freeze_time
 
-from diffpy.utils.diffraction_objects import (
-    ANGLEQUANTITIES,
-    DQUANTITIES,
-    QQUANTITIES,
-    XQUANTITIES,
-    DiffractionObject,
-)
+from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
 
 
 def compare_dicts(dict1, dict2):
@@ -208,38 +202,21 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
     assert dicts_equal(diffraction_object1.__dict__, diffraction_object2.__dict__) == expected
 
 
-params_on_xtype = [
-    (
-        [
-            np.array([100, 200, 300, 400, 500, 600]),  # intensity array
-            np.array([0, 30, 60, 90, 120, 180]),  # tth array
-            np.array([1, 2, 3, 4, 5, 6]),  # q array
-            np.array([10, 20, 30, 40, 50, 60]),  # d array
-        ],
-        [
-            np.array([[0, 30, 60, 90, 120, 180], [100, 200, 300, 400, 500, 600]]),  # expected on_tth
-            np.array([[1, 2, 3, 4, 5, 6], [100, 200, 300, 400, 500, 600]]),  # expected on_q
-            np.array([[10, 20, 30, 40, 50, 60], [100, 200, 300, 400, 500, 600]]),  # expected on_d
-        ],
-    )
-]
-
-
-@pytest.mark.parametrize("inputs, expected", params_on_xtype)
-def test_on_xtype(inputs, expected):
-    test = DiffractionObject()
-    test.on_tth = np.array([inputs[1], inputs[0]])
-    test.on_q = np.array([inputs[2], inputs[0]])
-    test.on_d = np.array([inputs[3], inputs[0]])
-    for xtype_list, expected_value in zip([ANGLEQUANTITIES, QQUANTITIES, DQUANTITIES], expected):
-        for xtype in xtype_list:
-            assert np.allclose(test.on_xtype(xtype), expected_value)
+def test_on_xtype():
+    test = DiffractionObject(wavelength=2 * np.pi, xarray=np.array([30, 60]), yarray=np.array([1, 2]), xtype="tth")
+    assert np.allclose(test.on_xtype("tth"), [np.array([30, 60]), np.array([1, 2])])
+    assert np.allclose(test.on_xtype("q"), [np.array([0.51763809, 1]), np.array([1, 2])])
+    assert np.allclose(test.on_xtype("d"), [np.array([12.13818192, 6.28318531]), np.array([1, 2])])
 
 
 def test_on_xtype_bad():
     test = DiffractionObject()
     with pytest.raises(
-        ValueError, match=re.escape(f"Unknown xtype: invalid. Allowed xtypes are {*XQUANTITIES, }.")
+        ValueError,
+        match=re.escape(
+            f"WARNING: I don't know how to handle the xtype, 'invalid'.  Please rerun specifying an "
+            f"xtype from {*XQUANTITIES, }"
+        ),
     ):
         test.on_xtype("invalid")
 
