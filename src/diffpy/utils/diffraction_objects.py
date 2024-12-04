@@ -181,6 +181,17 @@ class DiffractionObject:
             divided.on_q[1] = other.on_q[1] / self.on_q[1]
         return divided
 
+    @property
+    def all_arrays(self):
+        return self._all_arrays
+
+    @all_arrays.setter
+    def all_arrays(self, value):
+        raise AttributeError(
+            "Direct modification of 'all_arrays' is not allowed."
+            "Please use 'insert_scattering_quantity' to modify it."
+        )
+
     def set_angles_from_list(self, angles_list):
         self.angles = angles_list
         self.n_steps = len(angles_list) - 1.0
@@ -259,25 +270,25 @@ class DiffractionObject:
             raise IndexError(f"WARNING: no angle {angle} found in angles list")
 
     def _set_xarrays(self, xarray, xtype):
-        self.all_arrays = np.empty(shape=(len(xarray), 4))
+        self._all_arrays = np.empty(shape=(len(xarray), 4))
         if xtype.lower() in QQUANTITIES:
-            self.all_arrays[:, 1] = xarray
-            self.all_arrays[:, 2] = q_to_tth(xarray, self.wavelength)
-            self.all_arrays[:, 3] = q_to_d(xarray)
+            self._all_arrays[:, 1] = xarray
+            self._all_arrays[:, 2] = q_to_tth(xarray, self.wavelength)
+            self._all_arrays[:, 3] = q_to_d(xarray)
         elif xtype.lower() in ANGLEQUANTITIES:
-            self.all_arrays[:, 2] = xarray
-            self.all_arrays[:, 1] = tth_to_q(xarray, self.wavelength)
-            self.all_arrays[:, 3] = tth_to_d(xarray, self.wavelength)
+            self._all_arrays[:, 2] = xarray
+            self._all_arrays[:, 1] = tth_to_q(xarray, self.wavelength)
+            self._all_arrays[:, 3] = tth_to_d(xarray, self.wavelength)
         elif xtype.lower() in DQUANTITIES:
-            self.all_arrays[:, 3] = xarray
-            self.all_arrays[:, 1] = d_to_q(xarray)
-            self.all_arrays[:, 2] = d_to_tth(xarray, self.wavelength)
-        self.qmin = np.nanmin(self.all_arrays[:, 1], initial=np.inf)
-        self.qmax = np.nanmax(self.all_arrays[:, 1], initial=0.0)
-        self.tthmin = np.nanmin(self.all_arrays[:, 2], initial=np.inf)
-        self.tthmax = np.nanmax(self.all_arrays[:, 2], initial=0.0)
-        self.dmin = np.nanmin(self.all_arrays[:, 3], initial=np.inf)
-        self.dmax = np.nanmax(self.all_arrays[:, 3], initial=0.0)
+            self._all_arrays[:, 3] = xarray
+            self._all_arrays[:, 1] = d_to_q(xarray)
+            self._all_arrays[:, 2] = d_to_tth(xarray, self.wavelength)
+        self.qmin = np.nanmin(self._all_arrays[:, 1], initial=np.inf)
+        self.qmax = np.nanmax(self._all_arrays[:, 1], initial=0.0)
+        self.tthmin = np.nanmin(self._all_arrays[:, 2], initial=np.inf)
+        self.tthmax = np.nanmax(self._all_arrays[:, 2], initial=0.0)
+        self.dmin = np.nanmin(self._all_arrays[:, 3], initial=np.inf)
+        self.dmax = np.nanmax(self._all_arrays[:, 3], initial=0.0)
 
     def insert_scattering_quantity(
         self,
@@ -309,7 +320,7 @@ class DiffractionObject:
 
         """
         self._set_xarrays(xarray, xtype)
-        self.all_arrays[:, 0] = yarray
+        self._all_arrays[:, 0] = yarray
         self.input_xtype = xtype
         # only update these optional values if non-empty quantities are passed to avoid overwriting
         # valid data inadvertently
