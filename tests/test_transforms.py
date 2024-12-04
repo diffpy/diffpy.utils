@@ -5,9 +5,9 @@ from diffpy.utils.transforms import q_to_tth, tth_to_q
 
 params_q_to_tth = [
     # UC1: Empty q values, no wavelength, return empty arrays
-    ([None, np.empty((1,))], np.empty((1,))),
+    ([None, np.empty((0))], np.empty((0))),
     # UC2: Empty q values, wavelength specified, return empty arrays
-    ([4 * np.pi, np.empty((1,))], np.empty((1,))),
+    ([4 * np.pi, np.empty((0))], np.empty(0)),
     # UC3: User specified valid q values, no wavelength, return empty arrays
     (
         [None, np.array([0, 0.2, 0.4, 0.6, 0.8, 1])],
