@@ -341,5 +341,27 @@ tc_params = [
 
 @pytest.mark.parametrize("inputs, expected", tc_params)
 def test_constructor(inputs, expected):
-    actualdo = DiffractionObject(**inputs)
-    compare_dicts(actualdo.__dict__, expected)
+    actual_do = DiffractionObject(**inputs)
+    actual_dict = {
+        "all_arrays": actual_do.all_arrays,
+        "metadata": actual_do.metadata,
+        "input_xtype": actual_do.input_xtype,
+        "name": actual_do.name,
+        "scat_quantity": actual_do.scat_quantity,
+        "qmin": actual_do.qmin,
+        "qmax": actual_do.qmax,
+        "tthmin": actual_do.tthmin,
+        "tthmax": actual_do.tthmax,
+        "dmin": actual_do.dmin,
+        "dmax": actual_do.dmax,
+        "wavelength": actual_do.wavelength,
+    }
+    compare_dicts(actual_dict, expected)
+
+
+def test_all_array_setter():
+    actual_do = DiffractionObject()
+
+    # Attempt to directly modify the property
+    with pytest.raises(AttributeError, match="Direct modification of 'all_arrays' is not allowed."):
+        actual_do.all_arrays = np.empty((4, 4))
