@@ -22,6 +22,9 @@ def compare_dicts(dict1, dict2):
 
 def dicts_equal(dict1, dict2):
     equal = True
+    print("")
+    print(dict1)
+    print(dict2)
     if not dict1.keys() == dict2.keys():
         equal = False
     for key in dict1:
@@ -29,11 +32,13 @@ def dicts_equal(dict1, dict2):
         if isinstance(val1, np.ndarray) and isinstance(val2, np.ndarray):
             if not np.allclose(val1, val2):
                 equal = False
+        elif isinstance(val1, list) and isinstance(val2, list):
+            if not val1.all() == val2.all():
+                equal = False
         elif isinstance(val1, np.float64) and isinstance(val2, np.float64):
             if not np.isclose(val1, val2):
                 equal = False
         else:
-            print(key, val1, val2)
             if not val1 == val2:
                 equal = False
     return equal
@@ -187,12 +192,13 @@ params = [
 
 @pytest.mark.parametrize("inputs1, inputs2, expected", params)
 def test_diffraction_objects_equality(inputs1, inputs2, expected):
-    diffraction_object1 = DiffractionObject(inputs1)
-    diffraction_object2 = DiffractionObject(inputs2)
+    diffraction_object1 = DiffractionObject(**inputs1)
+    diffraction_object2 = DiffractionObject(**inputs2)
     # diffraction_object1_attributes = [key for key in diffraction_object1.__dict__ if not key.startswith("_")]
     # for i, attribute in enumerate(diffraction_object1_attributes):
     #     setattr(diffraction_object1, attribute, inputs1[i])
     #     setattr(diffraction_object2, attribute, inputs2[i])
+    print(dicts_equal(diffraction_object1.__dict__, diffraction_object2.__dict__), expected)
     assert dicts_equal(diffraction_object1.__dict__, diffraction_object2.__dict__) == expected
 
 
@@ -246,7 +252,7 @@ tc_params = [
             "metadata": {},
             "input_xtype": "",
             "name": "",
-            "scat_quantity": "",
+            "scat_quantity": None,
             "qmin": np.float64(np.inf),
             "qmax": np.float64(0.0),
             "tthmin": np.float64(np.inf),
@@ -291,7 +297,7 @@ tc_params = [
             "metadata": {},
             "input_xtype": "tth",
             "name": "",
-            "scat_quantity": "",
+            "scat_quantity": None,
             "qmin": np.float64(0.0),
             "qmax": np.float64(1.0),
             "tthmin": np.float64(0.0),

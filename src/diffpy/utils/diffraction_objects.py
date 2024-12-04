@@ -1,4 +1,5 @@
 import datetime
+import warnings
 from copy import deepcopy
 
 import numpy as np
@@ -18,17 +19,31 @@ x_grid_emsg = (
 )
 
 
+def _xtype_wmsg(xtype):
+    return (
+        f"WARNING: I don't know how to handle the xtype, '{xtype}'.  Please rerun specifying and "
+        f"xtype from {*XQUANTITIES, }"
+    )
+
+
 class DiffractionObject:
     def __init__(
-        self, name="", wavelength=None, scat_quantity="", metadata={}, xarray=None, yarray=None, xtype=""
+        self, name=None, wavelength=None, scat_quantity=None, metadata=None, xarray=None, yarray=None, xtype=""
     ):
+        if name is None:
+            name = ""
+        self.name = name
+        if metadata is None:
+            metadata = {}
+        self.metadata = metadata
+        self.scat_quantity = scat_quantity
+        self.wavelength = wavelength
+
         if xarray is None:
             xarray = np.empty(0)
         if yarray is None:
             yarray = np.empty(0)
-        self.insert_scattering_quantity(
-            xarray, yarray, xtype, metadata=metadata, scat_quantity=scat_quantity, name=name, wavelength=wavelength
-        )
+        self.insert_scattering_quantity(xarray, yarray, xtype)
 
     def __eq__(self, other):
         if not isinstance(other, DiffractionObject):
@@ -241,15 +256,32 @@ class DiffractionObject:
         if count >= len(self.angles):
             raise IndexError(f"WARNING: no angle {angle} found in angles list")
 
+    def _set_xarrays(self, xarray, xtype):
+        self.all_arrays = np.empty(shape=(len(xarray), 4))
+        if xtype.lower() in QQUANTITIES:
+            self.all_arrays[:, 1] = xarray
+            self.all_arrays[:, 2] = q_to_tth(xarray, self.wavelength)
+            self.all_arrays[:, 3] = q_to_d(xarray)
+        elif xtype.lower() in ANGLEQUANTITIES:
+            self.all_arrays[:, 2] = xarray
+            self.all_arrays[:, 1] = tth_to_q(xarray, self.wavelength)
+            self.all_arrays[:, 3] = tth_to_d(xarray, self.wavelength)
+        elif xtype.lower() in DQUANTITIES:
+            self.all_arrays[:, 3] = xarray
+            self.all_arrays[:, 1] = d_to_q(xarray)
+            self.all_arrays[:, 2] = d_to_tth(xarray, self.wavelength)
+        self.qmin = np.nanmin(self.all_arrays[:, 1], initial=np.inf)
+        self.qmax = np.nanmax(self.all_arrays[:, 1], initial=0.0)
+        self.tthmin = np.nanmin(self.all_arrays[:, 2], initial=np.inf)
+        self.tthmax = np.nanmax(self.all_arrays[:, 2], initial=0.0)
+        self.dmin = np.nanmin(self.all_arrays[:, 3], initial=np.inf)
+        self.dmax = np.nanmax(self.all_arrays[:, 3], initial=0.0)
+
     def insert_scattering_quantity(
         self,
         xarray,
         yarray,
         xtype,
-        metadata={},
-        scat_quantity="",
-        name=None,
-        wavelength=None,
     ):
         f"""
         insert a new scattering quantity into the scattering object
@@ -262,38 +294,14 @@ class DiffractionObject:
           the dependent variable array
         xtype string
           the type of quantity for the independent variable from {*XQUANTITIES, }
-        metadata: dict
-          the metadata in the form of a dictionary of user-supplied key:value pairs
 
         Returns
         -------
 
         """
-        self.input_xtype = xtype
-        self.metadata = metadata
-        self.scat_quantity = scat_quantity
-        self.name = name
-        self.wavelength = wavelength
-        self.all_arrays = np.empty(shape=(len(yarray), 4))
+        self._set_xarrays(xarray, xtype)
         self.all_arrays[:, 0] = yarray
-        if xtype.lower() in QQUANTITIES:
-            self.all_arrays[:, 1] = xarray
-            self.all_arrays[:, 2] = q_to_tth(xarray, wavelength)
-            self.all_arrays[:, 3] = q_to_d(xarray)
-        elif xtype.lower() in ANGLEQUANTITIES:
-            self.all_arrays[:, 2] = xarray
-            self.all_arrays[:, 1] = tth_to_q(xarray, wavelength)
-            self.all_arrays[:, 3] = tth_to_d(xarray, wavelength)
-        elif xtype.lower() in DQUANTITIES:
-            self.all_arrays[:, 3] = xarray
-            self.all_arrays[:, 1] = d_to_q(xarray)
-            self.all_arrays[:, 2] = d_to_tth(xarray, wavelength)
-        self.qmin = np.nanmin(self.all_arrays[:, 1], initial=np.inf)
-        self.qmax = np.nanmax(self.all_arrays[:, 1], initial=0.0)
-        self.tthmin = np.nanmin(self.all_arrays[:, 2], initial=np.inf)
-        self.tthmax = np.nanmax(self.all_arrays[:, 2], initial=0.0)
-        self.dmin = np.nanmin(self.all_arrays[:, 3], initial=np.inf)
-        self.dmax = np.nanmax(self.all_arrays[:, 3], initial=0.0)
+        self.input_xtype = xtype
 
     def _get_original_array(self):
         if self.input_xtype in QQUANTITIES:
@@ -319,7 +327,7 @@ class DiffractionObject:
         Parameters
         ----------
         target_diff_object: DiffractionObject
-          the diffractoin object you want to scale the current one on to
+          the diffraction object you want to scale the current one on to
         xtype: string, optional.  Default is Q
           the xtype, from {XQUANTITIES}, that you will specify a point from to scale to
         xvalue: float. Default is the midpoint of the array
@@ -351,6 +359,7 @@ class DiffractionObject:
     def on_xtype(self, xtype):
         """
         return a 2D np array with x in the first column and y in the second for x of type type
+
         Parameters
         ----------
         xtype
@@ -360,24 +369,25 @@ class DiffractionObject:
 
         """
         if xtype.lower() in ANGLEQUANTITIES:
-            return self.on_tth
+            return self.on_tth()
         elif xtype.lower() in QQUANTITIES:
-            return self.on_q
+            return self.on_q()
         elif xtype.lower() in DQUANTITIES:
-            return self.on_d
-        pass
+            return self.on_d()
+        else:
+            warnings.warn(_xtype_wmsg(xtype))
 
     def dump(self, filepath, xtype=None):
         if xtype is None:
-            xtype = " q"
-        if xtype == "q":
+            xtype = "q"
+        if xtype in QQUANTITIES:
             data_to_save = np.column_stack((self.on_q()[0], self.on_q()[1]))
-        elif xtype == "tth":
+        elif xtype in ANGLEQUANTITIES:
             data_to_save = np.column_stack((self.on_tth()[0], self.on_tth()[1]))
-        elif xtype == "d":
+        elif xtype in DQUANTITIES:
             data_to_save = np.column_stack((self.on_d()[0], self.on_d()[1]))
         else:
-            print(f"WARNING: cannot handle the xtype '{xtype}'")
+            warnings.warn(_xtype_wmsg(xtype))
         self.metadata.update(get_package_info("diffpy.utils", metadata=self.metadata))
         self.metadata["creation_time"] = datetime.datetime.now()
 
