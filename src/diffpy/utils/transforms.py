@@ -61,7 +61,7 @@ def q_to_tth(q, wavelength):
         This is the correct format for loading into diffpy.utils.DiffractionOject.on_tth
     """
     _validate_inputs(q, wavelength)
-    q.astype(np.float64)
+    q.astype(float)
     tth = copy(q)  # initialize output array of same shape
     if wavelength is not None:
         tth = np.rad2deg(2.0 * np.arcsin(q * wavelength / (4 * np.pi)))
@@ -108,7 +108,7 @@ def tth_to_q(tth, wavelength):
         The units for the q-values are the inverse of the units of the provided wavelength.
         This is the correct format for loading into diffpy.utils.DiffractionOject.on_q
     """
-    tth.astype(np.float64)
+    tth.astype(float)
     if np.any(np.deg2rad(tth) > np.pi):
         raise ValueError(invalid_tth_emsg)
     q = copy(tth)
@@ -119,3 +119,21 @@ def tth_to_q(tth, wavelength):
         for i, _ in enumerate(q):
             q[i] = i
     return q
+
+
+def q_to_d(qarray):
+    return 2.0 * np.pi / copy(qarray)
+
+
+def tth_to_d(ttharray, wavelength):
+    qarray = tth_to_q(ttharray, wavelength)
+    return 2.0 * np.pi / copy(qarray)
+
+
+def d_to_q(darray):
+    return 2.0 * np.pi / copy(darray)
+
+
+def d_to_tth(darray, wavelength):
+    qarray = d_to_q(darray)
+    return q_to_tth(qarray, wavelength)
