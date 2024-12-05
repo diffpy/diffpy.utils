@@ -19,5 +19,3 @@
 * <news item>
 
 **Security:**
-
-* <news item>

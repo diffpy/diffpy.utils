@@ -2,6 +2,7 @@ from pathlib import Path
 
 import numpy as np
 import pytest
+from deepdiff import DeepDiff
 from freezegun import freeze_time
 
 from diffpy.utils.diffraction_objects import DiffractionObject
@@ -248,7 +249,7 @@ tc_params = [
     (
         {},
         {
-            "all_arrays": np.empty(shape=(0, 4)),  # instantiate empty
+            "_all_arrays": np.empty(shape=(0, 4)),  # instantiate empty
             "metadata": {},
             "input_xtype": "",
             "name": "",
@@ -265,7 +266,7 @@ tc_params = [
     (  # instantiate just non-array attributes
         {"name": "test", "scat_quantity": "x-ray", "metadata": {"thing": "1", "another": "2"}},
         {
-            "all_arrays": np.empty(shape=(0, 4)),
+            "_all_arrays": np.empty(shape=(0, 4)),
             "metadata": {"thing": "1", "another": "2"},
             "input_xtype": "",
             "name": "test",
@@ -287,7 +288,7 @@ tc_params = [
             "wavelength": 4.0 * np.pi,
         },
         {
-            "all_arrays": np.array(
+            "_all_arrays": np.array(
                 [
                     [1.0, 0.0, 0.0, np.float64(np.inf)],
                     [2.0, 1.0 / np.sqrt(2), 90.0, np.sqrt(2) * 2 * np.pi],
@@ -316,7 +317,7 @@ tc_params = [
             "scat_quantity": "x-ray",
         },
         {
-            "all_arrays": np.array(
+            "_all_arrays": np.array(
                 [
                     [1.0, 0.0, 0.0, np.float64(np.inf)],
                     [2.0, 1.0 / np.sqrt(2), 90.0, np.sqrt(2) * 2 * np.pi],
@@ -342,21 +343,26 @@ tc_params = [
 @pytest.mark.parametrize("inputs, expected", tc_params)
 def test_constructor(inputs, expected):
     actual_do = DiffractionObject(**inputs)
-    actual_dict = {
-        "all_arrays": actual_do.all_arrays,
-        "metadata": actual_do.metadata,
-        "input_xtype": actual_do.input_xtype,
-        "name": actual_do.name,
-        "scat_quantity": actual_do.scat_quantity,
-        "qmin": actual_do.qmin,
-        "qmax": actual_do.qmax,
-        "tthmin": actual_do.tthmin,
-        "tthmax": actual_do.tthmax,
-        "dmin": actual_do.dmin,
-        "dmax": actual_do.dmax,
-        "wavelength": actual_do.wavelength,
-    }
-    compare_dicts(actual_dict, expected)
+    diff = DeepDiff(actual_do.__dict__, expected, ignore_order=True, significant_digits=4)
+    # Ensure there is no difference
+    assert diff == {}
+
+
+def test_all_array_getter():
+    actual_do = DiffractionObject(
+        xarray=np.array([0.0, 90.0, 180.0]),
+        yarray=np.array([1.0, 2.0, 3.0]),
+        xtype="tth",
+        wavelength=4.0 * np.pi,
+    )
+    expected_all_arrays = np.array(
+        [
+            [1.0, 0.0, 0.0, np.float64(np.inf)],
+            [2.0, 1.0 / np.sqrt(2), 90.0, np.sqrt(2) * 2 * np.pi],
+            [3.0, 1.0, 180.0, 1.0 * 2 * np.pi],
+        ]
+    )
+    assert np.array_equal(actual_do.all_arrays, expected_all_arrays)
 
 
 def test_all_array_setter():
