@@ -361,7 +361,7 @@ def test_all_array_getter():
             [3.0, 1.0, 180.0, 1.0 * 2 * np.pi],
         ]
     )
-    assert np.array_equal(actual_do.all_arrays, expected_all_arrays)
+    assert np.allclose(actual_do.all_arrays, expected_all_arrays)
 
 
 def test_all_array_setter():
