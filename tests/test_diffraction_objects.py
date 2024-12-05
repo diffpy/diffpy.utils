@@ -343,8 +343,7 @@ tc_params = [
 @pytest.mark.parametrize("inputs, expected", tc_params)
 def test_constructor(inputs, expected):
     actual_do = DiffractionObject(**inputs)
-    diff = DeepDiff(actual_do.__dict__, expected, ignore_order=True, significant_digits=4)
-    # Ensure there is no difference
+    diff = DeepDiff(actual_do.__dict__, expected, ignore_order=True, significant_digits=13)
     assert diff == {}
 
 
