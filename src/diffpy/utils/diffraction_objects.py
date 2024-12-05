@@ -376,16 +376,17 @@ class DiffractionObject:
         return scaled
 
     def on_xtype(self, xtype):
-        """
+        f"""
         return a 2D np array with x in the first column and y in the second for x of type type
 
         Parameters
         ----------
-        xtype
+        xtype str
+            the type of quantity for the independent variable from {*XQUANTITIES, }
 
         Returns
         -------
-
+        a 2D np array with x and y data
         """
         if xtype.lower() in ANGLEQUANTITIES:
             return self.on_tth()
