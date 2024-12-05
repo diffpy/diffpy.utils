@@ -369,5 +369,9 @@ def test_all_array_setter():
     actual_do = DiffractionObject()
 
     # Attempt to directly modify the property
-    with pytest.raises(AttributeError, match="Direct modification of 'all_arrays' is not allowed."):
+    with pytest.raises(
+        AttributeError,
+        match="Direct modification of attribute 'all_arrays' is not allowed."
+        "Please use 'insert_scattering_quantity' to modify `all_arrays`.",
+    ):
         actual_do.all_arrays = np.empty((4, 4))

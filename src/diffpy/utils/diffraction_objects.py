@@ -188,8 +188,8 @@ class DiffractionObject:
     @all_arrays.setter
     def all_arrays(self, value):
         raise AttributeError(
-            "Direct modification of 'all_arrays' is not allowed."
-            "Please use 'insert_scattering_quantity' to modify it."
+            "Direct modification of attribute 'all_arrays' is not allowed."
+            "Please use 'insert_scattering_quantity' to modify `all_arrays`."
         )
 
     def set_angles_from_list(self, angles_list):
