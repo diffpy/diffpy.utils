@@ -2,6 +2,7 @@ from pathlib import Path
 
 import numpy as np
 import pytest
+from deepdiff import DeepDiff
 from freezegun import freeze_time
 
 from diffpy.utils.diffraction_objects import DiffractionObject
@@ -248,7 +249,7 @@ tc_params = [
     (
         {},
         {
-            "all_arrays": np.empty(shape=(0, 4)),  # instantiate empty
+            "_all_arrays": np.empty(shape=(0, 4)),  # instantiate empty
             "metadata": {},
             "input_xtype": "",
             "name": "",
@@ -265,7 +266,7 @@ tc_params = [
     (  # instantiate just non-array attributes
         {"name": "test", "scat_quantity": "x-ray", "metadata": {"thing": "1", "another": "2"}},
         {
-            "all_arrays": np.empty(shape=(0, 4)),
+            "_all_arrays": np.empty(shape=(0, 4)),
             "metadata": {"thing": "1", "another": "2"},
             "input_xtype": "",
             "name": "test",
@@ -287,7 +288,7 @@ tc_params = [
             "wavelength": 4.0 * np.pi,
         },
         {
-            "all_arrays": np.array(
+            "_all_arrays": np.array(
                 [
                     [1.0, 0.0, 0.0, np.float64(np.inf)],
                     [2.0, 1.0 / np.sqrt(2), 90.0, np.sqrt(2) * 2 * np.pi],
@@ -316,7 +317,7 @@ tc_params = [
             "scat_quantity": "x-ray",
         },
         {
-            "all_arrays": np.array(
+            "_all_arrays": np.array(
                 [
                     [1.0, 0.0, 0.0, np.float64(np.inf)],
                     [2.0, 1.0 / np.sqrt(2), 90.0, np.sqrt(2) * 2 * np.pi],
@@ -341,5 +342,35 @@ tc_params = [
 
 @pytest.mark.parametrize("inputs, expected", tc_params)
 def test_constructor(inputs, expected):
-    actualdo = DiffractionObject(**inputs)
-    compare_dicts(actualdo.__dict__, expected)
+    actual_do = DiffractionObject(**inputs)
+    diff = DeepDiff(actual_do.__dict__, expected, ignore_order=True, significant_digits=13)
+    assert diff == {}
+
+
+def test_all_array_getter():
+    actual_do = DiffractionObject(
+        xarray=np.array([0.0, 90.0, 180.0]),
+        yarray=np.array([1.0, 2.0, 3.0]),
+        xtype="tth",
+        wavelength=4.0 * np.pi,
+    )
+    expected_all_arrays = np.array(
+        [
+            [1.0, 0.0, 0.0, np.float64(np.inf)],
+            [2.0, 1.0 / np.sqrt(2), 90.0, np.sqrt(2) * 2 * np.pi],
+            [3.0, 1.0, 180.0, 1.0 * 2 * np.pi],
+        ]
+    )
+    assert np.allclose(actual_do.all_arrays, expected_all_arrays)
+
+
+def test_all_array_setter():
+    actual_do = DiffractionObject()
+
+    # Attempt to directly modify the property
+    with pytest.raises(
+        AttributeError,
+        match="Direct modification of attribute 'all_arrays' is not allowed."
+        "Please use 'insert_scattering_quantity' to modify `all_arrays`.",
+    ):
+        actual_do.all_arrays = np.empty((4, 4))
