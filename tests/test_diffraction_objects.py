@@ -205,8 +205,9 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
 def test_on_xtype():
     test = DiffractionObject(wavelength=2 * np.pi, xarray=np.array([30, 60]), yarray=np.array([1, 2]), xtype="tth")
     assert np.allclose(test.on_xtype("tth"), [np.array([30, 60]), np.array([1, 2])])
-    assert np.allclose(test.on_xtype("q"), [np.array([0.51763809, 1]), np.array([1, 2])])
-    assert np.allclose(test.on_xtype("d"), [np.array([12.13818192, 6.28318531]), np.array([1, 2])])
+    assert np.allclose(test.on_xtype("2theta"), [np.array([30, 60]), np.array([1, 2])])
+    assert np.allclose(test.on_xtype("q"), [np.array([0.51764, 1]), np.array([1, 2])])
+    assert np.allclose(test.on_xtype("d"), [np.array([12.13818, 6.28319]), np.array([1, 2])])
 
 
 def test_on_xtype_bad():
