@@ -248,9 +248,9 @@ class DiffractionObject:
             array = np.linspace(begin, end, n_steps)
         return array
 
-    def get_array_index(self, xtype, value):
+    def get_array_index(self, value, xtype=None):
         """
-        returns the index of a given value in the array associated with the specified xtype
+        returns the index of the closest value in the array associated with the specified xtype
 
         Parameters
         ----------
@@ -263,12 +263,30 @@ class DiffractionObject:
         -------
         the index of the value in the array
         """
-        if self.on_xtype(xtype) is None:
-            raise ValueError(_xtype_wmsg(xtype))
-        for i, target in enumerate(self.on_xtype(xtype)[0]):
-            if value == target:
-                return i
-        raise IndexError(f"WARNING: no matching value {value} found in the {xtype} array.")
+
+        if xtype is None:
+            xtype = self.input_xtype
+        if self.on_xtype(xtype) is None or len(self.on_xtype(xtype)[0]) == 0:
+            raise ValueError(
+                f"The '{xtype}' array is empty. " "Please ensure it is initialized and the correct xtype is used."
+            )
+        array = self.on_xtype(xtype)[0]
+        i = (np.abs(array - value)).argmin()
+        nearest_value = np.abs(array[i] - value)
+        distance = min(np.abs(value - array.min()), np.abs(value - array.max()))
+        threshold = 0.5 * (array.max() - array.min())
+
+        if nearest_value != 0 and (array.min() <= value <= array.max() or distance <= threshold):
+            warnings.warn(
+                f"WARNING: The value {value} is not an exact match of the '{xtype}' array. "
+                f"Returning the index of the closest value."
+            )
+        elif distance > threshold:
+            raise IndexError(
+                f"The value {value} is too far from any value in the '{xtype}' array. "
+                f"Please check if you have specified the correct xtype. "
+            )
+        return i
 
     def _set_xarrays(self, xarray, xtype):
         self.all_arrays = np.empty(shape=(len(xarray), 4))

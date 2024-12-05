@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 from freezegun import freeze_time
 
-from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
+from diffpy.utils.diffraction_objects import DiffractionObject
 from diffpy.utils.transforms import wavelength_warning_emsg
 
 
@@ -212,42 +212,65 @@ def _test_valid_diffraction_objects(actual_diffraction_object, function, expecte
     return np.allclose(actual_array, expected_array)
 
 
-def test_get_angle_index():
-    test = DiffractionObject(
-        wavelength=0.71, xarray=np.array([30, 60, 90]), yarray=np.array([1, 2, 3]), xtype="tth"
-    )
-    actual_index = test.get_array_index(xtype="tth", value=30)
-    assert actual_index == 0
+params_index = [
+    # UC1: exact match
+    ([4 * np.pi, np.array([30.005, 60]), np.array([1, 2]), "tth", "tth", 30.005], [0]),
+    # UC2: target value lies in the array, returns the (first) closest index
+    ([4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "tth", 45], [0]),
+    ([4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "q", 0.25], [0]),
+    # UC3: target value out of the range but within reasonable distance, returns the closest index
+    ([4 * np.pi, np.array([0.25, 0.5, 0.71]), np.array([1, 2, 3]), "q", "q", 0.1], [0]),
+    ([4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "tth", 63], [1]),
+]
+
+
+@pytest.mark.parametrize("inputs, expected", params_index)
+def test_get_array_index(inputs, expected):
+    test = DiffractionObject(wavelength=inputs[0], xarray=inputs[1], yarray=inputs[2], xtype=inputs[3])
+    actual = test.get_array_index(value=inputs[5], xtype=inputs[4])
+    assert actual == expected[0]
 
 
 params_index_bad = [
-    # UC1: empty array
+    # UC0: empty array
     (
-        [0.71, np.array([]), np.array([]), "tth", "tth", 10],
-        [IndexError, "WARNING: no matching value 10 found in the tth array."],
+        [2 * np.pi, np.array([]), np.array([]), "tth", "tth", 30],
+        [ValueError, "The 'tth' array is empty. Please ensure it is initialized and the correct xtype is used."],
     ),
-    # UC2: invalid xtype
+    # UC1: empty array (because of invalid xtype)
     (
-        [None, np.array([]), np.array([]), "tth", "invalid", 10],
+        [2 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "invalid", 30],
         [
             ValueError,
-            f"WARNING: I don't know how to handle the xtype, 'invalid'.  "
-            f"Please rerun specifying an xtype from {*XQUANTITIES, }",
+            "The 'invalid' array is empty. Please ensure it is initialized and the correct xtype is used.",
         ],
     ),
-    # UC3: pre-defined array with non-matching value
+    # UC3: value is too far from any element in the array
     (
-        [0.71, np.array([30, 60, 90]), np.array([1, 2, 3]), "tth", "q", 30],
-        [IndexError, "WARNING: no matching value 30 found in the q array."],
+        [2 * np.pi, np.array([30, 60, 90]), np.array([1, 2, 3]), "tth", "tth", 140],
+        [
+            IndexError,
+            "The value 140 is too far from any value in the 'tth' array. "
+            "Please check if you have specified the correct xtype.",
+        ],
+    ),
+    # UC4: value is too far from any element in the array (because of wrong xtype)
+    (
+        [2 * np.pi, np.array([30, 60, 90]), np.array([1, 2, 3]), "tth", "q", 30],
+        [
+            IndexError,
+            "The value 30 is too far from any value in the 'q' array. "
+            "Please check if you have specified the correct xtype.",
+        ],
     ),
 ]
 
 
 @pytest.mark.parametrize("inputs, expected", params_index_bad)
-def test_get_angle_index_bad(inputs, expected):
+def test_get_array_index_bad(inputs, expected):
     test = DiffractionObject(wavelength=inputs[0], xarray=inputs[1], yarray=inputs[2], xtype=inputs[3])
     with pytest.raises(expected[0], match=re.escape(expected[1])):
-        test.get_array_index(xtype=inputs[4], value=inputs[5])
+        test.get_array_index(value=inputs[5], xtype=inputs[4])
 
 
 def test_dump(tmp_path, mocker):
