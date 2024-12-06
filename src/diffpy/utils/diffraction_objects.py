@@ -377,7 +377,7 @@ class DiffractionObject:
 
     def on_xtype(self, xtype):
         f"""
-        return a 2D np array with x in the first column and y in the second for x of type type
+        return a list of two 1D np array with x and y data, raise an error if the specified xtype is invalid
 
         Parameters
         ----------
@@ -386,7 +386,7 @@ class DiffractionObject:
 
         Returns
         -------
-        a 2D np array with x and y data
+        a list of two 1D np array with x and y data
         """
         if xtype.lower() in ANGLEQUANTITIES:
             return self.on_tth()
