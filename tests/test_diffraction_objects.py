@@ -218,7 +218,7 @@ params_index = [
     # UC2: target value lies in the array, returns the (first) closest index
     ([4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "tth", 45], [0]),
     ([4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "q", 0.25], [0]),
-    # UC3: target value out of the range but within reasonable distance, returns the closest index
+    # UC3: target value out of the range, returns the closest index
     ([4 * np.pi, np.array([0.25, 0.5, 0.71]), np.array([1, 2, 3]), "q", "q", 0.1], [0]),
     ([4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "tth", 63], [1]),
 ]
@@ -231,46 +231,10 @@ def test_get_array_index(inputs, expected):
     assert actual == expected[0]
 
 
-params_index_bad = [
-    # UC0: empty array
-    (
-        [2 * np.pi, np.array([]), np.array([]), "tth", "tth", 30],
-        [ValueError, "The 'tth' array is empty. Please ensure it is initialized and the correct xtype is used."],
-    ),
-    # UC1: empty array (because of invalid xtype)
-    (
-        [2 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "invalid", 30],
-        [
-            ValueError,
-            "The 'invalid' array is empty. Please ensure it is initialized and the correct xtype is used.",
-        ],
-    ),
-    # UC3: value is too far from any element in the array
-    (
-        [2 * np.pi, np.array([30, 60, 90]), np.array([1, 2, 3]), "tth", "tth", 140],
-        [
-            IndexError,
-            "The value 140 is too far from any value in the 'tth' array. "
-            "Please check if you have specified the correct xtype.",
-        ],
-    ),
-    # UC4: value is too far from any element in the array (because of wrong xtype)
-    (
-        [2 * np.pi, np.array([30, 60, 90]), np.array([1, 2, 3]), "tth", "q", 30],
-        [
-            IndexError,
-            "The value 30 is too far from any value in the 'q' array. "
-            "Please check if you have specified the correct xtype.",
-        ],
-    ),
-]
-
-
-@pytest.mark.parametrize("inputs, expected", params_index_bad)
-def test_get_array_index_bad(inputs, expected):
-    test = DiffractionObject(wavelength=inputs[0], xarray=inputs[1], yarray=inputs[2], xtype=inputs[3])
-    with pytest.raises(expected[0], match=re.escape(expected[1])):
-        test.get_array_index(value=inputs[5], xtype=inputs[4])
+def test_get_array_index_bad():
+    test = DiffractionObject(wavelength=2 * np.pi, xarray=np.array([]), yarray=np.array([]), xtype="tth")
+    with pytest.raises(ValueError, match=re.escape("The 'tth' array is empty. Please ensure it is initialized.")):
+        test.get_array_index(value=30)
 
 
 def test_dump(tmp_path, mocker):
