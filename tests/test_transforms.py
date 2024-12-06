@@ -149,7 +149,7 @@ params_d_to_tth = [
     ([4 * np.pi, np.empty((0))], np.empty(0)),
     # UC3: User specified valid d values, no wavelength, return empty arrays
     (
-        [None, np.array([0, 0.2, 0.4, 0.6, 0.8, 1])],
+        [None, np.array([1, 0.8, 0.6, 0.4, 0.2, 0])],
         np.array([0, 1, 2, 3, 4, 5]),
     ),
     # UC4: User specified valid d values (with wavelength)
@@ -169,7 +169,7 @@ def test_d_to_tth(inputs, expected):
 params_d_to_tth_bad = [
     # UC1: user specified invalid d values that result in tth > 180 degrees
     (
-        [4 * np.pi, np.array([0.2, 0.4, 0.6, 0.8, 1, 1.2])],
+        [4 * np.pi, np.array([1.2, 1, 0.8, 0.6, 0.4, 0.2])],
         [
             ValueError,
             "The supplied input array and wavelength will result in an impossible two-theta. "
@@ -178,7 +178,7 @@ params_d_to_tth_bad = [
     ),
     # UC2: user specified a wrong wavelength that result in tth > 180 degrees
     (
-        [100, np.array([0, 0.2, 0.4, 0.6, 0.8, 1])],
+        [100, np.array([1, 0.8, 0.6, 0.4, 0.2, 0])],
         [
             ValueError,
             "The supplied input array and wavelength will result in an impossible two-theta. "
