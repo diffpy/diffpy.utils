@@ -15,7 +15,7 @@
 
 """Various utilities related to data parsing and manipulation."""
 
-import warnings
+from warnings import deprecated
 
 import numpy
 
@@ -79,6 +79,11 @@ def wsinterp(x, xp, fp, left=None, right=None):
     return fp_at_x
 
 
+@deprecated(
+    "The 'resample' function is deprecated and will be removed in a future release 3.6.3. \n"
+    "'resample' has been renamed 'wsinterp' to better reflect functionality. \n"
+    "Please use 'wsinterp' instead."
+)
 def resample(r, s, dr):
     """Resample a PDF on a new grid.
 
@@ -98,13 +103,6 @@ def resample(r, s, dr):
     -------
     Returns resampled (r, s).
     """
-
-    warnings.warn(
-        "The 'resample' function is deprecated and will be removed in a future release. \n"
-        "Please use 'wsinterp' instead.",
-        DeprecationWarning,
-        stacklevel=2,
-    )
 
     dr0 = r[1] - r[0]  # Constant timestep
 
