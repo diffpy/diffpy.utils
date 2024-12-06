@@ -16,6 +16,7 @@ invalid_q_or_wavelength_emsg = (
     "The supplied q-array and wavelength will result in an impossible two-theta. "
     "Please check these values and re-instantiate the DiffractionObject with correct values."
 )
+inf_output_wmsg = "WARNING: The largest output is infinite and cannot be plotted."
 
 
 def _validate_inputs(q, wavelength):
@@ -125,8 +126,30 @@ def q_to_d(qarray):
     return 2.0 * np.pi / copy(qarray)
 
 
-def tth_to_d(ttharray, wavelength):
-    qarray = tth_to_q(ttharray, wavelength)
+def tth_to_d(tth, wavelength):
+    r"""
+    Helper function to convert two-theta to d on independent variable axis.
+
+    Uses the formula .. math:: d = \frac{\lambda}{2 \sin\left(\frac{2\theta}{2}\right)}.
+
+    Parameters
+    ----------
+    tth : 1D array
+        The array of :math:`2\theta` values np.array([tths]).
+        The units of tth are expected in degrees.
+
+    wavelength : float
+        Wavelength of the incoming x-rays/neutrons/electrons
+
+    Returns
+    -------
+    d : 1D array
+        The array of :math:`d` values np.array([ds]).
+    """
+    tth = np.deg2rad(tth)
+    if 0 in tth:
+        warnings.warn(inf_output_wmsg)
+    qarray = tth_to_q(tth, wavelength)
     return 2.0 * np.pi / copy(qarray)
 
 
