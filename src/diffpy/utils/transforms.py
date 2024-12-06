@@ -113,6 +113,7 @@ def tth_to_q(tth, wavelength):
         pre_factor = (4.0 * np.pi) / wavelength
         q = pre_factor * np.sin(np.deg2rad(tth / 2))
     else:  # return intensities vs. an x-array that is just the index
+        warnings.warn(wavelength_warning_emsg, UserWarning)
         for i, _ in enumerate(q):
             q[i] = i
     return q
