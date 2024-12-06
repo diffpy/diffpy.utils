@@ -80,9 +80,8 @@ def wsinterp(x, xp, fp, left=None, right=None):
 
 
 @deprecated(
-    "The 'resample' function is deprecated and will be removed in a future release 3.6.3. \n"
-    "'resample' has been renamed 'wsinterp' to better reflect functionality. \n"
-    "Please use 'wsinterp' instead."
+    "The 'resample' function is deprecated and will be removed in a future release (3.8.0). \n"
+    "'resample' has been renamed 'wsinterp' to better reflect functionality. Please use 'wsinterp' instead."
 )
 def resample(r, s, dr):
     """Resample a PDF on a new grid.
