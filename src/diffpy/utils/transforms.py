@@ -16,9 +16,7 @@ invalid_q_or_wavelength_emsg = (
     "The supplied q-array and wavelength will result in an impossible two-theta. "
     "Please check these values and re-instantiate the DiffractionObject with correct values."
 )
-invalid_input_emsg = (
-    "Input values have resulted in an infinite output. Please ensure there are no zeros in the input."
-)
+inf_output_msg = "WARNING: The largest output is infinite and cannot be plotted."
 
 
 def _validate_inputs(q, wavelength):
@@ -61,7 +59,6 @@ def q_to_tth(q, wavelength):
     -------
     tth : 1D array
         The array of :math:`2\theta` values in degrees numpy.array([tths]).
-        This is the correct format for loading into diffpy.utils.DiffractionObject.on_tth.
     """
     _validate_inputs(q, wavelength)
     q.astype(float)
@@ -107,7 +104,6 @@ def tth_to_q(tth, wavelength):
     q : 1D array
         The array of :math:`q` values np.array([qs]).
         The units for the q-values are the inverse of the units of the provided wavelength.
-        This is the correct format for loading into diffpy.utils.DiffractionObject.on_q.
     """
     tth.astype(float)
     if np.any(np.deg2rad(tth) > np.pi):
@@ -138,8 +134,8 @@ def q_to_d(q):
         The array of :math:`d` values np.array([ds]).
     """
     if 0 in q:
-        raise ValueError(invalid_input_emsg)
-    return 2.0 * np.pi / copy(q)[::-1]
+        warnings.warn(inf_output_msg)
+    return 2.0 * np.pi / copy(q)
 
 
 def tth_to_d(ttharray, wavelength):
@@ -163,8 +159,8 @@ def d_to_q(d):
         The units of q must be reciprocal of the units of wavelength.
     """
     if 0 in d:
-        raise ValueError(invalid_input_emsg)
-    return 2.0 * np.pi / copy(d)[::-1]
+        warnings.warn(inf_output_msg)
+    return 2.0 * np.pi / copy(d)
 
 
 def d_to_tth(darray, wavelength):

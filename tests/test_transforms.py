@@ -103,8 +103,8 @@ params_q_to_d = [
     ([np.array([])], np.array([])),
     # UC2: User specified valid q values
     (
-        [np.array([np.pi / 6, 1 * np.pi, 2 * np.pi, 3 * np.pi, 4 * np.pi, 5 * np.pi])],
-        np.array([0.4, 0.5, 0.66667, 1, 2, 12]),
+        [np.array([5 * np.pi, 4 * np.pi, 3 * np.pi, 2 * np.pi, np.pi, 0])],
+        np.array([0.4, 0.5, 0.66667, 1, 2, np.inf]),
     ),
 ]
 
@@ -115,31 +115,13 @@ def test_q_to_d(inputs, expected):
     assert np.allclose(actual, expected)
 
 
-params_q_to_d_bad = [
-    # UC1: user specified an invalid q value that results in an infinite d value
-    (
-        [np.array([0, 1, 2, 3, 4])],
-        [
-            ValueError,
-            "Input values have resulted in an infinite output. Please ensure there are no zeros in the input.",
-        ],
-    ),
-]
-
-
-@pytest.mark.parametrize("inputs, expected", params_q_to_d_bad)
-def test_q_to_d_bad(inputs, expected):
-    with pytest.raises(expected[0], match=expected[1]):
-        q_to_d(inputs[0])
-
-
 params_d_to_q = [
     # UC1: User specified empty d values
     ([np.array([])], np.array([])),
     # UC2: User specified valid d values
     (
-        [np.array([np.pi / 6, 1 * np.pi, 2 * np.pi, 3 * np.pi, 4 * np.pi, 5 * np.pi])],
-        np.array([0.4, 0.5, 0.66667, 1, 2, 12]),
+        [np.array([0, 1 * np.pi, 2 * np.pi, 3 * np.pi, 4 * np.pi, 5 * np.pi])],
+        np.array([np.inf, 2, 1, 0.66667, 0.5, 0.4]),
     ),
 ]
 
@@ -148,21 +130,3 @@ params_d_to_q = [
 def test_d_to_q(inputs, expected):
     actual = d_to_q(inputs[0])
     assert np.allclose(actual, expected)
-
-
-params_d_to_q_bad = [
-    # UC1: user specified an invalid d value that results in an infinite q value
-    (
-        [np.array([0, 1, 2, 3, 4])],
-        [
-            ValueError,
-            "Input values have resulted in an infinite output. Please ensure there are no zeros in the input.",
-        ],
-    ),
-]
-
-
-@pytest.mark.parametrize("inputs, expected", params_d_to_q_bad)
-def test_d_to_q_bad(inputs, expected):
-    with pytest.raises(expected[0], match=expected[1]):
-        d_to_q(inputs[0])
