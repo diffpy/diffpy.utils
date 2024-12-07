@@ -215,7 +215,7 @@ def test_on_xtype_bad():
     with pytest.raises(
         ValueError,
         match=re.escape(
-            f"WARNING: I don't know how to handle the xtype, 'invalid'.  Please rerun specifying an "
+            f"I don't know how to handle the xtype, 'invalid'. Please rerun specifying an "
             f"xtype from {*XQUANTITIES, }"
         ),
     ):

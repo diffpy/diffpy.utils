@@ -21,7 +21,7 @@ x_grid_emsg = (
 
 def _xtype_wmsg(xtype):
     return (
-        f"WARNING: I don't know how to handle the xtype, '{xtype}'.  Please rerun specifying an "
+        f"I don't know how to handle the xtype, '{xtype}'. Please rerun specifying an "
         f"xtype from {*XQUANTITIES, }"
     )
 
