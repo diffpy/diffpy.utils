@@ -259,15 +259,29 @@ class DiffractionObject:
             array = np.linspace(begin, end, n_steps)
         return array
 
-    def get_angle_index(self, angle):
-        count = 0
-        for i, target in enumerate(self.angles):
-            if angle == target:
-                return i
-            else:
-                count += 1
-        if count >= len(self.angles):
-            raise IndexError(f"WARNING: no angle {angle} found in angles list")
+    def get_array_index(self, value, xtype=None):
+        """
+        returns the index of the closest value in the array associated with the specified xtype
+
+        Parameters
+        ----------
+        xtype str
+            the xtype used to access the array
+        value float
+            the target value to search for
+
+        Returns
+        -------
+        the index of the value in the array
+        """
+
+        if xtype is None:
+            xtype = self.input_xtype
+        array = self.on_xtype(xtype)[0]
+        if len(array) == 0:
+            raise ValueError(f"The '{xtype}' array is empty. Please ensure it is initialized.")
+        i = (np.abs(array - value)).argmin()
+        return i
 
     def _set_xarrays(self, xarray, xtype):
         self._all_arrays = np.empty(shape=(len(xarray), 4))
