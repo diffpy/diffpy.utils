@@ -86,7 +86,8 @@ def _create_global_config(args):
     print(
         f"You can manually edit the config file at {Path().home() / 'diffpyconfig.json'} using any text editor.\n"
         f"Or you can update the config file by passing new values to get_user_info(), "
-        f"see examples here: https://www.diffpy.org/diffpy.utils/examples/toolsexample.html")
+        f"see examples here: https://www.diffpy.org/diffpy.utils/examples/toolsexample.html"
+    )
     return return_bool
 
 
