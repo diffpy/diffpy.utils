@@ -16,7 +16,7 @@ invalid_q_or_wavelength_emsg = (
     "The supplied q-array and wavelength will result in an impossible two-theta. "
     "Please check these values and re-instantiate the DiffractionObject with correct values."
 )
-inf_output_wmsg = "WARNING: The largest output is infinite and cannot be plotted."
+inf_output_wmsg = "INFO: The largest d-value in the array is infinite.  This is allowed, but it will not be plotted."
 
 
 def _validate_inputs(q, wavelength):
@@ -135,7 +135,7 @@ def q_to_d(q):
         The array of :math:`d` values np.array([ds]).
     """
     if 0 in q:
-        warnings.warn(inf_output_wmsg)
+        print(inf_output_wmsg)
     return 2.0 * np.pi / copy(q)
 
 
