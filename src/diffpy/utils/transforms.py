@@ -16,6 +16,9 @@ invalid_q_or_wavelength_emsg = (
     "The supplied q-array and wavelength will result in an impossible two-theta. "
     "Please check these values and re-instantiate the DiffractionObject with correct values."
 )
+inf_output_wmsg = (
+    "INFO: The largest d-value in the array is infinite.  This is allowed, but it will not be plotted."
+)
 
 
 def _validate_inputs(q, wavelength):
@@ -58,7 +61,6 @@ def q_to_tth(q, wavelength):
     -------
     tth : 1D array
         The array of :math:`2\theta` values in degrees numpy.array([tths]).
-        This is the correct format for loading into diffpy.utils.DiffractionOject.on_tth
     """
     _validate_inputs(q, wavelength)
     q.astype(float)
@@ -92,9 +94,8 @@ def tth_to_q(tth, wavelength):
 
     Parameters
     ----------
-    tth : 2D array
-        The array of :math:`2\theta` values and :math: 'i' intensity values, np.array([[tths], [is]]).
-        This is the same format as, and so can accept, diffpy.utils.DiffractionOject.on_tth
+    tth : 1D array
+        The array of :math:`2\theta` values np.array([tths]).
         The units of tth are expected in degrees.
 
     wavelength : float
@@ -102,11 +103,9 @@ def tth_to_q(tth, wavelength):
 
     Returns
     -------
-    on_q : 2D array
-        The array of :math:`q` values and :math: 'i' intensity values unchanged,
-        np.array([[qs], [is]]).
+    q : 1D array
+        The array of :math:`q` values np.array([qs]).
         The units for the q-values are the inverse of the units of the provided wavelength.
-        This is the correct format for loading into diffpy.utils.DiffractionOject.on_q
     """
     tth.astype(float)
     if np.any(np.deg2rad(tth) > np.pi):
@@ -116,13 +115,30 @@ def tth_to_q(tth, wavelength):
         pre_factor = (4.0 * np.pi) / wavelength
         q = pre_factor * np.sin(np.deg2rad(tth / 2))
     else:  # return intensities vs. an x-array that is just the index
+        warnings.warn(wavelength_warning_emsg, UserWarning)
         for i, _ in enumerate(q):
             q[i] = i
     return q
 
 
-def q_to_d(qarray):
-    return 2.0 * np.pi / copy(qarray)
+def q_to_d(q):
+    r"""
+    Helper function to convert q to d on independent variable axis, using :math:`d = \frac{2 \pi}{q}`.
+
+    Parameters
+    ----------
+    q : 1D array
+        The array of :math:`q` values np.array([qs]).
+        The units of q must be reciprocal of the units of wavelength.
+
+    Returns
+    -------
+    d : 1D array
+        The array of :math:`d` values np.array([ds]).
+    """
+    if 0 in q:
+        print(inf_output_wmsg)
+    return 2.0 * np.pi / copy(q)
 
 
 def tth_to_d(ttharray, wavelength):
@@ -130,8 +146,24 @@ def tth_to_d(ttharray, wavelength):
     return 2.0 * np.pi / copy(qarray)
 
 
-def d_to_q(darray):
-    return 2.0 * np.pi / copy(darray)
+def d_to_q(d):
+    r"""
+    Helper function to convert q to d using :math:`d = \frac{2 \pi}{q}`.
+
+    Parameters
+    ----------
+    d : 1D array
+        The array of :math:`d` values np.array([ds]).
+
+    Returns
+    -------
+    q : 1D array
+        The array of :math:`q` values np.array([qs]).
+        The units of q must be reciprocal of the units of wavelength.
+    """
+    if 0 in d:
+        warnings.warn(inf_output_wmsg)
+    return 2.0 * np.pi / copy(d)
 
 
 def d_to_tth(darray, wavelength):
