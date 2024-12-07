@@ -423,4 +423,3 @@ def test_copy_object():
     copy_of_DO = do.copy()
     assert do == copy_of_DO
     assert id(do) != id(copy_of_DO)
-
