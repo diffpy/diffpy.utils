@@ -21,7 +21,7 @@ x_grid_emsg = (
 
 def _xtype_wmsg(xtype):
     return (
-        f"WARNING: I don't know how to handle the xtype, '{xtype}'.  Please rerun specifying an "
+        f"I don't know how to handle the xtype, '{xtype}'. Please rerun specifying an "
         f"xtype from {*XQUANTITIES, }"
     )
 
@@ -401,16 +401,17 @@ class DiffractionObject:
         return scaled
 
     def on_xtype(self, xtype):
-        """
-        return a 2D np array with x in the first column and y in the second for x of type type
+        f"""
+        return a list of two 1D np array with x and y data, raise an error if the specified xtype is invalid
 
         Parameters
         ----------
-        xtype
+        xtype str
+            the type of quantity for the independent variable from {*XQUANTITIES, }
 
         Returns
         -------
-
+        a list of two 1D np array with x and y data
         """
         if xtype.lower() in ANGLEQUANTITIES:
             return self.on_tth()
@@ -419,7 +420,7 @@ class DiffractionObject:
         elif xtype.lower() in DQUANTITIES:
             return self.on_d()
         else:
-            warnings.warn(_xtype_wmsg(xtype))
+            raise ValueError(_xtype_wmsg(xtype))
 
     def dump(self, filepath, xtype=None):
         if xtype is None:

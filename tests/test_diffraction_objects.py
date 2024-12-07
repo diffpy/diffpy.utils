@@ -6,8 +6,7 @@ import pytest
 from deepdiff import DeepDiff
 from freezegun import freeze_time
 
-from diffpy.utils.diffraction_objects import DiffractionObject
-from diffpy.utils.transforms import wavelength_warning_emsg
+from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
 
 
 def compare_dicts(dict1, dict2):
@@ -204,13 +203,24 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
     assert dicts_equal(diffraction_object1.__dict__, diffraction_object2.__dict__) == expected
 
 
-def _test_valid_diffraction_objects(actual_diffraction_object, function, expected_array):
-    if actual_diffraction_object.wavelength is None:
-        with pytest.warns(UserWarning) as warn_record:
-            getattr(actual_diffraction_object, function)()
-        assert str(warn_record[0].message) == wavelength_warning_emsg
-    actual_array = getattr(actual_diffraction_object, function)()
-    return np.allclose(actual_array, expected_array)
+def test_on_xtype():
+    test = DiffractionObject(wavelength=2 * np.pi, xarray=np.array([30, 60]), yarray=np.array([1, 2]), xtype="tth")
+    assert np.allclose(test.on_xtype("tth"), [np.array([30, 60]), np.array([1, 2])])
+    assert np.allclose(test.on_xtype("2theta"), [np.array([30, 60]), np.array([1, 2])])
+    assert np.allclose(test.on_xtype("q"), [np.array([0.51764, 1]), np.array([1, 2])])
+    assert np.allclose(test.on_xtype("d"), [np.array([12.13818, 6.28319]), np.array([1, 2])])
+
+
+def test_on_xtype_bad():
+    test = DiffractionObject()
+    with pytest.raises(
+        ValueError,
+        match=re.escape(
+            f"I don't know how to handle the xtype, 'invalid'. Please rerun specifying an "
+            f"xtype from {*XQUANTITIES, }"
+        ),
+    ):
+        test.on_xtype("invalid")
 
 
 params_index = [
