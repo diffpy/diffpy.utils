@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 import numpy as np
@@ -210,6 +211,31 @@ def _test_valid_diffraction_objects(actual_diffraction_object, function, expecte
         assert str(warn_record[0].message) == wavelength_warning_emsg
     actual_array = getattr(actual_diffraction_object, function)()
     return np.allclose(actual_array, expected_array)
+
+
+params_index = [
+    # UC1: exact match
+    ([4 * np.pi, np.array([30.005, 60]), np.array([1, 2]), "tth", "tth", 30.005], [0]),
+    # UC2: target value lies in the array, returns the (first) closest index
+    ([4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "tth", 45], [0]),
+    ([4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "q", 0.25], [0]),
+    # UC3: target value out of the range, returns the closest index
+    ([4 * np.pi, np.array([0.25, 0.5, 0.71]), np.array([1, 2, 3]), "q", "q", 0.1], [0]),
+    ([4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "tth", 63], [1]),
+]
+
+
+@pytest.mark.parametrize("inputs, expected", params_index)
+def test_get_array_index(inputs, expected):
+    test = DiffractionObject(wavelength=inputs[0], xarray=inputs[1], yarray=inputs[2], xtype=inputs[3])
+    actual = test.get_array_index(value=inputs[5], xtype=inputs[4])
+    assert actual == expected[0]
+
+
+def test_get_array_index_bad():
+    test = DiffractionObject(wavelength=2 * np.pi, xarray=np.array([]), yarray=np.array([]), xtype="tth")
+    with pytest.raises(ValueError, match=re.escape("The 'tth' array is empty. Please ensure it is initialized.")):
+        test.get_array_index(value=30)
 
 
 def test_dump(tmp_path, mocker):

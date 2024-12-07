@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from diffpy.utils.transforms import d_to_tth, q_to_tth, tth_to_d, tth_to_q
+from diffpy.utils.transforms import d_to_q, d_to_tth, q_to_d, q_to_tth, tth_to_d, tth_to_q
 
 params_q_to_tth = [
     # UC1: Empty q values, no wavelength, return empty arrays
@@ -64,7 +64,7 @@ params_tth_to_q = [
         np.array([0, 1, 2, 3, 4, 5]),
     ),
     # UC3: User specified valid tth values between 0-180 degrees (with wavelength)
-    # expected q vales are sin15, sin30, sin45, sin60, sin90
+    # expected q values are sin15, sin30, sin45, sin60, sin90
     (
         [4 * np.pi, np.array([0, 30.0, 60.0, 90.0, 120.0, 180.0])],
         np.array([0, 0.258819, 0.5, 0.707107, 0.866025, 1]),
@@ -96,6 +96,40 @@ params_tth_to_q_bad = [
 def test_tth_to_q_bad(inputs, expected):
     with pytest.raises(expected[0], match=expected[1]):
         tth_to_q(inputs[1], inputs[0])
+
+
+params_q_to_d = [
+    # UC1: User specified empty q values
+    ([np.array([])], np.array([])),
+    # UC2: User specified valid q values
+    (
+        [np.array([0, 1 * np.pi, 2 * np.pi, 3 * np.pi, 4 * np.pi, 5 * np.pi])],
+        np.array([np.inf, 2, 1, 0.66667, 0.5, 0.4]),
+    ),
+]
+
+
+@pytest.mark.parametrize("inputs, expected", params_q_to_d)
+def test_q_to_d(inputs, expected):
+    actual = q_to_d(inputs[0])
+    assert np.allclose(actual, expected)
+
+
+params_d_to_q = [
+    # UC1: User specified empty d values
+    ([np.array([])], np.array([])),
+    # UC2: User specified valid d values
+    (
+        [np.array([5 * np.pi, 4 * np.pi, 3 * np.pi, 2 * np.pi, np.pi, 0])],
+        np.array([0.4, 0.5, 0.66667, 1, 2, np.inf]),
+    ),
+]
+
+
+@pytest.mark.parametrize("inputs, expected", params_d_to_q)
+def test_d_to_q(inputs, expected):
+    actual = d_to_q(inputs[0])
+    assert np.allclose(actual, expected)
 
 
 params_tth_to_d = [
