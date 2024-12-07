@@ -420,7 +420,6 @@ def test_copy_object():
         yarray=np.array([1.0, 2.0, 3.0]),
         xtype="tth",
     )
-    copy_of_DO = do.copy()
-    assert do == copy_of_DO
-    assert id(do) != id(copy_of_DO)
-
+    do_copy = do.copy()
+    assert do == do_copy
+    assert id(do) != id(do_copy)
