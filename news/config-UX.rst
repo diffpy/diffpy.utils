@@ -1,6 +1,6 @@
 **Added:**
 
-* additional information to users to relieve frustration in finding how to update global config
+* <news item>
 
 **Changed:**
 
@@ -16,7 +16,7 @@
 
 **Fixed:**
 
-* <news item>
+* additional information to users to relieve frustration in finding how to update global config
 
 **Security:**
 
