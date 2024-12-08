@@ -1,6 +1,6 @@
 **Added:**
 
-* Deprecation warning for resample function in resampler
+* <news item>
 
 **Changed:**
 
@@ -8,7 +8,7 @@
 
 **Deprecated:**
 
-* <news item>
+* Deprecation warning for resample function in resampler
 
 **Removed:**
 
