@@ -223,6 +223,99 @@ def test_on_xtype_bad():
         test.on_xtype("invalid")
 
 
+params_scale_to = [
+    # UC1: xvalue exact match
+    (
+        [
+            np.array([10, 15, 25, 30, 60, 140]),
+            np.array([10, 20, 25, 30, 60, 100]),
+            "tth",
+            2 * np.pi,
+            np.array([10, 15, 25, 30, 60, 140]),
+            np.array([2, 3, 4, 5, 6, 7]),
+            "tth",
+            2 * np.pi,
+            "tth",
+            60,
+        ],
+        [np.array([1, 2, 2.5, 3, 6, 10])],
+    ),
+    # UC2: xvalue approximate match
+    (
+        [
+            np.array([0.11, 0.24, 0.31, 0.4]),
+            np.array([10, 20, 40, 60]),
+            "q",
+            2 * np.pi,
+            np.array([0.11, 0.24, 0.31, 0.4]),
+            np.array([1, 3, 4, 5]),
+            "q",
+            2 * np.pi,
+            "q",
+            0.1,
+        ],
+        [np.array([1, 2, 4, 6])],
+    ),
+]
+
+
+@pytest.mark.parametrize("inputs, expected", params_scale_to)
+def test_scale_to(inputs, expected):
+    orig_diff_object = DiffractionObject(xarray=inputs[0], yarray=inputs[1], xtype=inputs[2], wavelength=inputs[3])
+    target_diff_object = DiffractionObject(
+        xarray=inputs[4], yarray=inputs[5], xtype=inputs[6], wavelength=inputs[7]
+    )
+    scaled_diff_object = orig_diff_object.scale_to(target_diff_object, xtype=inputs[8], xvalue=inputs[9])
+    # Check the intensity data is same as expected
+    assert np.allclose(scaled_diff_object.on_xtype(inputs[8])[1], expected[0])
+
+
+params_scale_to_bad = [
+    # UC1: at least one of the y-arrays is empty
+    (
+        [
+            np.array([]),
+            np.array([]),
+            "tth",
+            2 * np.pi,
+            np.array([11, 14, 16, 20, 25, 30]),
+            np.array([2, 3, 4, 5, 6, 7]),
+            "tth",
+            2 * np.pi,
+            "tth",
+            60,
+        ]
+    ),
+    # UC2: diffraction objects with different array lengths
+    (
+        [
+            np.array([0.11, 0.24, 0.31, 0.4, 0.5]),
+            np.array([10, 20, 40, 50, 60]),
+            "q",
+            2 * np.pi,
+            np.array([0.1, 0.15, 0.3, 0.4]),
+            np.array([1, 3, 4, 5]),
+            "q",
+            2 * np.pi,
+            "q",
+            0.1,
+        ]
+    ),
+]
+
+
+@pytest.mark.parametrize("inputs", params_scale_to_bad)
+def test_scale_to_bad(inputs):
+    orig_diff_object = DiffractionObject(xarray=inputs[0], yarray=inputs[1], xtype=inputs[2], wavelength=inputs[3])
+    target_diff_object = DiffractionObject(
+        xarray=inputs[4], yarray=inputs[5], xtype=inputs[6], wavelength=inputs[7]
+    )
+    with pytest.raises(
+        ValueError, match="I cannot scale two diffraction objects with empty or different lengths."
+    ):
+        orig_diff_object.scale_to(target_diff_object, xtype=inputs[8], xvalue=inputs[9])
+
+
 params_index = [
     # UC1: exact match
     ([4 * np.pi, np.array([30.005, 60]), np.array([1, 2]), "tth", "tth", 30.005], [0]),
