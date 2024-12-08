@@ -366,7 +366,7 @@ class DiffractionObject:
 
     def scale_to(self, target_diff_object, xtype=None, xvalue=None):
         f"""
-        returns a new diffraction object which is the current object but recaled in y to the target
+        returns a new diffraction object which is the current object but rescaled in y to the target
 
         Parameters
         ----------
@@ -390,14 +390,15 @@ class DiffractionObject:
 
         data = self.on_xtype(xtype)
         target = target_diff_object.on_xtype(xtype)
+        if len(data[0]) == 0 or len(target[0]) == 0 or len(data[0]) != len(target[0]):
+            raise ValueError("I cannot scale two diffraction objects with empty or different lengths.")
         if xvalue is None:
             xvalue = data[0][0] + (data[0][-1] - data[0][0]) / 2.0
 
         xindex = (np.abs(data[0] - xvalue)).argmin()
         ytarget = target[1][xindex]
         yself = data[1][xindex]
-        scaled.on_tth[1] = data[1] * ytarget / yself
-        scaled.on_q[1] = data[1] * ytarget / yself
+        scaled._all_arrays[:, 0] = data[1] * ytarget / yself
         return scaled
 
     def on_xtype(self, xtype):
