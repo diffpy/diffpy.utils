@@ -26,6 +26,13 @@ def _xtype_wmsg(xtype):
     )
 
 
+def _setter_wmsg(attribute):
+    return (
+        f"Direct modification of attribute '{attribute}' is not allowed."
+        f"Please use 'insert_scattering_quantity' to modify '{attribute}'.",
+    )
+
+
 class DiffractionObject:
     def __init__(
         self, name=None, wavelength=None, scat_quantity=None, metadata=None, xarray=None, yarray=None, xtype=None
@@ -45,6 +52,7 @@ class DiffractionObject:
             xarray = np.empty(0)
         if yarray is None:
             yarray = np.empty(0)
+
         self.insert_scattering_quantity(xarray, yarray, xtype)
 
     def __eq__(self, other):
@@ -186,11 +194,16 @@ class DiffractionObject:
         return self._all_arrays
 
     @all_arrays.setter
-    def all_arrays(self, value):
-        raise AttributeError(
-            "Direct modification of attribute 'all_arrays' is not allowed."
-            "Please use 'insert_scattering_quantity' to modify `all_arrays`."
-        )
+    def all_arrays(self, _):
+        raise AttributeError(_setter_wmsg("all_arrays"))
+
+    @property
+    def xtype(self):
+        return self._xtype
+
+    @xtype.setter
+    def xtype(self, _):
+        raise AttributeError(_setter_wmsg("xtype"))
 
     def set_angles_from_list(self, angles_list):
         self.angles = angles_list
@@ -261,7 +274,7 @@ class DiffractionObject:
 
     def get_array_index(self, value, xtype=None):
         """
-        returns the index of the closest value in the array associated with the specified xtype
+        Return the index of the closest value in the array associated with the specified xtype.
 
         Parameters
         ----------
@@ -276,7 +289,7 @@ class DiffractionObject:
         """
 
         if xtype is None:
-            xtype = self.input_xtype
+            xtype = self._xtype
         array = self.on_xtype(xtype)[0]
         if len(array) == 0:
             raise ValueError(f"The '{xtype}' array is empty. Please ensure it is initialized.")
@@ -335,7 +348,7 @@ class DiffractionObject:
         """
         self._set_xarrays(xarray, xtype)
         self._all_arrays[:, 0] = yarray
-        self.input_xtype = xtype
+        self._xtype = xtype
         # only update these optional values if non-empty quantities are passed to avoid overwriting
         # valid data inadvertently
         if metadata:
@@ -347,12 +360,25 @@ class DiffractionObject:
         if wavelength is not None:
             self.wavelength = wavelength
 
+        # Check xarray and yarray have the same length
+        if len(xarray) != len(yarray):
+            raise ValueError(
+                "`xarray` and `yarray` must have the same length. "
+                "Please re-initialize `DiffractionObject` or re-run the method `insert_scattering_quantity` "
+                "with `xarray` and `yarray` of identical length."
+            )
+
+        # Check xtype is valid. An empty string is the default value.
+        if xtype != "":
+            if xtype not in XQUANTITIES:
+                raise ValueError(_xtype_wmsg(xtype))
+
     def _get_original_array(self):
-        if self.input_xtype in QQUANTITIES:
+        if self._xtype in QQUANTITIES:
             return self.on_q(), "q"
-        elif self.input_xtype in ANGLEQUANTITIES:
+        elif self._xtype in ANGLEQUANTITIES:
             return self.on_tth(), "tth"
-        elif self.input_xtype in DQUANTITIES:
+        elif self._xtype in DQUANTITIES:
             return self.on_d(), "d"
 
     def on_q(self):

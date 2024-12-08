@@ -211,16 +211,15 @@ def test_on_xtype():
     assert np.allclose(test.on_xtype("d"), [np.array([12.13818, 6.28319]), np.array([1, 2])])
 
 
-def test_on_xtype_bad():
-    test = DiffractionObject()
+def test_init_invalid_xtype():
     with pytest.raises(
         ValueError,
         match=re.escape(
-            f"I don't know how to handle the xtype, 'invalid'. Please rerun specifying an "
+            f"I don't know how to handle the xtype, 'invalid_type'. Please rerun specifying an "
             f"xtype from {*XQUANTITIES, }"
         ),
     ):
-        test.on_xtype("invalid")
+        DiffractionObject(xtype="invalid_type")
 
 
 params_index = [
@@ -287,7 +286,7 @@ tc_params = [
         {
             "_all_arrays": np.empty(shape=(0, 4)),  # instantiate empty
             "metadata": {},
-            "input_xtype": "",
+            "_xtype": "",
             "name": "",
             "scat_quantity": None,
             "qmin": np.float64(np.inf),
@@ -304,7 +303,7 @@ tc_params = [
         {
             "_all_arrays": np.empty(shape=(0, 4)),
             "metadata": {"thing": "1", "another": "2"},
-            "input_xtype": "",
+            "_xtype": "",
             "name": "test",
             "scat_quantity": "x-ray",
             "qmin": np.float64(np.inf),
@@ -332,7 +331,7 @@ tc_params = [
                 ]
             ),
             "metadata": {},
-            "input_xtype": "tth",
+            "_xtype": "tth",
             "name": "",
             "scat_quantity": None,
             "qmin": np.float64(0.0),
@@ -361,7 +360,7 @@ tc_params = [
                 ]
             ),
             "metadata": {},
-            "input_xtype": "d",
+            "_xtype": "d",
             "name": "",
             "scat_quantity": "x-ray",
             "qmin": np.float64(0.0),
@@ -407,6 +406,23 @@ def test_all_array_setter():
     with pytest.raises(
         AttributeError,
         match="Direct modification of attribute 'all_arrays' is not allowed."
-        "Please use 'insert_scattering_quantity' to modify `all_arrays`.",
+        "Please use 'insert_scattering_quantity' to modify 'all_arrays'.",
     ):
         actual_do.all_arrays = np.empty((4, 4))
+
+
+def test_xtype_getter():
+    do = DiffractionObject(xtype="tth")
+    assert do.xtype == "tth"
+
+
+def test_xtype_setter():
+    do = DiffractionObject(xtype="tth")
+
+    # Attempt to directly modify the property
+    with pytest.raises(
+        AttributeError,
+        match="Direct modification of attribute 'xtype' is not allowed."
+        "Please use 'insert_scattering_quantity' to modify 'xtype'.",
+    ):
+        do.xtype = "q"
