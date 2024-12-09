@@ -427,6 +427,7 @@ def test_xtype_setter():
     ):
         do.xtype = "q"
 
+
 def test_copy_object():
     do = DiffractionObject(
         name="test",
@@ -438,4 +439,3 @@ def test_copy_object():
     do_copy = do.copy()
     assert do == do_copy
     assert id(do) != id(do_copy)
-
