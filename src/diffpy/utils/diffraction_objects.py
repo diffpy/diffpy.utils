@@ -374,11 +374,11 @@ class DiffractionObject:
                 raise ValueError(_xtype_wmsg(xtype))
 
     def _get_original_array(self):
-        if self._xtype in QQUANTITIES:
+        if self._input_xtype in QQUANTITIES:
             return self.on_q(), "q"
-        elif self._xtype in ANGLEQUANTITIES:
+        elif self._input_xtype in ANGLEQUANTITIES:
             return self.on_tth(), "tth"
-        elif self._xtype in DQUANTITIES:
+        elif self._input_xtype in DQUANTITIES:
             return self.on_d(), "d"
 
     def on_q(self):
