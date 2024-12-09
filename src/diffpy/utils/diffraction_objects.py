@@ -21,14 +21,14 @@ x_grid_emsg = (
 
 def _xtype_wmsg(xtype):
     return (
-        f"I don't know how to handle the xtype, '{xtype}'. Please rerun specifying an "
-        f"xtype from {*XQUANTITIES, }"
+        f"I don't know how to handle the xtype, '{xtype}'. "
+        f"Please rerun specifying an xtype from {*XQUANTITIES, }"
     )
 
 
 def _setter_wmsg(attribute):
     return (
-        f"Direct modification of attribute '{attribute}' is not allowed."
+        f"Direct modification of attribute '{attribute}' is not allowed. "
         f"Please use 'insert_scattering_quantity' to modify '{attribute}'.",
     )
 
