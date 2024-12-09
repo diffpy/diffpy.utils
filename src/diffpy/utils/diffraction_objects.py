@@ -392,8 +392,8 @@ class DiffractionObject:
         return [self.all_arrays[:, 3], self.all_arrays[:, 0]]
 
     def scale_to(self, target_diff_object, xtype=None, xvalue=None):
-        f"""
-        returns a new diffraction object which is the current object but recaled in y to the target
+        """
+        Return a new diffraction object which is the current object but recaled in y to the target
 
         Parameters
         ----------
@@ -428,8 +428,8 @@ class DiffractionObject:
         return scaled
 
     def on_xtype(self, xtype):
-        f"""
-        return a list of two 1D np array with x and y data, raise an error if the specified xtype is invalid
+        """
+        Return a list of two 1D np array with x and y data, raise an error if the specified xtype is invalid
 
         Parameters
         ----------
