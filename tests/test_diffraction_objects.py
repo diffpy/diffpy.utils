@@ -411,6 +411,16 @@ def test_all_array_setter():
         actual_do.all_arrays = np.empty((4, 4))
 
 
+def test_xarray_yarray_length_mismatch():
+    with pytest.raises(
+        ValueError,
+        match="'xarray' and 'yarray' must have the same length. "
+        "Please re-initialize 'DiffractionObject' or re-run the method 'insert_scattering_quantity' "
+        "with 'xarray' and 'yarray' of identical length",
+    ):
+        DiffractionObject(xarray=np.array([1.0, 2.0]), yarray=np.array([0.0, 0.0, 0.0]))
+
+
 def test_input_xtype_getter():
     do = DiffractionObject(xtype="tth")
     assert do.input_xtype == "tth"

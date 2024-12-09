@@ -346,6 +346,15 @@ class DiffractionObject:
         Nothing.  Updates the object in place.
 
         """
+
+        # Check xarray and yarray have the same length
+        if len(xarray) != len(yarray):
+            raise ValueError(
+                "'xarray' and 'yarray' must have the same length. "
+                "Please re-initialize 'DiffractionObject' or re-run the method 'insert_scattering_quantity' "
+                "with 'xarray' and 'yarray' of identical length."
+            )
+
         self._set_xarrays(xarray, xtype)
         self._all_arrays[:, 0] = yarray
         self._input_xtype = xtype
@@ -359,14 +368,6 @@ class DiffractionObject:
             self.name = name
         if wavelength is not None:
             self.wavelength = wavelength
-
-        # Check xarray and yarray have the same length
-        if len(xarray) != len(yarray):
-            raise ValueError(
-                "`xarray` and `yarray` must have the same length. "
-                "Please re-initialize `DiffractionObject` or re-run the method `insert_scattering_quantity` "
-                "with `xarray` and `yarray` of identical length."
-            )
 
         # Check xtype is valid. An empty string is the default value.
         if xtype != "":
