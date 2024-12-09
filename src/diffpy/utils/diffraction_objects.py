@@ -198,12 +198,12 @@ class DiffractionObject:
         raise AttributeError(_setter_wmsg("all_arrays"))
 
     @property
-    def xtype(self):
-        return self._xtype
+    def input_xtype(self):
+        return self._input_xtype
 
-    @xtype.setter
-    def xtype(self, _):
-        raise AttributeError(_setter_wmsg("xtype"))
+    @input_xtype.setter
+    def input_xtype(self, _):
+        raise AttributeError(_setter_wmsg("input_xtype"))
 
     def set_angles_from_list(self, angles_list):
         self.angles = angles_list
@@ -289,7 +289,7 @@ class DiffractionObject:
         """
 
         if xtype is None:
-            xtype = self._xtype
+            xtype = self._input_xtype
         array = self.on_xtype(xtype)[0]
         if len(array) == 0:
             raise ValueError(f"The '{xtype}' array is empty. Please ensure it is initialized.")
@@ -348,7 +348,7 @@ class DiffractionObject:
         """
         self._set_xarrays(xarray, xtype)
         self._all_arrays[:, 0] = yarray
-        self._xtype = xtype
+        self._input_xtype = xtype
         # only update these optional values if non-empty quantities are passed to avoid overwriting
         # valid data inadvertently
         if metadata:

@@ -286,7 +286,7 @@ tc_params = [
         {
             "_all_arrays": np.empty(shape=(0, 4)),  # instantiate empty
             "metadata": {},
-            "_xtype": "",
+            "_input_xtype": "",
             "name": "",
             "scat_quantity": None,
             "qmin": np.float64(np.inf),
@@ -303,7 +303,7 @@ tc_params = [
         {
             "_all_arrays": np.empty(shape=(0, 4)),
             "metadata": {"thing": "1", "another": "2"},
-            "_xtype": "",
+            "_input_xtype": "",
             "name": "test",
             "scat_quantity": "x-ray",
             "qmin": np.float64(np.inf),
@@ -331,7 +331,7 @@ tc_params = [
                 ]
             ),
             "metadata": {},
-            "_xtype": "tth",
+            "_input_xtype": "tth",
             "name": "",
             "scat_quantity": None,
             "qmin": np.float64(0.0),
@@ -360,7 +360,7 @@ tc_params = [
                 ]
             ),
             "metadata": {},
-            "_xtype": "d",
+            "_input_xtype": "d",
             "name": "",
             "scat_quantity": "x-ray",
             "qmin": np.float64(0.0),
@@ -411,21 +411,21 @@ def test_all_array_setter():
         actual_do.all_arrays = np.empty((4, 4))
 
 
-def test_xtype_getter():
+def test_input_xtype_getter():
     do = DiffractionObject(xtype="tth")
-    assert do.xtype == "tth"
+    assert do.input_xtype == "tth"
 
 
-def test_xtype_setter():
+def test_input_xtype_setter():
     do = DiffractionObject(xtype="tth")
 
     # Attempt to directly modify the property
     with pytest.raises(
         AttributeError,
-        match="Direct modification of attribute 'xtype' is not allowed."
-        "Please use 'insert_scattering_quantity' to modify 'xtype'.",
+        match="Direct modification of attribute 'input_xtype' is not allowed."
+        "Please use 'insert_scattering_quantity' to modify 'input_xtype'.",
     ):
-        do.xtype = "q"
+        do.input_xtype = "q"
 
 
 def test_copy_object():
