@@ -364,41 +364,43 @@ class DiffractionObject:
     def on_d(self):
         return [self.all_arrays[:, 3], self.all_arrays[:, 0]]
 
-    def scale_to(self, target_diff_object, xtype=None, xvalue=None):
-        f"""
+    def scale_to(self, target_diff_object, q=None, tth=None, d=None, offset=0):
+        """
         returns a new diffraction object which is the current object but rescaled in y to the target
+
+        The y-value in the target at the closest specified x-value will be used as the factor to scale to.
+        The entire array is scaled by this factor so that one object places on top of the other at that point.
+        If multiple values of `q`, `tth`, or `d` are provided, the priority is `q` > `tth` > `d`.
+        If none are provided, the midpoint of the current object's `q`-array will be used.
 
         Parameters
         ----------
         target_diff_object: DiffractionObject
-          the diffraction object you want to scale the current one on to
-        xtype: string, optional.  Default is Q
-          the xtype, from {XQUANTITIES}, that you will specify a point from to scale to
-        xvalue: float. Default is the midpoint of the array
-          the y-value in the target at this x-value will be used as the factor to scale to.
-          The entire array is scaled be the factor that places on on top of the other at that point.
-          xvalue does not have to be in the x-array, the point closest to this point will be used for the scaling.
+            the diffraction object you want to scale the current one onto
+
+        q, tth, d : float, optional, default is the midpoint of the current object's `q`-array
+            the xvalue (in `q`, `tth`, or `d` space) to align the current and target objects
+
+        offset : float, optional, default is 0
+            an offset to add to the scaled y-values
 
         Returns
         -------
         the rescaled DiffractionObject as a new object
-
         """
         scaled = deepcopy(self)
-        if xtype is None:
-            xtype = "q"
+        xtype = "q" if q is not None else "tth" if tth is not None else "d" if d is not None else "q"
+        data, target = self.on_xtype(xtype), target_diff_object.on_xtype(xtype)
+        if len(data[0]) == 0 or len(target[0]) == 0:
+            raise ValueError("I cannot scale diffraction objects with empty arrays.")
 
-        data = self.on_xtype(xtype)
-        target = target_diff_object.on_xtype(xtype)
-        if len(data[0]) == 0 or len(target[0]) == 0 or len(data[0]) != len(target[0]):
-            raise ValueError("I cannot scale two diffraction objects with empty or different lengths.")
+        xvalue = q if xtype == "q" else tth if xtype == "tth" else d
         if xvalue is None:
-            xvalue = data[0][0] + (data[0][-1] - data[0][0]) / 2.0
+            xvalue = (data[0][0] + data[0][-1]) / 2.0
 
-        xindex = (np.abs(data[0] - xvalue)).argmin()
-        ytarget = target[1][xindex]
-        yself = data[1][xindex]
-        scaled._all_arrays[:, 0] = data[1] * ytarget / yself
+        x_data, x_target = (np.abs(data[0] - xvalue)).argmin(), (np.abs(target[0] - xvalue)).argmin()
+        y_data, y_target = data[1][x_data], target[1][x_target]
+        scaled._all_arrays[:, 0] = data[1] * y_target / y_data + offset
         return scaled
 
     def on_xtype(self, xtype):
