@@ -426,3 +426,16 @@ def test_xtype_setter():
         "Please use 'insert_scattering_quantity' to modify 'xtype'.",
     ):
         do.xtype = "q"
+
+def test_copy_object():
+    do = DiffractionObject(
+        name="test",
+        wavelength=4.0 * np.pi,
+        xarray=np.array([0.0, 90.0, 180.0]),
+        yarray=np.array([1.0, 2.0, 3.0]),
+        xtype="tth",
+    )
+    do_copy = do.copy()
+    assert do == do_copy
+    assert id(do) != id(do_copy)
+
