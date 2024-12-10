@@ -223,6 +223,114 @@ def test_on_xtype_bad():
         test.on_xtype("invalid")
 
 
+params_scale_to = [
+    # UC1: same x-array and y-array, check offset
+    (
+        [
+            np.array([10, 15, 25, 30, 60, 140]),
+            np.array([2, 3, 4, 5, 6, 7]),
+            "tth",
+            2 * np.pi,
+            np.array([10, 15, 25, 30, 60, 140]),
+            np.array([2, 3, 4, 5, 6, 7]),
+            "tth",
+            2 * np.pi,
+            None,
+            60,
+            None,
+            2.1,
+        ],
+        ["tth", np.array([4.1, 5.1, 6.1, 7.1, 8.1, 9.1])],
+    ),
+    # UC2: same length x-arrays with exact x-value match
+    (
+        [
+            np.array([10, 15, 25, 30, 60, 140]),
+            np.array([10, 20, 25, 30, 60, 100]),
+            "tth",
+            2 * np.pi,
+            np.array([10, 20, 25, 30, 60, 140]),
+            np.array([2, 3, 4, 5, 6, 7]),
+            "tth",
+            2 * np.pi,
+            None,
+            60,
+            None,
+            0,
+        ],
+        ["tth", np.array([1, 2, 2.5, 3, 6, 10])],
+    ),
+    # UC3: same length x-arrays with approximate x-value match
+    (
+        [
+            np.array([0.12, 0.24, 0.31, 0.4]),
+            np.array([10, 20, 40, 60]),
+            "q",
+            2 * np.pi,
+            np.array([0.14, 0.24, 0.31, 0.4]),
+            np.array([1, 3, 4, 5]),
+            "q",
+            2 * np.pi,
+            0.1,
+            None,
+            None,
+            0,
+        ],
+        ["q", np.array([1, 2, 4, 6])],
+    ),
+    # UC4: different x-array lengths with approximate x-value match
+    (
+        [
+            np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
+            np.array([10, 20, 30, 40, 50, 60, 100]),
+            "tth",
+            2 * np.pi,
+            np.array([20, 25.5, 32, 45, 50, 62, 100, 125, 140]),
+            np.array([1.1, 2, 3, 3.5, 4, 5, 10, 12, 13]),
+            "tth",
+            2 * np.pi,
+            None,
+            60,
+            None,
+            0,
+        ],
+        # scaling factor is calculated at index = 5 for self and index = 6 for target
+        ["tth", np.array([1, 2, 3, 4, 5, 6, 10])],
+    ),
+    # UC5: user specified multiple x-values, prioritize q > tth > d
+    (
+        [
+            np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
+            np.array([10, 20, 30, 40, 50, 60, 100]),
+            "tth",
+            2 * np.pi,
+            np.array([20, 25.5, 32, 45, 50, 62, 100, 125, 140]),
+            np.array([1.1, 2, 3, 3.5, 4, 5, 10, 12, 13]),
+            "tth",
+            2 * np.pi,
+            None,
+            60,
+            10,
+            0,
+        ],
+        ["tth", np.array([1, 2, 3, 4, 5, 6, 10])],
+    ),
+]
+
+
+@pytest.mark.parametrize("inputs, expected", params_scale_to)
+def test_scale_to(inputs, expected):
+    orig_diff_object = DiffractionObject(xarray=inputs[0], yarray=inputs[1], xtype=inputs[2], wavelength=inputs[3])
+    target_diff_object = DiffractionObject(
+        xarray=inputs[4], yarray=inputs[5], xtype=inputs[6], wavelength=inputs[7]
+    )
+    scaled_diff_object = orig_diff_object.scale_to(
+        target_diff_object, q=inputs[8], tth=inputs[9], d=inputs[10], offset=inputs[11]
+    )
+    # Check the intensity data is same as expected
+    assert np.allclose(scaled_diff_object.on_xtype(expected[0])[1], expected[1])
+
+
 params_index = [
     # UC1: exact match
     ([4 * np.pi, np.array([30.005, 60]), np.array([1, 2]), "tth", "tth", 30.005], [0]),
