@@ -83,6 +83,11 @@ def _create_global_config(args):
     return_bool = False if username is None or email is None else True
     with open(Path().home() / "diffpyconfig.json", "w") as f:
         f.write(json.dumps({"username": stringify(username), "email": stringify(email)}))
+    print(
+        f"You can manually edit the config file at {Path().home() / 'diffpyconfig.json'} using any text editor.\n"
+        f"Or you can update the config file by passing new values to get_user_info(), "
+        f"see examples here: https://www.diffpy.org/diffpy.utils/examples/toolsexample.html"
+    )
     return return_bool
 
 

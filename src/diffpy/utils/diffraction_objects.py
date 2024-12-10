@@ -448,3 +448,14 @@ class DiffractionObject:
                 f.write(f"{key} = {value}\n")
             f.write("\n#### start data\n")
             np.savetxt(f, data_to_save, delimiter=" ")
+
+    def copy(self):
+        """
+        Create a deep copy of the DiffractionObject instance.
+
+        Returns
+        -------
+        DiffractionObject
+            A new instance of DiffractionObject, which is a deep copy of the current instance.
+        """
+        return deepcopy(self)
