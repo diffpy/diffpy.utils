@@ -388,11 +388,9 @@ class DiffractionObject:
         -------
         the rescaled DiffractionObject as a new object
         """
-        scaled = deepcopy(self)
+        scaled = self.copy()
         xtype = "q" if q is not None else "tth" if tth is not None else "d" if d is not None else "q"
         data, target = self.on_xtype(xtype), target_diff_object.on_xtype(xtype)
-        if len(data[0]) == 0 or len(target[0]) == 0:
-            raise ValueError("I cannot scale diffraction objects with empty arrays.")
 
         xvalue = q if xtype == "q" else tth if xtype == "tth" else d
         if xvalue is None:

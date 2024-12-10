@@ -331,21 +331,6 @@ def test_scale_to(inputs, expected):
     assert np.allclose(scaled_diff_object.on_xtype(expected[0])[1], expected[1])
 
 
-def test_scale_to_bad():
-    # UC1: at least one of the y-arrays is empty
-    orig_diff_object = DiffractionObject(
-        xarray=np.array([]), yarray=np.array([]), xtype="tth", wavelength=2 * np.pi
-    )
-    target_diff_object = DiffractionObject(
-        xarray=np.array([11, 14, 16, 20, 25, 30]),
-        yarray=np.array([2, 3, 4, 5, 6, 7]),
-        xtype="tth",
-        wavelength=2 * np.pi,
-    )
-    with pytest.raises(ValueError, match="I cannot scale diffraction objects with empty arrays."):
-        orig_diff_object.scale_to(target_diff_object, tth=20)
-
-
 params_index = [
     # UC1: exact match
     ([4 * np.pi, np.array([30.005, 60]), np.array([1, 2]), "tth", "tth", 30.005], [0]),
