@@ -53,7 +53,7 @@ class DiffractionObject:
         if yarray is None:
             yarray = np.empty(0)
 
-        self.insert_scattering_quantity(xarray, yarray, xtype)
+        self.input_data(xarray, yarray, xtype)
 
     def __eq__(self, other):
         if not isinstance(other, DiffractionObject):
@@ -317,7 +317,7 @@ class DiffractionObject:
         self.dmin = np.nanmin(self._all_arrays[:, 3], initial=np.inf)
         self.dmax = np.nanmax(self._all_arrays[:, 3], initial=0.0)
 
-    def insert_scattering_quantity(
+    def input_data(
         self,
         xarray,
         yarray,
