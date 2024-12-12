@@ -1,5 +1,7 @@
 import re
+import uuid
 from pathlib import Path
+from uuid import UUID
 
 import numpy as np
 import pytest
@@ -335,8 +337,8 @@ tc_params = [
 
 @pytest.mark.parametrize("inputs, expected", tc_params)
 def test_constructor(inputs, expected):
-    actual_do = DiffractionObject(**inputs)
-    diff = DeepDiff(actual_do.__dict__, expected, ignore_order=True, significant_digits=13)
+    actual = DiffractionObject(**inputs).__dict__
+    diff = DeepDiff(actual, expected, ignore_order=True, significant_digits=13, exclude_paths="root['_id']")
     assert diff == {}
 
 
@@ -364,16 +366,33 @@ def test_all_array_setter():
     with pytest.raises(
         AttributeError,
         match="Direct modification of attribute 'all_arrays' is not allowed. "
-        "Please use 'insert_scattering_quantity' to modify 'all_arrays'.",
+        "Please use 'input_data' to modify 'all_arrays'.",
     ):
         actual_do.all_arrays = np.empty((4, 4))
+
+
+def test_id_getter():
+    do = DiffractionObject()
+    assert hasattr(do, "id")
+    assert isinstance(do.id, UUID)
+    assert len(str(do.id)) == 36
+
+
+def test_id_setter():
+    do = DiffractionObject()
+    # Attempt to directly modify the property
+    with pytest.raises(
+        AttributeError,
+        match="Direct modification of attribute 'id' is not allowed. Please use 'input_data' to modify 'id'.",
+    ):
+        do.id = uuid.uuid4()
 
 
 def test_xarray_yarray_length_mismatch():
     with pytest.raises(
         ValueError,
         match="'xarray' and 'yarray' must have the same length. "
-        "Please re-initialize 'DiffractionObject' or re-run the method 'insert_scattering_quantity' "
+        "Please re-initialize 'DiffractionObject' or re-run the method 'input_data' "
         "with 'xarray' and 'yarray' of identical length",
     ):
         DiffractionObject(xarray=np.array([1.0, 2.0]), yarray=np.array([0.0, 0.0, 0.0]))
@@ -391,7 +410,7 @@ def test_input_xtype_setter():
     with pytest.raises(
         AttributeError,
         match="Direct modification of attribute 'input_xtype' is not allowed. "
-        "Please use 'insert_scattering_quantity' to modify 'input_xtype'.",
+        "Please use 'input_data' to modify 'input_xtype'.",
     ):
         do.input_xtype = "q"
 
