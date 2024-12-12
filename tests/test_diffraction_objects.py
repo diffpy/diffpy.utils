@@ -378,12 +378,18 @@ def test_id_getter():
     assert len(str(do.id)) == 36
 
 
+def test_id_getter_with_mock(mocker):
+    mocker.patch.object(DiffractionObject, "id", new_callable=lambda: UUID("d67b19c6-3016-439f-81f7-cf20a04bee87"))
+    do = DiffractionObject()
+    assert do.id == UUID("d67b19c6-3016-439f-81f7-cf20a04bee87")
+
+
 def test_id_setter_error():
     do = DiffractionObject()
-    # Attempt to directly modify the property
+
     with pytest.raises(
         AttributeError,
-        match="Direct modification of attribute 'id' is not allowed. Please use 'input_data' to modify 'id'.",
+        match="Direct modification of attribute 'id' is not allowed. " "Please use 'input_data' to modify 'id'.",
     ):
         do.id = uuid.uuid4()
 
