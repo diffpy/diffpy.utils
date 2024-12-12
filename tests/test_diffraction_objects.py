@@ -389,7 +389,7 @@ def test_id_setter_error():
 
     with pytest.raises(
         AttributeError,
-        match="Direct modification of attribute 'id' is not allowed. " "Please use 'input_data' to modify 'id'.",
+        match="Direct modification of attribute 'id' is not allowed. Please use 'input_data' to modify 'id'.",
     ):
         do.id = uuid.uuid4()
 
