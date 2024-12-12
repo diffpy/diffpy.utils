@@ -397,7 +397,7 @@ class DiffractionObject:
 
         The y-value in the target at the closest specified x-value will be used as the factor to scale to.
         The entire array is scaled by this factor so that one object places on top of the other at that point.
-        If multiple values of `q`, `tth`, or `d` are provided, the priority is `q` > `tth` > `d`.
+        If multiple values of `q`, `tth`, or `d` are provided, an error will be raised.
         If none are provided, the midpoint of the current object's `q`-array will be used.
 
         Parameters
