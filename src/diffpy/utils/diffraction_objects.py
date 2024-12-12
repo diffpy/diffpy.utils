@@ -1,4 +1,5 @@
 import datetime
+import uuid
 import warnings
 from copy import deepcopy
 
@@ -29,7 +30,7 @@ def _xtype_wmsg(xtype):
 def _setter_wmsg(attribute):
     return (
         f"Direct modification of attribute '{attribute}' is not allowed. "
-        f"Please use 'insert_scattering_quantity' to modify '{attribute}'.",
+        f"Please use 'input_data' to modify '{attribute}'.",
     )
 
 
@@ -53,7 +54,8 @@ class DiffractionObject:
         if yarray is None:
             yarray = np.empty(0)
 
-        self.insert_scattering_quantity(xarray, yarray, xtype)
+        self._id = uuid.uuid4()
+        self.input_data(xarray, yarray, xtype)
 
     def __eq__(self, other):
         if not isinstance(other, DiffractionObject):
@@ -205,6 +207,14 @@ class DiffractionObject:
     def input_xtype(self, _):
         raise AttributeError(_setter_wmsg("input_xtype"))
 
+    @property
+    def id(self):
+        return self._id
+
+    @id.setter
+    def id(self, _):
+        raise AttributeError(_setter_wmsg("id"))
+
     def set_angles_from_list(self, angles_list):
         self.angles = angles_list
         self.n_steps = len(angles_list) - 1.0
@@ -317,7 +327,7 @@ class DiffractionObject:
         self.dmin = np.nanmin(self._all_arrays[:, 3], initial=np.inf)
         self.dmax = np.nanmax(self._all_arrays[:, 3], initial=0.0)
 
-    def insert_scattering_quantity(
+    def input_data(
         self,
         xarray,
         yarray,
@@ -351,7 +361,7 @@ class DiffractionObject:
         if len(xarray) != len(yarray):
             raise ValueError(
                 "'xarray' and 'yarray' must have the same length. "
-                "Please re-initialize 'DiffractionObject' or re-run the method 'insert_scattering_quantity' "
+                "Please re-initialize 'DiffractionObject' or re-run the method 'input_data' "
                 "with 'xarray' and 'yarray' of identical length."
             )
 
