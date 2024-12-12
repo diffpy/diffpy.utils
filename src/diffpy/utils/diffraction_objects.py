@@ -21,8 +21,15 @@ x_grid_emsg = (
 
 def _xtype_wmsg(xtype):
     return (
-        f"I don't know how to handle the xtype, '{xtype}'. Please rerun specifying an "
-        f"xtype from {*XQUANTITIES, }"
+        f"I don't know how to handle the xtype, '{xtype}'. "
+        f"Please rerun specifying an xtype from {*XQUANTITIES, }"
+    )
+
+
+def _setter_wmsg(attribute):
+    return (
+        f"Direct modification of attribute '{attribute}' is not allowed. "
+        f"Please use 'input_data' to modify '{attribute}'.",
     )
 
 
@@ -45,7 +52,8 @@ class DiffractionObject:
             xarray = np.empty(0)
         if yarray is None:
             yarray = np.empty(0)
-        self.insert_scattering_quantity(xarray, yarray, xtype)
+
+        self.input_data(xarray, yarray, xtype)
 
     def __eq__(self, other):
         if not isinstance(other, DiffractionObject):
@@ -186,11 +194,16 @@ class DiffractionObject:
         return self._all_arrays
 
     @all_arrays.setter
-    def all_arrays(self, value):
-        raise AttributeError(
-            "Direct modification of attribute 'all_arrays' is not allowed."
-            "Please use 'insert_scattering_quantity' to modify `all_arrays`."
-        )
+    def all_arrays(self, _):
+        raise AttributeError(_setter_wmsg("all_arrays"))
+
+    @property
+    def input_xtype(self):
+        return self._input_xtype
+
+    @input_xtype.setter
+    def input_xtype(self, _):
+        raise AttributeError(_setter_wmsg("input_xtype"))
 
     def set_angles_from_list(self, angles_list):
         self.angles = angles_list
@@ -261,7 +274,7 @@ class DiffractionObject:
 
     def get_array_index(self, value, xtype=None):
         """
-        returns the index of the closest value in the array associated with the specified xtype
+        Return the index of the closest value in the array associated with the specified xtype.
 
         Parameters
         ----------
@@ -276,7 +289,7 @@ class DiffractionObject:
         """
 
         if xtype is None:
-            xtype = self.input_xtype
+            xtype = self._input_xtype
         array = self.on_xtype(xtype)[0]
         if len(array) == 0:
             raise ValueError(f"The '{xtype}' array is empty. Please ensure it is initialized.")
@@ -304,7 +317,7 @@ class DiffractionObject:
         self.dmin = np.nanmin(self._all_arrays[:, 3], initial=np.inf)
         self.dmax = np.nanmax(self._all_arrays[:, 3], initial=0.0)
 
-    def insert_scattering_quantity(
+    def input_data(
         self,
         xarray,
         yarray,
@@ -333,9 +346,18 @@ class DiffractionObject:
         Nothing.  Updates the object in place.
 
         """
+
+        # Check xarray and yarray have the same length
+        if len(xarray) != len(yarray):
+            raise ValueError(
+                "'xarray' and 'yarray' must have the same length. "
+                "Please re-initialize 'DiffractionObject' or re-run the method 'input_data' "
+                "with 'xarray' and 'yarray' of identical length."
+            )
+
         self._set_xarrays(xarray, xtype)
         self._all_arrays[:, 0] = yarray
-        self.input_xtype = xtype
+        self._input_xtype = xtype
         # only update these optional values if non-empty quantities are passed to avoid overwriting
         # valid data inadvertently
         if metadata:
@@ -347,12 +369,17 @@ class DiffractionObject:
         if wavelength is not None:
             self.wavelength = wavelength
 
+        # Check xtype is valid. An empty string is the default value.
+        if xtype != "":
+            if xtype not in XQUANTITIES:
+                raise ValueError(_xtype_wmsg(xtype))
+
     def _get_original_array(self):
-        if self.input_xtype in QQUANTITIES:
+        if self._input_xtype in QQUANTITIES:
             return self.on_q(), "q"
-        elif self.input_xtype in ANGLEQUANTITIES:
+        elif self._input_xtype in ANGLEQUANTITIES:
             return self.on_tth(), "tth"
-        elif self.input_xtype in DQUANTITIES:
+        elif self._input_xtype in DQUANTITIES:
             return self.on_d(), "d"
 
     def on_q(self):
@@ -389,6 +416,10 @@ class DiffractionObject:
         the rescaled DiffractionObject as a new object
         """
         scaled = self.copy()
+        count = sum([q is not None, tth is not None, d is not None])
+        if count > 1:
+            raise ValueError("You can only specify one of 'q', 'tth', or 'd'. Please rerun specifying only one.")
+
         xtype = "q" if q is not None else "tth" if tth is not None else "d" if d is not None else "q"
         data, target = self.on_xtype(xtype), target_diff_object.on_xtype(xtype)
 
@@ -402,8 +433,8 @@ class DiffractionObject:
         return scaled
 
     def on_xtype(self, xtype):
-        f"""
-        return a list of two 1D np array with x and y data, raise an error if the specified xtype is invalid
+        """
+        Return a list of two 1D np array with x and y data, raise an error if the specified xtype is invalid
 
         Parameters
         ----------

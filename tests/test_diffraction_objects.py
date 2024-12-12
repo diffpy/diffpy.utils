@@ -8,43 +8,6 @@ from freezegun import freeze_time
 
 from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
 
-
-def compare_dicts(dict1, dict2):
-    assert dict1.keys() == dict2.keys(), "Keys mismatch"
-    for key in dict1:
-        val1, val2 = dict1[key], dict2[key]
-        if isinstance(val1, np.ndarray) and isinstance(val2, np.ndarray):
-            assert np.allclose(val1, val2), f"Arrays for key '{key}' differ"
-        elif isinstance(val1, np.float64) and isinstance(val2, np.float64):
-            assert np.isclose(val1, val2), f"Float64 values for key '{key}' differ"
-        else:
-            assert val1 == val2, f"Values for key '{key}' differ: {val1} != {val2}"
-
-
-def dicts_equal(dict1, dict2):
-    equal = True
-    print("")
-    print(dict1)
-    print(dict2)
-    if not dict1.keys() == dict2.keys():
-        equal = False
-    for key in dict1:
-        val1, val2 = dict1[key], dict2[key]
-        if isinstance(val1, np.ndarray) and isinstance(val2, np.ndarray):
-            if not np.allclose(val1, val2):
-                equal = False
-        elif isinstance(val1, list) and isinstance(val2, list):
-            if not val1.all() == val2.all():
-                equal = False
-        elif isinstance(val1, np.float64) and isinstance(val2, np.float64):
-            if not np.isclose(val1, val2):
-                equal = False
-        else:
-            if not val1 == val2:
-                equal = False
-    return equal
-
-
 params = [
     (  # Default
         {},
@@ -193,14 +156,9 @@ params = [
 
 @pytest.mark.parametrize("inputs1, inputs2, expected", params)
 def test_diffraction_objects_equality(inputs1, inputs2, expected):
-    diffraction_object1 = DiffractionObject(**inputs1)
-    diffraction_object2 = DiffractionObject(**inputs2)
-    # diffraction_object1_attributes = [key for key in diffraction_object1.__dict__ if not key.startswith("_")]
-    # for i, attribute in enumerate(diffraction_object1_attributes):
-    #     setattr(diffraction_object1, attribute, inputs1[i])
-    #     setattr(diffraction_object2, attribute, inputs2[i])
-    print(dicts_equal(diffraction_object1.__dict__, diffraction_object2.__dict__), expected)
-    assert dicts_equal(diffraction_object1.__dict__, diffraction_object2.__dict__) == expected
+    do_1 = DiffractionObject(**inputs1)
+    do_2 = DiffractionObject(**inputs2)
+    assert (do_1 == do_2) == expected
 
 
 def test_on_xtype():
@@ -211,16 +169,15 @@ def test_on_xtype():
     assert np.allclose(test.on_xtype("d"), [np.array([12.13818, 6.28319]), np.array([1, 2])])
 
 
-def test_on_xtype_bad():
-    test = DiffractionObject()
+def test_init_invalid_xtype():
     with pytest.raises(
         ValueError,
         match=re.escape(
-            f"I don't know how to handle the xtype, 'invalid'. Please rerun specifying an "
-            f"xtype from {*XQUANTITIES, }"
+            f"I don't know how to handle the xtype, 'invalid_type'. "
+            f"Please rerun specifying an xtype from {*XQUANTITIES, }"
         ),
     ):
-        test.on_xtype("invalid")
+        DiffractionObject(xtype="invalid_type")
 
 
 params_scale_to = [
@@ -297,7 +254,41 @@ params_scale_to = [
         # scaling factor is calculated at index = 5 for self and index = 6 for target
         ["tth", np.array([1, 2, 3, 4, 5, 6, 10])],
     ),
-    # UC5: user specified multiple x-values, prioritize q > tth > d
+    # UC5: user did not specify anything, use the midpoint of the current object's q-array
+    (
+        [
+            np.array([0.1, 0.2, 0.3]),
+            np.array([1, 2, 3]),
+            "q",
+            2 * np.pi,
+            np.array([0.05, 0.1, 0.2, 0.3]),
+            np.array([5, 10, 20, 30]),
+            "q",
+            2 * np.pi,
+            None,
+            None,
+            None,
+            0,
+        ],
+        ["q", np.array([10, 20, 30])],
+    ),
+]
+
+
+@pytest.mark.parametrize("inputs, expected", params_scale_to)
+def test_scale_to(inputs, expected):
+    orig_diff_object = DiffractionObject(xarray=inputs[0], yarray=inputs[1], xtype=inputs[2], wavelength=inputs[3])
+    target_diff_object = DiffractionObject(
+        xarray=inputs[4], yarray=inputs[5], xtype=inputs[6], wavelength=inputs[7]
+    )
+    scaled_diff_object = orig_diff_object.scale_to(
+        target_diff_object, q=inputs[8], tth=inputs[9], d=inputs[10], offset=inputs[11]
+    )
+    # Check the intensity data is same as expected
+    assert np.allclose(scaled_diff_object.on_xtype(expected[0])[1], expected[1])
+
+
+params_scale_to_bad = [
     (
         [
             np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
@@ -318,17 +309,16 @@ params_scale_to = [
 ]
 
 
-@pytest.mark.parametrize("inputs, expected", params_scale_to)
-def test_scale_to(inputs, expected):
+@pytest.mark.parametrize("inputs, expected", params_scale_to_bad)
+def test_scale_to_bad(inputs, expected):
     orig_diff_object = DiffractionObject(xarray=inputs[0], yarray=inputs[1], xtype=inputs[2], wavelength=inputs[3])
     target_diff_object = DiffractionObject(
         xarray=inputs[4], yarray=inputs[5], xtype=inputs[6], wavelength=inputs[7]
     )
-    scaled_diff_object = orig_diff_object.scale_to(
-        target_diff_object, q=inputs[8], tth=inputs[9], d=inputs[10], offset=inputs[11]
-    )
-    # Check the intensity data is same as expected
-    assert np.allclose(scaled_diff_object.on_xtype(expected[0])[1], expected[1])
+    with pytest.raises(
+        ValueError, match="You can only specify one of 'q', 'tth', or 'd'. Please rerun specifying only one."
+    ):
+        orig_diff_object.scale_to(target_diff_object, q=inputs[8], tth=inputs[9], d=inputs[10], offset=inputs[11])
 
 
 params_index = [
@@ -395,7 +385,7 @@ tc_params = [
         {
             "_all_arrays": np.empty(shape=(0, 4)),  # instantiate empty
             "metadata": {},
-            "input_xtype": "",
+            "_input_xtype": "",
             "name": "",
             "scat_quantity": None,
             "qmin": np.float64(np.inf),
@@ -412,7 +402,7 @@ tc_params = [
         {
             "_all_arrays": np.empty(shape=(0, 4)),
             "metadata": {"thing": "1", "another": "2"},
-            "input_xtype": "",
+            "_input_xtype": "",
             "name": "test",
             "scat_quantity": "x-ray",
             "qmin": np.float64(np.inf),
@@ -440,7 +430,7 @@ tc_params = [
                 ]
             ),
             "metadata": {},
-            "input_xtype": "tth",
+            "_input_xtype": "tth",
             "name": "",
             "scat_quantity": None,
             "qmin": np.float64(0.0),
@@ -469,7 +459,7 @@ tc_params = [
                 ]
             ),
             "metadata": {},
-            "input_xtype": "d",
+            "_input_xtype": "d",
             "name": "",
             "scat_quantity": "x-ray",
             "qmin": np.float64(0.0),
@@ -514,10 +504,37 @@ def test_all_array_setter():
     # Attempt to directly modify the property
     with pytest.raises(
         AttributeError,
-        match="Direct modification of attribute 'all_arrays' is not allowed."
-        "Please use 'insert_scattering_quantity' to modify `all_arrays`.",
+        match="Direct modification of attribute 'all_arrays' is not allowed. "
+        "Please use 'input_data' to modify 'all_arrays'.",
     ):
         actual_do.all_arrays = np.empty((4, 4))
+
+
+def test_xarray_yarray_length_mismatch():
+    with pytest.raises(
+        ValueError,
+        match="'xarray' and 'yarray' must have the same length. "
+        "Please re-initialize 'DiffractionObject' or re-run the method 'input_data' "
+        "with 'xarray' and 'yarray' of identical length",
+    ):
+        DiffractionObject(xarray=np.array([1.0, 2.0]), yarray=np.array([0.0, 0.0, 0.0]))
+
+
+def test_input_xtype_getter():
+    do = DiffractionObject(xtype="tth")
+    assert do.input_xtype == "tth"
+
+
+def test_input_xtype_setter():
+    do = DiffractionObject(xtype="tth")
+
+    # Attempt to directly modify the property
+    with pytest.raises(
+        AttributeError,
+        match="Direct modification of attribute 'input_xtype' is not allowed. "
+        "Please use 'input_data' to modify 'input_xtype'.",
+    ):
+        do.input_xtype = "q"
 
 
 def test_copy_object():
