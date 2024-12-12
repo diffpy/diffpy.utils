@@ -378,12 +378,12 @@ def test_id_getter():
     assert len(str(do.id)) == 36
 
 
-def test_id_setter():
+def test_id_setter_error():
     do = DiffractionObject()
     # Attempt to directly modify the property
     with pytest.raises(
         AttributeError,
-        match="Direct modification of attribute 'id' is not allowed. Please use 'insert_scattering_quantity' to modify 'id'.",
+        match="Direct modification of attribute 'id' is not allowed. Please use 'input_data' to modify 'id'.",
     ):
         do.id = uuid.uuid4()
 
@@ -403,7 +403,7 @@ def test_input_xtype_getter():
     assert do.input_xtype == "tth"
 
 
-def test_input_xtype_setter():
+def test_input_xtype_setter_error():
     do = DiffractionObject(xtype="tth")
 
     # Attempt to directly modify the property
