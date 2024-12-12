@@ -364,7 +364,7 @@ def test_all_array_setter():
     with pytest.raises(
         AttributeError,
         match="Direct modification of attribute 'all_arrays' is not allowed. "
-        "Please use 'insert_scattering_quantity' to modify 'all_arrays'.",
+        "Please use 'input_data' to modify 'all_arrays'.",
     ):
         actual_do.all_arrays = np.empty((4, 4))
 
@@ -373,7 +373,7 @@ def test_xarray_yarray_length_mismatch():
     with pytest.raises(
         ValueError,
         match="'xarray' and 'yarray' must have the same length. "
-        "Please re-initialize 'DiffractionObject' or re-run the method 'insert_scattering_quantity' "
+        "Please re-initialize 'DiffractionObject' or re-run the method 'input_data' "
         "with 'xarray' and 'yarray' of identical length",
     ):
         DiffractionObject(xarray=np.array([1.0, 2.0]), yarray=np.array([0.0, 0.0, 0.0]))
@@ -391,7 +391,7 @@ def test_input_xtype_setter():
     with pytest.raises(
         AttributeError,
         match="Direct modification of attribute 'input_xtype' is not allowed. "
-        "Please use 'insert_scattering_quantity' to modify 'input_xtype'.",
+        "Please use 'input_data' to modify 'input_xtype'.",
     ):
         do.input_xtype = "q"
 
