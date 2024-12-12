@@ -290,27 +290,24 @@ def test_scale_to(inputs, expected):
 
 params_scale_to_bad = [
     (
-        [
-            np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
-            np.array([10, 20, 30, 40, 50, 60, 100]),
-            "tth",
-            2 * np.pi,
-            np.array([20, 25.5, 32, 45, 50, 62, 100, 125, 140]),
-            np.array([1.1, 2, 3, 3.5, 4, 5, 10, 12, 13]),
-            "tth",
-            2 * np.pi,
-            None,
-            60,
-            10,
-            0,
-        ],
-        ["tth", np.array([1, 2, 3, 4, 5, 6, 10])],
+        np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
+        np.array([10, 20, 30, 40, 50, 60, 100]),
+        "tth",
+        2 * np.pi,
+        np.array([20, 25.5, 32, 45, 50, 62, 100, 125, 140]),
+        np.array([1.1, 2, 3, 3.5, 4, 5, 10, 12, 13]),
+        "tth",
+        2 * np.pi,
+        None,
+        60,
+        10,
+        0,
     ),
 ]
 
 
-@pytest.mark.parametrize("inputs, expected", params_scale_to_bad)
-def test_scale_to_bad(inputs, expected):
+@pytest.mark.parametrize("inputs", params_scale_to_bad)
+def test_scale_to_bad(inputs):
     orig_diff_object = DiffractionObject(xarray=inputs[0], yarray=inputs[1], xtype=inputs[2], wavelength=inputs[3])
     target_diff_object = DiffractionObject(
         xarray=inputs[4], yarray=inputs[5], xtype=inputs[6], wavelength=inputs[7]
