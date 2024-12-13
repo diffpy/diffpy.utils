@@ -38,7 +38,7 @@ def wsinterp(x, xp, fp, left=None, right=None):
         set fp for x < xp[0] to fp evaluated at xp[-1].
     right: float
         If given, set fp for x > xp[-1] to right. Otherwise, if right is None (default) or not given, set fp for
-        x > xp[-1] to fp evaluated at xp[-1]
+        x > xp[-1] to fp evaluated at xp[-1].
 
     Returns
     -------
