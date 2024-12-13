@@ -17,13 +17,14 @@ def test_load_multiple(tmp_path, datafile):
     tlm_list = sorted(dbload_dir.glob("*.gr"))
 
     generated_data = None
+
     for headerfile in tlm_list:
         # gather data using loadData
         hdata = loadData(headerfile, headers=True)
         data_table = loadData(headerfile)
 
         # check path extraction
-        generated_data = serialize_data(headerfile, hdata, data_table, dt_colnames=["r", "gr"], show_path=True)
+        generated_data = serialize_data(headerfile, hdata, data_table, dt_col_names=["r", "gr"], show_path=True)
         assert headerfile == Path(generated_data[headerfile.name].pop("path"))
 
         # rerun without path information and save to file
@@ -31,16 +32,14 @@ def test_load_multiple(tmp_path, datafile):
             headerfile,
             hdata,
             data_table,
-            dt_colnames=["r", "gr"],
+            dt_col_names=["r", "gr"],
             show_path=False,
             serial_file=generatedjson,
         )
 
     # compare to target
-    target_data = deserialize_data(targetjson)
+    target_data = deserialize_data(targetjson, filetype=".json")
     assert target_data == generated_data
-    # ensure file saved properly
-    assert target_data == deserialize_data(generatedjson, filetype=".json")
 
 
 def test_exceptions(datafile):
@@ -60,24 +59,24 @@ def test_exceptions(datafile):
 
     # various dt_colnames inputs
     with pytest.raises(ImproperSizeError):
-        serialize_data(loadfile, hdata, data_table, dt_colnames=["one", "two", "three is too many"])
+        serialize_data(loadfile, hdata, data_table, dt_col_names=["one", "two", "three is too many"])
     # check proper output
-    normal = serialize_data(loadfile, hdata, data_table, dt_colnames=["r", "gr"])
+    normal = serialize_data(loadfile, hdata, data_table, dt_col_names=["r", "gr"])
     data_name = list(normal.keys())[0]
     r_list = normal[data_name]["r"]
     gr_list = normal[data_name]["gr"]
     # three equivalent ways to denote no column names
     missing_parameter = serialize_data(loadfile, hdata, data_table, show_path=False)
-    empty_parameter = serialize_data(loadfile, hdata, data_table, show_path=False, dt_colnames=[])
-    none_entry_parameter = serialize_data(loadfile, hdata, data_table, show_path=False, dt_colnames=[None, None])
+    empty_parameter = serialize_data(loadfile, hdata, data_table, show_path=False, dt_col_names=[])
+    none_entry_parameter = serialize_data(loadfile, hdata, data_table, show_path=False, dt_col_names=[None, None])
     # check equivalence
     assert missing_parameter == empty_parameter
     assert missing_parameter == none_entry_parameter
     assert numpy.allclose(missing_parameter[data_name]["data table"], data_table)
     # extract a single column
-    r_extract = serialize_data(loadfile, hdata, data_table, show_path=False, dt_colnames=["r"])
-    gr_extract = serialize_data(loadfile, hdata, data_table, show_path=False, dt_colnames=[None, "gr"])
-    incorrect_r_extract = serialize_data(loadfile, hdata, data_table, show_path=False, dt_colnames=[None, "r"])
+    r_extract = serialize_data(loadfile, hdata, data_table, show_path=False, dt_col_names=["r"])
+    gr_extract = serialize_data(loadfile, hdata, data_table, show_path=False, dt_col_names=[None, "gr"])
+    incorrect_r_extract = serialize_data(loadfile, hdata, data_table, show_path=False, dt_col_names=[None, "r"])
     # check proper columns extracted
     assert numpy.allclose(gr_extract[data_name]["gr"], incorrect_r_extract[data_name]["r"])
     assert "r" not in gr_extract[data_name]
@@ -101,7 +100,7 @@ def test_exceptions(datafile):
             hdata,
             data_table,
             show_path=False,
-            dt_colnames=["c1", "c2", "c3"],
+            dt_col_names=["c1", "c2", "c3"],
         )
     assert len(record) == 4
     for msg in record:

@@ -14,7 +14,7 @@
 ##############################################################################
 
 import json
-import pathlib
+from pathlib import Path
 import warnings
 
 import numpy
@@ -26,10 +26,10 @@ supported_formats = [".json"]
 
 
 def serialize_data(
-    filename,
+    filepath,
     hdata: dict,
     data_table,
-    dt_colnames=None,
+    dt_col_names=None,
     show_path=True,
     serial_file=None,
 ):
@@ -40,13 +40,13 @@ def serialize_data(
 
     Parameters
     ----------
-    filename
-        Name of the file whose data is being serialized.
+    filepath
+        The file path whose data is being serialized.
     hdata: dict
-        File metadata (generally related to data table).
+        The file metadata (generally related to data table).
     data_table: list or ndarray
-        Data table.
-    dt_colnames: list
+        The data table.
+    dt_col_names: list
         Names of each column in data_table. Every name in data_table_cols will be put into the Dictionary
         as a key with a value of that column in data_table (stored as a List). Put None for columns
         without names. If dt_cols has less non-None entries than columns in data_table,
@@ -64,44 +64,49 @@ def serialize_data(
         Returns the dictionary loaded from/into the updated database file.
     """
 
-    # compile data_table and hddata together
+    # Combine data_table and hdata together in data
     data = {}
 
-    # handle getting name of file for variety of filename types
-    abs_path = pathlib.Path(filename).resolve()
-    # add path to start of data if requested
+    # Handle getting name of file for variety of filename types
+    abs_path = Path(filepath).resolve()
+
+    # Add path to start of data if show_path is True
     if show_path and "path" not in hdata.keys():
         data.update({"path": abs_path.as_posix()})
-    # title the entry with name of file (taken from end of path)
-    title = abs_path.name
 
-    # first add data in hddata dict
+    # Add hdata to data
     data.update(hdata)
 
-    # second add named columns in dt_cols
-    # performed second to prioritize overwriting hdata entries with data_table column entries
-    named_columns = 0  # initial value
-    max_columns = 1  # higher than named_columns to trigger 'data table' entry
-    if dt_colnames is not None:
-        num_columns = [len(row) for row in data_table]
-        max_columns = max(num_columns)
-        num_col_names = len(dt_colnames)
-        if max_columns < num_col_names:  # assume numpy.loadtxt gives non-irregular array
-            raise ImproperSizeError("More entries in dt_colnames than columns in data_table.")
-        named_columns = 0
-        for idx in range(num_col_names):
-            colname = dt_colnames[idx]
-            if colname is not None:
-                if colname in hdata.keys():
+    # Prioritize overwriting hdata entries with data_table column entries
+    col_counter = 0
+
+    # Get a list of column counts in each entry in data table
+    dt_col_counts = [len(row) for row in data_table]
+    dt_max_col_count = max(dt_col_counts)
+
+    if dt_col_names is not None:
+        dt_col_names_count = len(dt_col_names)
+        if dt_max_col_count < dt_col_names_count:  # assume numpy.loadtxt gives non-irregular array
+            raise ImproperSizeError("More entries in dt_col_names_count than columns in data_table.")
+
+        for idx in range(dt_col_names_count):
+            col_name = dt_col_names[idx]
+            
+            if col_name is not None:
+
+                # Check if column name already exists in hdata
+                if col_name in hdata.keys():
                     warnings.warn(
-                        f"Entry '{colname}' in hdata has been overwritten by a data_table entry.",
+                        f"Entry '{col_name}' in hdata has been overwritten by a data_table entry.",
                         RuntimeWarning,
                     )
-                data.update({colname: list(data_table[:, idx])})
-                named_columns += 1
 
-    # finally add data_table as an entry named 'data table' if not all columns were parsed
-    if named_columns < max_columns:
+                # Add row data per column to data
+                data.update({col_name: list(data_table[:, idx])})
+                col_counter += 1
+
+    # Add data_table as an entry named 'data table' if not all columns were parsed
+    if col_counter < dt_max_col_count:
         if "data table" in data.keys():
             warnings.warn(
                 "Entry 'data table' in hdata has been overwritten by data_table.",
@@ -109,19 +114,19 @@ def serialize_data(
             )
         data.update({"data table": data_table})
 
-    # parse name using pathlib and generate dictionary entry
-    entry = {title: data}
+    # Parse name using pathlib and generate dictionary entry
+    data_key = abs_path.name
+    entry = {data_key: data}
 
-    # no save
     if serial_file is None:
         return entry
 
     # saving/updating file
     # check if supported type
-    sf = pathlib.Path(serial_file)
-    sf_name = sf.name
-    extension = sf.suffix
-    if extension not in supported_formats:
+    sf_path = Path(serial_file)
+    sf_name = sf_path.name
+    sf_ext = sf_path.suffix
+    if sf_ext not in supported_formats:
         raise UnsupportedTypeError(sf_name, supported_formats)
 
     # new file or update
@@ -133,7 +138,7 @@ def serialize_data(
         pass
 
     # json
-    if extension == ".json":
+    if sf_ext == ".json":
         # cannot serialize numpy arrays
         class NumpyEncoder(json.JSONEncoder):
             def default(self, data_obj):
@@ -177,7 +182,7 @@ def deserialize_data(filename, filetype=None):
     """
 
     # check if supported type
-    f = pathlib.Path(filename)
+    f = Path(filename)
     f_name = f.name
 
     if filetype is None:
