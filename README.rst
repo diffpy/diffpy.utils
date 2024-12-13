@@ -43,7 +43,7 @@ General purpose shared utilities for the diffpy libraries.
 The diffpy.utils package provides functions for extracting array data from
 variously formatted text files, an interpolation function based on the
 Whittaker-Shannon formula that can be used to resample a PDF or other profile
-function over a new grid, `Diffraction_objects` for conveniently manipulating
+function over a new grid, `DiffractionObject` for conveniently manipulating
 diffraction data, and some wx GUI utilities used by the PDFgui
 program.
 
