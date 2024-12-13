@@ -14,8 +14,8 @@
 ##############################################################################
 
 import json
-from pathlib import Path
 import warnings
+from pathlib import Path
 
 import numpy
 
@@ -91,7 +91,7 @@ def serialize_data(
 
         for idx in range(dt_col_names_count):
             col_name = dt_col_names[idx]
-            
+
             if col_name is not None:
 
                 # Check if column name already exists in hdata
