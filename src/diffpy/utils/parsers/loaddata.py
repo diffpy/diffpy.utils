@@ -344,6 +344,3 @@ def isfloat(s):
     except ValueError:
         pass
     return False
-
-
-# End of file

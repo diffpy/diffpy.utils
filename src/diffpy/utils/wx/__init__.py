@@ -15,5 +15,3 @@
 
 """Utilities related wx Python GUIs.
 """
-
-# End of file

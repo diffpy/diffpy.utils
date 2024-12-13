@@ -15,52 +15,50 @@
 
 """Various utilities related to data parsing and manipulation."""
 
-import numpy
+import numpy as np
 
 
-# NOTE - this should be faster than resample below and conforms more closely to
-# numpy.interp. I'm keeping resample for legacy reasons.
 def wsinterp(x, xp, fp, left=None, right=None):
     """One-dimensional Whittaker-Shannon interpolation.
 
-    This uses the Whittaker-Shannon interpolation formula to interpolate the value of fp (array),
-    which is defined over xp (array), at x (array or float).
+    Reconstruct a continuous signal from discrete data points by utilizing sinc functions
+    as interpolation kernels. This function interpolates the values of fp (array),
+    which are defined over xp (array), at new points x (array or float).
 
     Parameters
     ----------
     x: ndarray
-        Desired range for interpolation.
+        The x values at which interpolation is computed.
     xp: ndarray
-        Defined range for fp.
+        The array of known x values.
     fp: ndarray
-        Function to be interpolated.
+        The array of y values associated xp.
     left: float
         If given, set fp for x < xp[0] to left. Otherwise, if left is None (default) or not given,
         set fp for x < xp[0] to fp evaluated at xp[-1].
     right: float
         If given, set fp for x > xp[-1] to right. Otherwise, if right is None (default) or not given, set fp for
-        x > xp[-1] to fp evaluated at xp[-1].
+        x > xp[-1] to fp evaluated at xp[-1]
 
     Returns
     -------
-    float:
-        If input x is a scalar (not an array), return the interpolated value at x.
-    ndarray:
-        If input x is an array, return the interpolated array with dimensions of x.
+    ndarray or float
+        Interpolated values at points x. Returns a single float if x is a scalar,
+        otherwise returns a numpy.ndarray.
     """
-    scalar = numpy.isscalar(x)
+    scalar = np.isscalar(x)
     if scalar:
-        x = numpy.array(x)
+        x = np.array(x)
         x.resize(1)
     # shape = (nxp, nx), nxp copies of x data span axis 1
-    u = numpy.resize(x, (len(xp), len(x)))
+    u = np.resize(x, (len(xp), len(x)))
     # Must take transpose of u for proper broadcasting with xp.
     # shape = (nx, nxp), v(xp) data spans axis 1
     v = (xp - u.T) / (xp[1] - xp[0])
     # shape = (nx, nxp), m(v) data spans axis 1
-    m = fp * numpy.sinc(v)
+    m = fp * np.sinc(v)
     # Sum over m(v) (axis 1)
-    fp_at_x = numpy.sum(m, axis=1)
+    fp_at_x = np.sum(m, axis=1)
 
     # Enforce left and right
     if left is None:
@@ -100,36 +98,33 @@ def resample(r, s, dr):
     dr0 = r[1] - r[0]  # Constant timestep
 
     if dr0 < dr:
-        rnew = numpy.arange(r[0], r[-1] + 0.5 * dr, dr)
-        snew = numpy.interp(rnew, r, s)
+        rnew = np.arange(r[0], r[-1] + 0.5 * dr, dr)
+        snew = np.interp(rnew, r, s)
         return rnew, snew
 
     elif dr0 > dr:
         # Tried to pad the end of s to dampen, but nothing works.
         # m = (s[-1] - s[-2]) / dr0
         # b = (s[-2] * r[-1] - s[-1] * r[-2]) / dr0
-        # rpad = r[-1] + numpy.arange(1, len(s))*dr0
+        # rpad = r[-1] + np.arange(1, len(s))*dr0
         # spad = rpad * m + b
-        # spad = numpy.concatenate([s,spad])
-        # rnew = numpy.arange(0, rpad[-1], dr)
-        # snew = numpy.zeros_like(rnew)
+        # spad = np.concatenate([s,spad])
+        # rnew = np.arange(0, rpad[-1], dr)
+        # snew = np.zeros_like(rnew)
         # Accommodate for the fact that r[0] might not be 0
         # u = (rnew-r[0]) / dr0
         # for n in range(len(spad)):
-        #    snew += spad[n] * numpy.sinc(u - n)
+        #    snew += spad[n] * np.sinc(u - n)
 
-        # sel = numpy.logical_and(rnew >= r[0], rnew <= r[-1])
+        # sel = np.logical_and(rnew >= r[0], rnew <= r[-1])
 
-        rnew = numpy.arange(0, r[-1], dr)
-        snew = numpy.zeros_like(rnew)
+        rnew = np.arange(0, r[-1], dr)
+        snew = np.zeros_like(rnew)
         u = (rnew - r[0]) / dr0
         for n in range(len(s)):
-            snew += s[n] * numpy.sinc(u - n)
-        sel = numpy.logical_and(rnew >= r[0], rnew <= r[-1])
+            snew += s[n] * np.sinc(u - n)
+        sel = np.logical_and(rnew >= r[0], rnew <= r[-1])
         return rnew[sel], snew[sel]
 
     # If we got here, then no resampling is required
     return r.copy(), s.copy()
-
-
-# End of file

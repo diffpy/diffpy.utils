@@ -163,6 +163,3 @@ def _indicesToBlocks(indices):
         i0 = i
     rv = [tuple(ij) for ij in rngs]
     return rv
-
-
-# End of file
