@@ -15,5 +15,3 @@
 
 """Various utilities related to data parsing and manipulation.
 """
-
-# End of file
