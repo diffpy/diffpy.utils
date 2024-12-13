@@ -19,10 +19,11 @@ params_q_to_tth = [
     (4 * np.pi, np.array([0, 1 / np.sqrt(2), 1.0]), np.array([0, 90.0, 180.0])),
 ]
 
+
 @pytest.mark.parametrize("wavelength, q, expected_tth", params_q_to_tth)
 def test_q_to_tth(wavelength, q, expected_tth):
- 
-    if wavelength is None:  
+
+    if wavelength is None:
         with pytest.warns(UserWarning, match="INFO: no wavelength has been specified"):
             actual_tth = q_to_tth(q, wavelength)
     else:
