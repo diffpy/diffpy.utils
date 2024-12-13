@@ -18,7 +18,7 @@ def test_wsinterp():
     x = np.array([i * ssr for i in range(-n - 1, n + 2, 1)])
     assert len(xp) == 11 and len(x) == 13
 
-    # Generating a new set of fp values across 10 trial runs
+    # Generate a new set of fp values across 10 trial runs
     trials = 10
 
     for _ in range(trials):
