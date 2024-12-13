@@ -5,24 +5,30 @@ from diffpy.utils.transforms import d_to_q, d_to_tth, q_to_d, q_to_tth, tth_to_d
 
 params_q_to_tth = [
     # UC1: Empty q values, no wavelength, return empty arrays
-    ([None, np.empty((0))], np.empty((0))),
-    # UC2: Empty q values, wavelength specified, return empty arrays
-    ([4 * np.pi, np.empty((0))], np.empty(0)),
+    (None, np.empty((0)), np.empty((0))),
+    # # UC2: Empty q values, wavelength specified, return empty arrays
+    (4 * np.pi, np.empty((0)), np.empty(0)),
     # UC3: User specified valid q values, no wavelength, return empty arrays
     (
-        [None, np.array([0, 0.2, 0.4, 0.6, 0.8, 1])],
+        None,
+        np.array([0, 0.2, 0.4, 0.6, 0.8, 1]),
         np.array([0, 1, 2, 3, 4, 5]),
     ),
     # UC4: User specified valid q values (with wavelength)
     # expected tth values are 2*arcsin(q) in degrees
-    ([4 * np.pi, np.array([0, 1 / np.sqrt(2), 1.0])], np.array([0, 90.0, 180.0])),
+    (4 * np.pi, np.array([0, 1 / np.sqrt(2), 1.0]), np.array([0, 90.0, 180.0])),
 ]
 
+@pytest.mark.parametrize("wavelength, q, expected_tth", params_q_to_tth)
+def test_q_to_tth(wavelength, q, expected_tth):
+ 
+    if wavelength is None:  
+        with pytest.warns(UserWarning, match="INFO: no wavelength has been specified"):
+            actual_tth = q_to_tth(q, wavelength)
+    else:
+        actual_tth = q_to_tth(q, wavelength)
 
-@pytest.mark.parametrize("inputs, expected", params_q_to_tth)
-def test_q_to_tth(inputs, expected):
-    actual = q_to_tth(inputs[1], inputs[0])
-    assert np.allclose(expected, actual)
+    assert np.allclose(expected_tth, actual_tth)
 
 
 params_q_to_tth_bad = [
