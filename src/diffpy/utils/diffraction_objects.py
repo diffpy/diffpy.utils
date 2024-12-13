@@ -1,4 +1,5 @@
 import datetime
+import uuid
 import warnings
 from copy import deepcopy
 
@@ -53,6 +54,7 @@ class DiffractionObject:
         if yarray is None:
             yarray = np.empty(0)
 
+        self._id = uuid.uuid4()
         self.input_data(xarray, yarray, xtype)
 
     def __eq__(self, other):
@@ -204,6 +206,14 @@ class DiffractionObject:
     @input_xtype.setter
     def input_xtype(self, _):
         raise AttributeError(_setter_wmsg("input_xtype"))
+
+    @property
+    def id(self):
+        return self._id
+
+    @id.setter
+    def id(self, _):
+        raise AttributeError(_setter_wmsg("id"))
 
     def set_angles_from_list(self, angles_list):
         self.angles = angles_list

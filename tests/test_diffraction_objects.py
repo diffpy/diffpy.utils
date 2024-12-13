@@ -1,5 +1,7 @@
 import re
+import uuid
 from pathlib import Path
+from uuid import UUID
 
 import numpy as np
 import pytest
@@ -335,8 +337,8 @@ tc_params = [
 
 @pytest.mark.parametrize("inputs, expected", tc_params)
 def test_constructor(inputs, expected):
-    actual_do = DiffractionObject(**inputs)
-    diff = DeepDiff(actual_do.__dict__, expected, ignore_order=True, significant_digits=13)
+    actual = DiffractionObject(**inputs).__dict__
+    diff = DeepDiff(actual, expected, ignore_order=True, significant_digits=13, exclude_paths="root['_id']")
     assert diff == {}
 
 
@@ -369,6 +371,29 @@ def test_all_array_setter():
         actual_do.all_arrays = np.empty((4, 4))
 
 
+def test_id_getter():
+    do = DiffractionObject()
+    assert hasattr(do, "id")
+    assert isinstance(do.id, UUID)
+    assert len(str(do.id)) == 36
+
+
+def test_id_getter_with_mock(mocker):
+    mocker.patch.object(DiffractionObject, "id", new_callable=lambda: UUID("d67b19c6-3016-439f-81f7-cf20a04bee87"))
+    do = DiffractionObject()
+    assert do.id == UUID("d67b19c6-3016-439f-81f7-cf20a04bee87")
+
+
+def test_id_setter_error():
+    do = DiffractionObject()
+
+    with pytest.raises(
+        AttributeError,
+        match="Direct modification of attribute 'id' is not allowed. Please use 'input_data' to modify 'id'.",
+    ):
+        do.id = uuid.uuid4()
+
+
 def test_xarray_yarray_length_mismatch():
     with pytest.raises(
         ValueError,
@@ -384,7 +409,7 @@ def test_input_xtype_getter():
     assert do.input_xtype == "tth"
 
 
-def test_input_xtype_setter():
+def test_input_xtype_setter_error():
     do = DiffractionObject(xtype="tth")
 
     # Attempt to directly modify the property
