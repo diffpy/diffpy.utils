@@ -24,6 +24,7 @@ def wsinterp(x, xp, fp, left=None, right=None):
     Reconstruct a continuous signal from discrete data points by utilizing sinc functions
     as interpolation kernels. This function interpolates the values of fp (array),
     which are defined over xp (array), at new points x (array or float).
+    The implementation is based on E. T. Whittaker's 1915 paper (https://doi.org/10.1017/S0370164600017806).
 
     Parameters
     ----------
@@ -32,7 +33,7 @@ def wsinterp(x, xp, fp, left=None, right=None):
     xp: ndarray
         The array of known x values.
     fp: ndarray
-        The array of y values associated xp.
+        The array of y values associated with xp.
     left: float
         If given, set fp for x < xp[0] to left. Otherwise, if left is None (default) or not given,
         set fp for x < xp[0] to fp evaluated at xp[-1].
@@ -43,7 +44,7 @@ def wsinterp(x, xp, fp, left=None, right=None):
     Returns
     -------
     ndarray or float
-        Interpolated values at points x. Returns a single float if x is a scalar,
+        The interpolated values at points x. Returns a single float if x is a scalar,
         otherwise returns a numpy.ndarray.
     """
     scalar = np.isscalar(x)
