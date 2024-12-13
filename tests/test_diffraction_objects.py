@@ -254,24 +254,6 @@ params_scale_to = [
         # scaling factor is calculated at index = 5 for self and index = 6 for target
         ["tth", np.array([1, 2, 3, 4, 5, 6, 10])],
     ),
-    # UC5: user did not specify anything, use the midpoint of the current object's q-array
-    (
-        [
-            np.array([0.1, 0.2, 0.3]),
-            np.array([1, 2, 3]),
-            "q",
-            2 * np.pi,
-            np.array([0.05, 0.1, 0.2, 0.3]),
-            np.array([5, 10, 20, 30]),
-            "q",
-            2 * np.pi,
-            None,
-            None,
-            None,
-            0,
-        ],
-        ["q", np.array([10, 20, 30])],
-    ),
 ]
 
 
@@ -289,6 +271,22 @@ def test_scale_to(inputs, expected):
 
 
 params_scale_to_bad = [
+    # UC1: user did not specify anything
+    (
+        np.array([0.1, 0.2, 0.3]),
+        np.array([1, 2, 3]),
+        "q",
+        2 * np.pi,
+        np.array([0.05, 0.1, 0.2, 0.3]),
+        np.array([5, 10, 20, 30]),
+        "q",
+        2 * np.pi,
+        None,
+        None,
+        None,
+        0,
+    ),
+    # UC2: user specified more than one of q, tth, and d
     (
         np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
         np.array([10, 20, 30, 40, 50, 60, 100]),
@@ -313,7 +311,7 @@ def test_scale_to_bad(inputs):
         xarray=inputs[4], yarray=inputs[5], xtype=inputs[6], wavelength=inputs[7]
     )
     with pytest.raises(
-        ValueError, match="You can only specify one of 'q', 'tth', or 'd'. Please rerun specifying only one."
+        ValueError, match="You must specify exactly one of 'q', 'tth', or 'd'. Please rerun specifying only one."
     ):
         orig_diff_object.scale_to(target_diff_object, q=inputs[8], tth=inputs[9], d=inputs[10], offset=inputs[11])
 

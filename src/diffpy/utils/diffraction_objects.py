@@ -397,15 +397,14 @@ class DiffractionObject:
 
         The y-value in the target at the closest specified x-value will be used as the factor to scale to.
         The entire array is scaled by this factor so that one object places on top of the other at that point.
-        If multiple values of `q`, `tth`, or `d` are provided, an error will be raised.
-        If none are provided, the midpoint of the current object's `q`-array will be used.
+        If multiple values of `q`, `tth`, or `d` are provided, or none are provided, an error will be raised.
 
         Parameters
         ----------
         target_diff_object: DiffractionObject
             the diffraction object you want to scale the current one onto
 
-        q, tth, d : float, optional, default is the midpoint of the current object's `q`-array
+        q, tth, d : float, optional, must specify exactly one of them
             the xvalue (in `q`, `tth`, or `d` space) to align the current and target objects
 
         offset : float, optional, default is 0
@@ -417,19 +416,19 @@ class DiffractionObject:
         """
         scaled = self.copy()
         count = sum([q is not None, tth is not None, d is not None])
-        if count > 1:
-            raise ValueError("You can only specify one of 'q', 'tth', or 'd'. Please rerun specifying only one.")
+        if count != 1:
+            raise ValueError(
+                "You must specify exactly one of 'q', 'tth', or 'd'. Please rerun specifying only one."
+            )
 
         xtype = "q" if q is not None else "tth" if tth is not None else "d" if d is not None else "q"
         data, target = self.on_xtype(xtype), target_diff_object.on_xtype(xtype)
 
         xvalue = q if xtype == "q" else tth if xtype == "tth" else d
-        if xvalue is None:
-            xvalue = (data[0][0] + data[0][-1]) / 2.0
 
-        x_data, x_target = (np.abs(data[0] - xvalue)).argmin(), (np.abs(target[0] - xvalue)).argmin()
-        y_data, y_target = data[1][x_data], target[1][x_target]
-        scaled._all_arrays[:, 0] = data[1] * y_target / y_data + offset
+        xindex_data = (np.abs(data[0] - xvalue)).argmin()
+        xindex_target = (np.abs(target[0] - xvalue)).argmin()
+        scaled._all_arrays[:, 0] = data[1] * target[1][xindex_target] / data[1][xindex_data] + offset
         return scaled
 
     def on_xtype(self, xtype):
