@@ -300,9 +300,6 @@ tc_params = [
 def test_constructor(inputs, expected):
     actual = DiffractionObject(**inputs).__dict__
     diff = DeepDiff(actual, expected, ignore_order=True, significant_digits=13, exclude_paths="root['_id']")
-    print("Print diff")
-    print(diff)
-    # {'dictionary_item_added': ["root['name']", "root['scat_quantity']"]}
     assert diff == {}
 
 
@@ -346,6 +343,18 @@ def test_id_getter_with_mock(mocker, do_minimal):
     mocker.patch.object(DiffractionObject, "id", new_callable=lambda: UUID("d67b19c6-3016-439f-81f7-cf20a04bee87"))
     do = do_minimal
     assert do.id == UUID("d67b19c6-3016-439f-81f7-cf20a04bee87")
+
+
+    def input_data(
+        self,
+        xarray,
+        yarray,
+        xtype,
+        metadata={},
+        scat_quantity=None,
+        name=None,
+        wavelength=None,
+    ):
 
 
 def test_id_setter_error(do_minimal):
