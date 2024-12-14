@@ -4,12 +4,10 @@ from copy import copy
 import numpy as np
 
 wavelength_warning_emsg = (
-    "INFO: no wavelength has been specified. You can continue "
-    "to use the DiffractionObject but some of its powerful features "
-    "will not be available. To specify a wavelength, set "
-    "diffraction_object.wavelength = [number], "
-    "where diffraction_object is the variable name of you Diffraction Object, "
-    "and number is the wavelength in angstroms."
+    "No wavelength has been specified. You can continue to use the DiffractionObject, but "
+    "some of its powerful features will not be available. "
+    "To specify a wavelength, if you have do = DiffractionObject(xarray, yarray, 'tth'), "
+    "you may set do.wavelength = 1.54 with the unit in angstroms."
 )
 invalid_tth_emsg = "Two theta exceeds 180 degrees. Please check the input values for errors."
 invalid_q_or_d_or_wavelength_emsg = (
