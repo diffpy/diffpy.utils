@@ -103,13 +103,11 @@ params = [
     (  # Different on_q
         {
             "xtype": "q",
-            "wavelength": 0.71,
             "xarray": np.array([1.0, 2.0]),
             "yarray": np.array([100.0, 200.0]),
         },
         {
             "xtype": "q",
-            "wavelength": 0.71,
             "xarray": np.array([3.0, 4.0]),
             "yarray": np.array([100.0, 200.0]),
             "metadata": {"thing1": 1, "thing2": "thing2"},
