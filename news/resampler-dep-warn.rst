@@ -8,7 +8,7 @@
 
 **Deprecated:**
 
-* Deprecation warning for resample function in resampler
+* resample function in resampler. Replaced with wsinterp with better functionality.
 
 **Removed:**
 
