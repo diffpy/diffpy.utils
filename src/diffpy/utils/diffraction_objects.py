@@ -63,7 +63,7 @@ class DiffractionObject:
     >>> from diffpy.utils.diffraction_objects import DiffractionObject
     ...
     >>> x = np.array([0.12, 0.24, 0.31, 0.4])  # independent variable (e.g., q)
-    >>> y = np.array([10, 20, 40, 60])  # intensity valuester
+    >>> y = np.array([10, 20, 40, 60])  # intensity values
     >>> metadata = {
     ...     "package_info": {"version": "3.6.0"}
     ... }
