@@ -49,7 +49,33 @@ class DiffractionObject:
         self._id = uuid.uuid4()
         self.input_data(xarray, yarray, xtype, wavelength, scat_quantity, name, metadata)
 
-    def input_data(self, xarray, yarray, xtype, wavelength, scat_quantity, name, metadata):
+    def input_data(self, xarray, yarray, xtype, wavelength, scat_quantity=None, name="", metadata={}):
+        """
+        Insert a new scattering quantity into the scattering object.
+
+        Parameters
+        ----------
+        xarray : array-like
+            The independent variable array (e.g., q, tth, or d).
+        yarray : array-like
+            The dependent variable array corresponding to intensity values
+        xtype : str
+            The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES},
+            such as "q", "tth", or "d".
+        wavelength : float
+            The wavelength of the incoming beam, specified in angstroms (Å).
+        scat_quantity : str, optional
+            The type of scattering experiment (e.g., "x-ray", "neutron"). Default is "".
+        name : str, optional
+            The name or label for the scattering data. Default is an empty string "".
+        metadata : dict, optional
+            The additional metadata associated with the diffraction object. Default is {}.
+
+        Returns
+        -------
+        None
+            This method updates the object in place and does not return a value.
+        """
 
         # Check xtype is valid. An empty string is the default value.
         if xtype not in XQUANTITIES:

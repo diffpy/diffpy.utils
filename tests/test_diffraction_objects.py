@@ -345,18 +345,6 @@ def test_id_getter_with_mock(mocker, do_minimal):
     assert do.id == UUID("d67b19c6-3016-439f-81f7-cf20a04bee87")
 
 
-    def input_data(
-        self,
-        xarray,
-        yarray,
-        xtype,
-        metadata={},
-        scat_quantity=None,
-        name=None,
-        wavelength=None,
-    ):
-
-
 def test_id_setter_error(do_minimal):
     do = do_minimal
 
