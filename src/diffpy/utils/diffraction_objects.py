@@ -45,6 +45,12 @@ class DiffractionObject:
         name="",
         metadata={},
     ):
+
+        self._id = uuid.uuid4()
+        self.input_data(xarray, yarray, xtype, wavelength, scat_quantity, name, metadata)
+
+    def input_data(self, xarray, yarray, xtype, wavelength, scat_quantity, name, metadata):
+
         # Check xtype is valid. An empty string is the default value.
         if xtype not in XQUANTITIES:
             raise ValueError(_xtype_wmsg(xtype))
@@ -63,7 +69,7 @@ class DiffractionObject:
         self.name = name
 
         self._input_xtype = xtype
-        self._id = uuid.uuid4()
+
         self._set_xarrays(xarray, xtype)
         self._all_arrays[:, 0] = yarray
 
