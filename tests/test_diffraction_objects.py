@@ -15,7 +15,6 @@ params = [
         {
             "name": "same",
             "scat_quantity": "x-ray",
-            "wavelength": 0.71,
             "xtype": "q",
             "xarray": np.array([1.0, 2.0]),
             "yarray": np.array([100.0, 200.0]),
@@ -24,7 +23,6 @@ params = [
         {
             "name": "same",
             "scat_quantity": "x-ray",
-            "wavelength": 0.71,
             "xtype": "q",
             "xarray": np.array([1.0, 2.0]),
             "yarray": np.array([100.0, 200.0]),
@@ -35,8 +33,6 @@ params = [
     (  # Different names
         {
             "name": "something",
-            "scat_quantity": "",
-            "wavelength": 0.71,
             "xtype": "tth",
             "xarray": np.empty(0),
             "yarray": np.empty(0),
@@ -44,8 +40,6 @@ params = [
         },
         {
             "name": "something else",
-            "scat_quantity": "",
-            "wavelength": 0.71,
             "xtype": "tth",
             "xarray": np.empty(0),
             "yarray": np.empty(0),
@@ -55,7 +49,6 @@ params = [
     ),
     (  # Different wavelengths
         {
-            "scat_quantity": "",
             "wavelength": 0.71,
             "xtype": "tth",
             "xarray": np.empty(0),
@@ -63,7 +56,6 @@ params = [
             "metadata": {"thing1": 1, "thing2": "thing2"},
         },
         {
-            "scat_quantity": "",
             "wavelength": 0.42,
             "xtype": "tth",
             "xarray": np.empty(0),
@@ -74,7 +66,6 @@ params = [
     ),
     (  # Different wavelengths
         {
-            "scat_quantity": "",
             "wavelength": 0.71,
             "xtype": "tth",
             "xarray": np.empty(0),
@@ -82,7 +73,6 @@ params = [
             "metadata": {"thing1": 1, "thing2": "thing2"},
         },
         {
-            "scat_quantity": "",
             "wavelength": 0.711,
             "xtype": "tth",
             "xarray": np.empty(0),
@@ -112,15 +102,12 @@ params = [
     ),
     (  # Different on_q
         {
-            "scat_quantity": "",
             "xtype": "q",
             "wavelength": 0.71,
             "xarray": np.array([1.0, 2.0]),
             "yarray": np.array([100.0, 200.0]),
-            "metadata": {},
         },
         {
-            "scat_quantity": "",
             "xtype": "q",
             "wavelength": 0.71,
             "xarray": np.array([3.0, 4.0]),
@@ -131,7 +118,6 @@ params = [
     ),
     (  # Different metadata
         {
-            "scat_quantity": "",
             "xtype": "q",
             "wavelength": 0.71,
             "xarray": np.empty(0),
@@ -139,7 +125,6 @@ params = [
             "metadata": {"thing1": 0, "thing2": "thing2"},
         },
         {
-            "scat_quantity": "",
             "xtype": "q",
             "wavelength": 0.71,
             "xarray": np.empty(0),
@@ -166,7 +151,7 @@ def test_on_xtype():
     assert np.allclose(do.on_xtype("d"), [np.array([12.13818, 6.28319]), np.array([1, 2])])
 
 
-def test_init_invalid_xtype(do_minimal):
+def test_init_invalid_xtype():
     with pytest.raises(
         ValueError,
         match=re.escape(
@@ -387,7 +372,8 @@ def test_dump(tmp_path, mocker):
     assert actual == expected
 
 
-tc_params = [
+
+@pytest.mark.parametrize("init_args, expected_do_dict", [
     (  # instantiate just array attributes
         {
             "xarray": np.array([0.0, 90.0, 180.0]),
@@ -445,14 +431,27 @@ tc_params = [
             "wavelength": 4.0 * np.pi,
         },
     ),
-]
-
-
-@pytest.mark.parametrize("inputs, expected", tc_params)
-def test_constructor(inputs, expected):
-    actual = DiffractionObject(**inputs).__dict__
-    diff = DeepDiff(actual, expected, ignore_order=True, significant_digits=13, exclude_paths="root['_id']")
+])
+def test_init_valid(init_args, expected_do_dict):
+    actual_do_dict = DiffractionObject(**init_args).__dict__
+    diff = DeepDiff(actual_do_dict, expected_do_dict, ignore_order=True, significant_digits=13, exclude_paths="root['_id']")
     assert diff == {}
+
+
+
+@pytest.mark.parametrize("init_args, error_message", [
+    (  # UC1: no arguments provided
+        {},
+        "missing 3 required positional arguments: 'xarray', 'yarray', and 'xtype'",
+    ),
+    (  # UC2: only xarray and yarray provided
+        {"xarray": np.array([0.0, 90.0]), "yarray": np.array([0.0, 90.0])},
+        "missing 1 required positional argument: 'xtype'",
+    ),
+])
+def test_init_invalid_args(init_args, error_message):
+    with pytest.raises(TypeError, match=error_message):
+        DiffractionObject(**init_args)
 
 
 def test_all_array_getter():
@@ -473,7 +472,7 @@ def test_all_array_getter():
 
 
 def test_all_array_setter(do_minimal):
-    actual_do = do_minimal
+    do = do_minimal
     # Attempt to directly modify the property
     with pytest.raises(
         AttributeError,
