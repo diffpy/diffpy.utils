@@ -29,7 +29,7 @@ def test_q_to_tth(wavelength, q, expected_tth):
         "No wavelength has been specified. You can continue to use the DiffractionObject, but "
         "some of its powerful features will not be available. "
         "To specify a wavelength, if you have do = DiffractionObject(xarray, yarray, 'tth'), "
-        "you may set do.wavelength = 1.54 with the unit in angstroms."
+        "you may set do.wavelength = 1.54 for a wavelength of 1.54 angstroms."
     )
     if wavelength is None:
         with pytest.warns(UserWarning, match=re.escape(wavelength_warning_emsg)):

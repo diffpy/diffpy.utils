@@ -7,7 +7,7 @@ wavelength_warning_emsg = (
     "No wavelength has been specified. You can continue to use the DiffractionObject, but "
     "some of its powerful features will not be available. "
     "To specify a wavelength, if you have do = DiffractionObject(xarray, yarray, 'tth'), "
-    "you may set do.wavelength = 1.54 with the unit in angstroms."
+    "you may set do.wavelength = 1.54 for a wavelength of 1.54 angstroms."
 )
 invalid_tth_emsg = "Two theta exceeds 180 degrees. Please check the input values for errors."
 invalid_q_or_d_or_wavelength_emsg = (
