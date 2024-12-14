@@ -34,7 +34,6 @@ def test_q_to_tth(wavelength, q, expected_tth):
     if wavelength is None:
         with pytest.warns(UserWarning, match=re.escape(wavelength_warning_emsg)):
             actual_tth = q_to_tth(q, wavelength)
-            actual_tth = q_to_tth(q, wavelength)
     else:
         actual_tth = q_to_tth(q, wavelength)
 
