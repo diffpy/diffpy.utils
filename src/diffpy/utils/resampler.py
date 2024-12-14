@@ -15,6 +15,8 @@
 
 """Various utilities related to data parsing and manipulation."""
 
+import warnings
+
 import numpy as np
 
 
@@ -96,6 +98,13 @@ def resample(r, s, dr):
     -------
     Returns resampled (r, s).
     """
+
+    warnings.warn(
+        "The 'resample' function is deprecated and will be removed in a future release (3.8.0). \n"
+        "'resample' has been renamed 'wsinterp' to better reflect functionality. Please use 'wsinterp' instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
 
     dr0 = r[1] - r[0]  # Constant timestep
 
