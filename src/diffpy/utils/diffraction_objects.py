@@ -49,7 +49,7 @@ class DiffractionObject:
         self._id = uuid.uuid4()
         self.input_data(xarray, yarray, xtype, wavelength, scat_quantity, name, metadata)
 
-    def input_data(self, xarray, yarray, xtype, wavelength, scat_quantity=None, name="", metadata={}):
+    def input_data(self, xarray, yarray, xtype, wavelength, scat_quantity="", name="", metadata={}):
         """
         Insert a new scattering quantity into the scattering object.
 
