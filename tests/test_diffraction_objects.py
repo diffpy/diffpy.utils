@@ -85,7 +85,6 @@ params = [
         {
             "scat_quantity": "x-ray",
             "xtype": "tth",
-            "wavelength": 0.71,
             "xarray": np.empty(0),
             "yarray": np.empty(0),
             "metadata": {"thing1": 1, "thing2": "thing2"},
@@ -93,7 +92,6 @@ params = [
         {
             "scat_quantity": "neutron",
             "xtype": "tth",
-            "wavelength": 0.71,
             "xarray": np.empty(0),
             "yarray": np.empty(0),
             "metadata": {"thing1": 1, "thing2": "thing2"},
@@ -117,14 +115,12 @@ params = [
     (  # Different metadata
         {
             "xtype": "q",
-            "wavelength": 0.71,
             "xarray": np.empty(0),
             "yarray": np.empty(0),
             "metadata": {"thing1": 0, "thing2": "thing2"},
         },
         {
             "xtype": "q",
-            "wavelength": 0.71,
             "xarray": np.empty(0),
             "yarray": np.empty(0),
             "metadata": {"thing1": 1, "thing2": "thing2"},
