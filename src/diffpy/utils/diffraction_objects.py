@@ -58,14 +58,14 @@ class DiffractionObject:
         xarray : array-like
             The independent variable array (e.g., "q", "tth", or "d").
         yarray : array-like
-            The dependent variable array corresponding to intensity values
+            The dependent variable array corresponding to intensity values.
         xtype : str
             The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES},
             such as "q", "tth", or "d".
         wavelength : float
             The wavelength of the incoming beam, specified in angstroms (Å).
         scat_quantity : str, optional
-            The type of scattering experiment (e.g., "x-ray", "neutron"). Default is "".
+            The type of scattering experiment (e.g., "x-ray", "neutron"). Default is an empty string "".
         name : str, optional
             The name or label for the scattering data. Default is an empty string "".
         metadata : dict, optional
@@ -95,7 +95,6 @@ class DiffractionObject:
         self.name = name
 
         self._input_xtype = xtype
-
         self._set_xarrays(xarray, xtype)
         self._all_arrays[:, 0] = yarray
 
