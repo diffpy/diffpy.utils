@@ -182,6 +182,158 @@ def test_init_invalid_xtype():
         DiffractionObject(xtype="invalid_type")
 
 
+params_scale_to = [
+    # UC1: same x-array and y-array, check offset
+    (
+        {
+            "xarray": np.array([10, 15, 25, 30, 60, 140]),
+            "yarray": np.array([2, 3, 4, 5, 6, 7]),
+            "xtype": "tth",
+            "wavelength": 2 * np.pi,
+            "target_xarray": np.array([10, 15, 25, 30, 60, 140]),
+            "target_yarray": np.array([2, 3, 4, 5, 6, 7]),
+            "target_xtype": "tth",
+            "target_wavelength": 2 * np.pi,
+            "q": None,
+            "tth": 60,
+            "d": None,
+            "offset": 2.1,
+        },
+        {"xtype": "tth", "yarray": np.array([4.1, 5.1, 6.1, 7.1, 8.1, 9.1])},
+    ),
+    # UC2: same length x-arrays with exact x-value match
+    (
+        {
+            "xarray": np.array([10, 15, 25, 30, 60, 140]),
+            "yarray": np.array([10, 20, 25, 30, 60, 100]),
+            "xtype": "tth",
+            "wavelength": 2 * np.pi,
+            "target_xarray": np.array([10, 20, 25, 30, 60, 140]),
+            "target_yarray": np.array([2, 3, 4, 5, 6, 7]),
+            "target_xtype": "tth",
+            "target_wavelength": 2 * np.pi,
+            "q": None,
+            "tth": 60,
+            "d": None,
+            "offset": 0,
+        },
+        {"xtype": "tth", "yarray": np.array([1, 2, 2.5, 3, 6, 10])},
+    ),
+    # UC3: same length x-arrays with approximate x-value match
+    (
+        {
+            "xarray": np.array([0.12, 0.24, 0.31, 0.4]),
+            "yarray": np.array([10, 20, 40, 60]),
+            "xtype": "q",
+            "wavelength": 2 * np.pi,
+            "target_xarray": np.array([0.14, 0.24, 0.31, 0.4]),
+            "target_yarray": np.array([1, 3, 4, 5]),
+            "target_xtype": "q",
+            "target_wavelength": 2 * np.pi,
+            "q": 0.1,
+            "tth": None,
+            "d": None,
+            "offset": 0,
+        },
+        {"xtype": "q", "yarray": np.array([1, 2, 4, 6])},
+    ),
+    # UC4: different x-array lengths with approximate x-value match
+    (
+        {
+            "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
+            "yarray": np.array([10, 20, 30, 40, 50, 60, 100]),
+            "xtype": "tth",
+            "wavelength": 2 * np.pi,
+            "target_xarray": np.array([20, 25.5, 32, 45, 50, 62, 100, 125, 140]),
+            "target_yarray": np.array([1.1, 2, 3, 3.5, 4, 5, 10, 12, 13]),
+            "target_xtype": "tth",
+            "target_wavelength": 2 * np.pi,
+            "q": None,
+            "tth": 60,
+            "d": None,
+            "offset": 0,
+        },
+        # scaling factor is calculated at index = 4 (tth=61) for self and index = 5 for target (tth=62)
+        {"xtype": "tth", "yarray": np.array([1, 2, 3, 4, 5, 6, 10])},
+    ),
+]
+
+
+@pytest.mark.parametrize("inputs, expected", params_scale_to)
+def test_scale_to(inputs, expected):
+    orig_diff_object = DiffractionObject(
+        xarray=inputs["xarray"], yarray=inputs["yarray"], xtype=inputs["xtype"], wavelength=inputs["wavelength"]
+    )
+    target_diff_object = DiffractionObject(
+        xarray=inputs["target_xarray"],
+        yarray=inputs["target_yarray"],
+        xtype=inputs["target_xtype"],
+        wavelength=inputs["target_wavelength"],
+    )
+    scaled_diff_object = orig_diff_object.scale_to(
+        target_diff_object, q=inputs["q"], tth=inputs["tth"], d=inputs["d"], offset=inputs["offset"]
+    )
+    # Check the intensity data is the same as expected
+    assert np.allclose(scaled_diff_object.on_xtype(expected["xtype"])[1], expected["yarray"])
+
+
+params_scale_to_bad = [
+    # UC1: user did not specify anything
+    (
+        {
+            "xarray": np.array([0.1, 0.2, 0.3]),
+            "yarray": np.array([1, 2, 3]),
+            "xtype": "q",
+            "wavelength": 2 * np.pi,
+            "target_xarray": np.array([0.05, 0.1, 0.2, 0.3]),
+            "target_yarray": np.array([5, 10, 20, 30]),
+            "target_xtype": "q",
+            "target_wavelength": 2 * np.pi,
+            "q": None,
+            "tth": None,
+            "d": None,
+            "offset": 0,
+        }
+    ),
+    # UC2: user specified more than one of q, tth, and d
+    (
+        {
+            "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
+            "yarray": np.array([10, 20, 30, 40, 50, 60, 100]),
+            "xtype": "tth",
+            "wavelength": 2 * np.pi,
+            "target_xarray": np.array([20, 25.5, 32, 45, 50, 62, 100, 125, 140]),
+            "target_yarray": np.array([1.1, 2, 3, 3.5, 4, 5, 10, 12, 13]),
+            "target_xtype": "tth",
+            "target_wavelength": 2 * np.pi,
+            "q": None,
+            "tth": 60,
+            "d": 10,
+            "offset": 0,
+        }
+    ),
+]
+
+
+@pytest.mark.parametrize("inputs", params_scale_to_bad)
+def test_scale_to_bad(inputs):
+    orig_diff_object = DiffractionObject(
+        xarray=inputs["xarray"], yarray=inputs["yarray"], xtype=inputs["xtype"], wavelength=inputs["wavelength"]
+    )
+    target_diff_object = DiffractionObject(
+        xarray=inputs["target_xarray"],
+        yarray=inputs["target_yarray"],
+        xtype=inputs["target_xtype"],
+        wavelength=inputs["target_wavelength"],
+    )
+    with pytest.raises(
+        ValueError, match="You must specify exactly one of 'q', 'tth', or 'd'. Please rerun specifying only one."
+    ):
+        orig_diff_object.scale_to(
+            target_diff_object, q=inputs["q"], tth=inputs["tth"], d=inputs["d"], offset=inputs["offset"]
+        )
+
+
 params_index = [
     # UC1: exact match
     (4 * np.pi, np.array([30.005, 60]), np.array([1, 2]), "tth", "tth", 30.005, [0]),
