@@ -56,7 +56,7 @@ class DiffractionObject:
         Parameters
         ----------
         xarray : array-like
-            The independent variable array (e.g., q, tth, or d).
+            The independent variable array (e.g., "q", "tth", or "d").
         yarray : array-like
             The dependent variable array corresponding to intensity values
         xtype : str
