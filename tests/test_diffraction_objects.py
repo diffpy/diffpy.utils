@@ -163,12 +163,20 @@ def test_diffraction_objects_equality(inputs1, inputs2, expected):
     assert (do_1 == do_2) == expected
 
 
-def test_on_xtype():
-    do = DiffractionObject(wavelength=2 * np.pi, xarray=np.array([30, 60]), yarray=np.array([1, 2]), xtype="tth")
-    assert np.allclose(do.on_xtype("tth"), [np.array([30, 60]), np.array([1, 2])])
-    assert np.allclose(do.on_xtype("2theta"), [np.array([30, 60]), np.array([1, 2])])
-    assert np.allclose(do.on_xtype("q"), [np.array([0.51764, 1]), np.array([1, 2])])
-    assert np.allclose(do.on_xtype("d"), [np.array([12.13818, 6.28319]), np.array([1, 2])])
+@pytest.mark.parametrize(
+    "input_xtype, expected_xarray",
+    [
+        ("tth", np.array([30, 60])),
+        ("2theta", np.array([30, 60])),
+        ("q", np.array([0.51764, 1])),
+        ("d", np.array([12.13818, 6.28319])),
+    ],
+)
+def test_on_xtype(input_xtype, expected_xarray, do_minimal_tth):
+    do = do_minimal_tth
+    result = do.on_xtype(input_xtype)
+    assert np.allclose(result[0], expected_xarray)
+    assert np.allclose(result[1], np.array([1, 2]))
 
 
 def test_init_invalid_xtype():

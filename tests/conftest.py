@@ -1,7 +1,10 @@
 import json
 from pathlib import Path
 
+import numpy as np
 import pytest
+
+from diffpy.utils.diffraction_objects import DiffractionObject
 
 
 @pytest.fixture
@@ -28,3 +31,8 @@ def datafile():
         return base_path / filename
 
     return _load
+
+
+@pytest.fixture
+def do_minimal_tth():
+    return DiffractionObject(wavelength=2 * np.pi, xarray=np.array([30, 60]), yarray=np.array([1, 2]), xtype="tth")
