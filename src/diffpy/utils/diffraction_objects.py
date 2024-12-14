@@ -405,7 +405,8 @@ class DiffractionObject:
             the diffraction object you want to scale the current one onto
 
         q, tth, d : float, optional, must specify exactly one of them
-            the xvalue (in `q`, `tth`, or `d` space) to align the current and target objects
+            The value of the x-array where you want the curves to line up vertically.
+            Specify a value on one of the allowed grids, q, tth, or d), e.g., q=10.
 
         offset : float, optional, default is 0
             an offset to add to the scaled y-values
@@ -421,8 +422,9 @@ class DiffractionObject:
                 "You must specify exactly one of 'q', 'tth', or 'd'. Please rerun specifying only one."
             )
 
-        xtype = "q" if q is not None else "tth" if tth is not None else "d" if d is not None else "q"
-        data, target = self.on_xtype(xtype), target_diff_object.on_xtype(xtype)
+        xtype = "q" if q is not None else "tth" if tth is not None else "d"
+        data = self.on_xtype(xtype)
+        target = target_diff_object.on_xtype(xtype)
 
         xvalue = q if xtype == "q" else tth if xtype == "tth" else d
 
