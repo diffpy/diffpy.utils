@@ -36,26 +36,36 @@ def _setter_wmsg(attribute):
 
 class DiffractionObject:
     def __init__(
-        self, name=None, wavelength=None, scat_quantity=None, metadata=None, xarray=None, yarray=None, xtype=None
+        self,
+        xarray,
+        yarray,
+        xtype,
+        wavelength,
+        scat_quantity="",
+        name="",
+        metadata={},
     ):
-        if name is None:
-            name = ""
-        self.name = name
-        if metadata is None:
-            metadata = {}
-        self.metadata = metadata
-        if xtype is None:
-            xtype = ""
+        # Check xtype is valid. An empty string is the default value.
+        if xtype not in XQUANTITIES:
+            raise ValueError(_xtype_wmsg(xtype))
+
+        # Check xarray and yarray have the same length
+        if len(xarray) != len(yarray):
+            raise ValueError(
+                "'xarray' and 'yarray' must have the same length. "
+                "Please re-initialize 'DiffractionObject' or re-run the method 'input_data' "
+                "with 'xarray' and 'yarray' of identical length."
+            )
+
         self.scat_quantity = scat_quantity
         self.wavelength = wavelength
+        self.metadata = metadata
+        self.name = name
 
-        if xarray is None:
-            xarray = np.empty(0)
-        if yarray is None:
-            yarray = np.empty(0)
-
+        self._input_xtype = xtype
         self._id = uuid.uuid4()
-        self.input_data(xarray, yarray, xtype)
+        self._set_xarrays(xarray, xtype)
+        self._all_arrays[:, 0] = yarray
 
     def __eq__(self, other):
         if not isinstance(other, DiffractionObject):
@@ -298,8 +308,7 @@ class DiffractionObject:
         the index of the value in the array
         """
 
-        if xtype is None:
-            xtype = self._input_xtype
+        xtype = self._input_xtype
         array = self.on_xtype(xtype)[0]
         if len(array) == 0:
             raise ValueError(f"The '{xtype}' array is empty. Please ensure it is initialized.")
@@ -326,63 +335,6 @@ class DiffractionObject:
         self.tthmax = np.nanmax(self._all_arrays[:, 2], initial=0.0)
         self.dmin = np.nanmin(self._all_arrays[:, 3], initial=np.inf)
         self.dmax = np.nanmax(self._all_arrays[:, 3], initial=0.0)
-
-    def input_data(
-        self,
-        xarray,
-        yarray,
-        xtype,
-        metadata={},
-        scat_quantity=None,
-        name=None,
-        wavelength=None,
-    ):
-        f"""
-        insert a new scattering quantity into the scattering object
-
-        Parameters
-        ----------
-        xarray array-like of floats
-          the independent variable array
-        yarray array-like of floats
-          the dependent variable array
-        xtype string
-          the type of quantity for the independent variable from {*XQUANTITIES, }
-        metadata, scat_quantity, name and wavelength are optional.  They have the same
-        meaning as in the constructor. Values will only be overwritten if non-empty values are passed.
-
-        Returns
-        -------
-        Nothing.  Updates the object in place.
-
-        """
-
-        # Check xarray and yarray have the same length
-        if len(xarray) != len(yarray):
-            raise ValueError(
-                "'xarray' and 'yarray' must have the same length. "
-                "Please re-initialize 'DiffractionObject' or re-run the method 'input_data' "
-                "with 'xarray' and 'yarray' of identical length."
-            )
-
-        self._set_xarrays(xarray, xtype)
-        self._all_arrays[:, 0] = yarray
-        self._input_xtype = xtype
-        # only update these optional values if non-empty quantities are passed to avoid overwriting
-        # valid data inadvertently
-        if metadata:
-            self.metadata = metadata
-        if scat_quantity is not None:
-            self.scat_quantity = scat_quantity
-        if name is not None:
-            self.name = name
-        if wavelength is not None:
-            self.wavelength = wavelength
-
-        # Check xtype is valid. An empty string is the default value.
-        if xtype != "":
-            if xtype not in XQUANTITIES:
-                raise ValueError(_xtype_wmsg(xtype))
 
     def _get_original_array(self):
         if self._input_xtype in QQUANTITIES:
