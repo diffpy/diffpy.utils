@@ -370,67 +370,70 @@ def test_dump(tmp_path, mocker):
     assert actual == expected
 
 
+test_init_valid_params = [
+    (  # instantiate just array attributes
+        {
+            "xarray": np.array([0.0, 90.0, 180.0]),
+            "yarray": np.array([1.0, 2.0, 3.0]),
+            "xtype": "tth",
+            "wavelength": 4.0 * np.pi,
+        },
+        {
+            "_all_arrays": np.array(
+                [
+                    [1.0, 0.0, 0.0, np.float64(np.inf)],
+                    [2.0, 1.0 / np.sqrt(2), 90.0, np.sqrt(2) * 2 * np.pi],
+                    [3.0, 1.0, 180.0, 1.0 * 2 * np.pi],
+                ]
+            ),
+            "metadata": {},
+            "_input_xtype": "tth",
+            "name": "",
+            "scat_quantity": "",
+            "qmin": np.float64(0.0),
+            "qmax": np.float64(1.0),
+            "tthmin": np.float64(0.0),
+            "tthmax": np.float64(180.0),
+            "dmin": np.float64(2 * np.pi),
+            "dmax": np.float64(np.inf),
+            "wavelength": 4.0 * np.pi,
+        },
+    ),
+    (  # instantiate just array attributes
+        {
+            "xarray": np.array([np.inf, 2 * np.sqrt(2) * np.pi, 2 * np.pi]),
+            "yarray": np.array([1.0, 2.0, 3.0]),
+            "xtype": "d",
+            "wavelength": 4.0 * np.pi,
+            "scat_quantity": "x-ray",
+        },
+        {
+            "_all_arrays": np.array(
+                [
+                    [1.0, 0.0, 0.0, np.float64(np.inf)],
+                    [2.0, 1.0 / np.sqrt(2), 90.0, np.sqrt(2) * 2 * np.pi],
+                    [3.0, 1.0, 180.0, 1.0 * 2 * np.pi],
+                ]
+            ),
+            "metadata": {},
+            "_input_xtype": "d",
+            "name": "",
+            "scat_quantity": "x-ray",
+            "qmin": np.float64(0.0),
+            "qmax": np.float64(1.0),
+            "tthmin": np.float64(0.0),
+            "tthmax": np.float64(180.0),
+            "dmin": np.float64(2 * np.pi),
+            "dmax": np.float64(np.inf),
+            "wavelength": 4.0 * np.pi,
+        },
+    ),
+]
+
+
 @pytest.mark.parametrize(
     "init_args, expected_do_dict",
-    [
-        (  # instantiate just array attributes
-            {
-                "xarray": np.array([0.0, 90.0, 180.0]),
-                "yarray": np.array([1.0, 2.0, 3.0]),
-                "xtype": "tth",
-                "wavelength": 4.0 * np.pi,
-            },
-            {
-                "_all_arrays": np.array(
-                    [
-                        [1.0, 0.0, 0.0, np.float64(np.inf)],
-                        [2.0, 1.0 / np.sqrt(2), 90.0, np.sqrt(2) * 2 * np.pi],
-                        [3.0, 1.0, 180.0, 1.0 * 2 * np.pi],
-                    ]
-                ),
-                "metadata": {},
-                "_input_xtype": "tth",
-                "name": "",
-                "scat_quantity": "",
-                "qmin": np.float64(0.0),
-                "qmax": np.float64(1.0),
-                "tthmin": np.float64(0.0),
-                "tthmax": np.float64(180.0),
-                "dmin": np.float64(2 * np.pi),
-                "dmax": np.float64(np.inf),
-                "wavelength": 4.0 * np.pi,
-            },
-        ),
-        (  # instantiate just array attributes
-            {
-                "xarray": np.array([np.inf, 2 * np.sqrt(2) * np.pi, 2 * np.pi]),
-                "yarray": np.array([1.0, 2.0, 3.0]),
-                "xtype": "d",
-                "wavelength": 4.0 * np.pi,
-                "scat_quantity": "x-ray",
-            },
-            {
-                "_all_arrays": np.array(
-                    [
-                        [1.0, 0.0, 0.0, np.float64(np.inf)],
-                        [2.0, 1.0 / np.sqrt(2), 90.0, np.sqrt(2) * 2 * np.pi],
-                        [3.0, 1.0, 180.0, 1.0 * 2 * np.pi],
-                    ]
-                ),
-                "metadata": {},
-                "_input_xtype": "d",
-                "name": "",
-                "scat_quantity": "x-ray",
-                "qmin": np.float64(0.0),
-                "qmax": np.float64(1.0),
-                "tthmin": np.float64(0.0),
-                "tthmax": np.float64(180.0),
-                "dmin": np.float64(2 * np.pi),
-                "dmax": np.float64(np.inf),
-                "wavelength": 4.0 * np.pi,
-            },
-        ),
-    ],
+    test_init_valid_params,
 )
 def test_init_valid(init_args, expected_do_dict):
     actual_do_dict = DiffractionObject(**init_args).__dict__
@@ -440,21 +443,24 @@ def test_init_valid(init_args, expected_do_dict):
     assert diff == {}
 
 
-@pytest.mark.parametrize(
-    "init_args, error_message",
-    [
-        (  # UC1: no arguments provided
-            {},
-            "missing 3 required positional arguments: 'xarray', 'yarray', and 'xtype'",
-        ),
-        (  # UC2: only xarray and yarray provided
-            {"xarray": np.array([0.0, 90.0]), "yarray": np.array([0.0, 90.0])},
-            "missing 1 required positional argument: 'xtype'",
-        ),
-    ],
-)
-def test_init_invalid_args(init_args, error_message):
-    with pytest.raises(TypeError, match=error_message):
+test_init_invalid_params = [
+    (  # UC1: no arguments provided
+        {},
+        "missing 3 required positional arguments: 'xarray', 'yarray', and 'xtype'",
+    ),
+    (  # UC2: only xarray and yarray provided
+        {"xarray": np.array([0.0, 90.0]), "yarray": np.array([0.0, 90.0])},
+        "missing 1 required positional argument: 'xtype'",
+    ),
+]
+
+
+@pytest.mark.parametrize("init_args, expected_error_msg", test_init_invalid_params)
+def test_init_invalid_args(
+    init_args,
+    expected_error_msg,
+):
+    with pytest.raises(TypeError, match=expected_error_msg):
         DiffractionObject(**init_args)
 
 
