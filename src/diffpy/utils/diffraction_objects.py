@@ -35,49 +35,64 @@ def _setter_wmsg(attribute):
 
 
 class DiffractionObject:
+    """
+    Initialize a DiffractionObject instance.
+
+    Parameters
+    ----------
+    xarray : array-like
+        The independent variable array containing "q", "tth", or "d" values.
+    yarray : array-like
+        The dependent variable array corresponding to intensity values.
+    xtype : str
+        The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES}.
+    wavelength : float, optional
+        The wavelength of the incoming beam, specified in angstroms (Å). Default is none.
+    scat_quantity : str, optional
+        The type of scattering experiment (e.g., "x-ray", "neutron"). Default is an empty string "".
+    name : str, optional
+        The name or label for the scattering data. Default is an empty string "".
+    metadata : dict, optional
+        The additional metadata associated with the diffraction object. Default is {}.
+
+    Examples
+    --------
+    Create a DiffractionObject for X-ray scattering data:
+
+    >>> import numpy as np
+    >>> from diffpy.utils.diffraction_objects import DiffractionObject
+    ...
+    >>> x = np.array([0.12, 0.24, 0.31, 0.4])  # independent variable (e.g., q)
+    >>> y = np.array([10, 20, 40, 60])  # intensity valuester
+    >>> metadata = {
+    ...     "package_info": {"version": "3.6.0"}
+    ... }
+    >>> do = DiffractionObject(
+    ...     xarray=x,
+    ...     yarray=y,
+    ...     xtype="q",
+    ...     wavelength=1.54,
+    ...     scat_quantity="x-ray",
+    ...     metadata=metadata
+    ... )
+    >>> print(do.metadata)
+    """
+
     def __init__(
         self,
         xarray,
         yarray,
         xtype,
-        wavelength,
+        wavelength=None,
         scat_quantity="",
         name="",
         metadata={},
     ):
 
         self._id = uuid.uuid4()
-        self.input_data(xarray, yarray, xtype, wavelength, scat_quantity, name, metadata)
+        self._input_data(xarray, yarray, xtype, wavelength, scat_quantity, name, metadata)
 
-    def input_data(self, xarray, yarray, xtype, wavelength, scat_quantity="", name="", metadata={}):
-        """
-        Insert a new scattering quantity into the scattering object.
-
-        Parameters
-        ----------
-        xarray : array-like
-            The independent variable array (e.g., "q", "tth", or "d").
-        yarray : array-like
-            The dependent variable array corresponding to intensity values.
-        xtype : str
-            The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES},
-            such as "q", "tth", or "d".
-        wavelength : float
-            The wavelength of the incoming beam, specified in angstroms (Å).
-        scat_quantity : str, optional
-            The type of scattering experiment (e.g., "x-ray", "neutron"). Default is an empty string "".
-        name : str, optional
-            The name or label for the scattering data. Default is an empty string "".
-        metadata : dict, optional
-            The additional metadata associated with the diffraction object. Default is {}.
-
-        Returns
-        -------
-        None
-            This method updates the object in place and does not return a value.
-        """
-
-        # Check xtype is valid. An empty string is the default value.
+    def _input_data(self, xarray, yarray, xtype, wavelength, scat_quantity, name, metadata):
         if xtype not in XQUANTITIES:
             raise ValueError(_xtype_wmsg(xtype))
 
@@ -93,10 +108,9 @@ class DiffractionObject:
         self.wavelength = wavelength
         self.metadata = metadata
         self.name = name
-
         self._input_xtype = xtype
-        self._set_xarrays(xarray, xtype)
-        self._all_arrays[:, 0] = yarray
+        self._set_arrays(xarray, xtype, yarray)
+        self._set_min_max_xarray()
 
     def __eq__(self, other):
         if not isinstance(other, DiffractionObject):
@@ -346,8 +360,9 @@ class DiffractionObject:
         i = (np.abs(array - value)).argmin()
         return i
 
-    def _set_xarrays(self, xarray, xtype):
+    def _set_arrays(self, xarray, xtype, yarray):
         self._all_arrays = np.empty(shape=(len(xarray), 4))
+        self._all_arrays[:, 0] = yarray
         if xtype.lower() in QQUANTITIES:
             self._all_arrays[:, 1] = xarray
             self._all_arrays[:, 2] = q_to_tth(xarray, self.wavelength)
@@ -360,6 +375,8 @@ class DiffractionObject:
             self._all_arrays[:, 3] = xarray
             self._all_arrays[:, 1] = d_to_q(xarray)
             self._all_arrays[:, 2] = d_to_tth(xarray, self.wavelength)
+
+    def _set_min_max_xarray(self):
         self.qmin = np.nanmin(self._all_arrays[:, 1], initial=np.inf)
         self.qmax = np.nanmax(self._all_arrays[:, 1], initial=0.0)
         self.tthmin = np.nanmin(self._all_arrays[:, 2], initial=np.inf)
