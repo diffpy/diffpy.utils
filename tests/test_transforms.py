@@ -198,25 +198,27 @@ def test_tth_to_d_invalid(wavelength, tth, expected_error_type, expected_error_m
         tth_to_d(tth, wavelength)
 
 
-
-@pytest.mark.parametrize("wavelength, d, expected_tth", [
-    # UC1: Empty d values, no wavelength, return empty arrays
-    (None, np.empty((0)), np.empty((0))),
-    # UC2: Empty d values, wavelength specified, return empty arrays
-    (4 * np.pi, np.empty((0)), np.empty(0)),
-    # UC3: User specified valid d values, no wavelength, return empty arrays
-    (
-        None,
-        np.array([1, 0.8, 0.6, 0.4, 0.2, 0]),
-        np.array([0, 1, 2, 3, 4, 5]),
-    ),
-    # UC4: User specified valid d values (with wavelength)
-    (
-        4 * np.pi,
-        np.array([4 * np.pi, 4 / np.sqrt(2) * np.pi, 4 / np.sqrt(3) * np.pi]),
-        np.array([60.0, 90.0, 120.0]),
-    ),
-])
+@pytest.mark.parametrize(
+    "wavelength, d, expected_tth",
+    [
+        # UC1: Empty d values, no wavelength, return empty arrays
+        (None, np.empty((0)), np.empty((0))),
+        # UC2: Empty d values, wavelength specified, return empty arrays
+        (4 * np.pi, np.empty((0)), np.empty(0)),
+        # UC3: User specified valid d values, no wavelength, return empty arrays
+        (
+            None,
+            np.array([1, 0.8, 0.6, 0.4, 0.2, 0]),
+            np.array([0, 1, 2, 3, 4, 5]),
+        ),
+        # UC4: User specified valid d values (with wavelength)
+        (
+            4 * np.pi,
+            np.array([4 * np.pi, 4 / np.sqrt(2) * np.pi, 4 / np.sqrt(3) * np.pi]),
+            np.array([60.0, 90.0, 120.0]),
+        ),
+    ],
+)
 def test_d_to_tth(wavelength, d, expected_tth):
     actual_tth = d_to_tth(d, wavelength)
     assert np.allclose(actual_tth, expected_tth)
