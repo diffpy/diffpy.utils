@@ -5,6 +5,7 @@ import pytest
 
 from diffpy.utils.transforms import d_to_q, d_to_tth, q_to_d, q_to_tth, tth_to_d, tth_to_q
 
+
 params_q_to_tth = [
     # UC1: Empty q values, no wavelength, return empty arrays
     (None, np.empty((0)), np.empty((0))),
@@ -23,16 +24,10 @@ params_q_to_tth = [
 
 
 @pytest.mark.parametrize("wavelength, q, expected_tth", params_q_to_tth)
-def test_q_to_tth(wavelength, q, expected_tth):
+def test_q_to_tth(wavelength, q, expected_tth, wavelength_warning_msg):
 
-    wavelength_warning_emsg = (
-        "No wavelength has been specified. You can continue to use the DiffractionObject, but "
-        "some of its powerful features will not be available. "
-        "To specify a wavelength, if you have do = DiffractionObject(xarray, yarray, 'tth'), "
-        "you may set do.wavelength = 1.54 for a wavelength of 1.54 angstroms."
-    )
     if wavelength is None:
-        with pytest.warns(UserWarning, match=re.escape(wavelength_warning_emsg)):
+        with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
             actual_tth = q_to_tth(q, wavelength)
     else:
         actual_tth = q_to_tth(q, wavelength)
@@ -66,7 +61,7 @@ def test_q_to_tth_bad(q, wavelength, expected_error_type, expected_error_msg):
         q_to_tth(wavelength, q)
 
 
-params_tth_to_q = [
+test_tth_t_q_params = [
     # UC0: User specified empty tth values (without wavelength)
     (None, np.array([]), np.array([])),
     # UC1: User specified empty tth values (with wavelength)
@@ -86,31 +81,38 @@ params_tth_to_q = [
     ),
 ]
 
-
-@pytest.mark.parametrize("wavelength, tth, expected_q", params_tth_to_q)
-def test_tth_to_q(wavelength, tth, expected_q):
-    actual_q = tth_to_q(tth, wavelength)
+@pytest.mark.parametrize("wavelength, tth, expected_q", test_tth_t_q_params)
+def test_tth_to_q(wavelength, tth, expected_q, wavelength_warning_msg):
+    if wavelength is None:
+        with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
+            actual_q = tth_to_q(tth, wavelength)
+    else:
+        actual_q = tth_to_q(tth, wavelength)
+        
     assert np.allclose(actual_q, expected_q)
 
-
-params_tth_to_q_bad = [
+tth_to_q_bad_params = [
     # UC0: user specified an invalid tth value of > 180 degrees (without wavelength)
     (
-        [None, np.array([0, 30, 60, 90, 120, 181])],
-        [ValueError, "Two theta exceeds 180 degrees. Please check the input values for errors."],
+        None,
+        np.array([0, 30, 60, 90, 120, 181]),
+        ValueError,
+        "Two theta exceeds 180 degrees. Please check the input values for errors.",
     ),
     # UC1: user specified an invalid tth value of > 180 degrees (with wavelength)
     (
-        [4 * np.pi, np.array([0, 30, 60, 90, 120, 181])],
-        [ValueError, "Two theta exceeds 180 degrees. Please check the input values for errors."],
+        4 * np.pi,
+        np.array([0, 30, 60, 90, 120, 181]),
+        ValueError,
+        "Two theta exceeds 180 degrees. Please check the input values for errors.",
     ),
 ]
 
 
-@pytest.mark.parametrize("inputs, expected", params_tth_to_q_bad)
-def test_tth_to_q_bad(inputs, expected):
-    with pytest.raises(expected[0], match=expected[1]):
-        tth_to_q(inputs[1], inputs[0])
+@pytest.mark.parametrize("wavelength, tth, expected_error_type, expected_error_msg", tth_to_q_bad_params)
+def test_tth_to_q_bad(wavelength, tth, expected_error_type, expected_error_msg):
+    with pytest.raises(expected_error_type, match=expected_error_msg):
+        tth_to_q(tth, wavelength)
 
 
 params_q_to_d = [
@@ -212,6 +214,7 @@ params_d_to_tth = [
 @pytest.mark.parametrize("inputs, expected", params_d_to_tth)
 def test_d_to_tth(inputs, expected):
     actual = d_to_tth(inputs[1], inputs[0])
+
     assert np.allclose(expected, actual)
 
 
