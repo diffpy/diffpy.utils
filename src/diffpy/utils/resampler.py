@@ -77,6 +77,46 @@ def wsinterp(x, xp, fp, left=None, right=None):
     return fp_at_x
 
 
+def nsinterp(xp, fp, qmin=0, qmax=25, left=None, right=None):
+    """One-dimensional Whittaker-Shannon interpolation onto the Nyquist-Shannon grid.
+
+    Takes a band-limited function fp and original grid xp and resamples fp on the NS grid.
+    Uses the minimum number of points N required by the Nyquist sampling theorem.
+    N = (qmax-qmin)(rmax-rmin)/pi, where rmin and rmax are the ends of the real-space ranges.
+    fp must be finite, and the user inputs qmin and qmax of the frequency-domain.
+
+    Parameters
+    ----------
+    xp: ndarray
+        The array of known x values.
+    fp: ndarray
+        The array of y values associated with xp.
+    qmin: float
+        The lower band limit in the frequency domain.
+    qmax: float
+        The upper band limit in the frequency domain.
+
+    Returns
+    -------
+    x: ndarray
+        The Nyquist-Shannon grid computed for the given qmin and qmax.
+    fp_at_x: ndarray
+        The interpolated values at points x. Returns a single float if x is a scalar,
+        otherwise returns a numpy.ndarray.
+    """
+    # Ensure numpy array
+    xp = np.array(xp)
+    rmin = np.min(xp)
+    rmax = np.max(xp)
+
+    nspoints = int(np.round((qmax-qmin)*(rmax-rmin)/np.pi))
+
+    x = np.linspace(rmin, rmax, nspoints)
+    fp_at_x = wsinterp(x, xp, fp)
+
+    return x, fp_at_x
+
+
 def resample(r, s, dr):
     """Resample a PDF on a new grid.
 

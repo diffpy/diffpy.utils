@@ -3,7 +3,7 @@ import random
 import numpy as np
 import pytest
 
-from diffpy.utils.resampler import wsinterp
+from diffpy.utils.resampler import wsinterp, nsinterp
 
 
 def test_wsinterp():
@@ -30,3 +30,23 @@ def test_wsinterp():
         assert np.allclose(fp_at_x[1:-1], fp)
         for i in range(len(x)):
             assert fp_at_x[i] == pytest.approx(wsinterp(x[i], xp, fp))
+
+
+def test_nsinterp():
+    # Create a cosine function cos(2x) for x \in [0, 3pi]
+    xp = np.linspace(0, 3*np.pi, 100)
+    fp = np.cos(2 * xp)
+
+    # Want to resample onto the grid {0, pi, 2pi, 3pi}
+    x = np.array([0, np.pi, 2*np.pi, 3*np.pi])
+
+    # Get wsinterp result
+    ws_f = wsinterp(x, xp, fp)
+
+    # Use nsinterp with qmin-qmax=4/3
+    qmin = np.random.uniform()
+    qmax = qmin + 4/3
+    ns_x, ns_f = nsinterp(xp, fp, qmin, qmax)
+
+    assert np.allclose(x, ns_x)
+    assert np.allclose(ws_f, ns_f)
