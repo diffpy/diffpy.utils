@@ -37,11 +37,12 @@ def datafile():
 def do_minimal_tth():
     return DiffractionObject(wavelength=2 * np.pi, xarray=np.array([30, 60]), yarray=np.array([1, 2]), xtype="tth")
 
+
 @pytest.fixture
 def wavelength_warning_msg():
     return (
-    "No wavelength has been specified. You can continue to use the DiffractionObject, but "
-    "some of its powerful features will not be available. "
-    "To specify a wavelength, if you have do = DiffractionObject(xarray, yarray, 'tth'), "
-    "you may set do.wavelength = 1.54 for a wavelength of 1.54 angstroms."
-)
+        "No wavelength has been specified. You can continue to use the DiffractionObject, but "
+        "some of its powerful features will not be available. "
+        "To specify a wavelength, if you have do = DiffractionObject(xarray, yarray, 'tth'), "
+        "you may set do.wavelength = 1.54 for a wavelength of 1.54 angstroms."
+    )
