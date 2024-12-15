@@ -109,7 +109,7 @@ def nsinterp(xp, fp, qmin=0, qmax=25, left=None, right=None):
     rmin = np.min(xp)
     rmax = np.max(xp)
 
-    nspoints = int(np.round((qmax-qmin)*(rmax-rmin)/np.pi))
+    nspoints = int(np.round((qmax - qmin) * (rmax - rmin) / np.pi))
 
     x = np.linspace(rmin, rmax, nspoints)
     fp_at_x = wsinterp(x, xp, fp)

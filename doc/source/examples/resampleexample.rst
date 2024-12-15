@@ -85,4 +85,3 @@ given enough datapoints.
      qmin = 0
      qmax = 25
      nickel_resample = (nickel_grid, nickel_func, qmin, qmax)
-

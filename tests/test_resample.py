@@ -3,7 +3,7 @@ import random
 import numpy as np
 import pytest
 
-from diffpy.utils.resampler import wsinterp, nsinterp
+from diffpy.utils.resampler import nsinterp, wsinterp
 
 
 def test_wsinterp():
@@ -34,18 +34,18 @@ def test_wsinterp():
 
 def test_nsinterp():
     # Create a cosine function cos(2x) for x \in [0, 3pi]
-    xp = np.linspace(0, 3*np.pi, 100)
+    xp = np.linspace(0, 3 * np.pi, 100)
     fp = np.cos(2 * xp)
 
     # Want to resample onto the grid {0, pi, 2pi, 3pi}
-    x = np.array([0, np.pi, 2*np.pi, 3*np.pi])
+    x = np.array([0, np.pi, 2 * np.pi, 3 * np.pi])
 
     # Get wsinterp result
     ws_f = wsinterp(x, xp, fp)
 
     # Use nsinterp with qmin-qmax=4/3
     qmin = np.random.uniform()
-    qmax = qmin + 4/3
+    qmax = qmin + 4 / 3
     ns_x, ns_f = nsinterp(xp, fp, qmin, qmax)
 
     assert np.allclose(x, ns_x)
