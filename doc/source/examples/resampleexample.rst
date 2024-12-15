@@ -58,7 +58,7 @@ given enough datapoints.
      nickel_resample = wsinterp(grid, nickel_grid, nickel_func)
      target_resample = wsinterp(grid, target_grid, target_func)
 
-   We can now plot the difference to see that these two functions are quite similar.:
+   We can now plot the difference to see that these two functions are quite similar.::
 
      plt.plot(grid, target_resample)
      plt.plot(grid, nickel_resample)
@@ -78,3 +78,10 @@ given enough datapoints.
    In the case of our dataset, our band-limit is ``qmax=25.0`` and our function spans :math:`r \in (0.0, 60.0)`.
    Thus, our original grid requires :math:`25.0 * 60.0 / \pi < 478`. Since our grid has :math:`601` datapoints, our
    reconstruction was perfect as shown from the comparison between ``Nickel.gr`` and ``NiTarget.gr``.
+
+   This computation is implemented in the function ``nsinterp``.::
+
+     from diffpy.utils.resampler import nsinterp
+     qmin = 0
+     qmax = 25
+     nickel_resample = (nickel_grid, nickel_func, qmin, qmax)
