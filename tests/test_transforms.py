@@ -9,18 +9,23 @@ from diffpy.utils.transforms import d_to_q, d_to_tth, q_to_d, q_to_tth, tth_to_d
 @pytest.mark.parametrize(
     "wavelength, q, expected_tth",
     [
-        # UC1: Empty q values, no wavelength, return empty arrays
+        # UC1.1: User specified empty 'q' and no 'wavelength'.
+        # Expect empty 'tth' array and UserWarning about missing wavelength.
         (None, np.empty((0)), np.empty((0))),
-        # UC2: Empty q values, wavelength specified, return empty arrays
+
+        # UC1.2: User specified empty 'q' and 'wavelength'. Expect empty 'tth' array.
         (4 * np.pi, np.empty((0)), np.empty(0)),
-        # UC3: user specified valid q values, no wavelength, return empty arrays
+
+        # UC2.1: User specified non-empty 'q' values and no 'wavelength'.
+        # Expect non-empty 'tth' array and UserWarning about missing wavelength.
         (
             None,
             np.array([0, 0.2, 0.4, 0.6, 0.8, 1]),
             np.array([0, 1, 2, 3, 4, 5]),
         ),
-        # UC4: user specified valid q values (with wavelength)
-        # expected tth values are 2*arcsin(q) in degrees
+
+        # UC2.2: User specified non-empty 'q' values and 'wavelength'.
+        # Expect tth values are 2*arcsin(q) in degrees.
         (4 * np.pi, np.array([0, 1 / np.sqrt(2), 1.0]), np.array([0, 90.0, 180.0])),
     ],
 )
