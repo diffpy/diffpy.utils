@@ -51,13 +51,13 @@ params = [
     ),
     (  # Different wavelengths
         {
+            "wavelength": 0.71,
             "xtype": "tth",
             "xarray": np.empty(0),
             "yarray": np.empty(0),
             "metadata": {"thing1": 1, "thing2": "thing2"},
         },
         {
-            "wavelength": 0.42,
             "xtype": "tth",
             "xarray": np.empty(0),
             "yarray": np.empty(0),
