@@ -4,7 +4,7 @@
 
 **Changed:**
 
-* `DiffractionObject` requires 3 input parameters of `xarrays`, `yarrays`, `xtype`
+* `DiffractionObject` requires 3 input parameters of `xarray`, `yarray`, `xtype`, to be instantiated.  It can be instantiated with empty arrays.
 
 **Deprecated:**
 
