@@ -43,3 +43,21 @@ def do_minimal():
 def do_minimal_tth():
     # Create an instance of DiffractionObject with non-empty xarray, yarray, and wavelength values
     return DiffractionObject(wavelength=2 * np.pi, xarray=np.array([30, 60]), yarray=np.array([1, 2]), xtype="tth")
+
+
+@pytest.fixture
+def wavelength_warning_msg():
+    return (
+        "No wavelength has been specified. You can continue to use the DiffractionObject, but "
+        "some of its powerful features will not be available. "
+        "To specify a wavelength, if you have do = DiffractionObject(xarray, yarray, 'tth'), "
+        "you may set do.wavelength = 1.54 for a wavelength of 1.54 angstroms."
+    )
+
+
+@pytest.fixture
+def invalid_q_or_d_or_wavelength_error_msg():
+    return (
+        "The supplied input array and wavelength will result in an impossible two-theta. "
+        "Please check these values and re-instantiate the DiffractionObject with correct values."
+    )
