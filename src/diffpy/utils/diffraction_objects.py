@@ -65,7 +65,10 @@ class DiffractionObject:
     >>> x = np.array([0.12, 0.24, 0.31, 0.4])  # independent variable (e.g., q)
     >>> y = np.array([10, 20, 40, 60])  # intensity values
     >>> metadata = {
-    ...     "package_info": {"version": "3.6.0"}
+    ...     "sample": "rock salt from the beach",
+    ...     "composition": "NaCl",
+    ...     "temperature": "300 K,",
+    ...     "experimenters": "Phill, Sally"
     ... }
     >>> do = DiffractionObject(
     ...     xarray=x,
@@ -95,7 +98,6 @@ class DiffractionObject:
     def _input_data(self, xarray, yarray, xtype, wavelength, scat_quantity, name, metadata):
         if xtype not in XQUANTITIES:
             raise ValueError(_xtype_wmsg(xtype))
-
         # Check xarray and yarray have the same length
         if len(xarray) != len(yarray):
             raise ValueError(
@@ -103,7 +105,6 @@ class DiffractionObject:
                 "Please re-initialize 'DiffractionObject' or re-run the method 'input_data' "
                 "with 'xarray' and 'yarray' of identical length."
             )
-
         self.scat_quantity = scat_quantity
         self.wavelength = wavelength
         self.metadata = metadata
