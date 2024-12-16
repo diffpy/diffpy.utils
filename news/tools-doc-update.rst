@@ -16,7 +16,7 @@
 
 **Fixed:**
 
-* Typo for get_package_info example 
+* Typo for get_package_info example
 
 **Security:**
 
