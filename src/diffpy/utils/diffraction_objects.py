@@ -111,7 +111,7 @@ class DiffractionObject:
         self.metadata = metadata
         self.name = name
         self._input_xtype = xtype
-        self._set_arrays(xarray, xtype, yarray)
+        self._set_arrays(xarray, yarray, xtype)
         self._set_min_max_xarray()
 
     def __eq__(self, other):
@@ -295,7 +295,7 @@ class DiffractionObject:
         i = (np.abs(array - value)).argmin()
         return i
 
-    def _set_arrays(self, xarray, xtype, yarray):
+    def _set_arrays(self, xarray, yarray, xtype):
         self._all_arrays = np.empty(shape=(len(xarray), 4))
         self._all_arrays[:, 0] = yarray
         if xtype.lower() in QQUANTITIES:
