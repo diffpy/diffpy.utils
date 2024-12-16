@@ -103,7 +103,7 @@ class DiffractionObject:
             raise ValueError(
                 "'xarray' and 'yarray' are different lengths.  They must "
                 "correspond to each other and have the same length. "
-                "Please re-initialize 'DiffractionObject'
+                "Please re-initialize 'DiffractionObject'"
                 "with valid 'xarray' and 'yarray's"
             )
         self.scat_quantity = scat_quantity
