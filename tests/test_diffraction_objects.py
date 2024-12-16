@@ -66,7 +66,7 @@ params = [
         False,
     ),
     (  # Different wavelengths
-        {   
+        {
             "wavelength": 0.71,
             "xtype": "tth",
             "xarray": np.empty(0),
