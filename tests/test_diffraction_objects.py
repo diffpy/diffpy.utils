@@ -11,11 +11,6 @@ from freezegun import freeze_time
 from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
 
 params = [
-    (  # Default
-        {},
-        {},
-        True,
-    ),
     (  # Compare same attributes
         {
             "name": "same",
@@ -40,18 +35,14 @@ params = [
     (  # Different names
         {
             "name": "something",
-            "scat_quantity": "",
-            "wavelength": None,
-            "xtype": "",
+            "xtype": "tth",
             "xarray": np.empty(0),
             "yarray": np.empty(0),
             "metadata": {"thing1": 1, "thing2": "thing2"},
         },
         {
             "name": "something else",
-            "scat_quantity": "",
-            "wavelength": None,
-            "xtype": "",
+            "xtype": "tth",
             "xarray": np.empty(0),
             "yarray": np.empty(0),
             "metadata": {"thing1": 1, "thing2": "thing2"},
@@ -60,17 +51,14 @@ params = [
     ),
     (  # Different wavelengths
         {
-            "scat_quantity": "",
             "wavelength": 0.71,
-            "xtype": "",
+            "xtype": "tth",
             "xarray": np.empty(0),
             "yarray": np.empty(0),
             "metadata": {"thing1": 1, "thing2": "thing2"},
         },
         {
-            "scat_quantity": "",
-            "wavelength": None,
-            "xtype": "",
+            "xtype": "tth",
             "xarray": np.empty(0),
             "yarray": np.empty(0),
             "metadata": {"thing1": 1, "thing2": "thing2"},
@@ -79,17 +67,15 @@ params = [
     ),
     (  # Different wavelengths
         {
-            "scat_quantity": "",
             "wavelength": 0.71,
-            "xtype": "",
+            "xtype": "tth",
             "xarray": np.empty(0),
             "yarray": np.empty(0),
             "metadata": {"thing1": 1, "thing2": "thing2"},
         },
         {
-            "scat_quantity": "",
             "wavelength": 0.711,
-            "xtype": "",
+            "xtype": "tth",
             "xarray": np.empty(0),
             "yarray": np.empty(0),
             "metadata": {"thing1": 1, "thing2": "thing2"},
@@ -99,16 +85,14 @@ params = [
     (  # Different scat_quantity
         {
             "scat_quantity": "x-ray",
-            "wavelength": None,
-            "xtype": "",
+            "xtype": "tth",
             "xarray": np.empty(0),
             "yarray": np.empty(0),
             "metadata": {"thing1": 1, "thing2": "thing2"},
         },
         {
             "scat_quantity": "neutron",
-            "wavelength": None,
-            "xtype": "",
+            "xtype": "tth",
             "xarray": np.empty(0),
             "yarray": np.empty(0),
             "metadata": {"thing1": 1, "thing2": "thing2"},
@@ -117,16 +101,11 @@ params = [
     ),
     (  # Different on_q
         {
-            "scat_quantity": "",
-            "wavelength": None,
             "xtype": "q",
             "xarray": np.array([1.0, 2.0]),
             "yarray": np.array([100.0, 200.0]),
-            "metadata": {},
         },
         {
-            "scat_quantity": "",
-            "wavelength": None,
             "xtype": "q",
             "xarray": np.array([3.0, 4.0]),
             "yarray": np.array([100.0, 200.0]),
@@ -136,17 +115,13 @@ params = [
     ),
     (  # Different metadata
         {
-            "scat_quantity": "",
-            "wavelength": None,
-            "xtype": "",
+            "xtype": "q",
             "xarray": np.empty(0),
             "yarray": np.empty(0),
             "metadata": {"thing1": 0, "thing2": "thing2"},
         },
         {
-            "scat_quantity": "",
-            "wavelength": None,
-            "xtype": "",
+            "xtype": "q",
             "xarray": np.empty(0),
             "yarray": np.empty(0),
             "metadata": {"thing1": 1, "thing2": "thing2"},
@@ -187,7 +162,7 @@ def test_init_invalid_xtype():
             f"Please rerun specifying an xtype from {*XQUANTITIES, }"
         ),
     ):
-        DiffractionObject(xtype="invalid_type")
+        return DiffractionObject(xarray=np.empty(0), yarray=np.empty(0), xtype="invalid_type", wavelength=1.54)
 
 
 params_scale_to = [
@@ -400,41 +375,7 @@ def test_dump(tmp_path, mocker):
     assert actual == expected
 
 
-tc_params = [
-    (
-        {},
-        {
-            "_all_arrays": np.empty(shape=(0, 4)),  # instantiate empty
-            "metadata": {},
-            "_input_xtype": "",
-            "name": "",
-            "scat_quantity": None,
-            "qmin": np.float64(np.inf),
-            "qmax": np.float64(0.0),
-            "tthmin": np.float64(np.inf),
-            "tthmax": np.float64(0.0),
-            "dmin": np.float64(np.inf),
-            "dmax": np.float64(0.0),
-            "wavelength": None,
-        },
-    ),
-    (  # instantiate just non-array attributes
-        {"name": "test", "scat_quantity": "x-ray", "metadata": {"thing": "1", "another": "2"}},
-        {
-            "_all_arrays": np.empty(shape=(0, 4)),
-            "metadata": {"thing": "1", "another": "2"},
-            "_input_xtype": "",
-            "name": "test",
-            "scat_quantity": "x-ray",
-            "qmin": np.float64(np.inf),
-            "qmax": np.float64(0.0),
-            "tthmin": np.float64(np.inf),
-            "tthmax": np.float64(0.0),
-            "dmin": np.float64(np.inf),
-            "dmax": np.float64(0.0),
-            "wavelength": None,
-        },
-    ),
+test_init_valid_params = [
     (  # instantiate just array attributes
         {
             "xarray": np.array([0.0, 90.0, 180.0]),
@@ -453,7 +394,7 @@ tc_params = [
             "metadata": {},
             "_input_xtype": "tth",
             "name": "",
-            "scat_quantity": None,
+            "scat_quantity": "",
             "qmin": np.float64(0.0),
             "qmax": np.float64(1.0),
             "tthmin": np.float64(0.0),
@@ -495,11 +436,37 @@ tc_params = [
 ]
 
 
-@pytest.mark.parametrize("inputs, expected", tc_params)
-def test_constructor(inputs, expected):
-    actual = DiffractionObject(**inputs).__dict__
-    diff = DeepDiff(actual, expected, ignore_order=True, significant_digits=13, exclude_paths="root['_id']")
+@pytest.mark.parametrize(
+    "init_args, expected_do_dict",
+    test_init_valid_params,
+)
+def test_init_valid(init_args, expected_do_dict):
+    actual_do_dict = DiffractionObject(**init_args).__dict__
+    diff = DeepDiff(
+        actual_do_dict, expected_do_dict, ignore_order=True, significant_digits=13, exclude_paths="root['_id']"
+    )
     assert diff == {}
+
+
+test_init_invalid_params = [
+    (  # UC1: no arguments provided
+        {},
+        "missing 3 required positional arguments: 'xarray', 'yarray', and 'xtype'",
+    ),
+    (  # UC2: only xarray and yarray provided
+        {"xarray": np.array([0.0, 90.0]), "yarray": np.array([0.0, 90.0])},
+        "missing 1 required positional argument: 'xtype'",
+    ),
+]
+
+
+@pytest.mark.parametrize("init_args, expected_error_msg", test_init_invalid_params)
+def test_init_invalid_args(
+    init_args,
+    expected_error_msg,
+):
+    with pytest.raises(TypeError, match=expected_error_msg):
+        DiffractionObject(**init_args)
 
 
 def test_all_array_getter():
@@ -519,9 +486,8 @@ def test_all_array_getter():
     assert np.allclose(actual_do.all_arrays, expected_all_arrays)
 
 
-def test_all_array_setter():
-    do = DiffractionObject()
-
+def test_all_array_setter(do_minimal):
+    do = do_minimal
     # Attempt to directly modify the property
     with pytest.raises(
         AttributeError,
@@ -531,21 +497,21 @@ def test_all_array_setter():
         do.all_arrays = np.empty((4, 4))
 
 
-def test_id_getter():
-    do = DiffractionObject()
+def test_id_getter(do_minimal):
+    do = do_minimal
     assert hasattr(do, "id")
     assert isinstance(do.id, UUID)
     assert len(str(do.id)) == 36
 
 
-def test_id_getter_with_mock(mocker):
+def test_id_getter_with_mock(mocker, do_minimal):
     mocker.patch.object(DiffractionObject, "id", new_callable=lambda: UUID("d67b19c6-3016-439f-81f7-cf20a04bee87"))
-    do = DiffractionObject()
+    do = do_minimal
     assert do.id == UUID("d67b19c6-3016-439f-81f7-cf20a04bee87")
 
 
-def test_id_setter_error():
-    do = DiffractionObject()
+def test_id_setter_error(do_minimal):
+    do = do_minimal
 
     with pytest.raises(
         AttributeError,
@@ -557,22 +523,22 @@ def test_id_setter_error():
 def test_xarray_yarray_length_mismatch():
     with pytest.raises(
         ValueError,
-        match="'xarray' and 'yarray' must have the same length. "
-        "Please re-initialize 'DiffractionObject' or re-run the method 'input_data' "
-        "with 'xarray' and 'yarray' of identical length",
+        match="'xarray' and 'yarray' are different lengths.  "
+        "They must correspond to each other and have the same length. Please "
+        "re-initialize 'DiffractionObject'with valid 'xarray' and 'yarray's",
     ):
-        DiffractionObject(xarray=np.array([1.0, 2.0]), yarray=np.array([0.0, 0.0, 0.0]))
+        DiffractionObject(
+            xarray=np.array([1.0, 2.0]), yarray=np.array([0.0, 0.0, 0.0]), xtype="tth", wavelength=1.54
+        )
 
 
-def test_input_xtype_getter():
-    do = DiffractionObject(xtype="tth")
+def test_input_xtype_getter(do_minimal):
+    do = do_minimal
     assert do.input_xtype == "tth"
 
 
-def test_input_xtype_setter_error():
-    do = DiffractionObject(xtype="tth")
-
-    # Attempt to directly modify the property
+def test_input_xtype_setter_error(do_minimal):
+    do = do_minimal
     with pytest.raises(
         AttributeError,
         match="Direct modification of attribute 'input_xtype' is not allowed. "

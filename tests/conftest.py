@@ -34,5 +34,12 @@ def datafile():
 
 
 @pytest.fixture
+def do_minimal():
+    # Create an instance of DiffractionObject with empty xarray and yarray values, and a non-empty wavelength
+    return DiffractionObject(xarray=np.empty(0), yarray=np.empty(0), xtype="tth", wavelength=1.54)
+
+
+@pytest.fixture
 def do_minimal_tth():
+    # Create an instance of DiffractionObject with non-empty xarray, yarray, and wavelength values
     return DiffractionObject(wavelength=2 * np.pi, xarray=np.array([30, 60]), yarray=np.array([1, 2]), xtype="tth")
