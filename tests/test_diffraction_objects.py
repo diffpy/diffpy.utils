@@ -525,7 +525,7 @@ def test_xarray_yarray_length_mismatch():
         ValueError,
         match="'xarray' and 'yarray' are different lengths.  "
         "They must correspond to each other and have the same length. Please "
-        "re-initialize 'DiffractionObject'with valid 'xarray' and 'yarray's"
+        "re-initialize 'DiffractionObject'with valid 'xarray' and 'yarray's",
     ):
         DiffractionObject(
             xarray=np.array([1.0, 2.0]), yarray=np.array([0.0, 0.0, 0.0]), xtype="tth", wavelength=1.54
