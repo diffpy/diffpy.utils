@@ -49,7 +49,6 @@ params = [
     ),
     (  # Different wavelengths
         {
-            "wavelength": 0.71,
             "xtype": "tth",
             "xarray": np.empty(0),
             "yarray": np.empty(0),
@@ -66,7 +65,6 @@ params = [
     ),
     (  # Different wavelengths
         {
-            "wavelength": 0.71,
             "xtype": "tth",
             "xarray": np.empty(0),
             "yarray": np.empty(0),
