@@ -76,6 +76,7 @@ class DiffractionObject:
     ...     xtype="q",
     ...     wavelength=1.54,
     ...     scat_quantity="x-ray",
+    ...     name="Rock Salt X-ray Diffraction",
     ...     metadata=metadata
     ... )
     >>> print(do.metadata)
