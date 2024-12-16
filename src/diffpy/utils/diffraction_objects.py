@@ -99,12 +99,12 @@ class DiffractionObject:
     def _input_data(self, xarray, yarray, xtype, wavelength, scat_quantity, name, metadata):
         if xtype not in XQUANTITIES:
             raise ValueError(_xtype_wmsg(xtype))
-        # Check xarray and yarray have the same length
         if len(xarray) != len(yarray):
             raise ValueError(
-                "'xarray' and 'yarray' must have the same length. "
-                "Please re-initialize 'DiffractionObject' or re-run the method 'input_data' "
-                "with 'xarray' and 'yarray' of identical length."
+                "'xarray' and 'yarray' are different lengths.  They must "
+                "correspond to each other and have the same length. "
+                "Please re-initialize 'DiffractionObject'
+                "with valid 'xarray' and 'yarray's"
             )
         self.scat_quantity = scat_quantity
         self.wavelength = wavelength
