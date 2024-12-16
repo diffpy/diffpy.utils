@@ -15,6 +15,7 @@ params = [
         {
             "name": "same",
             "scat_quantity": "x-ray",
+            "wavelength": 0.71,
             "xtype": "q",
             "xarray": np.array([1.0, 2.0]),
             "yarray": np.array([100.0, 200.0]),
@@ -23,6 +24,7 @@ params = [
         {
             "name": "same",
             "scat_quantity": "x-ray",
+            "wavelength": 0.71,
             "xtype": "q",
             "xarray": np.array([1.0, 2.0]),
             "yarray": np.array([100.0, 200.0]),
@@ -64,7 +66,8 @@ params = [
         False,
     ),
     (  # Different wavelengths
-        {
+        {   
+            "wavelength": 0.71,
             "xtype": "tth",
             "xarray": np.empty(0),
             "yarray": np.empty(0),
