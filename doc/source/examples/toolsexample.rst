@@ -24,30 +24,44 @@ Using the tools module, we can efficiently get them in terms of a dictionary.
 
    The function returns a dictionary containing the username and email information.
 
-2) You can also override existing values by passing a dictionary to the function with the keys ``"username"`` and ``"email"`` ::
+2) There are a few ways you could use to override the user information in the configuration files
+    * You can override existing values by passing a dictionary to the function with the keys ``"username"`` and ``"email"`` ::
 
-    new_args = {"username": "new_username", "email": "new@example.com"}
-    new_user_info = get_user_info(new_args)
+        new_args = {"username": "new_username", "email": "new@example.com"}
+        new_user_info = get_user_info(new_args)
 
-3) You can update only the username or email individually, for example ::
+       This returns "new_username" and "new@example.com" instead of the
+    * You can update only the username or email individually, for example ::
 
-    new_username = {"username": new_username}
-    new_user_info = get_user_info(new_username)
+        new_username = {"username": new_username}
+        new_user_info = get_user_info(new_username)
 
-   This updates username to "new_username" while fetching the email from inputs or the configuration files.
-   Similarly, you can update only the email. ::
+       This updates username to "new_username" while fetching the email from inputs or the configuration files.
+       Similarly, you can update only the email. ::
 
-     new_email = {"email": new@email.com}
-     new_user_info = get_user_info(new_email)
+        new_email = {"email": new@email.com}
+        new_user_info = get_user_info(new_email)
 
-   This updates the email to "new@email.com" while fetching the username from inputs or the configuration files.
+       This updates the email to "new@email.com" while fetching the username from inputs or the configuration files.
+
+3) You can also permanently update your default configuration file manually.
+   Locate the file ``diffpyconfig.json``, which is usually in the user's home directory (``~/.diffpy/``) or ``~/.config/diffpy/``.
+   Open the file using a text editor such as nano, vim, or a graphical editor like VS Code.
+   Look for entries like these  ::
+
+    {
+        "username": "John Doe",
+        "email": "john.doe@example.com"
+    }
+
+   Then you can update the username and email as needed, make sure to save your edits.
 
 4) We also have the function ``get_package_info``, which inserts or updates package names and versions
    in the given metadata dictionary under the key "package_info".
    It stores the package information as {"package_info": {"package_name": "version_number"}}.
    This function can be used as follows. ::
 
-    from diffpy.utils.tools import get_user_info
+    from diffpy.utils.tools import get_package_info
     package_metadata = get_package_info("my_package")
 
    You can also specify an existing dictionary to be updated with the information. ::
