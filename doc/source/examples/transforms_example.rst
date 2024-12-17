@@ -42,7 +42,7 @@ This example will demonstrate how to use the functions in the
     For a 1D ``d`` array, you can convert it to ``q`` or ``2theta``. ::
 
     # Example: convert d to q
-    from diffpy.utils.transforms import tth_to_q
+    from diffpy.utils.transforms import d_to_q
     d = np.array([1.0, 0.8, 0.6, 0.4, 0.2])
     q = d_to_q(d)
 
