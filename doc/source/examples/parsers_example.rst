@@ -8,7 +8,7 @@ Parsers Example
 This example will demonstrate how diffpy.utils lets us easily process and serialize files.
 Using the parsers module, we can load file data into simple and easy-to-work-with Python objects.
 
-1) To begin, unzip :download:`parserdata<./exampledata/parserdata.zip>` and take a look at ``data.txt``.
+1) To begin, unzip :download:`parser_data<./example_data/parser_data.zip>` and take a look at ``data.txt``.
    Our goal will be to extract and serialize the data table as well as the parameters listed in the header of this file.
 
 2) To get the data table, we will use the ``loadData`` function. The default behavior of this

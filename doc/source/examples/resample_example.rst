@@ -10,7 +10,7 @@ Specifically, we will resample the grid of one function to match another for us 
 Then we will show how this resampling method lets us create a perfect reconstruction of certain functions
 given enough datapoints.
 
-1) To start, unzip :download:`parserdata<./exampledata/parserdata.zip>`. Then, load the data table from ``Nickel.gr``
+1) To start, unzip :download:`parser_data<./example_data/parser_data.zip>`. Then, load the data table from ``Nickel.gr``
    and ``NiTarget.gr``. These datasets are based on data from `Atomic Pair Distribution Function Analysis: A Primer
    <https://global.oup.com/academic/product/atomic-pair-distribution-function-analysis-9780198885801?cc=us&lang=en&>`_.
    ::
