@@ -8,27 +8,30 @@ Diffraction Objects Example
 This example will demonstrate how to use the functions in the ``diffpy.utils.diffraction_objects`` module
 to create a ``DiffractionObject`` instance and analyze your diffraction data using relevant functions.
 
-1) To create a ``DiffractionObject``, you need to specify the type of the independent variable
-   (referred to as ``xtype``, one of ``q``, ``tth``, or ``d``),
-   an ``xarray`` of the corresponding values, and a ``yarray`` of the intensity values.
-   It is strongly encouraged to specify the ``wavelength`` in order to access
-   most of the other functionalities in the class.
-   Additionally, you can specify the type of your scattering experiment using the ``scat_quantity`` parameter,
-   the name of your diffraction object using the ``name`` parameter,
-   and a ``metadata`` dictionary containing relevant information about the data. Here's an example:
+To create a ``DiffractionObject``, you need to specify the type of the independent variable
+(referred to as ``xtype``, e.g., one of ``q``, ``tth``, or ``d``),
+the ``xarray`` of the ``x`` values, and a ``yarray`` of the corresponding intensity values.
+It is strongly encouraged to specify the ``wavelength`` in order to access
+most of the other functionalities in the class.
+Additionally, you can specify the type of your scattering experiment using the ``scat_quantity`` parameter,
+the name of your diffraction object using the ``name`` parameter,
+and a ``metadata`` dictionary containing relevant information about the data. Here's an example:
 
 .. code-block:: python
+
     import numpy as np
     from diffpy.utils.diffraction_objects import DiffractionObject
+
     x = np.array([0.12, 0.24, 0.31, 0.4])  # independent variable (e.g., q)
     y = np.array([10, 20, 40, 60])  # intensity values
     metadata = {
         "sample": "rock salt from the beach",
         "composition": "NaCl",
         "temperature": "300 K,",
-        "experimenters": "Phill, Sally"
+        "experimenters": ["Phil", "Sally"]
     }
-    do = DiffractionObject(
+
+    my_do = DiffractionObject(
          xarray=x,
          yarray=y,
          xtype="q",
@@ -37,90 +40,143 @@ to create a ``DiffractionObject`` instance and analyze your diffraction data usi
          name="beach_rock_salt_1",
          metadata=metadata
     )
-    print(do.metadata)
 
-   By creating a ``DiffractionObject`` instance, you store not only the diffraction data
-   but also all the associated information for analysis.
+By creating a ``DiffractionObject`` instance, you store not only the diffraction data
+but also all the associated information for analysis.
 
-2) ``DiffractionObject`` automatically populates the ``xarray`` onto ``q``, ``tth``, and ``d``-spacing.
-   If you want to access your diffraction data in a specific spacing, you can do this:
-
-.. code-block:: python
-    q = do.on_xtype("q")
-    tth = do.on_xtype("tth")
-    d = do.on_xtype("d")
-
-   This will return the ``xarray`` and ``yarray`` as a list of two 1D arrays, based on the specified ``xtype``.
-
-3) Once the ``DiffractionObject`` is created, you can use ``get_array_index`` to get the index of the closest value
-   in the ``xarray`` to a specified value.
-   This is useful for alignment or comparison tasks.
-   For example, assume you have created a ``DiffractionObject`` called ``do``,
-   and you want to find the closest index of ``tth=80``, you can type the following: ::
-
-    index = do.get_array_index(80, xtype="tth")
-
-   If you do not specify an ``xtype``, it will default to the ``xtype`` used when creating the ``DiffractionObject``.
-   For example, if you have created a ``DiffractionObject`` called ``do`` with ``xtype="q"``,
-   you can find its closest index for ``q=0.25`` by typing either of the following: ::
-
-    index = do.get_array_index(0.25) # no input xtype, defaults to q
-    index = do.get_array_index(0.25, xtype="q")
-
-4) You can compare diffraction objects too.
-   For example, you can use the ``scale_to`` function to rescale one diffraction object to align its intensity values
-   with a second diffraction object at a (closest) specified value on a specified ``xarray``.
-   This makes it easier for visualizing and comparing two intensity curves on the same plot.
-   For example, to scale ``do1`` to match ``do2`` at ``tth=60``:
+``DiffractionObject`` automatically populates the ``xarray`` onto each of ``q``, ``tth``, and ``d``-spacing.
+Let's say you want to plot your data vs. Q.  To do this you would type
 
 .. code-block:: python
-    # Create Diffraction Objects do1 and do2
-    do1 = DiffractionObject(
-        xarray=np.array([10, 15, 25, 30, 60, 140]),
-        yarray=np.array([10, 20, 25, 30, 60, 100]),
-        xtype="tth",
-        wavelength=2*np.pi
-    )
-    do2 = DiffractionObject(
-        xarray=np.array([10, 20, 25, 30, 60, 140]),
-        yarray=np.array([2, 3, 4, 5, 6, 7]),
-        xtype="tth",
-        wavelength=2*np.pi
-    )
-    do1_scaled = do1.scale_to(do2, tth=60)
 
-   Here, the scaling factor is computed at ``tth=60``, aligning the intensity values.
-   ``do1_scaled`` will have the intensity array ``np.array([1, 2, 2.5, 3, 6, 10])``.
-   You can also scale based on other axes (e.g., ``q=0.2``): ::
+    import matplotlib.pyplot as plt
 
-    do1_scaled = do1.scale_to(do2, q=0.2)
+    plt.plot(my_do.on_q()[0], my_do.on_q()[1])
 
-   The function finds the closest indices for ``q=0.2`` and scales the ``yarray`` accordingly.
+and to plot the same data vs. two-theta type
 
-   Additionally, you can apply an ``offset`` to the scaled ``yarray``. For example: ::
+.. code-block:: python
 
-    do1_scaled = do1.scale_to(do2, tth=60, offset=2) # add 2 to the scaled yarray
-    do1_scaled = do1.scale_to(do2, tth=60, offset=-2) # subtract 2 from the scaled yarray
+    plt.plot(my_do.on_tth()[0], my_do.on_tth()[1])
 
-   This allows you to shift the scaled data for easier comparison.
+These `on_q()`, `on_tth()`, etc., methods return a list with the x-array as the first element
+and the intensity array as the second element.
 
-5) You can create a copy of a diffraction object using the ``copy`` function,
-   when you want to preserve the original data while working with a modified version. ::
+We can also accomplish the same thing by passing the xtype as a string to the ``on_xtype()`` method,
+i.e.,
 
-    # Create a copy of Diffraction Object do
-    do_copy = do.copy()
+.. code-block:: python
 
-6) The ``dump`` function saves the diffraction data and relevant information to a specified file.
-   You can choose one of the data axis (``q``, ``tth``, or ``d``) to export, with ``q`` as the default.
+    data_on_q = my_do.on_xtype("q")
+    data_on_tth = my_do.on_xtype("tth")
+    data_on_d = my_do.on_xtype("d")
+    plt.plot(data_on_d[0], data_on_d[1])
+
+This makes it very easy to compare a diffractioh pattern that was measured or calculated
+on one ``xtype`` with one that was measured or calculated on another.  E.g., suppose that you
+have a calculated powder pattern from a CIF file that was calculated on a d-spacing grid using
+some software package, and
+you want to know if a diffraction pattern you have measured on a Q-grid is the same material.
+You could simply load them both as diffraction objects and plot them together on the same grid.
+
+.. code-block:: python
+
+    calculated = DiffractionObject(xcalc, ycalc, "d")
+    measured = DiffractionObject(xmeas, ymeas, "tth", wavelength=0.717)
+    plt.plot(calculated.on_q()[0], calculated.on_q()[1])
+    plt.plot(measured.on_q()[0], measured.on_q()[1])
+    plt.show
+
+Now, let's say that these two diffraction patterns were on very different scales.  The measured one
+has a peak intensity of 10,000, but the calculated one only goes to 1.
+With diffraction objects this is easy to handle.  We choose a point on the x-axis where
+we want to scale the two together and we use the ``scale_to()`` method,
+
+Continuing the example above, if we wanted to scale the two patterns together at a position
+Q=5.5 inverse angstroms, where for the sake of argument we assume the
+calculated curve has a strong peak,
+we would replace the code above with
+
+.. code-block:: python
+
+    plt.plot(calculated.on_q()[0], calculated.on_q()[1])
+    plt.plot(measured.on_q().scale_to(calculated, q=5.5)[0], measured.on_q().scale_to(calculated, q=5.5)[1])
+    plt.show
+
+The ``scale_to()`` method returns a new ``DiffractionObject`` which we can assign to a new
+variable and make use of,
+
+.. code-block:: python
+
+    scaled_measured = measured.scale_to(calculated, q=5.5)
+
+For convenience, you can also apply an offset to the scaled new diffraction object with the optional
+``offset`` argument, for example,
+
+.. code-block:: python
+
+    scaled_and_offset_measured = measured.scale_to(calculated, q=5.5, offset=0.5)
+
+DiffractionObject convenience functions
+---------------------------------------
+
+1) create a copy of a diffraction object using the ``copy`` method
+   when you want to preserve the original data while working with a modified version.
+
+.. code-block:: python
+
+    copy_of_calculated = calculated.copy()
+
+2) test the equality of two diffraction objects.  For example,
+
+.. code-block:: python
+
+    diff_object2 = diff_object1.copy()
+    diff_object2 == diff_object1
+
+ will return ``True``
+
+3) make arithmetic operations on the intensities of diffraction objects. e.g.,
+
+.. code-block:: python
+
+    doubled_object = 2 * diff_object1     # Double the intensities
+    sum_object = diff_object1 + diff_object2    # Sum the intensities
+    subtract_scaled = diff_object1 - 5 * diff_object2   # subtract 5 * obj2 from obj 1
+
+4) get the value of the DiffractionObject at a given point in one of the xarrays
+
+.. code-block:: python
+
+    tth_ninety_index = diff_object1.get_array_index(90, xtype="tth")
+    intensity_at_ninety = diff_object1.on_tth()[tth_ninety_index]
+
+If you do not specify an ``xtype``, it will default to the ``xtype`` used when creating the ``DiffractionObject``.
+For example, if you have created a ``DiffractionObject`` called ``do`` with ``xtype="q"``,
+you can find its closest index for ``q=0.25`` by typing either of the following:
+
+.. code-block:: python
+
+    print(do._input_xtype)     # remind ourselves which array was input.  prints "q" in this case.
+    index = do.get_array_index(0.25) # no xtype passed, defaults to do._input_xtype, or in this example, q
+    index = do.get_array_index(0.25, xtype="q") # explicitly choose an xtype to specify a value
+
+5) The ``dump`` function saves the diffraction data and relevant information to an xy format file with headers
+(widely used chi format used, for example, by Fit2D and diffpy.  These files can be read by ``LoadData()``
+in ``diffpy.utils.parsers``).
+
+You can choose which of the data axes (``q``, ``tth``, or ``d``) to export, with ``q`` as the default.
 
 .. code-block:: python
     # Assume you have created a Diffraction Object do
-    file = "diffraction_data.xy"
+    file = "diffraction_data.chi"
     do.dump(file, xtype="q")
 
-   In the saved file "diffraction_data.xy",
-   the relevant information (name, scattering quantity, metadata, etc.) is included in the header.
-   Your analysis time and software version are automatically recorded as well.
-   The diffraction data is saved as two columns: the ``q`` values and corresponding intensity values.
-   This ensures your diffraction data, along with all other information,
-   is properly documented and saved for future reference.
+In the saved file ``diffraction_data.chi``,
+relevant metadata are also written in the header (``username``, ``name``, ``scattering quantity``, ``metadata``, etc.).
+The datetime when the DiffractionObject was created and the version of the
+software (see the Section on ``get_package_info()`` for more information)
+is automatically recorded as well.
+The diffraction data is saved as two columns: the ``q`` values and corresponding intensity values.
+This ensures your diffraction data, along with all other information,
+is properly documented and saved for future reference.
