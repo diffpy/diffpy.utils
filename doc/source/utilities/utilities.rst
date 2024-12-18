@@ -14,3 +14,4 @@ Check the :ref:`examples<Examples>` provided for how to use these.
 .. include:: resample_utility.rst
 .. include:: tools_utility.rst
 .. include:: transforms_utility.rst
+.. include:: diffraction_objects_utility.rst
