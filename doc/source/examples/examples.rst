@@ -11,3 +11,4 @@ Landing page for diffpy.utils examples.
     resample_example
     tools_example
     transforms_example
+    diffraction_objects_example
