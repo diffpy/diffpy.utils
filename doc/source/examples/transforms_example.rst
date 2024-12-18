@@ -10,7 +10,9 @@ This example will demonstrate how to use the functions in the
 
 1) Converting from ``q`` to ``2theta`` or ``d``:
    If you have a 1D ``q``-array, you can use the ``q_to_tth`` and ``q_to_d`` functions
-   to convert it to ``2theta`` or ``d``. ::
+   to convert it to ``2theta`` or ``d``.
+
+.. code-block:: python
 
     # Example: convert q to 2theta
     from diffpy.utils.transforms import q_to_tth
@@ -24,7 +26,9 @@ This example will demonstrate how to use the functions in the
     d = q_to_d(q)
 
 (2) Converting from ``2theta`` to ``q`` or ``d``:
-    For a 1D ``2theta`` array, you can convert it to ``q`` or ``d`` in a similar way. ::
+    For a 1D ``2theta`` array, you can convert it to ``q`` or ``d`` in a similar way.
+
+.. code-block:: python
 
     # Example: convert 2theta to q
     from diffpy.utils.transforms import tth_to_q
@@ -39,7 +43,9 @@ This example will demonstrate how to use the functions in the
     d = tth_to_d(tth, wavelength)
 
 (3) Converting from ``d`` to ``q`` or ``2theta``:
-    For a 1D ``d`` array, you can convert it to ``q`` or ``2theta``. ::
+    For a 1D ``d`` array, you can convert it to ``q`` or ``2theta``.
+
+.. code-block:: python
 
     # Example: convert d to q
     from diffpy.utils.transforms import d_to_q
