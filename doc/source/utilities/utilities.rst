@@ -10,6 +10,7 @@ Check the :ref:`examples<Examples>` provided for how to use these.
 .. contents::
    :depth: 2
 
-.. include:: parsersutility.rst
-.. include:: resampleutility.rst
-.. include:: toolsutility.rst
+.. include:: parsers_utility.rst
+.. include:: resample_utility.rst
+.. include:: tools_utility.rst
+.. include:: transforms_utility.rst
