@@ -15,9 +15,8 @@ to create a ``DiffractionObject`` instance and analyze your diffraction data usi
    most of the other functionalities in the class.
    Additionally, you can specify the type of your scattering experiment using the ``scat_quantity`` parameter,
    the name of your diffraction object using the ``name`` parameter,
-   and a ``metadata`` dictionary containing relevant information about the data. Here's an example:
+   and a ``metadata`` dictionary containing relevant information about the data. Here's an example: ::
 
-.. code-block:: python
     import numpy as np
     from diffpy.utils.diffraction_objects import DiffractionObject
     x = np.array([0.12, 0.24, 0.31, 0.4])  # independent variable (e.g., q)
@@ -43,9 +42,8 @@ to create a ``DiffractionObject`` instance and analyze your diffraction data usi
    but also all the associated information for analysis.
 
 2) ``DiffractionObject`` automatically populates the ``xarray`` onto ``q``, ``tth``, and ``d``-spacing.
-   If you want to access your diffraction data in a specific spacing, you can do this:
+   If you want to access your diffraction data in a specific spacing, you can do this: ::
 
-.. code-block:: python
     q = do.on_xtype("q")
     tth = do.on_xtype("tth")
     d = do.on_xtype("d")
@@ -71,9 +69,8 @@ to create a ``DiffractionObject`` instance and analyze your diffraction data usi
    For example, you can use the ``scale_to`` function to rescale one diffraction object to align its intensity values
    with a second diffraction object at a (closest) specified value on a specified ``xarray``.
    This makes it easier for visualizing and comparing two intensity curves on the same plot.
-   For example, to scale ``do1`` to match ``do2`` at ``tth=60``:
+   For example, to scale ``do1`` to match ``do2`` at ``tth=60``: ::
 
-.. code-block:: python
     # Create Diffraction Objects do1 and do2
     do1 = DiffractionObject(
         xarray=np.array([10, 15, 25, 30, 60, 140]),
@@ -111,9 +108,8 @@ to create a ``DiffractionObject`` instance and analyze your diffraction data usi
     do_copy = do.copy()
 
 6) The ``dump`` function saves the diffraction data and relevant information to a specified file.
-   You can choose one of the data axis (``q``, ``tth``, or ``d``) to export, with ``q`` as the default.
+   You can choose one of the data axis (``q``, ``tth``, or ``d``) to export, with ``q`` as the default. ::
 
-.. code-block:: python
     # Assume you have created a Diffraction Object do
     file = "diffraction_data.xy"
     do.dump(file, xtype="q")
