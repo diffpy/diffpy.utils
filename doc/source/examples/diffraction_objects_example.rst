@@ -72,7 +72,7 @@ i.e.,
     data_on_d = my_do.on_xtype("d")
     plt.plot(data_on_d[0], data_on_d[1])
 
-This makes it very easy to compare a diffractioh pattern that was measured or calculated
+This makes it very easy to compare a diffraction pattern that was measured or calculated
 on one ``xtype`` with one that was measured or calculated on another.  E.g., suppose that you
 have a calculated powder pattern from a CIF file that was calculated on a d-spacing grid using
 some software package, and
@@ -85,7 +85,7 @@ You could simply load them both as diffraction objects and plot them together on
     measured = DiffractionObject(xmeas, ymeas, "tth", wavelength=0.717)
     plt.plot(calculated.on_q()[0], calculated.on_q()[1])
     plt.plot(measured.on_q()[0], measured.on_q()[1])
-    plt.show
+    plt.show()
 
 Now, let's say that these two diffraction patterns were on very different scales.  The measured one
 has a peak intensity of 10,000, but the calculated one only goes to 1.
@@ -100,8 +100,8 @@ we would replace the code above with
 .. code-block:: python
 
     plt.plot(calculated.on_q()[0], calculated.on_q()[1])
-    plt.plot(measured.on_q().scale_to(calculated, q=5.5)[0], measured.on_q().scale_to(calculated, q=5.5)[1])
-    plt.show
+    plt.plot(measured.scale_to(calculated, q=5.5).on_q()[0], measured.scale_to(calculated, q=5.5).on_q()[1])
+    plt.show()
 
 The ``scale_to()`` method returns a new ``DiffractionObject`` which we can assign to a new
 variable and make use of,
@@ -134,7 +134,7 @@ DiffractionObject convenience functions
     diff_object2 = diff_object1.copy()
     diff_object2 == diff_object1
 
- will return ``True``
+will return ``True``.
 
 3) make arithmetic operations on the intensities of diffraction objects. e.g.,
 
@@ -149,7 +149,7 @@ DiffractionObject convenience functions
 .. code-block:: python
 
     tth_ninety_index = diff_object1.get_array_index(90, xtype="tth")
-    intensity_at_ninety = diff_object1.on_tth()[tth_ninety_index]
+    intensity_at_ninety = diff_object1.on_tth()[1][tth_ninety_index]
 
 If you do not specify an ``xtype``, it will default to the ``xtype`` used when creating the ``DiffractionObject``.
 For example, if you have created a ``DiffractionObject`` called ``do`` with ``xtype="q"``,
@@ -168,6 +168,7 @@ in ``diffpy.utils.parsers``).
 You can choose which of the data axes (``q``, ``tth``, or ``d``) to export, with ``q`` as the default.
 
 .. code-block:: python
+
     # Assume you have created a Diffraction Object do
     file = "diffraction_data.chi"
     do.dump(file, xtype="q")
