@@ -100,7 +100,7 @@ we would replace the code above with
 .. code-block:: python
 
     plt.plot(calculated.on_q()[0], calculated.on_q()[1])
-    plt.plot(measured.scale_to(calculated, q=5.5)[0], measured.scale_to(calculated, q=5.5)[1])
+    plt.plot(measured.scale_to(calculated, q=5.5).on_q()[0], measured.scale_to(calculated, q=5.5).on_q()[1])
     plt.show()
 
 The ``scale_to()`` method returns a new ``DiffractionObject`` which we can assign to a new
