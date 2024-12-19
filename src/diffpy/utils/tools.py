@@ -91,7 +91,7 @@ def _create_global_config(args):
     return return_bool
 
 
-def get_user_info(args=None):
+def get_user_info(args=None, skip_config_creation=False):
     """
     Get username and email configuration.
 
@@ -114,6 +114,9 @@ def get_user_info(args=None):
     config_bool = True
     global_config = load_config(Path().home() / "diffpyconfig.json")
     local_config = load_config(Path().cwd() / "diffpyconfig.json")
+    if skip_config_creation:
+        config = _sorted_merge(clean_dict(global_config), clean_dict(local_config), clean_dict(args))
+        return config
     if global_config is None and local_config is None:
         print(
             "No global configuration file was found containing "

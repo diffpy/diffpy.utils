@@ -22,6 +22,9 @@ def _run_tests(inputs, expected):
     config = get_user_info(args)
     assert config.get("username") == expected_username
     assert config.get("email") == expected_email
+    config = get_user_info(args, skip_config_creation=True)
+    assert config.get("username") == expected_username
+    assert config.get("email") == expected_email
 
 
 params_user_info_with_home_conf_file = [
@@ -118,7 +121,20 @@ def test_get_user_info_no_conf_file_no_inputs(monkeypatch, inputsa, inputsb, exp
     os.remove(Path().home() / "diffpyconfig.json")
     inp_iter = iter(inputsb)
     monkeypatch.setattr("builtins.input", lambda _: next(inp_iter))
-    _run_tests(inputsa, expected)
+
+    args = {"username": inputsa[0], "email": inputsa[1]}
+    expected_username, expected_email = expected
+
+    # Test with user inputs
+    config = get_user_info(args)
+    assert config.get("username") == expected_username
+    assert config.get("email") == expected_email
+
+    # Test skipping config creation, expecting None values
+    config = get_user_info(args, skip_config_creation=True)
+    assert config.get("username") is None
+    assert config.get("email") is None
+
     confile = Path().home() / "diffpyconfig.json"
     assert confile.exists() is False
 
