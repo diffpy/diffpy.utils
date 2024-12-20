@@ -1,6 +1,6 @@
 **Added:**
 
-* No news added
+* catch division by zero warning messages in tests
 
 **Changed:**
 
