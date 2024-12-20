@@ -117,19 +117,32 @@ def test_tth_to_q_bad(wavelength, tth, expected_error_type, expected_error_msg):
 
 
 @pytest.mark.parametrize(
-    "q, expected_d",
+    "q, expected_d, warning_expected",
     [
-        # UC1: User specified empty q values
-        (np.array([]), np.array([])),
-        # UC2: User specified valid q values
+        # Test conversion of q to d with valid values
+        # Case 1: empty q values, expect empty d values
+        (np.array([]), np.array([]), False),
+        # Case 2:
+        # 1. valid q values, expect d values without warning
+        (
+            np.array([0.1, 1 * np.pi, 2 * np.pi, 3 * np.pi, 4 * np.pi, 5 * np.pi]),
+            np.array([62.83185307, 2, 1, 0.66667, 0.5, 0.4]),
+            False,
+        ),
+        # 2. valid q values containing 0, expect d values with divide by zero warning
         (
             np.array([0, 1 * np.pi, 2 * np.pi, 3 * np.pi, 4 * np.pi, 5 * np.pi]),
             np.array([np.inf, 2, 1, 0.66667, 0.5, 0.4]),
+            True,
         ),
     ],
 )
-def test_q_to_d(q, expected_d):
-    actual_d = q_to_d(q)
+def test_q_to_d(q, expected_d, warning_expected):
+    if warning_expected:
+        with pytest.warns(RuntimeWarning, match="divide by zero encountered in divide"):
+            actual_d = q_to_d(q)
+    else:
+        actual_d = q_to_d(q)
     assert np.allclose(actual_d, expected_d)
 
 
