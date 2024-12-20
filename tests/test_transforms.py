@@ -121,19 +121,18 @@ def test_tth_to_q_bad(wavelength, tth, expected_error_type, expected_error_msg):
     [
         # Case 1: empty q values, expect empty d values
         (np.array([]), np.array([]), False),
-
         # Case 2:
         # 1. valid q values, expect d values without warning
         (
             np.array([0.1, 1 * np.pi, 2 * np.pi, 3 * np.pi, 4 * np.pi, 5 * np.pi]),
             np.array([62.83185307, 2, 1, 0.66667, 0.5, 0.4]),
-            False
+            False,
         ),
         # 2. valid q values containing 0, expect d values with divide by zero warning
         (
             np.array([0, 1 * np.pi, 2 * np.pi, 3 * np.pi, 4 * np.pi, 5 * np.pi]),
             np.array([np.inf, 2, 1, 0.66667, 0.5, 0.4]),
-            True
+            True,
         ),
     ],
 )
