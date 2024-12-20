@@ -135,7 +135,7 @@ def q_to_d(q):
         The array of :math:`d` values np.array([ds]).
     """
     if 0 in q:
-        print(inf_output_wmsg)
+        print(inf_output_imsg)
     return 2.0 * np.pi / copy(q)
 
 
@@ -169,7 +169,7 @@ def tth_to_d(tth, wavelength):
             d[i] = i
         return d
     if 0 in q:
-        warnings.warn(inf_output_wmsg)
+        print(inf_output_imsg)
     return 2.0 * np.pi / copy(q)
 
 
@@ -189,7 +189,7 @@ def d_to_q(d):
         The units of q must be reciprocal of the units of wavelength.
     """
     if 0 in d:
-        warnings.warn(inf_output_wmsg)
+        print(inf_output_imsg)
     return 2.0 * np.pi / copy(d)
 
 
