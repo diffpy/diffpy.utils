@@ -14,6 +14,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
 @pytest.mark.parametrize(
     "do_args_1, do_args_2, expected_equality",
     [
+        # Test when __eqal__ returns True and False
         # Identical args, expect equality
         (
             {
