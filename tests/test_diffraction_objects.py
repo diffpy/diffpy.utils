@@ -53,7 +53,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
             },
             False,
         ),
-        (  # One without wavelnegth, expect inequality
+        (  # One without wavelength, expect inequality
             {
                 "wavelength": 0.71,
                 "xtype": "tth",
@@ -170,7 +170,7 @@ def test_init_invalid_xtype():
 @pytest.mark.parametrize(
     "org_do_args, target_do_args, scale_inputs, expected",
     [
-        # UC1: same x-array and y-array, check offset
+        # Case 1: same x-array and y-array, check offset
         (
             {
                 "xarray": np.array([10, 15, 25, 30, 60, 140]),
@@ -192,7 +192,7 @@ def test_init_invalid_xtype():
             },
             {"xtype": "tth", "yarray": np.array([4.1, 5.1, 6.1, 7.1, 8.1, 9.1])},
         ),
-        # UC2: same length x-arrays with exact x-value match
+        # Case 2: same length x-arrays with exact x-value match
         (
             {
                 "xarray": np.array([10, 15, 25, 30, 60, 140]),
@@ -214,7 +214,7 @@ def test_init_invalid_xtype():
             },
             {"xtype": "tth", "yarray": np.array([1, 2, 2.5, 3, 6, 10])},
         ),
-        # UC3: same length x-arrays with approximate x-value match
+        # Case 3: same length x-arrays with approximate x-value match
         (
             {
                 "xarray": np.array([0.12, 0.24, 0.31, 0.4]),
@@ -236,7 +236,7 @@ def test_init_invalid_xtype():
             },
             {"xtype": "q", "yarray": np.array([1, 2, 4, 6])},
         ),
-        # UC4: different x-array lengths with approximate x-value match
+        # Case 4: different x-array lengths with approximate x-value match
         (
             {
                 "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
@@ -256,7 +256,7 @@ def test_init_invalid_xtype():
                 "d": None,
                 "offset": 0,
             },
-            # Scaling factor is calculated at index = 4 (tth=61) for self and index = 5 for target (tth=62)
+            # Case 5: Scaling factor is calculated at index = 4 (tth=61) for self and index = 5 for target (tth=62)
             {"xtype": "tth", "yarray": np.array([1, 2, 3, 4, 5, 6, 10])},
         ),
     ],
