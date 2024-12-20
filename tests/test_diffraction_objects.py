@@ -10,132 +10,135 @@ from freezegun import freeze_time
 
 from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
 
-params = [
-    (  # Compare same attributes
-        {
-            "name": "same",
-            "scat_quantity": "x-ray",
-            "wavelength": 0.71,
-            "xtype": "q",
-            "xarray": np.array([1.0, 2.0]),
-            "yarray": np.array([100.0, 200.0]),
-            "metadata": {"thing1": 1},
-        },
-        {
-            "name": "same",
-            "scat_quantity": "x-ray",
-            "wavelength": 0.71,
-            "xtype": "q",
-            "xarray": np.array([1.0, 2.0]),
-            "yarray": np.array([100.0, 200.0]),
-            "metadata": {"thing1": 1},
-        },
-        True,
-    ),
-    (  # Different names
-        {
-            "name": "something",
-            "xtype": "tth",
-            "xarray": np.empty(0),
-            "yarray": np.empty(0),
-            "metadata": {"thing1": 1, "thing2": "thing2"},
-        },
-        {
-            "name": "something else",
-            "xtype": "tth",
-            "xarray": np.empty(0),
-            "yarray": np.empty(0),
-            "metadata": {"thing1": 1, "thing2": "thing2"},
-        },
-        False,
-    ),
-    (  # Different wavelengths
-        {
-            "wavelength": 0.71,
-            "xtype": "tth",
-            "xarray": np.empty(0),
-            "yarray": np.empty(0),
-            "metadata": {"thing1": 1, "thing2": "thing2"},
-        },
-        {
-            "xtype": "tth",
-            "xarray": np.empty(0),
-            "yarray": np.empty(0),
-            "metadata": {"thing1": 1, "thing2": "thing2"},
-        },
-        False,
-    ),
-    (  # Different wavelengths
-        {
-            "wavelength": 0.71,
-            "xtype": "tth",
-            "xarray": np.empty(0),
-            "yarray": np.empty(0),
-            "metadata": {"thing1": 1, "thing2": "thing2"},
-        },
-        {
-            "wavelength": 0.711,
-            "xtype": "tth",
-            "xarray": np.empty(0),
-            "yarray": np.empty(0),
-            "metadata": {"thing1": 1, "thing2": "thing2"},
-        },
-        False,
-    ),
-    (  # Different scat_quantity
-        {
-            "scat_quantity": "x-ray",
-            "xtype": "tth",
-            "xarray": np.empty(0),
-            "yarray": np.empty(0),
-            "metadata": {"thing1": 1, "thing2": "thing2"},
-        },
-        {
-            "scat_quantity": "neutron",
-            "xtype": "tth",
-            "xarray": np.empty(0),
-            "yarray": np.empty(0),
-            "metadata": {"thing1": 1, "thing2": "thing2"},
-        },
-        False,
-    ),
-    (  # Different on_q
-        {
-            "xtype": "q",
-            "xarray": np.array([1.0, 2.0]),
-            "yarray": np.array([100.0, 200.0]),
-        },
-        {
-            "xtype": "q",
-            "xarray": np.array([3.0, 4.0]),
-            "yarray": np.array([100.0, 200.0]),
-            "metadata": {"thing1": 1, "thing2": "thing2"},
-        },
-        False,
-    ),
-    (  # Different metadata
-        {
-            "xtype": "q",
-            "xarray": np.empty(0),
-            "yarray": np.empty(0),
-            "metadata": {"thing1": 0, "thing2": "thing2"},
-        },
-        {
-            "xtype": "q",
-            "xarray": np.empty(0),
-            "yarray": np.empty(0),
-            "metadata": {"thing1": 1, "thing2": "thing2"},
-        },
-        False,
-    ),
-]
 
-
-@pytest.mark.parametrize("inputs1, inputs2, expected", params)
-def test_diffraction_objects_equality(inputs1, inputs2, expected):
-    do_1 = DiffractionObject(**inputs1)
-    do_2 = DiffractionObject(**inputs2)
-    assert (do_1 == do_2) == expected
+@pytest.mark.parametrize(
+    "do_args_1, do_args_2, expected_equality",
+    [
+        # Test when __eqal__ returns True and False
+        # Identical args, expect equality
+        (
+            {
+                "name": "same",
+                "scat_quantity": "x-ray",
+                "wavelength": 0.71,
+                "xtype": "q",
+                "xarray": np.array([1.0, 2.0]),
+                "yarray": np.array([100.0, 200.0]),
+                "metadata": {"thing1": 1},
+            },
+            {
+                "name": "same",
+                "scat_quantity": "x-ray",
+                "wavelength": 0.71,
+                "xtype": "q",
+                "xarray": np.array([1.0, 2.0]),
+                "yarray": np.array([100.0, 200.0]),
+                "metadata": {"thing1": 1},
+            },
+            True,
+        ),
+        (  # Different names, expect inequality
+            {
+                "name": "something",
+                "xtype": "tth",
+                "xarray": np.empty(0),
+                "yarray": np.empty(0),
+                "metadata": {"thing1": 1, "thing2": "thing2"},
+            },
+            {
+                "name": "something else",
+                "xtype": "tth",
+                "xarray": np.empty(0),
+                "yarray": np.empty(0),
+                "metadata": {"thing1": 1, "thing2": "thing2"},
+            },
+            False,
+        ),
+        (  # One without wavelength, expect inequality
+            {
+                "wavelength": 0.71,
+                "xtype": "tth",
+                "xarray": np.empty(0),
+                "yarray": np.empty(0),
+                "metadata": {"thing1": 1, "thing2": "thing2"},
+            },
+            {
+                "xtype": "tth",
+                "xarray": np.empty(0),
+                "yarray": np.empty(0),
+                "metadata": {"thing1": 1, "thing2": "thing2"},
+            },
+            False,
+        ),
+        (  # Different wavelengths, expect inequality
+            {
+                "wavelength": 0.71,
+                "xtype": "tth",
+                "xarray": np.empty(0),
+                "yarray": np.empty(0),
+                "metadata": {"thing1": 1, "thing2": "thing2"},
+            },
+            {
+                "wavelength": 0.711,
+                "xtype": "tth",
+                "xarray": np.empty(0),
+                "yarray": np.empty(0),
+                "metadata": {"thing1": 1, "thing2": "thing2"},
+            },
+            False,
+        ),
+        (  # Different scat_quantity, expect inequality
+            {
+                "scat_quantity": "x-ray",
+                "xtype": "tth",
+                "xarray": np.empty(0),
+                "yarray": np.empty(0),
+                "metadata": {"thing1": 1, "thing2": "thing2"},
+            },
+            {
+                "scat_quantity": "neutron",
+                "xtype": "tth",
+                "xarray": np.empty(0),
+                "yarray": np.empty(0),
+                "metadata": {"thing1": 1, "thing2": "thing2"},
+            },
+            False,
+        ),
+        (  # Different q xarray values, expect inequality
+            {
+                "xtype": "q",
+                "xarray": np.array([1.0, 2.0]),
+                "yarray": np.array([100.0, 200.0]),
+            },
+            {
+                "xtype": "q",
+                "xarray": np.array([3.0, 4.0]),
+                "yarray": np.array([100.0, 200.0]),
+                "metadata": {"thing1": 1, "thing2": "thing2"},
+            },
+            False,
+        ),
+        (  # Different metadata, expect inequality
+            {
+                "xtype": "q",
+                "xarray": np.empty(0),
+                "yarray": np.empty(0),
+                "metadata": {"thing1": 0, "thing2": "thing2"},
+            },
+            {
+                "xtype": "q",
+                "xarray": np.empty(0),
+                "yarray": np.empty(0),
+                "metadata": {"thing1": 1, "thing2": "thing2"},
+            },
+            False,
+        ),
+    ],
+)
+def test_diffraction_objects_equality(do_args_1, do_args_2, expected_equality):
+    do_1 = DiffractionObject(**do_args_1)
+    do_2 = DiffractionObject(**do_args_2)
+    assert (do_1 == do_2) == expected_equality
 
 
 @pytest.mark.parametrize(
@@ -165,99 +168,109 @@ def test_init_invalid_xtype():
         return DiffractionObject(xarray=np.empty(0), yarray=np.empty(0), xtype="invalid_type", wavelength=1.54)
 
 
-params_scale_to = [
-    # UC1: same x-array and y-array, check offset
-    (
-        {
-            "xarray": np.array([10, 15, 25, 30, 60, 140]),
-            "yarray": np.array([2, 3, 4, 5, 6, 7]),
-            "xtype": "tth",
-            "wavelength": 2 * np.pi,
-            "target_xarray": np.array([10, 15, 25, 30, 60, 140]),
-            "target_yarray": np.array([2, 3, 4, 5, 6, 7]),
-            "target_xtype": "tth",
-            "target_wavelength": 2 * np.pi,
-            "q": None,
-            "tth": 60,
-            "d": None,
-            "offset": 2.1,
-        },
-        {"xtype": "tth", "yarray": np.array([4.1, 5.1, 6.1, 7.1, 8.1, 9.1])},
-    ),
-    # UC2: same length x-arrays with exact x-value match
-    (
-        {
-            "xarray": np.array([10, 15, 25, 30, 60, 140]),
-            "yarray": np.array([10, 20, 25, 30, 60, 100]),
-            "xtype": "tth",
-            "wavelength": 2 * np.pi,
-            "target_xarray": np.array([10, 20, 25, 30, 60, 140]),
-            "target_yarray": np.array([2, 3, 4, 5, 6, 7]),
-            "target_xtype": "tth",
-            "target_wavelength": 2 * np.pi,
-            "q": None,
-            "tth": 60,
-            "d": None,
-            "offset": 0,
-        },
-        {"xtype": "tth", "yarray": np.array([1, 2, 2.5, 3, 6, 10])},
-    ),
-    # UC3: same length x-arrays with approximate x-value match
-    (
-        {
-            "xarray": np.array([0.12, 0.24, 0.31, 0.4]),
-            "yarray": np.array([10, 20, 40, 60]),
-            "xtype": "q",
-            "wavelength": 2 * np.pi,
-            "target_xarray": np.array([0.14, 0.24, 0.31, 0.4]),
-            "target_yarray": np.array([1, 3, 4, 5]),
-            "target_xtype": "q",
-            "target_wavelength": 2 * np.pi,
-            "q": 0.1,
-            "tth": None,
-            "d": None,
-            "offset": 0,
-        },
-        {"xtype": "q", "yarray": np.array([1, 2, 4, 6])},
-    ),
-    # UC4: different x-array lengths with approximate x-value match
-    (
-        {
-            "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
-            "yarray": np.array([10, 20, 30, 40, 50, 60, 100]),
-            "xtype": "tth",
-            "wavelength": 2 * np.pi,
-            "target_xarray": np.array([20, 25.5, 32, 45, 50, 62, 100, 125, 140]),
-            "target_yarray": np.array([1.1, 2, 3, 3.5, 4, 5, 10, 12, 13]),
-            "target_xtype": "tth",
-            "target_wavelength": 2 * np.pi,
-            "q": None,
-            "tth": 60,
-            "d": None,
-            "offset": 0,
-        },
-        # scaling factor is calculated at index = 4 (tth=61) for self and index = 5 for target (tth=62)
-        {"xtype": "tth", "yarray": np.array([1, 2, 3, 4, 5, 6, 10])},
-    ),
-]
-
-
-@pytest.mark.parametrize("inputs, expected", params_scale_to)
-def test_scale_to(inputs, expected):
-    orig_diff_object = DiffractionObject(
-        xarray=inputs["xarray"], yarray=inputs["yarray"], xtype=inputs["xtype"], wavelength=inputs["wavelength"]
-    )
-    target_diff_object = DiffractionObject(
-        xarray=inputs["target_xarray"],
-        yarray=inputs["target_yarray"],
-        xtype=inputs["target_xtype"],
-        wavelength=inputs["target_wavelength"],
-    )
-    scaled_diff_object = orig_diff_object.scale_to(
-        target_diff_object, q=inputs["q"], tth=inputs["tth"], d=inputs["d"], offset=inputs["offset"]
+@pytest.mark.parametrize(
+    "org_do_args, target_do_args, scale_inputs, expected",
+    [
+        # Test that scale_to() scales to the correct values
+        # Case 1: same x-array and y-array, check offset
+        (
+            {
+                "xarray": np.array([10, 15, 25, 30, 60, 140]),
+                "yarray": np.array([2, 3, 4, 5, 6, 7]),
+                "xtype": "tth",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "xarray": np.array([10, 15, 25, 30, 60, 140]),
+                "yarray": np.array([2, 3, 4, 5, 6, 7]),
+                "xtype": "tth",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "q": None,
+                "tth": 60,
+                "d": None,
+                "offset": 2.1,
+            },
+            {"xtype": "tth", "yarray": np.array([4.1, 5.1, 6.1, 7.1, 8.1, 9.1])},
+        ),
+        # Case 2: same length x-arrays with exact x-value match
+        (
+            {
+                "xarray": np.array([10, 15, 25, 30, 60, 140]),
+                "yarray": np.array([10, 20, 25, 30, 60, 100]),
+                "xtype": "tth",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "xarray": np.array([10, 20, 25, 30, 60, 140]),
+                "yarray": np.array([2, 3, 4, 5, 6, 7]),
+                "xtype": "tth",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "q": None,
+                "tth": 60,
+                "d": None,
+                "offset": 0,
+            },
+            {"xtype": "tth", "yarray": np.array([1, 2, 2.5, 3, 6, 10])},
+        ),
+        # Case 3: same length x-arrays with approximate x-value match
+        (
+            {
+                "xarray": np.array([0.12, 0.24, 0.31, 0.4]),
+                "yarray": np.array([10, 20, 40, 60]),
+                "xtype": "q",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "xarray": np.array([0.14, 0.24, 0.31, 0.4]),
+                "yarray": np.array([1, 3, 4, 5]),
+                "xtype": "q",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "q": 0.1,
+                "tth": None,
+                "d": None,
+                "offset": 0,
+            },
+            {"xtype": "q", "yarray": np.array([1, 2, 4, 6])},
+        ),
+        # Case 4: different x-array lengths with approximate x-value match
+        (
+            {
+                "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
+                "yarray": np.array([10, 20, 30, 40, 50, 60, 100]),
+                "xtype": "tth",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "xarray": np.array([20, 25.5, 32, 45, 50, 62, 100, 125, 140]),
+                "yarray": np.array([1.1, 2, 3, 3.5, 4, 5, 10, 12, 13]),
+                "xtype": "tth",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "q": None,
+                "tth": 60,
+                "d": None,
+                "offset": 0,
+            },
+            # Case 5: Scaling factor is calculated at index = 4 (tth=61) for self and index = 5 for target (tth=62)
+            {"xtype": "tth", "yarray": np.array([1, 2, 3, 4, 5, 6, 10])},
+        ),
+    ],
+)
+def test_scale_to(org_do_args, target_do_args, scale_inputs, expected):
+    original_do = DiffractionObject(**org_do_args)
+    target_do = DiffractionObject(**target_do_args)
+    scaled_do = original_do.scale_to(
+        target_do, q=scale_inputs["q"], tth=scale_inputs["tth"], d=scale_inputs["d"], offset=scale_inputs["offset"]
     )
     # Check the intensity data is the same as expected
-    assert np.allclose(scaled_diff_object.on_xtype(expected["xtype"])[1], expected["yarray"])
+    assert np.allclose(scaled_do.on_xtype(expected["xtype"])[1], expected["yarray"])
 
 
 params_scale_to_bad = [
