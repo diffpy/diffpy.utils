@@ -171,6 +171,7 @@ def test_init_invalid_xtype():
 @pytest.mark.parametrize(
     "org_do_args, target_do_args, scale_inputs, expected",
     [
+        # Test that scale_to() scales to the correct values
         # Case 1: same x-array and y-array, check offset
         (
             {
