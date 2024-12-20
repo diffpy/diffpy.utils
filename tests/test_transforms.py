@@ -122,7 +122,6 @@ def test_tth_to_q_bad(wavelength, tth, expected_error_type, expected_error_msg):
         # Test conversion of q to d with valid values
         # Case 1: empty q values, expect empty d values
         (np.array([]), np.array([]), False),
-
         # Case 2:
         # 1. valid q values, expect d values without warning
         (
