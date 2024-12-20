@@ -27,152 +27,151 @@ def _run_tests(cli_inputs, expected):
 
 params_user_info_with_home_conf_file = [
     (
-        {"skip_config_creation": False, "cli_username": None, "cli_email": None},
+        {"cli_username": None, "cli_email": None, "skip_config_creation": False},
         {"expected_username": "home_username", "expected_email": "home@email.com"},
     ),
     (
-        {"skip_config_creation": False, "cli_username": "cli_username", "cli_email": None},
+        {"cli_username": "cli_username", "cli_email": None, "skip_config_creation": False},
         {"expected_username": "cli_username", "expected_email": "home@email.com"},
     ),
     (
-        {"skip_config_creation": False, "cli_username": None, "cli_email": "cli@email.com"},
+        {"cli_username": None, "cli_email": "cli@email.com", "skip_config_creation": False},
         {"expected_username": "home_username", "expected_email": "cli@email.com"},
     ),
     (
-        {"skip_config_creation": False, "cli_username": "cli_username", "cli_email": "cli@email.com"},
+        {"cli_username": "cli_username", "cli_email": "cli@email.com", "skip_config_creation": False},
         {"expected_username": "cli_username", "expected_email": "cli@email.com"},
     ),
     (
-        {"skip_config_creation": True, "cli_username": None, "cli_email": None},
+        {"cli_username": None, "cli_email": None, "skip_config_creation": True},
         {"expected_username": "home_username", "expected_email": "home@email.com"},
     ),
     (
-        {"skip_config_creation": True, "cli_username": "cli_username", "cli_email": None},
+        {"cli_username": "cli_username", "cli_email": None, "skip_config_creation": True},
         {"expected_username": "cli_username", "expected_email": "home@email.com"},
     ),
     (
-        {"skip_config_creation": True, "cli_username": None, "cli_email": "cli@email.com"},
+        {"cli_username": None, "cli_email": "cli@email.com", "skip_config_creation": True},
         {"expected_username": "home_username", "expected_email": "cli@email.com"},
     ),
     (
-        {"skip_config_creation": True, "cli_username": "cli_username", "cli_email": "cli@email.com"},
+        {"cli_username": "cli_username", "cli_email": "cli@email.com", "skip_config_creation": True},
         {"expected_username": "cli_username", "expected_email": "cli@email.com"},
     ),
 ]
 params_user_info_with_local_conf_file = [
     (
-        {"skip_config_creation": False, "cli_username": None, "cli_email": None},
+        {"cli_username": None, "cli_email": None, "skip_config_creation": False},
         {"expected_username": "cwd_username", "expected_email": "cwd@email.com"},
     ),
     (
-        {"skip_config_creation": False, "cli_username": "cli_username", "cli_email": None},
+        {"cli_username": "cli_username", "cli_email": None, "skip_config_creation": False},
         {"expected_username": "cli_username", "expected_email": "cwd@email.com"},
     ),
     (
-        {"skip_config_creation": False, "cli_username": None, "cli_email": "cli@email.com"},
+        {"cli_username": None, "cli_email": "cli@email.com", "skip_config_creation": False},
         {"expected_username": "cwd_username", "expected_email": "cli@email.com"},
     ),
     (
-        {"skip_config_creation": False, "cli_username": "cli_username", "cli_email": "cli@email.com"},
+        {"cli_username": "cli_username", "cli_email": "cli@email.com", "skip_config_creation": False},
         {"expected_username": "cli_username", "expected_email": "cli@email.com"},
     ),
     (
-        {"skip_config_creation": True, "cli_username": None, "cli_email": None},
+        {"cli_username": None, "cli_email": None, "skip_config_creation": True},
         {"expected_username": "cwd_username", "expected_email": "cwd@email.com"},
     ),
     (
-        {"skip_config_creation": True, "cli_username": "cli_username", "cli_email": None},
+        {"cli_username": "cli_username", "cli_email": None, "skip_config_creation": True},
         {"expected_username": "cli_username", "expected_email": "cwd@email.com"},
     ),
     (
-        {"skip_config_creation": True, "cli_username": None, "cli_email": "cli@email.com"},
+        {"cli_username": None, "cli_email": "cli@email.com", "skip_config_creation": True},
         {"expected_username": "cwd_username", "expected_email": "cli@email.com"},
     ),
     (
-        {"skip_config_creation": True, "cli_username": "cli_username", "cli_email": "cli@email.com"},
+        {"cli_username": "cli_username", "cli_email": "cli@email.com", "skip_config_creation": True},
         {"expected_username": "cli_username", "expected_email": "cli@email.com"},
     ),
 ]
 params_user_info_with_no_conf_file = [
-    # Case 1: no inputs, do not create config files
+    # Case 1: None or only one of username or email is provided, config file should not be created
     (
-        {"skip_config_creation": False, "cli_username": None, "cli_email": None},
+        {"cli_username": None, "cli_email": None, "skip_config_creation": False},
         {"input_username": "", "input_email": ""},
         {"expected_username": "", "expected_email": "", "config_file_exists": False},
     ),
-    # Case 2: One input (username / email) and the other is empty, do not create config file
     (
-        {"skip_config_creation": False, "cli_username": "cli_username", "cli_email": None},
+        {"cli_username": "cli_username", "cli_email": None, "skip_config_creation": False},
         {"input_username": "", "input_email": ""},
         {"expected_username": "cli_username", "expected_email": "", "config_file_exists": False},
     ),
     (
-        {"skip_config_creation": False, "cli_username": None, "cli_email": "cli@email.com"},
+        {"cli_username": None, "cli_email": "cli@email.com", "skip_config_creation": False},
         {"input_username": "", "input_email": ""},
         {"expected_username": "", "expected_email": "cli@email.com", "config_file_exists": False},
     ),
     (
-        {"skip_config_creation": False, "cli_username": None, "cli_email": None},
+        {"cli_username": None, "cli_email": None, "skip_config_creation": False},
         {"input_username": "input_username", "input_email": ""},
         {"expected_username": "input_username", "expected_email": "", "config_file_exists": False},
     ),
     (
-        {"skip_config_creation": False, "cli_username": None, "cli_email": None},
+        {"cli_username": None, "cli_email": None, "skip_config_creation": False},
         {"input_username": "", "input_email": "input@email.com"},
         {"expected_username": "", "expected_email": "input@email.com", "config_file_exists": False},
     ),
     (
-        {"skip_config_creation": False, "cli_username": "cli_username", "cli_email": None},
+        {"cli_username": "cli_username", "cli_email": None, "skip_config_creation": False},
         {"input_username": "input_username", "input_email": ""},
         {"expected_username": "input_username", "expected_email": "", "config_file_exists": False},
     ),
     (
-        {"skip_config_creation": False, "cli_username": None, "cli_email": "cli@email.com"},
+        {"cli_username": None, "cli_email": "cli@email.com", "skip_config_creation": False},
         {"input_username": "", "input_email": "input@email.com"},
         {"expected_username": "", "expected_email": "input@email.com", "config_file_exists": False},
     ),
-    # Case 2: Both inputs, create global config file
+    # Case 2: Both username and email are provided, config file should be created
     (
-        {"skip_config_creation": False, "cli_username": "cli_username", "cli_email": "cli@email.com"},
+        {"cli_username": "cli_username", "cli_email": "cli@email.com", "skip_config_creation": False},
         {"input_username": "", "input_email": ""},
         {"expected_username": "cli_username", "expected_email": "cli@email.com", "config_file_exists": True},
     ),
     (
-        {"skip_config_creation": False, "cli_username": "cli_username", "cli_email": None},
+        {"cli_username": "cli_username", "cli_email": None, "skip_config_creation": False},
         {"input_username": "", "input_email": "input@email.com"},
         {"expected_username": "cli_username", "expected_email": "input@email.com", "config_file_exists": True},
     ),
     (
-        {"skip_config_creation": False, "cli_username": None, "cli_email": "cli@email.com"},
+        {"cli_username": None, "cli_email": "cli@email.com", "skip_config_creation": False},
         {"input_username": "input_username", "input_email": ""},
         {"expected_username": "input_username", "expected_email": "cli@email.com", "config_file_exists": True},
     ),
     (
-        {"skip_config_creation": False, "cli_username": None, "cli_email": None},
+        {"cli_username": None, "cli_email": None, "skip_config_creation": False},
         {"input_username": "input_username", "input_email": "input@email.com"},
         {"expected_username": "input_username", "expected_email": "input@email.com", "config_file_exists": True},
     ),
     (
-        {"skip_config_creation": False, "cli_username": "cli_username", "cli_email": "cli@email.com"},
+        {"cli_username": "cli_username", "cli_email": "cli@email.com", "skip_config_creation": False},
         {"input_username": "input_username", "input_email": "input@email.com"},
         {"expected_username": "input_username", "expected_email": "input@email.com", "config_file_exists": True},
     ),
 ]
 params_user_info_no_conf_file_no_inputs = [
     (
-        {"skip_config_creation": True, "cli_username": None, "cli_email": None},
+        {"cli_username": None, "cli_email": None, "skip_config_creation": True},
         {"expected_username": "", "expected_email": ""},
     ),
     (
-        {"skip_config_creation": True, "cli_username": "cli_username", "cli_email": None},
+        {"cli_username": "cli_username", "cli_email": None, "skip_config_creation": True},
         {"expected_username": "cli_username", "expected_email": ""},
     ),
     (
-        {"skip_config_creation": True, "cli_username": None, "cli_email": "cli@email.com"},
+        {"cli_username": None, "cli_email": "cli@email.com", "skip_config_creation": True},
         {"expected_username": "", "expected_email": "cli@email.com"},
     ),
     (
-        {"skip_config_creation": True, "cli_username": "cli_username", "cli_email": "cli@email.com"},
+        {"cli_username": "cli_username", "cli_email": "cli@email.com", "skip_config_creation": True},
         {"expected_username": "cli_username", "expected_email": "cli@email.com"},
     ),
 ]

@@ -10,7 +10,7 @@ user_info_imsg = (
     "computer and your name will be automatically associated with subsequent diffpy data by default.\n"
     "This is not recommended on a shared or public computer. "
     "You will only have to do that once.\n"
-    "For more information, please refer to www.diffpy.org/diffpy.utils/examples/toolsexample.html"
+    "For more information, please refer to www.diffpy.org/diffpy.utils/examples/toolsexample.html."
 )
 
 
@@ -36,7 +36,7 @@ def _clean_dict(obj):
     return obj
 
 
-def stringify(obj):
+def _stringify(obj):
     """
     Convert None to an empty string.
 
@@ -53,7 +53,7 @@ def stringify(obj):
     return obj if obj is not None else ""
 
 
-def load_config(file_path):
+def _load_config(file_path):
     """
     Load configuration from a .json file.
 
@@ -77,7 +77,7 @@ def load_config(file_path):
         return None
 
 
-def _merge_sorted_configs(*dicts):
+def _sorted_merge(*dicts):
     merged = {}
     for d in dicts:
         d = _clean_dict(d)
@@ -93,15 +93,16 @@ def _create_global_config(user_info):
     email = input(f"Please enter the your email " f"[{user_info.get('email', '')}]:  ").strip() or user_info.get(
         "email", ""
     )
-    config = {"username": stringify(username), "email": stringify(email)}
+    config = {"username": _stringify(username), "email": _stringify(email)}
     if username and email:
         with open(Path().home() / "diffpyconfig.json", "w") as f:
             f.write(json.dumps(config))
-    print(
-        f"You can manually edit the config file at {Path().home() / 'diffpyconfig.json'} using any text editor.\n"
-        f"Or you can update the config file by passing new values to get_user_info(), "
-        f"see examples here: https://www.diffpy.org/diffpy.utils/examples/toolsexample.html"
-    )
+        print(
+            f"You can manually edit the config file at "
+            f"{Path().home() / 'diffpyconfig.json'} using any text editor.\n"
+            f"Or you can update the config file by passing new values to get_user_info(), "
+            f"see examples here: https://www.diffpy.org/diffpy.utils/examples/toolsexample.html."
+        )
     return config
 
 
@@ -109,12 +110,12 @@ def get_user_info(user_info=None, skip_config_creation=False):
     """
     Get username and email configuration.
 
-    The workflow is following:
-    We first attempt to load config file from global and local paths.
-    If any exists, it prioritizes values from user_info, then local, then global.
-    Otherwise, if user wants to skip config creation, it uses user_info as the final info, even if it's empty.
-    Otherwise, prompt for user inputs, and create a global config file.
-    Removes invalid global config file if creation is needed, replacing it with empty username and email.
+    Workflow:
+    1. First attempts to load config file from global and local paths.
+    2. If config files exist, prioritizes values from user_info, then local config, then global config.
+    3. Otherwise, if user wants to skip config creation, uses user_info as the final config, even if it's empty.
+    4. Otherwise, if no config files exist and user does not want to skip config creation, prompts for user inputs.
+    5. If no config files exist, a global config file will only be created if both username and email are valid.
 
     Parameters
     ----------
@@ -126,14 +127,14 @@ def get_user_info(user_info=None, skip_config_creation=False):
     dict or None:
         The dictionary containing username and email with corresponding values.
     """
-    global_config = load_config(Path().home() / "diffpyconfig.json")
-    local_config = load_config(Path().cwd() / "diffpyconfig.json")
+    global_config = _load_config(Path().home() / "diffpyconfig.json")
+    local_config = _load_config(Path().cwd() / "diffpyconfig.json")
     if global_config or local_config:
-        return _merge_sorted_configs(global_config, local_config, user_info)
+        return _sorted_merge(global_config, local_config, user_info)
     if skip_config_creation:
         return {
-            "username": stringify(user_info.get("username", "")),
-            "email": stringify(user_info.get("email", "")),
+            "username": _stringify(user_info.get("username", "")),
+            "email": _stringify(user_info.get("email", "")),
         }
     print(user_info_imsg)
     return _create_global_config(user_info)
