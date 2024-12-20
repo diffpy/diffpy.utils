@@ -1,11 +1,20 @@
 import importlib.metadata
 import json
-import os
 from copy import copy
 from pathlib import Path
 
+user_info_imsg = (
+    "No global configuration file was found containing "
+    "information about the user to associate with the data.\n"
+    "By following the prompts below you can add your name and email to this file on the current "
+    "computer and your name will be automatically associated with subsequent diffpy data by default.\n"
+    "This is not recommended on a shared or public computer. "
+    "You will only have to do that once.\n"
+    "For more information, please refer to www.diffpy.org/diffpy.utils/examples/toolsexample.html"
+)
 
-def clean_dict(obj):
+
+def _clean_dict(obj):
     """
     Remove keys from the dictionary where the corresponding value is None.
 
@@ -68,9 +77,10 @@ def load_config(file_path):
         return None
 
 
-def _sorted_merge(*dicts):
+def _merge_sorted_configs(*dicts):
     merged = {}
     for d in dicts:
+        d = _clean_dict(d)
         merged.update(d)
     return merged
 
@@ -83,24 +93,27 @@ def _create_global_config(user_info):
     email = input(f"Please enter the your email " f"[{user_info.get('email', '')}]:  ").strip() or user_info.get(
         "email", ""
     )
-    return_bool = False if username is None or email is None else True
-    with open(Path().home() / "diffpyconfig.json", "w") as f:
-        f.write(json.dumps({"username": stringify(username), "email": stringify(email)}))
+    config = {"username": stringify(username), "email": stringify(email)}
+    if username and email:
+        with open(Path().home() / "diffpyconfig.json", "w") as f:
+            f.write(json.dumps(config))
     print(
         f"You can manually edit the config file at {Path().home() / 'diffpyconfig.json'} using any text editor.\n"
         f"Or you can update the config file by passing new values to get_user_info(), "
         f"see examples here: https://www.diffpy.org/diffpy.utils/examples/toolsexample.html"
     )
-    return return_bool
+    return config
 
 
-def get_user_info(user_info=None):
+def get_user_info(user_info=None, skip_config_creation=False):
     """
     Get username and email configuration.
 
-    First attempts to load config file from global and local paths.
-    If neither exists, creates a global config file.
-    It prioritizes values from user_info, then local, then global.
+    The workflow is following:
+    We first attempt to load config file from global and local paths.
+    If any exists, it prioritizes values from user_info, then local, then global.
+    Otherwise, if user wants to skip config creation, it uses user_info as the final info, even if it's empty.
+    Otherwise, prompt for user inputs, and create a global config file.
     Removes invalid global config file if creation is needed, replacing it with empty username and email.
 
     Parameters
@@ -112,29 +125,18 @@ def get_user_info(user_info=None):
     -------
     dict or None:
         The dictionary containing username and email with corresponding values.
-
     """
-    config_bool = True
     global_config = load_config(Path().home() / "diffpyconfig.json")
     local_config = load_config(Path().cwd() / "diffpyconfig.json")
-    if global_config is None and local_config is None:
-        print(
-            "No global configuration file was found containing "
-            "information about the user to associate with the data.\n"
-            "By following the prompts below you can add your name and email to this file on the current "
-            "computer and your name will be automatically associated with subsequent diffpy data by default.\n"
-            "This is not recommended on a shared or public computer. "
-            "You will only have to do that once.\n"
-            "For more information, please refer to www.diffpy.org/diffpy.utils/examples/toolsexample.html"
-        )
-        config_bool = _create_global_config(user_info)
-        global_config = load_config(Path().home() / "diffpyconfig.json")
-    config = _sorted_merge(clean_dict(global_config), clean_dict(local_config), clean_dict(user_info))
-    if config_bool is False:
-        os.remove(Path().home() / "diffpyconfig.json")
-        config = {"username": "", "email": ""}
-
-    return config
+    if global_config or local_config:
+        return _merge_sorted_configs(global_config, local_config, user_info)
+    if skip_config_creation:
+        return {
+            "username": stringify(user_info.get("username", "")),
+            "email": stringify(user_info.get("email", "")),
+        }
+    print(user_info_imsg)
+    return _create_global_config(user_info)
 
 
 def get_package_info(package_names, metadata=None):
