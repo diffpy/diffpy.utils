@@ -171,8 +171,13 @@ def test_d_to_q(d, expected_q):
         ),
     ],
 )
-def test_tth_to_d(wavelength, tth, expected_d):
-    actual_d = tth_to_d(tth, wavelength)
+def test_tth_to_d(wavelength, tth, expected_d, wavelength_warning_msg):
+    if wavelength is None:
+        with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
+            actual_d = tth_to_d(tth, wavelength)
+    else:
+        actual_d = tth_to_d(tth, wavelength)
+
     assert np.allclose(actual_d, expected_d)
 
 
@@ -221,8 +226,13 @@ def test_tth_to_d_invalid(wavelength, tth, expected_error_type, expected_error_m
         ),
     ],
 )
-def test_d_to_tth(wavelength, d, expected_tth):
-    actual_tth = d_to_tth(d, wavelength)
+def test_d_to_tth(wavelength, d, expected_tth, wavelength_warning_msg):
+    if wavelength is None:
+        with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
+            actual_tth = d_to_tth(d, wavelength)
+    else:
+        actual_tth = d_to_tth(d, wavelength)
+
     assert np.allclose(actual_tth, expected_tth)
 
 
