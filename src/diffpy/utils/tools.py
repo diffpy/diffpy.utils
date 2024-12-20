@@ -85,7 +85,16 @@ def _sorted_merge(*dicts):
     return merged
 
 
+def _get_config_info(user_info):
+    global_config = _load_config(Path().home() / "diffpyconfig.json")
+    local_config = _load_config(Path().cwd() / "diffpyconfig.json")
+    if global_config or local_config:
+        return _sorted_merge(global_config, local_config, user_info)
+    return None
+
+
 def _create_global_config(user_info):
+    print(user_info_imsg)
     username = input(
         f"Please enter the name you would want future work to be credited to "
         f"[{user_info.get('username', '')}]:  "
@@ -108,14 +117,13 @@ def _create_global_config(user_info):
 
 def get_user_info(user_info=None, skip_config_creation=False):
     """
-    Get username and email configuration.
+    Retrieve or create user configuration (username and email).
 
     Workflow:
-    1. First attempts to load config file from global and local paths.
-    2. If config files exist, prioritizes values from user_info, then local config, then global config.
-    3. Otherwise, if user wants to skip config creation, uses user_info as the final config, even if it's empty.
-    4. Otherwise, if no config files exist and user does not want to skip config creation, prompts for user inputs.
-    5. If no config files exist, a global config file will only be created if both username and email are valid.
+    1. Loads config from global and local paths, prioritizing user_info, then local, then global.
+    2. If no config files are found and skip_config_creation is False, prompts the user for input.
+       Creates a global config file only if both username and email are valid.
+    3. If no config files and skip_config_creation is True, uses user_info (even if empty).
 
     Parameters
     ----------
@@ -127,17 +135,15 @@ def get_user_info(user_info=None, skip_config_creation=False):
     dict or None:
         The dictionary containing username and email with corresponding values.
     """
-    global_config = _load_config(Path().home() / "diffpyconfig.json")
-    local_config = _load_config(Path().cwd() / "diffpyconfig.json")
-    if global_config or local_config:
-        return _sorted_merge(global_config, local_config, user_info)
-    if skip_config_creation:
-        return {
-            "username": _stringify(user_info.get("username", "")),
-            "email": _stringify(user_info.get("email", "")),
-        }
-    print(user_info_imsg)
-    return _create_global_config(user_info)
+    config = _get_config_info(user_info)
+    if config:
+        return config
+    if not skip_config_creation:
+        return _create_global_config(user_info)
+    return {
+        "username": _stringify(user_info.get("username", "")),
+        "email": _stringify(user_info.get("email", "")),
+    }
 
 
 def get_package_info(package_names, metadata=None):
