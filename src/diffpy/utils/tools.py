@@ -92,22 +92,38 @@ def _create_global_config(args):
 
 def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
     """
-    Get username, email and orcid configuration.
+    Get name, email and orcid of the owner/user from various sources and return it as a metadata dictionary
 
-    First attempts to load config file from global and local paths.
-    If neither exists, creates a global config file.
-    It prioritizes values from args, then local, then global.
-    Removes invalid global config file if creation is needed, replacing it with empty username and email.
+    The function looks for the information in json format configuration files with the name 'diffpyconfig.json'.
+    These can be in the user's home directory and in the current working directory.  The information in the
+    config files are combined, with the local config overriding the home-directory one.  Values for
+    owner_name, owner_email, and owner_orcid may be passed in to the function and these override the values
+    in the config files.
+
+    A template for the config file is below.  Create a text file called 'diffpyconfig.json' in your home directory
+    and copy-paste the template into it, editing it with your real information.
+    {
+      "owner_name": "<your name as you would like it stored with your data>>",
+      "owner_email": "<your_associated_email>>@email.com",
+      "owner_orcid": "<your_associated_orcid if you would like this stored with your data>>"
+    }
+    You may also store any other gloabl-level information that you would like associated with your
+    diffraction data in this file
 
     Parameters
     ----------
-    args argparse.Namespace
-        The arguments from the parser, default is None.
+    owner_name: string, optional, default is the value stored in the global or local config file.
+        The name of the user who will show as owner in the metadata that is stored with the data
+    owner_email: string, optional, default is the value stored in the global or local config file.
+        The email of the user/owner
+    owner_name:  string, optional, default is the value stored in the global or local config file.
+        The ORCID id of the user/owner
 
     Returns
     -------
-    dict or None:
-        The dictionary containing username and email with corresponding values.
+    dict:
+        The dictionary containing username, email and orcid of the user/owner, and any other information
+        stored in the global or local config files.
 
     """
     runtime_info = {"owner_name": owner_name, "owner_email": owner_email, "owner_orcid": owner_orcid}

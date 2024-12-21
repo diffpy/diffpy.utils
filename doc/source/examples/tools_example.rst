@@ -13,11 +13,11 @@ Automatically Capture User Info
 One task we would like to do is to capture and propagate useful metadata that describes the diffraction data.
 Some is essential such as wavelength and radiation type. Other metadata is useful such as information about the
 sample, co-workers and so on.  However, one of the most important bits of information is the name of the data owner.
-For example, in ``DiffractionObjects`` this is stored in the ``metadata`` dictionary as ``username``, ``user_email``,
-and ``user_orcid``.
+For example, in ``DiffractionObjects`` this is stored in the ``metadata`` dictionary as ``owner_name``, ``owner_email``,
+and ``owner_orcid``.
 
 To reduce experimenter overhead when collecting this information, we have developed an infrastructure that helps
-to capture this information automatically when you are using `DiffractionObjects` and other diffpy tools.
+to capture this information automatically when you are using ``DiffractionObjects`` and other diffpy tools.
 You may also reuse this infrastructure for your own projects using tools in this tutorial.
 
 This example will demonstrate how ``diffpy.utils`` allows us to conveniently load and manage user and package information.
@@ -28,8 +28,9 @@ Load user info into your program
 
 To use this functionality in your own code make use of the ``get_user_info`` function in
 ``diffpy.utils.tools`` which will search for information about the user, parse it, and return
-it in a dictionary object e.g. if the user is "Jane Doe" with email "janedoe@gmail.com" and the
-function can find the information, if you type this
+it in a dictionary object e.g. if the user is "Jane Doe" with email "janedoe@gmail.com" and ORCID
+"0000-0000-0000-0000", and if the
+function can find the information (more on this below), if you type this
 
 .. code-block:: python
 
@@ -40,7 +41,7 @@ The function will return
 
 .. code-block:: python
 
-        {"email": "janedoe@email.com", "username": "Jane Doe"}
+        {"owner_email": "janedoe@email.com", "owner_name": "Jane Doe", "owner_orcid": "0000-0000-0000-0000"}
 
 
 Where does ``get_user_info()`` get the user information from?
@@ -48,8 +49,9 @@ Where does ``get_user_info()`` get the user information from?
 
 The function will first attempt to load the information from configuration files with the name ``diffpyconfig.json``
 on your hard-drive.
-It looks first for the file in the current working directory.  If it cannot find it there it will look
-user's home, i.e., login, directory.  To find this directory, open a terminal and a unix or mac system type ::
+It looks for files in the current working directory and in the computer-user's home (i.e., login) directory.
+For example, it might be in C:/Users/yourname`` or something like that, but to find this directory, open
+a terminal and a unix or mac system type ::
 
     cd ~
     pwd
@@ -58,67 +60,55 @@ Or type ``Echo $HOME``.  On a Windows computer ::
 
     echo %USERPROFILE%"
 
+It is also possible to override the values in the config files at run-time by passing values directly into the
+function according to ``get_user_info``, for example,
+``get_user_info(owner_name="Janet Doe", owner_email="janetdoe@email.com", owner_orcid="1111-1111-1111-1111")``.
+The information to pass into ``get_user_info`` could be entered by a user through a command-line interface
+or into a gui.
+
 What if no config files exist yet?
 -----------------------------------
 
-If no configuration files can be found, the function attempts to create one in the user's home
-directory.  The function will pause execution and ask for a user-response to enter the information.
-It will then write the config file in the user's home directory.
+If no configuration files can be found, they can be created using a text editor, or by using a diffpy tool
+called ``check_and_build_global_config()`` which, if no global config file can be found, prompts the user for the
+information then writes the config file in the user's home directory.
 
-In this way, the next, and subsequent times the program is run, it will no longer have to prompt the user
-as it will successfully find the new config file.
-
-Getting user data with no config files and with no interruption of execution
-----------------------------------------------------------------------------
-
-If you would like get run ``get_user_data()`` but without execution interruption even if it cannot find
-an input file, type
+When building an application where you want to capture data-owner information, we recommend you execute
+``check_and_build_global_config()`` first followed by ``get_user_info`` in your app workflow.  E.g.,
 
 .. code-block:: python
+    from diffpy.utils.tools import check_and_build_global_config, get_user_info
+    from datetime import datetime
+    import json
 
-    user_data = get_user_data(skip_config_creation=True)
+    def my_cool_data_enhancer_app_main(data, filepath):
+        check_and_build_global_config()
+        metadata_enhanced_data = get_user_info()
+        metadata_enhanced_data.update({"creation_time": datetime.now(),
+                                       "data": data})
+        with open(filepath, "w") as f:
+            json.dump(metadata_enhanced_data, f)
 
-Passing user information directly to ``get_user_data()``
---------------------------------------------------------
+``check_and_build_global_config()`` only
+interrupts execution if it can't find a valid config file, and so if the user enters valid information
+it will only run once.  However, if you want to bypass this behavior,
+``check_and_build_global_config()`` takes an optional boolean ``skip_config_creation`` parameter that
+could be set to ``True`` at runtime to override the config creation.
 
-It can be passed user information which fully or partially overrides looking in config files
-For example, in this way it would be possible to pass in information
-that is entered through a gui or command line interface. E.g.,
+I entered the wrong information in my config file so it always loads incorrect information, how do I fix that?
+--------------------------------------------------------------------------------------------------------------
 
-    .. code-block:: python
-
-        new_user_info = get_user_info({"username": "new_username", "email": "new@example.com"})
-
-This returns ``{"username": "new_username", "email": "new@example.com"}`` (and so, effectively, does nothing)
-However, You can update only the username or email individually, for example
-
-.. code-block:: python
-
-        new_user_info = get_user_info({"username": new_username})
-
-will return ``{"username": "new_username", "email": "janedoe@gmail.com"}``
-if it found ``janedoe@gmail.com`` as the email in the config file.
-Similarly, you can update only the email in the returned dictionary,
-
-.. code-block:: python
-
-        new_user_info = get_user_info({"email": new@email.com})
-
-which will return ``{"username": "Jane Doe", "email": "new@email.com"}``
-if it found ``Jane Doe`` as the user in the config file.
-
-I entered the wrong information in my config file so it always loads incorrect information
-------------------------------------------------------------------------------------------
-
-You can use of the above methods to temporarily override the incorrect information in your
-global config file. However, it is easy to fix this simply by editing that file using a text
+It is easy to fix this simply by deleting the global and/or local config files, which will allow
+you to re-enter the information during the ``check_and_build_global_config()`` initialization
+workflow.   You can also simply editi the ``diffpyconfig.json`` file directly using a text
 editor.
 
 Locate the file ``diffpyconfig.json``, in your home directory and open it in an editor ::
 
     {
-        "username": "John Doe",
-        "email": "john.doe@example.com"
+        "owner_name": "John Doe",
+        "owner_email": "john.doe@example.com"
+        "owner_orcid": "0000-0000-4321-1234"
     }
 
    Then you can edit the username and email as needed, make sure to save your edits.
