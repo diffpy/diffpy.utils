@@ -146,43 +146,43 @@ def test_q_to_d(q, expected_d, warning_expected):
 
 
 @pytest.mark.parametrize(
-    "d, expected_q",
+    "d, expected_q, zero_divide_error_expected",
     [
         # UC1: User specified empty d values
-        (np.array([]), np.array([])),
+        (np.array([]), np.array([]), False),
         # UC2: User specified valid d values
         (
             np.array([5 * np.pi, 4 * np.pi, 3 * np.pi, 2 * np.pi, np.pi, 0]),
             np.array([0.4, 0.5, 0.66667, 1, 2, np.inf]),
+            True,
         ),
     ],
 )
-def test_d_to_q(d, expected_q):
-    actual_q = d_to_q(d)
+def test_d_to_q(d, expected_q, zero_divide_error_expected):
+    if zero_divide_error_expected:
+        with pytest.warns(RuntimeWarning, match="divide by zero encountered in divide"):
+            actual_q = d_to_q(d)
+    else:
+        actual_q = d_to_q(d)
     assert np.allclose(actual_q, expected_q)
 
 
 @pytest.mark.parametrize(
     "wavelength, tth, expected_d, divide_by_zero_warning_expected",
-    [   
+    [
         # Test conversion of q to d with valid values
         # Case 1: empty tth values, no, expect empty d values
         (None, np.array([]), np.array([]), False),
         # Case 2: empty tth values, wavelength provided, expect empty d values
         (4 * np.pi, np.array([]), np.array([]), False),
         # Case 3: User specified valid tth values between 0-180 degrees (without wavelength)
-        (
-            None,
-            np.array([0, 30, 60, 90, 120, 180]),
-            np.array([0, 1, 2, 3, 4, 5]),
-            False
-        ),
+        (None, np.array([0, 30, 60, 90, 120, 180]), np.array([0, 1, 2, 3, 4, 5]), False),
         # Case 4: User specified valid tth values between 0-180 degrees (with wavelength)
         (
             4 * np.pi,
             np.array([0, 30.0, 60.0, 90.0, 120.0, 180.0]),
             np.array([np.inf, 24.27636, 12.56637, 8.88577, 7.25520, 6.28319]),
-            True
+            True,
         ),
     ],
 )
