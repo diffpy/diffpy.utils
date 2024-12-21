@@ -36,7 +36,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
                 "metadata": {"thing1": 1},
             },
             True,
-            False
+            False,
         ),
         (  # Different names, expect inequality
             {
@@ -54,7 +54,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
                 "metadata": {"thing1": 1, "thing2": "thing2"},
             },
             False,
-            True
+            True,
         ),
         (  # One without wavelength, expect inequality
             {
@@ -71,7 +71,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
                 "metadata": {"thing1": 1, "thing2": "thing2"},
             },
             False,
-            True
+            True,
         ),
         (  # Different wavelengths, expect inequality
             {
@@ -89,7 +89,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
                 "metadata": {"thing1": 1, "thing2": "thing2"},
             },
             False,
-            False
+            False,
         ),
         (  # Different scat_quantity, expect inequality
             {
@@ -107,7 +107,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
                 "metadata": {"thing1": 1, "thing2": "thing2"},
             },
             False,
-            True
+            True,
         ),
         (  # Different q xarray values, expect inequality
             {
@@ -122,7 +122,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
                 "metadata": {"thing1": 1, "thing2": "thing2"},
             },
             False,
-            True
+            True,
         ),
         (  # Different metadata, expect inequality
             {
@@ -138,11 +138,13 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
                 "metadata": {"thing1": 1, "thing2": "thing2"},
             },
             False,
-            True
+            True,
         ),
     ],
 )
-def test_diffraction_objects_equality(do_args_1, do_args_2, expected_equality, warning_expected, wavelength_warning_msg):
+def test_diffraction_objects_equality(
+    do_args_1, do_args_2, expected_equality, warning_expected, wavelength_warning_msg
+):
     if warning_expected:
         with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
             do_1 = DiffractionObject(**do_args_1)
