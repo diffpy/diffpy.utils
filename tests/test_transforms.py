@@ -27,7 +27,6 @@ from diffpy.utils.transforms import d_to_q, d_to_tth, q_to_d, q_to_tth, tth_to_d
     ],
 )
 def test_q_to_tth(wavelength, q, expected_tth, wavelength_warning_msg):
-
     if wavelength is None:
         with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
             actual_tth = q_to_tth(q, wavelength)

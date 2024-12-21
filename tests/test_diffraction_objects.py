@@ -12,9 +12,9 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
 
 
 @pytest.mark.parametrize(
-    "do_args_1, do_args_2, expected_equality",
+    "do_args_1, do_args_2, expected_equality, warning_expected",
     [
-        # Test when __eqal__ returns True and False
+        # Test when __eq__ returns True and False
         # Identical args, expect equality
         (
             {
@@ -36,6 +36,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
                 "metadata": {"thing1": 1},
             },
             True,
+            False
         ),
         (  # Different names, expect inequality
             {
@@ -53,6 +54,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
                 "metadata": {"thing1": 1, "thing2": "thing2"},
             },
             False,
+            True
         ),
         (  # One without wavelength, expect inequality
             {
@@ -69,6 +71,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
                 "metadata": {"thing1": 1, "thing2": "thing2"},
             },
             False,
+            True
         ),
         (  # Different wavelengths, expect inequality
             {
@@ -86,6 +89,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
                 "metadata": {"thing1": 1, "thing2": "thing2"},
             },
             False,
+            False
         ),
         (  # Different scat_quantity, expect inequality
             {
@@ -103,6 +107,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
                 "metadata": {"thing1": 1, "thing2": "thing2"},
             },
             False,
+            True
         ),
         (  # Different q xarray values, expect inequality
             {
@@ -117,6 +122,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
                 "metadata": {"thing1": 1, "thing2": "thing2"},
             },
             False,
+            True
         ),
         (  # Different metadata, expect inequality
             {
@@ -132,12 +138,18 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
                 "metadata": {"thing1": 1, "thing2": "thing2"},
             },
             False,
+            True
         ),
     ],
 )
-def test_diffraction_objects_equality(do_args_1, do_args_2, expected_equality):
-    do_1 = DiffractionObject(**do_args_1)
-    do_2 = DiffractionObject(**do_args_2)
+def test_diffraction_objects_equality(do_args_1, do_args_2, expected_equality, warning_expected, wavelength_warning_msg):
+    if warning_expected:
+        with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
+            do_1 = DiffractionObject(**do_args_1)
+            do_2 = DiffractionObject(**do_args_2)
+    else:
+        do_1 = DiffractionObject(**do_args_1)
+        do_2 = DiffractionObject(**do_args_2)
     assert (do_1 == do_2) == expected_equality
 
 
