@@ -163,33 +163,38 @@ def test_d_to_q(d, expected_q):
 
 
 @pytest.mark.parametrize(
-    "wavelength, tth, expected_d",
-    [
-        # UC0: User specified empty tth values (without wavelength)
-        (None, np.array([]), np.array([])),
-        # UC1: User specified empty tth values (with wavelength)
-        (4 * np.pi, np.array([]), np.array([])),
-        # UC2: User specified valid tth values between 0-180 degrees (without wavelength)
+    "wavelength, tth, expected_d, divide_by_zero_warning_expected",
+    [   
+        # Test conversion of q to d with valid values
+        # Case 1: empty tth values, no, expect empty d values
+        (None, np.array([]), np.array([]), False),
+        # Case 2: empty tth values, wavelength provided, expect empty d values
+        (4 * np.pi, np.array([]), np.array([]), False),
+        # Case 3: User specified valid tth values between 0-180 degrees (without wavelength)
         (
             None,
             np.array([0, 30, 60, 90, 120, 180]),
             np.array([0, 1, 2, 3, 4, 5]),
+            False
         ),
-        # UC3: User specified valid tth values between 0-180 degrees (with wavelength)
+        # Case 4: User specified valid tth values between 0-180 degrees (with wavelength)
         (
             4 * np.pi,
             np.array([0, 30.0, 60.0, 90.0, 120.0, 180.0]),
             np.array([np.inf, 24.27636, 12.56637, 8.88577, 7.25520, 6.28319]),
+            True
         ),
     ],
 )
-def test_tth_to_d(wavelength, tth, expected_d, wavelength_warning_msg):
+def test_tth_to_d(wavelength, tth, expected_d, divide_by_zero_warning_expected, wavelength_warning_msg):
     if wavelength is None:
         with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
             actual_d = tth_to_d(tth, wavelength)
+    elif divide_by_zero_warning_expected:
+        with pytest.warns(RuntimeWarning, match="divide by zero encountered in divide"):
+            actual_d = tth_to_d(tth, wavelength)
     else:
         actual_d = tth_to_d(tth, wavelength)
-
     assert np.allclose(actual_d, expected_d)
 
 
