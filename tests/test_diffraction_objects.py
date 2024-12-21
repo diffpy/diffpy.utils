@@ -404,7 +404,7 @@ def test_dump(tmp_path, mocker):
 
 
 @pytest.mark.parametrize(
-    "do_init_args, expected_do_dict",
+    "do_init_args, expected_do_dict, divide_by_zero_warning_expected",
     [
         (  # instantiate just array attributes
             {
@@ -433,6 +433,7 @@ def test_dump(tmp_path, mocker):
                 "dmax": np.float64(np.inf),
                 "wavelength": 4.0 * np.pi,
             },
+            True
         ),
         (  # instantiate just array attributes
             {
@@ -462,11 +463,16 @@ def test_dump(tmp_path, mocker):
                 "dmax": np.float64(np.inf),
                 "wavelength": 4.0 * np.pi,
             },
+            False
         ),
     ],
 )
-def test_init_valid(do_init_args, expected_do_dict):
-    actual_do_dict = DiffractionObject(**do_init_args).__dict__
+def test_init_valid(do_init_args, expected_do_dict, divide_by_zero_warning_expected):
+    if divide_by_zero_warning_expected:
+        with pytest.warns(RuntimeWarning, match="divide by zero encountered in divide"):
+            actual_do_dict = DiffractionObject(**do_init_args).__dict__
+    else:
+        actual_do_dict = DiffractionObject(**do_init_args).__dict__
     diff = DeepDiff(
         actual_do_dict, expected_do_dict, ignore_order=True, significant_digits=13, exclude_paths="root['_id']"
     )

@@ -223,30 +223,31 @@ def test_tth_to_d_invalid(wavelength, tth, expected_error_type, expected_error_m
 
 
 @pytest.mark.parametrize(
-    "wavelength, d, expected_tth",
+    "wavelength, d, expected_tth, divide_by_zero_warning_expected",
     [
         # UC1: Empty d values, no wavelength, return empty arrays
-        (None, np.empty((0)), np.empty((0))),
+        (None, np.empty((0)), np.empty((0)), False),
         # UC2: Empty d values, wavelength specified, return empty arrays
-        (4 * np.pi, np.empty((0)), np.empty(0)),
+        (4 * np.pi, np.empty((0)), np.empty(0), False),
         # UC3: User specified valid d values, no wavelength, return empty arrays
-        (
-            None,
-            np.array([1, 0.8, 0.6, 0.4, 0.2, 0]),
-            np.array([0, 1, 2, 3, 4, 5]),
-        ),
+        (None, np.array([1, 0.8, 0.6, 0.4, 0.2, 0]), np.array([0, 1, 2, 3, 4, 5]), True),
         # UC4: User specified valid d values (with wavelength)
         (
             4 * np.pi,
             np.array([4 * np.pi, 4 / np.sqrt(2) * np.pi, 4 / np.sqrt(3) * np.pi]),
             np.array([60.0, 90.0, 120.0]),
+            False
         ),
     ],
 )
-def test_d_to_tth(wavelength, d, expected_tth, wavelength_warning_msg):
-    if wavelength is None:
+def test_d_to_tth(wavelength, d, expected_tth, divide_by_zero_warning_expected, wavelength_warning_msg):
+    if wavelength is None and not divide_by_zero_warning_expected:
         with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
             actual_tth = d_to_tth(d, wavelength)
+    elif wavelength is None and divide_by_zero_warning_expected:
+        with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
+            with pytest.warns(RuntimeWarning, match="divide by zero encountered in divide"):
+                actual_tth = d_to_tth(d, wavelength)
     else:
         actual_tth = d_to_tth(d, wavelength)
 
@@ -259,7 +260,7 @@ def test_d_to_tth(wavelength, d, expected_tth, wavelength_warning_msg):
         # UC1: user specified invalid d values that result in tth > 180 degrees
         (4 * np.pi, np.array([1.2, 1, 0.8, 0.6, 0.4, 0.2]), ValueError),
         # UC2: user specified a wrong wavelength that result in tth > 180 degrees
-        (100, np.array([1, 0.8, 0.6, 0.4, 0.2, 0]), ValueError),
+        (100, np.array([1.2, 1, 0.8, 0.6, 0.4, 0.2]), ValueError),
     ],
 )
 def test_d_to_tth_bad(wavelength, d, expected_error_type, invalid_q_or_d_or_wavelength_error_msg):
