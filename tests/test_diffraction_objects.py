@@ -433,7 +433,7 @@ def test_dump(tmp_path, mocker):
                 "dmax": np.float64(np.inf),
                 "wavelength": 4.0 * np.pi,
             },
-            True
+            True,
         ),
         (  # instantiate just array attributes
             {
@@ -463,7 +463,7 @@ def test_dump(tmp_path, mocker):
                 "dmax": np.float64(np.inf),
                 "wavelength": 4.0 * np.pi,
             },
-            False
+            False,
         ),
     ],
 )

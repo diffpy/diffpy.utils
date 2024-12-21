@@ -236,7 +236,7 @@ def test_tth_to_d_invalid(wavelength, tth, expected_error_type, expected_error_m
             4 * np.pi,
             np.array([4 * np.pi, 4 / np.sqrt(2) * np.pi, 4 / np.sqrt(3) * np.pi]),
             np.array([60.0, 90.0, 120.0]),
-            False
+            False,
         ),
     ],
 )
