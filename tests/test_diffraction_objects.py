@@ -373,15 +373,16 @@ def test_dump(tmp_path, mocker):
     x, y = np.linspace(0, 5, 6), np.linspace(0, 5, 6)
     directory = Path(tmp_path)
     file = directory / "testfile"
-    do = DiffractionObject(
-        wavelength=1.54,
-        name="test",
-        scat_quantity="x-ray",
-        xarray=np.array(x),
-        yarray=np.array(y),
-        xtype="q",
-        metadata={"thing1": 1, "thing2": "thing2", "package_info": {"package2": "3.4.5"}},
-    )
+    with pytest.warns(RuntimeWarning, match="divide by zero encountered in divide"):
+        do = DiffractionObject(
+            wavelength=1.54,
+            name="test",
+            scat_quantity="x-ray",
+            xarray=np.array(x),
+            yarray=np.array(y),
+            xtype="q",
+            metadata={"thing1": 1, "thing2": "thing2", "package_info": {"package2": "3.4.5"}},
+        )
     mocker.patch("importlib.metadata.version", return_value="3.3.0")
     with freeze_time("2012-01-14"):
         do.dump(file, "q")
