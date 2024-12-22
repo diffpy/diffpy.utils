@@ -9,13 +9,13 @@ from diffpy.utils.transforms import d_to_q, d_to_tth, q_to_d, q_to_tth, tth_to_d
 @pytest.mark.parametrize(
     "wavelength, q, expected_tth",
     [
-        # Test conversion of q to tth with valid values
+        # Test conversion of q to tth with q and wavelength
         # C1: Allow empty array q to compute tth with or without wavelength
         # 1. Wavelength provided, expect empty array of tth
         (4 * np.pi, np.empty((0)), np.empty(0)),
-        # 2. No wavelength provided, expected empty tth and wavelength UserWarning
+        # 2. No wavelength provided, expected empty array of tth and wavelength UserWarning
         (None, np.empty((0)), np.empty((0))),
-        # C2: Use non-empty q values to compute tth with or without 
+        # C2: Use non-empty q values to compute tth with or without
         # 1. No wavelength provided, expect valid tth values in degrees with wavelength UserWarning
         (
             None,
@@ -39,14 +39,14 @@ def test_q_to_tth(wavelength, q, expected_tth, wavelength_warning_msg):
 @pytest.mark.parametrize(
     "wavelength, q, expected_error_type",
     [
-        # Test error messages in q to tth conversion with invalid Two theta values.
-        # C1: Invalid q values that result in tth > 180 degrees
+        # Test ValeuError in q to tth conversion with invalid two-theta values.
+        # C1: Invalid q values that result in tth > 180 degrees, expect ValueError
         (
             4 * np.pi,
             np.array([0.2, 0.4, 0.6, 0.8, 1, 1.2]),
             ValueError,
         ),
-        # C2: Wrong wavelength that results in tth > 180 degrees
+        # C2: Wrong wavelength that results in tth > 180 degrees, expect ValueError
         (
             100,
             np.array([0, 0.2, 0.4, 0.6, 0.8, 1]),
@@ -63,18 +63,20 @@ def test_q_to_tth_bad(wavelength, q, expected_error_type, invalid_q_or_d_or_wave
 @pytest.mark.parametrize(
     "wavelength, tth, expected_q",
     [
-        # C0: Empty tth values (without wavelength)
+        # Test conversion of q to tth with q and wavelength
+        # C1: Allow empty tth values to compute 1, with or without wavelength
+        # 1. Wavelength provided, expect empty array of q
         (None, np.array([]), np.array([])),
-        # C1: Empty tth values (with wavelength)
+        # 2. No wavelength provided, expected empty array of q and wavelength UserWarning
         (4 * np.pi, np.array([]), np.array([])),
-        # C2: valid tth values between 0-180 degrees (without wavelength)
+        # C2: Use non-empty tth values between 0-180 degrees to compute q, with or without wavelength
+        # 1. No wavelength provided, expect valid q values between 0-1
         (
             None,
             np.array([0, 30, 60, 90, 120, 180]),
             np.array([0, 1, 2, 3, 4, 5]),
         ),
-        # C3: valid tth values between 0-180 degrees (with wavelength)
-        # expected q values are sin15, sin30, sin45, sin60, sin90
+        # 2. Wavelength provided, expect expected q values are sin15, sin30, sin45, sin60, sin90
         (
             4 * np.pi,
             np.array([0, 30.0, 60.0, 90.0, 120.0, 180.0]),
@@ -95,14 +97,15 @@ def test_tth_to_q(wavelength, tth, expected_q, wavelength_warning_msg):
 @pytest.mark.parametrize(
     "wavelength, tth, expected_error_type, expected_error_msg",
     [
-        # C1: Invalid tth value of > 180 degrees, no wavelength, expect two theta ValueError
+        # C1: Invalid tth value of > 180 degrees provided, with or without wavelength
+        # 1. No wavelength provided, expect two theta ValueError
         (
             None,
             np.array([0, 30, 60, 90, 120, 181]),
             ValueError,
             "Two theta exceeds 180 degrees. Please check the input values for errors.",
         ),
-        # C2: Invalid tth value of > 180 degrees with wavelength, expect two theta ValueError
+        # 2. Wavelength provided, expect two theta ValueError
         (
             4 * np.pi,
             np.array([0, 30, 60, 90, 120, 181]),
