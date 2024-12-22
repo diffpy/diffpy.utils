@@ -37,11 +37,12 @@ def _setter_wmsg(attribute):
 class DiffractionObject:
     """Class for storing and manipulating diffraction data.
 
-    DiffractionObjct stores data produced from X-ray, neutron, and
-    electron scattering experiment. The object can transform between different
-    scattering quantities like q (scattering vector), 2θ (two-theta angle),
-    and d (interplanar spacing), and perform various operations like scaling,
-    addition, subtraction, and equality between diffraction objects.
+    DiffractionObject stores data produced from X-ray, neutron,
+    and electron scattering experiments. The object can transform
+    between different scattering quantities such as q (scattering vector),
+    2θ (two-theta angle), and d (interplanar spacing), and perform various
+    operations like scaling, addition, subtraction, and comparison for equality
+    between diffraction objects.
 
     Attributes
     ----------
