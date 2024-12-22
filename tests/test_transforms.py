@@ -15,7 +15,7 @@ from diffpy.utils.transforms import d_to_q, d_to_tth, q_to_d, q_to_tth, tth_to_d
         (4 * np.pi, np.empty((0)), np.empty(0)),
         # 2. No wavelength provided, expected empty tth and wavelength UserWarning
         (None, np.empty((0)), np.empty((0))),
-        # C2: Use non-empty q values to compute tth with or without 
+        # C2: Use non-empty q values to compute tth with or without
         # 1. No wavelength provided, expect valid tth values in degrees with wavelength UserWarning
         (
             None,
