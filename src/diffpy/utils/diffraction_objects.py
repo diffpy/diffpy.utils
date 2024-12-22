@@ -35,12 +35,13 @@ def _setter_wmsg(attribute):
 
 
 class DiffractionObject:
-    """
-    A class to represent diffraction data for various scientific experiments involving scattering
-    techniques such as X-ray, neutron, and electron diffraction. This object can manage diffraction
-    data including transformations between different scattering quantities like q (scattering vector),
-    2θ (two-theta angle), and d (interplanar spacing), and perform various operations like scaling, addition,
-    and subtraction of diffraction patterns.
+    """Class for storing and manipulating diffraction data.
+
+    DiffractionObjct stores data produced from X-ray, neutron, and
+    electron scattering experiment. The object can transform between different
+    scattering quantities like q (scattering vector), 2θ (two-theta angle),
+    and d (interplanar spacing), and perform various operations like scaling,
+    addition, subtraction, and equality between diffraction objects.
 
     Attributes
     ----------
@@ -49,7 +50,7 @@ class DiffractionObject:
     input_xtype : str
         The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES}
     id : uuid
-            The unique identifier for the diffraction object.
+        The unique identifier for the diffraction object.
     scat_quantity : str
         The type of scattering experiment (e.g., "x-ray", "neutron"). Default is an empty string "".
     wavelength : float
@@ -80,8 +81,7 @@ class DiffractionObject:
         name="",
         metadata={},
     ):
-        """
-        Initialize a DiffractionObject instance.
+        """Initialize a DiffractionObject instance.
 
         Parameters
         ----------
@@ -306,8 +306,8 @@ class DiffractionObject:
         raise AttributeError(_setter_wmsg("id"))
 
     def get_array_index(self, value, xtype=None):
-        """
-        Return the index of the closest value in the array associated with the specified xtype.
+        """Return the index of the closest value in the array associated with
+        the specified xtype.
 
         Parameters
         ----------
@@ -370,8 +370,8 @@ class DiffractionObject:
         return [self.all_arrays[:, 3], self.all_arrays[:, 0]]
 
     def scale_to(self, target_diff_object, q=None, tth=None, d=None, offset=0):
-        """
-        returns a new diffraction object which is the current object but rescaled in y to the target
+        """Returns a new diffraction object which is the current object but
+        rescaled in y to the target.
 
         The y-value in the target at the closest specified x-value will be used as the factor to scale to.
         The entire array is scaled by this factor so that one object places on top of the other at that point.
@@ -412,8 +412,8 @@ class DiffractionObject:
         return scaled
 
     def on_xtype(self, xtype):
-        """
-        Return a list of two 1D np array with x and y data, raise an error if the specified xtype is invalid
+        """Return a list of two 1D np array with x and y data, raise an error
+        if the specified xtype is invalid.
 
         Parameters
         ----------
@@ -458,8 +458,7 @@ class DiffractionObject:
             np.savetxt(f, data_to_save, delimiter=" ")
 
     def copy(self):
-        """
-        Create a deep copy of the DiffractionObject instance.
+        """Create a deep copy of the DiffractionObject instance.
 
         Returns
         -------
