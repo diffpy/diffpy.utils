@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from diffpy.utils.tools import get_package_info, get_user_info
+from diffpy.utils.tools import check_and_build_global_config, get_package_info, get_user_info
 
 
 def _setup_dirs(monkeypatch, user_filesystem):
@@ -121,6 +121,36 @@ def test_get_user_info_no_conf_file_no_inputs(monkeypatch, inputsa, inputsb, exp
     _run_tests(inputsa, expected)
     confile = Path().home() / "diffpyconfig.json"
     assert confile.exists() is False
+
+
+@pytest.mark.parametrize(
+    "test_inputs,expected",
+    [  # Check check_and_build_global_config() builds correct config when config is found missing
+        (  # C1: user inputs valid name, email and orcid
+            {"user_inputs": ["input_name", "input@email.com", "input_orcid"]},
+            {"owner_email": "input@email.com", "owner_orcid": "input_orcid", "owner_name": "input_name"},
+        ),
+        # (  # C2: empty strings passed in, expect uname, email, orcid from home_config
+        #     {"owner_name": "", "owner_email": "", "owner_orcid": ""},
+        #     {"owner_name": "home_ownername", "owner_email": "home@email.com", "owner_orcid": "home_orcid"},
+        # ),
+    ],
+)
+def test_check_and_build_global_config(test_inputs, expected, user_filesystem, mocker):
+    # user_filesystem[0] is tmp_dir/home_dir with the global config file in it, user_filesystem[1]
+    #   is tmp_dir/cwd_dir
+    mocker.patch.object(Path, "home", return_value=user_filesystem[0])
+    os.chdir(user_filesystem[1])
+    # remove the config file from home that came with user_filesystem
+    old_confile = user_filesystem[0] / "diffpyconfig.json"
+    os.remove(old_confile)
+    check_and_build_global_config()
+    inp_iter = iter(test_inputs["user_inputs"])
+    mocker.patch("builtins.input", lambda _: next(inp_iter))
+    with open(old_confile, "r") as f:
+        actual = json.load(f)
+    print(actual)
+    assert actual == expected
 
 
 params_package_info = [

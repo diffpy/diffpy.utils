@@ -130,8 +130,11 @@ def get_user_info(args=None):
     if config_bool is False:
         os.remove(Path().home() / "diffpyconfig.json")
         config = {"username": "", "email": ""}
-
     return config
+
+
+def check_and_build_global_config():
+    return
 
 
 def get_package_info(package_names, metadata=None):
