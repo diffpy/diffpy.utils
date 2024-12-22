@@ -10,20 +10,20 @@ from diffpy.utils.transforms import d_to_q, d_to_tth, q_to_d, q_to_tth, tth_to_d
     "wavelength, q, expected_tth",
     [
         # Test conversion of q to tth with valid values
-        # C1: Empty q values
-        # 1. No wavelength, expect empty arrays
-        (None, np.empty((0)), np.empty((0))),
-        # 2. 4π wavelength, expect empty arrays
+        # Case 1: Empty q values are provided (1) with and (2) without wavelength
+        # 1. Expect empty arrays
         (4 * np.pi, np.empty((0)), np.empty(0)),
-        # C2: Non-empty q values
-        # 2. No wavelength, expect value tth values
+        # 2. Expect empty arrays with wavelength warning message
+        (None, np.empty((0)), np.empty((0))),
+        # Case 2: Non-empty q values are provided without wavelength
+        # 1. Expect valid tth values in degrees.
         (
             None,
             np.array([0, 0.2, 0.4, 0.6, 0.8, 1]),
             np.array([0, 1, 2, 3, 4, 5]),
         ),
-        # C3: Both valid q and wavelength provided
-        # 1. Expected tth values are 2*arcsin(q) in degrees
+        # Case 3: Both valid q and wavelength are provided.
+        # 1. Expect tth values of 2*arcsin(q) in degrees
         (4 * np.pi, np.array([0, 1 / np.sqrt(2), 1.0]), np.array([0, 90.0, 180.0])),
     ],
 )
