@@ -122,10 +122,6 @@ def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
     return user_info
 
 
-def _get_value(mystring):
-    return mystring.strip()
-
-
 def check_and_build_global_config(skip_config_creation=False):
     config_path = Path().home() / "diffpyconfig.json"
     if skip_config_creation:
