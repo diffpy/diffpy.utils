@@ -15,7 +15,6 @@ from diffpy.utils.transforms import d_to_q, d_to_tth, q_to_d, q_to_tth, tth_to_d
         (None, np.empty((0)), np.empty((0))),
         # 2. 4π wavelength, expect empty arrays
         (4 * np.pi, np.empty((0)), np.empty(0)),
-        
         # C2. Non-empty q values
         # 2. No wavelength, expect value tth values
         (
@@ -23,7 +22,6 @@ from diffpy.utils.transforms import d_to_q, d_to_tth, q_to_d, q_to_tth, tth_to_d
             np.array([0, 0.2, 0.4, 0.6, 0.8, 1]),
             np.array([0, 1, 2, 3, 4, 5]),
         ),
-
         # C3: Both valid q and wavelength provided
         # 1. Expected tth values are 2*arcsin(q) in degrees
         (4 * np.pi, np.array([0, 1 / np.sqrt(2), 1.0]), np.array([0, 90.0, 180.0])),
@@ -41,7 +39,7 @@ def test_q_to_tth(wavelength, q, expected_tth, wavelength_warning_msg):
 
 @pytest.mark.parametrize(
     "wavelength, q, expected_error_type",
-    [   
+    [
         # Test error messages in q to tth conversion with invalid Two theta values.
         # C1: Invalid q values that result in tth > 180 degrees
         (
