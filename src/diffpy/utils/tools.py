@@ -1,6 +1,5 @@
 import importlib.metadata
 import json
-import os
 from copy import copy
 from pathlib import Path
 
@@ -56,7 +55,7 @@ def load_config(file_path):
     Returns
     -------
     dict:
-        The configuration dictionary or None if file does not exist.
+        The configuration dictionary or {} if the config file does not exist.
 
     """
     config_file = Path(file_path).resolve()
@@ -65,7 +64,7 @@ def load_config(file_path):
             config = json.load(f)
         return config
     else:
-        return None
+        return {}
 
 
 def _sorted_merge(*dicts):
@@ -91,46 +90,62 @@ def _create_global_config(args):
     return return_bool
 
 
-def get_user_info(args=None):
+def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
     """
-    Get username and email configuration.
+    Get name, email and orcid of the owner/user from various sources and return it as a metadata dictionary
 
-    First attempts to load config file from global and local paths.
-    If neither exists, creates a global config file.
-    It prioritizes values from args, then local, then global.
-    Removes invalid global config file if creation is needed, replacing it with empty username and email.
+    The function looks for the information in json format configuration files with the name 'diffpyconfig.json'.
+    These can be in the user's home directory and in the current working directory.  The information in the
+    config files are combined, with the local config overriding the home-directory one.  Values for
+    owner_name, owner_email, and owner_orcid may be passed in to the function and these override the values
+    in the config files.
+
+    A template for the config file is below.  Create a text file called 'diffpyconfig.json' in your home directory
+    and copy-paste the template into it, editing it with your real information.
+    {
+      "owner_name": "<your name as you would like it stored with your data>>",
+      "owner_email": "<your_associated_email>>@email.com",
+      "owner_orcid": "<your_associated_orcid if you would like this stored with your data>>"
+    }
+    You may also store any other gloabl-level information that you would like associated with your
+    diffraction data in this file
 
     Parameters
     ----------
-    args argparse.Namespace
-        The arguments from the parser, default is None.
+    owner_name: string, optional, default is the value stored in the global or local config file.
+        The name of the user who will show as owner in the metadata that is stored with the data
+    owner_email: string, optional, default is the value stored in the global or local config file.
+        The email of the user/owner
+    owner_name:  string, optional, default is the value stored in the global or local config file.
+        The ORCID id of the user/owner
 
     Returns
     -------
-    dict or None:
-        The dictionary containing username and email with corresponding values.
+    dict:
+        The dictionary containing username, email and orcid of the user/owner, and any other information
+        stored in the global or local config files.
 
     """
-    config_bool = True
+    runtime_info = {"owner_name": owner_name, "owner_email": owner_email, "owner_orcid": owner_orcid}
+    for key, value in copy(runtime_info).items():
+        if value is None or value == "":
+            del runtime_info[key]
     global_config = load_config(Path().home() / "diffpyconfig.json")
     local_config = load_config(Path().cwd() / "diffpyconfig.json")
-    if global_config is None and local_config is None:
-        print(
-            "No global configuration file was found containing "
-            "information about the user to associate with the data.\n"
-            "By following the prompts below you can add your name and email to this file on the current "
-            "computer and your name will be automatically associated with subsequent diffpy data by default.\n"
-            "This is not recommended on a shared or public computer. "
-            "You will only have to do that once.\n"
-            "For more information, please refer to www.diffpy.org/diffpy.utils/examples/toolsexample.html"
-        )
-        config_bool = _create_global_config(args)
-        global_config = load_config(Path().home() / "diffpyconfig.json")
-    config = _sorted_merge(clean_dict(global_config), clean_dict(local_config), clean_dict(args))
-    if config_bool is False:
-        os.remove(Path().home() / "diffpyconfig.json")
-        config = {"username": "", "email": ""}
-    return config
+    # if global_config is None and local_config is None:
+    #     print(
+    #         "No global configuration file was found containing "
+    #         "information about the user to associate with the data.\n"
+    #         "By following the prompts below you can add your name and email to this file on the current "
+    #         "computer and your name will be automatically associated with subsequent diffpy data by default.\n"
+    #         "This is not recommended on a shared or public computer. "
+    #         "You will only have to do that once.\n"
+    #         "For more information, please refer to www.diffpy.org/diffpy.utils/examples/toolsexample.html"
+    #     )
+    user_info = global_config
+    user_info.update(local_config)
+    user_info.update(runtime_info)
+    return user_info
 
 
 def check_and_build_global_config():

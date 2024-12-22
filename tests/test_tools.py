@@ -7,13 +7,11 @@ import pytest
 
 from diffpy.utils.tools import check_and_build_global_config, get_package_info, get_user_info
 
-
-def _setup_dirs(monkeypatch, user_filesystem):
-    cwd = Path(user_filesystem)
-    home_dir = cwd / "home_dir"
-    monkeypatch.setattr("pathlib.Path.home", lambda _: home_dir)
-    os.chdir(cwd)
-    return home_dir
+# def _setup_dirs(monkeypatch, user_filesystem):
+#     home_dir, cwd_dir = user_filesystem.home_dir, user_filesystem.cwd_dir
+#     os.chdir(cwd_dir)
+#     return home_dir
+#
 
 
 def _run_tests(inputs, expected):
@@ -24,15 +22,6 @@ def _run_tests(inputs, expected):
     assert config.get("email") == expected_email
 
 
-params_user_info_with_home_conf_file = [
-    (["", ""], ["home_username", "home@email.com"]),
-    (["cli_username", ""], ["cli_username", "home@email.com"]),
-    (["", "cli@email.com"], ["home_username", "cli@email.com"]),
-    ([None, None], ["home_username", "home@email.com"]),
-    (["cli_username", None], ["cli_username", "home@email.com"]),
-    ([None, "cli@email.com"], ["home_username", "cli@email.com"]),
-    (["cli_username", "cli@email.com"], ["cli_username", "cli@email.com"]),
-]
 params_user_info_with_local_conf_file = [
     (["", ""], ["cwd_username", "cwd@email.com"]),
     (["cli_username", ""], ["cli_username", "cwd@email.com"]),
@@ -84,43 +73,103 @@ params_user_info_no_conf_file_no_inputs = [
 ]
 
 
-@pytest.mark.parametrize("inputs, expected", params_user_info_with_home_conf_file)
-def test_get_user_info_with_home_conf_file(monkeypatch, inputs, expected, user_filesystem):
-    _setup_dirs(monkeypatch, user_filesystem)
-    _run_tests(inputs, expected)
+@pytest.mark.parametrize(
+    "runtime_inputs, expected",
+    [  # config file in home is present, no config in cwd.  various runtime values passed
+        # C1: nothing passed in, expect uname, email, orcid from home_config
+        ({}, {"owner_name": "home_ownername", "owner_email": "home@email.com", "owner_orcid": "home_orcid"}),
+        # C2: empty strings passed in, expect uname, email, orcid from home_config
+        (
+            {"owner_name": "", "owner_email": "", "owner_orcid": ""},
+            {"owner_name": "home_ownername", "owner_email": "home@email.com", "owner_orcid": "home_orcid"},
+        ),
+        # C3: just owner name passed in at runtime.  expect runtime_oname but others from config
+        (
+            {"owner_name": "runtime_ownername"},
+            {"owner_name": "runtime_ownername", "owner_email": "home@email.com", "owner_orcid": "home_orcid"},
+        ),
+        # C4: just owner email passed in at runtime.  expect runtime_email but others from config
+        (
+            {"owner_email": "runtime@email.com"},
+            {"owner_name": "home_ownername", "owner_email": "runtime@email.com", "owner_orcid": "home_orcid"},
+        ),
+        # C5: just owner ci passed in at runtime.  expect runtime_orcid but others from config
+        (
+            {"owner_orcid": "runtime_orcid"},
+            {"owner_name": "home_ownername", "owner_email": "home@email.com", "owner_orcid": "runtime_orcid"},
+        ),
+    ],
+)
+def test_get_user_info_with_home_conf_file(runtime_inputs, expected, user_filesystem, mocker):
+    # user_filesystem[0] is tmp_dir/home_dir with the global config file in it, user_filesystem[1]
+    #   is tmp_dir/cwd_dir
+    mocker.patch.object(Path, "home", return_value=user_filesystem[0])
+    os.chdir(user_filesystem[1])
+    actual = get_user_info(**runtime_inputs)
+    assert actual == expected
 
 
-@pytest.mark.parametrize("inputs, expected", params_user_info_with_local_conf_file)
-def test_get_user_info_with_local_conf_file(monkeypatch, inputs, expected, user_filesystem):
-    _setup_dirs(monkeypatch, user_filesystem)
-    local_config_data = {"username": "cwd_username", "email": "cwd@email.com"}
-    with open(Path(user_filesystem) / "diffpyconfig.json", "w") as f:
+@pytest.mark.parametrize(
+    "runtime_inputs, expected",
+    [  # tests as before but now config file present in cwd and home but orcid
+        #   missing in the cwd config
+        # C1: nothing passed in, expect uname, email from local config, orcid from home_config
+        ({}, {"owner_name": "cwd_ownername", "owner_email": "cwd@email.com", "owner_orcid": "home_orcid"}),
+        # C2: empty strings passed in, expect uname, email, orcid from home_config
+        (
+            {"owner_name": "", "owner_email": "", "owner_orcid": ""},
+            {"owner_name": "cwd_ownername", "owner_email": "cwd@email.com", "owner_orcid": "home_orcid"},
+        ),
+        # C3: just owner name passed in at runtime.  expect runtime_oname but others from config
+        (
+            {"owner_name": "runtime_ownername"},
+            {"owner_name": "runtime_ownername", "owner_email": "cwd@email.com", "owner_orcid": "home_orcid"},
+        ),
+        # C4: just owner email passed in at runtime.  expect runtime_email but others from config
+        (
+            {"owner_email": "runtime@email.com"},
+            {"owner_name": "cwd_ownername", "owner_email": "runtime@email.com", "owner_orcid": "home_orcid"},
+        ),
+        # C5: just owner ci passed in at runtime.  expect runtime_orcid but others from config
+        (
+            {"owner_orcid": "runtime_orcid"},
+            {"owner_name": "cwd_ownername", "owner_email": "cwd@email.com", "owner_orcid": "runtime_orcid"},
+        ),
+    ],
+)
+def test_get_user_info_with_local_conf_file(runtime_inputs, expected, user_filesystem, mocker):
+    # user_filesystem[0] is tmp_dir/home_dir with the global config file in it, user_filesystem[1]
+    #   is tmp_dir/cwd_dir
+    mocker.patch.object(Path, "home", return_value=user_filesystem[0])
+    os.chdir(user_filesystem[1])
+    local_config_data = {"owner_name": "cwd_ownername", "owner_email": "cwd@email.com"}
+    with open(user_filesystem[1] / "diffpyconfig.json", "w") as f:
         json.dump(local_config_data, f)
-    _run_tests(inputs, expected)
-    os.remove(Path().home() / "diffpyconfig.json")
-    _run_tests(inputs, expected)
+    actual = get_user_info(**runtime_inputs)
+    assert actual == expected
 
 
-@pytest.mark.parametrize("inputsa, inputsb, expected", params_user_info_with_no_home_conf_file)
-def test_get_user_info_with_no_home_conf_file(monkeypatch, inputsa, inputsb, expected, user_filesystem):
-    _setup_dirs(monkeypatch, user_filesystem)
-    os.remove(Path().home() / "diffpyconfig.json")
-    inp_iter = iter(inputsb)
-    monkeypatch.setattr("builtins.input", lambda _: next(inp_iter))
-    _run_tests(inputsa, expected)
-    confile = Path().home() / "diffpyconfig.json"
-    assert confile.is_file()
-
-
-@pytest.mark.parametrize("inputsa, inputsb, expected", params_user_info_no_conf_file_no_inputs)
-def test_get_user_info_no_conf_file_no_inputs(monkeypatch, inputsa, inputsb, expected, user_filesystem):
-    _setup_dirs(monkeypatch, user_filesystem)
-    os.remove(Path().home() / "diffpyconfig.json")
-    inp_iter = iter(inputsb)
-    monkeypatch.setattr("builtins.input", lambda _: next(inp_iter))
-    _run_tests(inputsa, expected)
-    confile = Path().home() / "diffpyconfig.json"
-    assert confile.exists() is False
+# @pytest.mark.parametrize("inputsa, inputsb, expected", params_user_info_with_no_home_conf_file)
+# def test_get_user_info_with_no_home_conf_file(monkeypatch, inputsa, inputsb, expected, user_filesystem):
+#     _setup_dirs(monkeypatch, user_filesystem)
+#     os.remove(Path().home() / "diffpyconfig.json")
+#     inp_iter = iter(inputsb)
+#     monkeypatch.setattr("builtins.input", lambda _: next(inp_iter))
+#     _run_tests(inputsa, expected)
+#     confile = Path().home() / "diffpyconfig.json"
+#     assert confile.is_file()
+#
+#
+# @pytest.mark.parametrize("inputsa, inputsb, expected", params_user_info_no_conf_file_no_inputs)
+# def test_get_user_info_no_conf_file_no_inputs(monkeypatch, inputsa, inputsb, expected, user_filesystem):
+#     _setup_dirs(monkeypatch, user_filesystem)
+#     os.remove(Path().home() / "diffpyconfig.json")
+#     inp_iter = iter(inputsb)
+#     monkeypatch.setattr("builtins.input", lambda _: next(inp_iter))
+#     _run_tests(inputsa, expected)
+#     confile = Path().home() / "diffpyconfig.json"
+#     assert confile.exists() is False
+#
 
 
 @pytest.mark.parametrize(
