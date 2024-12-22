@@ -10,12 +10,12 @@ from diffpy.utils.transforms import d_to_q, d_to_tth, q_to_d, q_to_tth, tth_to_d
     "wavelength, q, expected_tth",
     [
         # Test conversion of q to tth with valid values
-        # C1. Empty q values
+        # C1: Empty q values
         # 1. No wavelength, expect empty arrays
         (None, np.empty((0)), np.empty((0))),
         # 2. 4π wavelength, expect empty arrays
         (4 * np.pi, np.empty((0)), np.empty(0)),
-        # C2. Non-empty q values
+        # C2: Non-empty q values
         # 2. No wavelength, expect value tth values
         (
             None,
