@@ -186,7 +186,7 @@ def test_init_invalid_xtype():
     "org_do_args, target_do_args, scale_inputs, expected",
     [
         # Test that scale_to() scales to the correct values
-        # Case 1: same x-array and y-array, check offset
+        # C1: same x-array and y-array, check offset
         (
             {
                 "xarray": np.array([10, 15, 25, 30, 60, 140]),
@@ -208,7 +208,7 @@ def test_init_invalid_xtype():
             },
             {"xtype": "tth", "yarray": np.array([4.1, 5.1, 6.1, 7.1, 8.1, 9.1])},
         ),
-        # Case 2: same length x-arrays with exact x-value match
+        # C2: same length x-arrays with exact x-value match
         (
             {
                 "xarray": np.array([10, 15, 25, 30, 60, 140]),
@@ -230,7 +230,7 @@ def test_init_invalid_xtype():
             },
             {"xtype": "tth", "yarray": np.array([1, 2, 2.5, 3, 6, 10])},
         ),
-        # Case 3: same length x-arrays with approximate x-value match
+        # C3: same length x-arrays with approximate x-value match
         (
             {
                 "xarray": np.array([0.12, 0.24, 0.31, 0.4]),
@@ -252,7 +252,7 @@ def test_init_invalid_xtype():
             },
             {"xtype": "q", "yarray": np.array([1, 2, 4, 6])},
         ),
-        # Case 4: different x-array lengths with approximate x-value match
+        # C4: different x-array lengths with approximate x-value match
         (
             {
                 "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
@@ -272,7 +272,7 @@ def test_init_invalid_xtype():
                 "d": None,
                 "offset": 0,
             },
-            # Case 5: Scaling factor is calculated at index = 4 (tth=61) for self and index = 5 for target (tth=62)
+            # C5: Scaling factor is calculated at index = 4 (tth=61) for self and index = 5 for target (tth=62)
             {"xtype": "tth", "yarray": np.array([1, 2, 3, 4, 5, 6, 10])},
         ),
     ],
@@ -287,76 +287,81 @@ def test_scale_to(org_do_args, target_do_args, scale_inputs, expected):
     assert np.allclose(scaled_do.on_xtype(expected["xtype"])[1], expected["yarray"])
 
 
-params_scale_to_bad = [
-    # UC1: user did not specify anything
-    (
-        {
-            "xarray": np.array([0.1, 0.2, 0.3]),
-            "yarray": np.array([1, 2, 3]),
-            "xtype": "q",
-            "wavelength": 2 * np.pi,
-            "target_xarray": np.array([0.05, 0.1, 0.2, 0.3]),
-            "target_yarray": np.array([5, 10, 20, 30]),
-            "target_xtype": "q",
-            "target_wavelength": 2 * np.pi,
-            "q": None,
-            "tth": None,
-            "d": None,
-            "offset": 0,
-        }
-    ),
-    # UC2: user specified more than one of q, tth, and d
-    (
-        {
-            "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
-            "yarray": np.array([10, 20, 30, 40, 50, 60, 100]),
-            "xtype": "tth",
-            "wavelength": 2 * np.pi,
-            "target_xarray": np.array([20, 25.5, 32, 45, 50, 62, 100, 125, 140]),
-            "target_yarray": np.array([1.1, 2, 3, 3.5, 4, 5, 10, 12, 13]),
-            "target_xtype": "tth",
-            "target_wavelength": 2 * np.pi,
-            "q": None,
-            "tth": 60,
-            "d": 10,
-            "offset": 0,
-        }
-    ),
-]
-
-
-@pytest.mark.parametrize("inputs", params_scale_to_bad)
-def test_scale_to_bad(inputs):
-    orig_diff_object = DiffractionObject(
-        xarray=inputs["xarray"], yarray=inputs["yarray"], xtype=inputs["xtype"], wavelength=inputs["wavelength"]
-    )
-    target_diff_object = DiffractionObject(
-        xarray=inputs["target_xarray"],
-        yarray=inputs["target_yarray"],
-        xtype=inputs["target_xtype"],
-        wavelength=inputs["target_wavelength"],
-    )
+@pytest.mark.parametrize(
+    "org_do_args, target_do_args, scale_inputs",
+    [
+        # UC1: user did not specify anything
+        (
+            {
+                "xarray": np.array([0.1, 0.2, 0.3]),
+                "yarray": np.array([1, 2, 3]),
+                "xtype": "q",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "xarray": np.array([0.05, 0.1, 0.2, 0.3]),
+                "yarray": np.array([5, 10, 20, 30]),
+                "xtype": "q",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "q": None,
+                "tth": None,
+                "d": None,
+                "offset": 0,
+            },
+        ),
+        # UC2: user specified more than one of q, tth, and d
+        (
+            {
+                "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
+                "yarray": np.array([10, 20, 30, 40, 50, 60, 100]),
+                "xtype": "tth",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "xarray": np.array([20, 25.5, 32, 45, 50, 62, 100, 125, 140]),
+                "yarray": np.array([1.1, 2, 3, 3.5, 4, 5, 10, 12, 13]),
+                "xtype": "tth",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "q": None,
+                "tth": 60,
+                "d": 10,
+                "offset": 0,
+            },
+        ),
+    ],
+)
+def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
+    original_do = DiffractionObject(**org_do_args)
+    target_do = DiffractionObject(**target_do_args)
     with pytest.raises(
         ValueError, match="You must specify exactly one of 'q', 'tth', or 'd'. Please rerun specifying only one."
     ):
-        orig_diff_object.scale_to(
-            target_diff_object, q=inputs["q"], tth=inputs["tth"], d=inputs["d"], offset=inputs["offset"]
+        original_do.scale_to(
+            target_do,
+            q=scale_inputs["q"],
+            tth=scale_inputs["tth"],
+            d=scale_inputs["d"],
+            offset=scale_inputs["offset"],
         )
 
 
-params_index = [
-    # UC1: exact match
-    (4 * np.pi, np.array([30.005, 60]), np.array([1, 2]), "tth", "tth", 30.005, [0]),
-    # UC2: target value lies in the array, returns the (first) closest index
-    (4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "tth", 45, [0]),
-    (4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "q", 0.25, [0]),
-    # UC3: target value out of the range, returns the closest index
-    (4 * np.pi, np.array([0.25, 0.5, 0.71]), np.array([1, 2, 3]), "q", "q", 0.1, [0]),
-    (4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "tth", 63, [1]),
-]
-
-
-@pytest.mark.parametrize("wavelength, xarray, yarray, xtype_1, xtype_2, value, expected_index", params_index)
+@pytest.mark.parametrize(
+    "wavelength, xarray, yarray, xtype_1, xtype_2, value, expected_index",
+    [
+        # UC1: exact match
+        (4 * np.pi, np.array([30.005, 60]), np.array([1, 2]), "tth", "tth", 30.005, [0]),
+        # UC2: target value lies in the array, returns the (first) closest index
+        (4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "tth", 45, [0]),
+        (4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "q", 0.25, [0]),
+        # UC3: target value out of the range, returns the closest index
+        (4 * np.pi, np.array([0.25, 0.5, 0.71]), np.array([1, 2, 3]), "q", "q", 0.1, [0]),
+        (4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "tth", 63, [1]),
+    ],
+)
 def test_get_array_index(wavelength, xarray, yarray, xtype_1, xtype_2, value, expected_index):
     do = DiffractionObject(wavelength=wavelength, xarray=xarray, yarray=yarray, xtype=xtype_1)
     actual_index = do.get_array_index(value=value, xtype=xtype_2)
@@ -482,11 +487,11 @@ def test_init_valid(do_init_args, expected_do_dict, divide_by_zero_warning_expec
 @pytest.mark.parametrize(
     "do_init_args, expected_error_msg",
     [
-        (  # Case 1: no arguments provided
+        (  # C1: no arguments provided
             {},
             "missing 3 required positional arguments: 'xarray', 'yarray', and 'xtype'",
         ),
-        (  # Case 2: only xarray and yarray provided
+        (  # C2: only xarray and yarray provided
             {"xarray": np.array([0.0, 90.0]), "yarray": np.array([0.0, 90.0])},
             "missing 1 required positional argument: 'xtype'",
         ),
