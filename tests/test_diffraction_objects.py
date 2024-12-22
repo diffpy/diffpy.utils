@@ -186,7 +186,7 @@ def test_init_invalid_xtype():
     "org_do_args, target_do_args, scale_inputs, expected",
     [
         # Test that scale_to() scales to the correct values
-        # C1: same x-array and y-array, check offset
+        # C1: Same x-array and y-array, check offset
         (
             {
                 "xarray": np.array([10, 15, 25, 30, 60, 140]),
@@ -208,7 +208,7 @@ def test_init_invalid_xtype():
             },
             {"xtype": "tth", "yarray": np.array([4.1, 5.1, 6.1, 7.1, 8.1, 9.1])},
         ),
-        # C2: same length x-arrays with exact x-value match
+        # C2: Same length x-arrays with exact x-value match
         (
             {
                 "xarray": np.array([10, 15, 25, 30, 60, 140]),
@@ -230,7 +230,7 @@ def test_init_invalid_xtype():
             },
             {"xtype": "tth", "yarray": np.array([1, 2, 2.5, 3, 6, 10])},
         ),
-        # C3: same length x-arrays with approximate x-value match
+        # C3: Same length x-arrays with approximate x-value match
         (
             {
                 "xarray": np.array([0.12, 0.24, 0.31, 0.4]),
@@ -252,7 +252,7 @@ def test_init_invalid_xtype():
             },
             {"xtype": "q", "yarray": np.array([1, 2, 4, 6])},
         ),
-        # C4: different x-array lengths with approximate x-value match
+        # C4: Different x-array lengths with approximate x-value match
         (
             {
                 "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
@@ -290,7 +290,7 @@ def test_scale_to(org_do_args, target_do_args, scale_inputs, expected):
 @pytest.mark.parametrize(
     "org_do_args, target_do_args, scale_inputs",
     [
-        # UC1: user did not specify anything
+        # UC1: User did not specify anything
         (
             {
                 "xarray": np.array([0.1, 0.2, 0.3]),
@@ -311,7 +311,7 @@ def test_scale_to(org_do_args, target_do_args, scale_inputs, expected):
                 "offset": 0,
             },
         ),
-        # UC2: user specified more than one of q, tth, and d
+        # UC2: User specified more than one of q, tth, and d
         (
             {
                 "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
@@ -352,12 +352,12 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
 @pytest.mark.parametrize(
     "wavelength, xarray, yarray, xtype_1, xtype_2, value, expected_index",
     [
-        # UC1: exact match
+        # UC1: Exact match
         (4 * np.pi, np.array([30.005, 60]), np.array([1, 2]), "tth", "tth", 30.005, [0]),
-        # UC2: target value lies in the array, returns the (first) closest index
+        # UC2: Target value lies in the array, returns the (first) closest index
         (4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "tth", 45, [0]),
         (4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "q", 0.25, [0]),
-        # UC3: target value out of the range, returns the closest index
+        # UC3: Target value out of the range, returns the closest index
         (4 * np.pi, np.array([0.25, 0.5, 0.71]), np.array([1, 2, 3]), "q", "q", 0.1, [0]),
         (4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "tth", 63, [1]),
     ],
@@ -411,7 +411,7 @@ def test_dump(tmp_path, mocker):
 @pytest.mark.parametrize(
     "do_init_args, expected_do_dict, divide_by_zero_warning_expected",
     [
-        (  # instantiate just array attributes
+        (  # Instantiate just array attributes
             {
                 "xarray": np.array([0.0, 90.0, 180.0]),
                 "yarray": np.array([1.0, 2.0, 3.0]),
@@ -440,7 +440,7 @@ def test_dump(tmp_path, mocker):
             },
             True,
         ),
-        (  # instantiate just array attributes
+        (  # Instantiate just array attributes
             {
                 "xarray": np.array([np.inf, 2 * np.sqrt(2) * np.pi, 2 * np.pi]),
                 "yarray": np.array([1.0, 2.0, 3.0]),
@@ -487,11 +487,11 @@ def test_init_valid(do_init_args, expected_do_dict, divide_by_zero_warning_expec
 @pytest.mark.parametrize(
     "do_init_args, expected_error_msg",
     [
-        (  # C1: no arguments provided
+        (  # C1: No arguments provided
             {},
             "missing 3 required positional arguments: 'xarray', 'yarray', and 'xtype'",
         ),
-        (  # C2: only xarray and yarray provided
+        (  # C2: Only xarray and yarray provided
             {"xarray": np.array([0.0, 90.0]), "yarray": np.array([0.0, 90.0])},
             "missing 1 required positional argument: 'xtype'",
         ),

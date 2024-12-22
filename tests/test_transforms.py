@@ -96,14 +96,14 @@ def test_tth_to_q(wavelength, tth, expected_q, wavelength_warning_msg):
 @pytest.mark.parametrize(
     "wavelength, tth, expected_error_type, expected_error_msg",
     [
-        # C1: invalid tth value of > 180 degrees, no wavelength, expect two theta ValueError
+        # C1: Invalid tth value of > 180 degrees, no wavelength, expect two theta ValueError
         (
             None,
             np.array([0, 30, 60, 90, 120, 181]),
             ValueError,
             "Two theta exceeds 180 degrees. Please check the input values for errors.",
         ),
-        # C2: invalid tth value of > 180 degrees with wavelength, expect two theta ValueError
+        # C2: Invalid tth value of > 180 degrees with wavelength, expect two theta ValueError
         (
             4 * np.pi,
             np.array([0, 30, 60, 90, 120, 181]),
@@ -121,16 +121,16 @@ def test_tth_to_q_bad(wavelength, tth, expected_error_type, expected_error_msg):
     "q, expected_d, warning_expected",
     [
         # Test conversion of q to d with valid values
-        # C1: empty q values, expect empty d values
+        # C1: Empty q values, expect empty d values
         (np.array([]), np.array([]), False),
         # C2:
-        # 1. valid q values, expect d values without warning
+        # 1. Valid q values, expect d values without warning
         (
             np.array([0.1, 1 * np.pi, 2 * np.pi, 3 * np.pi, 4 * np.pi, 5 * np.pi]),
             np.array([62.83185307, 2, 1, 0.66667, 0.5, 0.4]),
             False,
         ),
-        # 2. valid q values containing 0, expect d values with divide by zero warning
+        # 2. Valid q values containing 0, expect d values with divide by zero warning
         (
             np.array([0, 1 * np.pi, 2 * np.pi, 3 * np.pi, 4 * np.pi, 5 * np.pi]),
             np.array([np.inf, 2, 1, 0.66667, 0.5, 0.4]),
@@ -173,9 +173,9 @@ def test_d_to_q(d, expected_q, zero_divide_error_expected):
     "wavelength, tth, expected_d, divide_by_zero_warning_expected",
     [
         # Test conversion of q to d with valid values
-        # C1: empty tth values, no, expect empty d values
+        # C1: Empty tth values, no, expect empty d values
         (None, np.array([]), np.array([]), False),
-        # C2: empty tth values, wavelength provided, expect empty d values
+        # C2: Empty tth values, wavelength provided, expect empty d values
         (4 * np.pi, np.array([]), np.array([]), False),
         # C3: User specified valid tth values between 0-180 degrees (without wavelength)
         (None, np.array([0, 30, 60, 90, 120, 180]), np.array([0, 1, 2, 3, 4, 5]), False),
@@ -203,14 +203,14 @@ def test_tth_to_d(wavelength, tth, expected_d, divide_by_zero_warning_expected, 
 @pytest.mark.parametrize(
     "wavelength, tth, expected_error_type, expected_error_msg",
     [
-        # C1: user specified an invalid tth value of > 180 degrees (without wavelength)
+        # C1: User specified an invalid tth value of > 180 degrees (without wavelength)
         (
             None,
             np.array([0, 30, 60, 90, 120, 181]),
             ValueError,
             "Two theta exceeds 180 degrees. Please check the input values for errors.",
         ),
-        # C2: user specified an invalid tth value of > 180 degrees (with wavelength)
+        # C2: User specified an invalid tth value of > 180 degrees (with wavelength)
         (
             4 * np.pi,
             np.array([0, 30, 60, 90, 120, 181]),
@@ -259,9 +259,9 @@ def test_d_to_tth(wavelength, d, expected_tth, divide_by_zero_warning_expected, 
 @pytest.mark.parametrize(
     "wavelength, d, expected_error_type",
     [
-        # C1: user specified invalid d values that result in tth > 180 degrees
+        # C1: User specified invalid d values that result in tth > 180 degrees
         (4 * np.pi, np.array([1.2, 1, 0.8, 0.6, 0.4, 0.2]), ValueError),
-        # C2: user specified a wrong wavelength that result in tth > 180 degrees
+        # C2: User specified a wrong wavelength that result in tth > 180 degrees
         (100, np.array([1.2, 1, 0.8, 0.6, 0.4, 0.2]), ValueError),
     ],
 )
