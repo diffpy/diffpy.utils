@@ -149,29 +149,6 @@ def test_get_user_info_with_local_conf_file(runtime_inputs, expected, user_files
     assert actual == expected
 
 
-# @pytest.mark.parametrize("inputsa, inputsb, expected", params_user_info_with_no_home_conf_file)
-# def test_get_user_info_with_no_home_conf_file(monkeypatch, inputsa, inputsb, expected, user_filesystem):
-#     _setup_dirs(monkeypatch, user_filesystem)
-#     os.remove(Path().home() / "diffpyconfig.json")
-#     inp_iter = iter(inputsb)
-#     monkeypatch.setattr("builtins.input", lambda _: next(inp_iter))
-#     _run_tests(inputsa, expected)
-#     confile = Path().home() / "diffpyconfig.json"
-#     assert confile.is_file()
-#
-#
-# @pytest.mark.parametrize("inputsa, inputsb, expected", params_user_info_no_conf_file_no_inputs)
-# def test_get_user_info_no_conf_file_no_inputs(monkeypatch, inputsa, inputsb, expected, user_filesystem):
-#     _setup_dirs(monkeypatch, user_filesystem)
-#     os.remove(Path().home() / "diffpyconfig.json")
-#     inp_iter = iter(inputsb)
-#     monkeypatch.setattr("builtins.input", lambda _: next(inp_iter))
-#     _run_tests(inputsa, expected)
-#     confile = Path().home() / "diffpyconfig.json"
-#     assert confile.exists() is False
-#
-
-
 @pytest.mark.parametrize(
     "test_inputs,expected",
     [  # Check check_and_build_global_config() builds correct config when config is found missing
@@ -179,10 +156,11 @@ def test_get_user_info_with_local_conf_file(runtime_inputs, expected, user_files
             {"user_inputs": ["input_name", "input@email.com", "input_orcid"]},
             {"owner_email": "input@email.com", "owner_orcid": "input_orcid", "owner_name": "input_name"},
         ),
-        # (  # C2: empty strings passed in, expect uname, email, orcid from home_config
-        #     {"owner_name": "", "owner_email": "", "owner_orcid": ""},
-        #     {"owner_name": "home_ownername", "owner_email": "home@email.com", "owner_orcid": "home_orcid"},
-        # ),
+        ({"user_inputs": ["", "", ""]}, None),  # C2: empty strings passed in, expect no config file created
+        (  # C3: just username input, expect config file but with some empty values
+            {"user_inputs": ["input_name", "", ""]},
+            {"owner_email": "", "owner_orcid": "", "owner_name": "input_name"},
+        ),
     ],
 )
 def test_check_and_build_global_config(test_inputs, expected, user_filesystem, mocker):
@@ -190,16 +168,38 @@ def test_check_and_build_global_config(test_inputs, expected, user_filesystem, m
     #   is tmp_dir/cwd_dir
     mocker.patch.object(Path, "home", return_value=user_filesystem[0])
     os.chdir(user_filesystem[1])
+    confile = user_filesystem[0] / "diffpyconfig.json"
     # remove the config file from home that came with user_filesystem
-    old_confile = user_filesystem[0] / "diffpyconfig.json"
-    os.remove(old_confile)
+    os.remove(confile)
+    mocker.patch("builtins.input", side_effect=test_inputs["user_inputs"])
     check_and_build_global_config()
-    inp_iter = iter(test_inputs["user_inputs"])
-    mocker.patch("builtins.input", lambda _: next(inp_iter))
-    with open(old_confile, "r") as f:
-        actual = json.load(f)
-    print(actual)
+    try:
+        with open(confile, "r") as f:
+            actual = json.load(f)
+    except FileNotFoundError:
+        actual = None
     assert actual == expected
+
+
+def test_check_and_build_global_config_file_exists(user_filesystem, mocker):
+    mocker.patch.object(Path, "home", return_value=user_filesystem[0])
+    os.chdir(user_filesystem[1])
+    confile = user_filesystem[0] / "diffpyconfig.json"
+    expected = {"owner_name": "home_ownername", "owner_email": "home@email.com", "owner_orcid": "home_orcid"}
+    check_and_build_global_config()
+    with open(confile, "r") as f:
+        actual = json.load(f)
+    assert actual == expected
+
+
+def test_check_and_build_global_config_skipped(user_filesystem, mocker):
+    mocker.patch.object(Path, "home", return_value=user_filesystem[0])
+    os.chdir(user_filesystem[1])
+    confile = user_filesystem[0] / "diffpyconfig.json"
+    # remove the config file from home that came with user_filesystem
+    os.remove(confile)
+    check_and_build_global_config(skip_config_creation=True)
+    assert not confile.exists()
 
 
 params_package_info = [

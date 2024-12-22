@@ -74,22 +74,6 @@ def _sorted_merge(*dicts):
     return merged
 
 
-def _create_global_config(args):
-    username = input(
-        f"Please enter the name you would want future work to be credited to " f"[{args.get('username', '')}]:  "
-    ).strip() or args.get("username", "")
-    email = input(f"Please enter the your email " f"[{args.get('email', '')}]:  ").strip() or args.get("email", "")
-    return_bool = False if username is None or email is None else True
-    with open(Path().home() / "diffpyconfig.json", "w") as f:
-        f.write(json.dumps({"username": stringify(username), "email": stringify(email)}))
-    print(
-        f"You can manually edit the config file at {Path().home() / 'diffpyconfig.json'} using any text editor.\n"
-        f"Or you can update the config file by passing new values to get_user_info(), "
-        f"see examples here: https://www.diffpy.org/diffpy.utils/examples/toolsexample.html"
-    )
-    return return_bool
-
-
 def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
     """
     Get name, email and orcid of the owner/user from various sources and return it as a metadata dictionary
@@ -107,7 +91,7 @@ def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
       "owner_email": "<your_associated_email>>@email.com",
       "owner_orcid": "<your_associated_orcid if you would like this stored with your data>>"
     }
-    You may also store any other gloabl-level information that you would like associated with your
+    You may also store any other global-level information that you would like associated with your
     diffraction data in this file
 
     Parameters
@@ -132,24 +116,52 @@ def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
             del runtime_info[key]
     global_config = load_config(Path().home() / "diffpyconfig.json")
     local_config = load_config(Path().cwd() / "diffpyconfig.json")
-    # if global_config is None and local_config is None:
-    #     print(
-    #         "No global configuration file was found containing "
-    #         "information about the user to associate with the data.\n"
-    #         "By following the prompts below you can add your name and email to this file on the current "
-    #         "computer and your name will be automatically associated with subsequent diffpy data by default.\n"
-    #         "This is not recommended on a shared or public computer. "
-    #         "You will only have to do that once.\n"
-    #         "For more information, please refer to www.diffpy.org/diffpy.utils/examples/toolsexample.html"
-    #     )
     user_info = global_config
     user_info.update(local_config)
     user_info.update(runtime_info)
     return user_info
 
 
-def check_and_build_global_config():
-    return
+def _get_value(mystring):
+    return mystring.strip()
+
+
+def check_and_build_global_config(skip_config_creation=False):
+    config_path = Path().home() / "diffpyconfig.json"
+    if skip_config_creation:
+        return
+    if config_path.is_file():
+        return
+    intro_text = (
+        "No global configuration file was found containing information about the user to "
+        "associate with the data.\n By following the prompts below you can add your name "
+        "and email to this file on the current "
+        "computer and your name will be automatically associated with subsequent diffpy data by default.\n"
+        "This is not recommended on a shared or public computer. "
+        "You will only have to do that once.\n"
+        "For more information, please refer to www.diffpy.org/diffpy.utils/examples/toolsexample.html"
+    )
+    print(intro_text)
+    username = input("Please enter the name you would want future work to be credited to: ").strip()
+    email = input("Please enter your email: ").strip()
+    orcid = input("Please enter your orcid ID if you know it: ").strip()
+    config = {"owner_name": stringify(username), "owner_email": stringify(email), "owner_orcid": stringify(orcid)}
+    if email != "" or orcid != "" or username != "":
+        config["owner_orcid"] = stringify(orcid)
+        with open(config_path, "w") as f:
+            f.write(json.dumps(config))
+        outro_text = (
+            f"The config file at {Path().home() / 'diffpyconfig.json'} has been created. "
+            f"The values  {config} were entered.\n"
+            f"These values will be inserted as metadata with your data in apps that use "
+            f"diffpy.get_user_info(). If you would like to update these values, either "
+            f"delete the config file and this workflow will rerun next time you run this "
+            f"program.  Or you may open the config file in a text editor and manually edit the"
+            f"entries.  For more information, see: "
+            f"https://diffpy.githu.io/diffpy.utils/examples/tools_example.html"
+        )
+        print(outro_text)
+        return
 
 
 def get_package_info(package_names, metadata=None):
