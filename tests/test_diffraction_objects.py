@@ -165,7 +165,6 @@ def test_diffraction_objects_equality(
     "xtype, expected_xarray",
     [
         # Test whether on_xtype returns the correct xarray values.
-        # The test DO instance is initialized with tth.
         # C1: tth to tth, expect no change in xaray value
         # 1. "tth" provided, expect tth
         # 2. "2theta" provided, expect tth
@@ -199,7 +198,7 @@ def test_init_invalid_xtype():
     "org_do_args, target_do_args, scale_inputs, expected",
     [
         # Test whether scale_to() scales to the expected values
-        # C1: Same x-array and y-array, check offset
+        # C1: Same x-array and y-array with 2.1 offset, expect yarray shifted by 2.1 offset
         (
             {
                 "xarray": np.array([10, 15, 25, 30, 60, 140]),
