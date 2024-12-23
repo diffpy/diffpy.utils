@@ -165,9 +165,9 @@ def test_diffraction_objects_equality(
         # 2. "2theta" provided, expect tth
         ("tth", np.array([30, 60])),
         ("2theta", np.array([30, 60])),
-        # C2: "q" provided, expect q
+        # C2: "q" provided, expect q converted from tth
         ("q", np.array([0.51764, 1])),
-        # C3: "d" provided, expect d
+        # C3: "d" provided, expect d converted from tth
         ("d", np.array([12.13818, 6.28319])),
     ],
 )
@@ -192,7 +192,7 @@ def test_init_invalid_xtype():
 @pytest.mark.parametrize(
     "org_do_args, target_do_args, scale_inputs, expected",
     [
-        # Test that scale_to() scales to the correct values
+        # Test whether scale_to() scales to the expected values
         # C1: Same x-array and y-array, check offset
         (
             {
@@ -297,7 +297,8 @@ def test_scale_to(org_do_args, target_do_args, scale_inputs, expected):
 @pytest.mark.parametrize(
     "org_do_args, target_do_args, scale_inputs",
     [
-        # C1: User did not specify anything
+        # Test expected errors produced from scale_to() with invalid inputs
+        # C1: none of q, tth, d, provided, expect ValueError
         (
             {
                 "xarray": np.array([0.1, 0.2, 0.3]),
@@ -318,7 +319,7 @@ def test_scale_to(org_do_args, target_do_args, scale_inputs, expected):
                 "offset": 0,
             },
         ),
-        # C2: User specified more than one of q, tth, and d
+        # C2: more than one of either q, tth, d, provided, expect ValueError
         (
             {
                 "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
@@ -359,12 +360,13 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
 @pytest.mark.parametrize(
     "wavelength, xarray, yarray, xtype_1, xtype_2, value, expected_index",
     [
-        # U1: Exact match
+        # Test whether get_array_index() returns the expected index
+        # C1: Exact match
         (4 * np.pi, np.array([30.005, 60]), np.array([1, 2]), "tth", "tth", 30.005, [0]),
-        # U2: Target value lies in the array, returns the (first) closest index
+        # C2: Target value lies in the array, returns the (first) closest index
         (4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "tth", 45, [0]),
         (4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "q", 0.25, [0]),
-        # U3: Target value out of the range, returns the closest index
+        # C3: Target value out of the range, returns the closest index
         (4 * np.pi, np.array([0.25, 0.5, 0.71]), np.array([1, 2, 3]), "q", "q", 0.1, [0]),
         (4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "tth", 63, [1]),
     ],
