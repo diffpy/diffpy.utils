@@ -567,7 +567,7 @@ def test_init_valid(do_init_args, expected_do_dict, divide_by_zero_warning_expec
 @pytest.mark.parametrize(
     "do_init_args, expected_error_msg",
     [
-        # Test expected error messages due to required arguments in DiffractionObject constructor
+        # Test expected error messages when 3 required arguments not provided in DiffractionObject init
         (  # C1: No arguments provided, expect 3 required positional arguments error
             {},
             "missing 3 required positional arguments: 'xarray', 'yarray', and 'xtype'",
