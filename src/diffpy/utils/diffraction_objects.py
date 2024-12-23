@@ -35,51 +35,41 @@ def _setter_wmsg(attribute):
 
 
 class DiffractionObject:
-    """
-    Initialize a DiffractionObject instance.
+    """Class for storing and manipulating diffraction data.
 
-    Parameters
+    DiffractionObject stores data produced from X-ray, neutron,
+    and electron scattering experiments. The object can transform
+    between different scattering quantities such as q (scattering vector),
+    2θ (two-theta angle), and d (interplanar spacing), and perform various
+    operations like scaling, addition, subtraction, and comparison for equality
+    between diffraction objects.
+
+    Attributes
     ----------
-    xarray : array-like
-        The independent variable array containing "q", "tth", or "d" values.
-    yarray : array-like
-        The dependent variable array corresponding to intensity values.
-    xtype : str
-        The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES}.
-    wavelength : float, optional
-        The wavelength of the incoming beam, specified in angstroms (Å). Default is none.
-    scat_quantity : str, optional
+    all_arrays : ndarray
+        The array containing the quantity of q, tth, d values.
+    input_xtype : str
+        The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES}
+    id : uuid
+        The unique identifier for the diffraction object.
+    scat_quantity : str
         The type of scattering experiment (e.g., "x-ray", "neutron"). Default is an empty string "".
-    name : str, optional
+    wavelength : float
+        The wavelength of the incoming beam, specified in angstroms (Å). Default is none.
+    name: str
         The name or label for the scattering data. Default is an empty string "".
-    metadata : dict, optional
-        The additional metadata associated with the diffraction object. Default is {}.
-
-    Examples
-    --------
-    Create a DiffractionObject for X-ray scattering data:
-
-    >>> import numpy as np
-    >>> from diffpy.utils.diffraction_objects import DiffractionObject
-    ...
-    >>> x = np.array([0.12, 0.24, 0.31, 0.4])  # independent variable (e.g., q)
-    >>> y = np.array([10, 20, 40, 60])  # intensity values
-    >>> metadata = {
-    ...     "sample": "rock salt from the beach",
-    ...     "composition": "NaCl",
-    ...     "temperature": "300 K,",
-    ...     "experimenters": "Phill, Sally"
-    ... }
-    >>> do = DiffractionObject(
-    ...     xarray=x,
-    ...     yarray=y,
-    ...     xtype="q",
-    ...     wavelength=1.54,
-    ...     scat_quantity="x-ray",
-    ...     name="beach_rock_salt_1",
-    ...     metadata=metadata
-    ... )
-    >>> print(do.metadata)
+    qmin : float
+        The minimum q value.
+    qmax : float
+        The maximum q value.
+    tthmin : float
+        The minimum two-theta value.
+    tthmax : float
+        The maximum two-theta value.
+    dmin : float
+        The minimum d-spacing value.
+    dmax : float
+        The maximum d-spacing value.
     """
 
     def __init__(
@@ -92,6 +82,50 @@ class DiffractionObject:
         name="",
         metadata={},
     ):
+        """Initialize a DiffractionObject instance.
+
+        Parameters
+        ----------
+        xarray : ndarray
+            The independent variable array containing "q", "tth", or "d" values.
+        yarray : ndarray
+            The dependent variable array corresponding to intensity values.
+        xtype : str
+            The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES}.
+        wavelength : float, optional
+            The wavelength of the incoming beam, specified in angstroms (Å). Default is none.
+        scat_quantity : str, optional
+            The type of scattering experiment (e.g., "x-ray", "neutron"). Default is an empty string "".
+        name : str, optional
+            The name or label for the scattering data. Default is an empty string "".
+        metadata : dict, optional
+            The additional metadata associated with the diffraction object. Default is {}.
+
+        Examples
+        --------
+        Create a DiffractionObject for X-ray scattering data
+        >>> import numpy as np
+        >>> from diffpy.utils.diffraction_objects import DiffractionObject
+        ...
+        >>> x = np.array([0.12, 0.24, 0.31, 0.4])  # independent variable (e.g., q)
+        >>> y = np.array([10, 20, 40, 60])  # intensity values
+        >>> metadata = {
+        ...     "sample": "rock salt from the beach",
+        ...     "composition": "NaCl",
+        ...     "temperature": "300 K,",
+        ...     "experimenters": "Phill, Sally"
+        ... }
+        >>> do = DiffractionObject(
+        ...     xarray=x,
+        ...     yarray=y,
+        ...     xtype="q",
+        ...     wavelength=1.54,
+        ...     scat_quantity="x-ray",
+        ...     name="beach_rock_salt_1",
+        ...     metadata=metadata
+        ... )
+        >>> print(do.metadata)
+        """
 
         self._id = uuid.uuid4()
         self._input_data(xarray, yarray, xtype, wavelength, scat_quantity, name, metadata)
@@ -273,8 +307,8 @@ class DiffractionObject:
         raise AttributeError(_setter_wmsg("id"))
 
     def get_array_index(self, value, xtype=None):
-        """
-        Return the index of the closest value in the array associated with the specified xtype.
+        """Return the index of the closest value in the array associated with
+        the specified xtype.
 
         Parameters
         ----------
@@ -337,8 +371,8 @@ class DiffractionObject:
         return [self.all_arrays[:, 3], self.all_arrays[:, 0]]
 
     def scale_to(self, target_diff_object, q=None, tth=None, d=None, offset=0):
-        """
-        returns a new diffraction object which is the current object but rescaled in y to the target
+        """Returns a new diffraction object which is the current object but
+        rescaled in y to the target.
 
         The y-value in the target at the closest specified x-value will be used as the factor to scale to.
         The entire array is scaled by this factor so that one object places on top of the other at that point.
@@ -379,8 +413,8 @@ class DiffractionObject:
         return scaled
 
     def on_xtype(self, xtype):
-        """
-        Return a list of two 1D np array with x and y data, raise an error if the specified xtype is invalid
+        """Return a list of two 1D np array with x and y data, raise an error
+        if the specified xtype is invalid.
 
         Parameters
         ----------
@@ -425,8 +459,7 @@ class DiffractionObject:
             np.savetxt(f, data_to_save, delimiter=" ")
 
     def copy(self):
-        """
-        Create a deep copy of the DiffractionObject instance.
+        """Create a deep copy of the DiffractionObject instance.
 
         Returns
         -------
