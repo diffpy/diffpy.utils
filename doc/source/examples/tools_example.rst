@@ -41,7 +41,7 @@ The function will return
 
 .. code-block:: python
 
-        {"owner_email": "janedoe@email.com", "owner_name": "Jane Doe", "owner_orcid": "0000-0000-0000-0000"}
+    {"owner_name": "Jane Doe", "owner_email": "janedoe@email.com", "owner_orcid": "0000-0000-0000-0000"}
 
 
 Where does ``get_user_info()`` get the user information from?
@@ -77,6 +77,7 @@ When building an application where you want to capture data-owner information, w
 ``check_and_build_global_config()`` first followed by ``get_user_info`` in your app workflow.  E.g.,
 
 .. code-block:: python
+
     from diffpy.utils.tools import check_and_build_global_config, get_user_info
     from datetime import datetime
     import json
@@ -95,12 +96,32 @@ it will only run once.  However, if you want to bypass this behavior,
 ``check_and_build_global_config()`` takes an optional boolean ``skip_config_creation`` parameter that
 could be set to ``True`` at runtime to override the config creation.
 
+What happens when you run ``check_and_build_global_config()``?
+--------------------------------------------------------------
+
+When you set ``skip_config_creation`` to ``False`` and there is no existing global configuration file,
+the function will prompt you for inputs (name, email, ORCID).
+An example of the prompts you may see is:
+
+.. code-block:: python
+
+    Please enter the name you would want future work to be credited to: Jane Doe
+    Please enter your email: janedoe@example.com
+    Please enter your orcid ID if you know it: 0000-0000-0000-0000
+
+
+After receiving the inputs, the function will write the following to the file:
+
+.. code-block:: python
+    {"owner_name": "Jane Doe", "owner_email": "janedoe@email.com", "owner_orcid": "0000-0000-0000-0000"}
+
+
 I entered the wrong information in my config file so it always loads incorrect information, how do I fix that?
 --------------------------------------------------------------------------------------------------------------
 
 It is easy to fix this simply by deleting the global and/or local config files, which will allow
 you to re-enter the information during the ``check_and_build_global_config()`` initialization
-workflow.   You can also simply editi the ``diffpyconfig.json`` file directly using a text
+workflow.   You can also simply edit the ``diffpyconfig.json`` file directly using a text
 editor.
 
 Locate the file ``diffpyconfig.json``, in your home directory and open it in an editor ::
@@ -111,7 +132,7 @@ Locate the file ``diffpyconfig.json``, in your home directory and open it in an 
         "owner_orcid": "0000-0000-4321-1234"
     }
 
-   Then you can edit the username and email as needed, make sure to save your edits.
+Then you can edit the username and email as needed, make sure to save your edits.
 
 Automatically Capture Info about a Software Package Being Used
 ==============================================================
