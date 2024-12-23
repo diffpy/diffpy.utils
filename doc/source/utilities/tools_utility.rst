@@ -11,8 +11,8 @@ The ``diffpy.utils.tools`` module provides tool functions for use with diffpy ap
   passing parameters.
 
 - ``check_and_build_global_config()``: This function helps create a global configuration file
-  that can be used by ``get_user_info()``.
-  If no existing configuration file is found, and the user allows inputs, this function prompts for information.
+  that can be used by, for example, ``get_user_info()``.
+  If no existing configuration file is found, this function prompts for information.
   The provided inputs are then saved to a global configuration file.
   This file can be reused later by ``get_user_info()`` to ensure that the work credits and user information are consistently stored.
 

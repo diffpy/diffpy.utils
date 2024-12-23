@@ -110,10 +110,8 @@ An example of the prompts you may see is:
     Please enter your orcid ID if you know it: 0000-0000-0000-0000
 
 
-After receiving the inputs, the function will write the following to the file:
-
-.. code-block:: python
-    {"owner_name": "Jane Doe", "owner_email": "janedoe@email.com", "owner_orcid": "0000-0000-0000-0000"}
+After receiving the inputs, the function will write the information to
+the `diffpyconfig.json` file in your home directory.
 
 
 I entered the wrong information in my config file so it always loads incorrect information, how do I fix that?
