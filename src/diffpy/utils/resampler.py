@@ -12,7 +12,6 @@
 # See LICENSE_DANSE.txt for license information.
 #
 ##############################################################################
-
 """Various utilities related to data parsing and manipulation."""
 
 import warnings
@@ -80,7 +79,8 @@ def wsinterp(x, xp, fp, left=None, right=None):
 
 
 def nsinterp(xp, fp, qmin=0, qmax=25, left=None, right=None):
-    """One-dimensional Whittaker-Shannon interpolation onto the Nyquist-Shannon grid.
+    """One-dimensional Whittaker-Shannon interpolation onto the Nyquist-Shannon
+    grid.
 
     Takes a band-limited function fp and original grid xp and resamples fp on the NS grid.
     Uses the minimum number of points N required by the Nyquist sampling theorem.

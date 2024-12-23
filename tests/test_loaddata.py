@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-"""Unit tests for diffpy.utils.parsers.loaddata
-"""
+"""Unit tests for diffpy.utils.parsers.loaddata."""
 
 import numpy as np
 import pytest
@@ -10,7 +9,7 @@ from diffpy.utils.parsers.loaddata import loadData
 
 
 def test_loadData_default(datafile):
-    """check loadData() with default options"""
+    """Check loadData() with default options."""
     loaddata01 = datafile("loaddata01.txt")
     d2c = np.array([[3, 31], [4, 32], [5, 33]])
 
@@ -38,7 +37,7 @@ def test_loadData_default(datafile):
 
 
 def test_loadData_1column(datafile):
-    """check loading of one-column data."""
+    """Check loading of one-column data."""
     loaddata01 = datafile("loaddata01.txt")
     d1c = np.arange(1, 6)
 
@@ -54,7 +53,7 @@ def test_loadData_1column(datafile):
 
 
 def test_loadData_headers(datafile):
-    """check loadData() with headers options enabled"""
+    """Check loadData() with headers options enabled."""
     expected = {
         "wavelength": 0.1,
         "dataformat": "Qnm",

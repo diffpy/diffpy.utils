@@ -5,8 +5,7 @@ from pathlib import Path
 
 
 def clean_dict(obj):
-    """
-    Remove keys from the dictionary where the corresponding value is None.
+    """Remove keys from the dictionary where the corresponding value is None.
 
     Parameters
     ----------
@@ -17,7 +16,6 @@ def clean_dict(obj):
     -------
     dict:
         The cleaned dictionary with keys removed where the value is None.
-
     """
     obj = obj if obj is not None else {}
     for key, value in copy(obj).items():
@@ -27,8 +25,7 @@ def clean_dict(obj):
 
 
 def stringify(obj):
-    """
-    Convert None to an empty string.
+    """Convert None to an empty string.
 
     Parameters
     ----------
@@ -44,8 +41,7 @@ def stringify(obj):
 
 
 def load_config(file_path):
-    """
-    Load configuration from a .json file.
+    """Load configuration from a .json file.
 
     Parameters
     ----------
@@ -56,7 +52,6 @@ def load_config(file_path):
     -------
     dict:
         The configuration dictionary or {} if the config file does not exist.
-
     """
     config_file = Path(file_path).resolve()
     if config_file.is_file():
@@ -91,8 +86,8 @@ def _create_global_config(args):
 
 
 def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
-    """
-    Get name, email and orcid of the owner/user from various sources and return it as a metadata dictionary
+    """Get name, email and orcid of the owner/user from various sources and
+    return it as a metadata dictionary.
 
     The function looks for the information in json format configuration files with the name 'diffpyconfig.json'.
     These can be in the user's home directory and in the current working directory.  The information in the
@@ -124,7 +119,6 @@ def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
     dict:
         The dictionary containing username, email and orcid of the user/owner, and any other information
         stored in the global or local config files.
-
     """
     runtime_info = {"owner_name": owner_name, "owner_email": owner_email, "owner_orcid": owner_orcid}
     for key, value in copy(runtime_info).items():
@@ -149,8 +143,7 @@ def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
 
 
 def get_package_info(package_names, metadata=None):
-    """
-    Fetches package version and updates it into (given) metadata.
+    """Fetches package version and updates it into (given) metadata.
 
     Package info stored in metadata as {'package_info': {'package_name': 'version_number'}}.
 
@@ -164,7 +157,6 @@ def get_package_info(package_names, metadata=None):
     -------
     dict:
         The updated metadata dict with package info inserted.
-
     """
     if metadata is None:
         metadata = {}
