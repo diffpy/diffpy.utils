@@ -324,7 +324,7 @@ def test_scale_to(org_do_args, target_do_args, scale_inputs, expected):
                 "offset": 0,
             },
         ),
-        # C2: tth and d both provided, expect ValueError
+        # C2: tth and d both provided, expect ValueErrort
         (
             {
                 "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
