@@ -165,7 +165,7 @@ def test_diffraction_objects_equality(
     "xtype, expected_xarray",
     [
         # Test whether on_xtype returns the correct xarray values.
-        # C1: tth to tth, expect no change in xaray value
+        # C1: tth to tth, expect no change in xarray value
         # 1. "tth" provided, expect tth
         # 2. "2theta" provided, expect tth
         ("tth", np.array([30, 60])),
