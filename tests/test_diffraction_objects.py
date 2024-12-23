@@ -12,10 +12,10 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
 
 
 @pytest.mark.parametrize(
-    "do_args_1, do_args_2, expected_equality, warning_expected",
+    "do_args_1, do_args_2, expected_equality, wavelength_warning_expected",
     [
         # Test when __eq__ returns True and False
-        # Identical args, expect equality
+        # C1: Identical args, expect equality
         (
             {
                 "name": "same",
@@ -56,7 +56,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
             False,
             True,
         ),
-        (  # One without wavelength, expect inequality
+        (  # C2: One without wavelength, expect inequality
             {
                 "wavelength": 0.71,
                 "xtype": "tth",
@@ -73,7 +73,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
             False,
             True,
         ),
-        (  # Different wavelengths, expect inequality
+        (  # C3: Different wavelength values, expect inequality
             {
                 "wavelength": 0.71,
                 "xtype": "tth",
@@ -91,7 +91,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
             False,
             False,
         ),
-        (  # Different scat_quantity, expect inequality
+        (  # C4: Different scat_quantity, expect inequality
             {
                 "scat_quantity": "x-ray",
                 "xtype": "tth",
@@ -109,7 +109,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
             False,
             True,
         ),
-        (  # Different q xarray values, expect inequality
+        (  # C5: Different q xarray values, expect inequality
             {
                 "xtype": "q",
                 "xarray": np.array([1.0, 2.0]),
@@ -124,7 +124,7 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
             False,
             True,
         ),
-        (  # Different metadata, expect inequality
+        (  # C6: Different metadata, expect inequality
             {
                 "xtype": "q",
                 "xarray": np.empty(0),
@@ -143,9 +143,9 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
     ],
 )
 def test_diffraction_objects_equality(
-    do_args_1, do_args_2, expected_equality, warning_expected, wavelength_warning_msg
+    do_args_1, do_args_2, expected_equality, wavelength_warning_expected, wavelength_warning_msg
 ):
-    if warning_expected:
+    if wavelength_warning_expected:
         with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
             do_1 = DiffractionObject(**do_args_1)
             do_2 = DiffractionObject(**do_args_2)
@@ -158,9 +158,16 @@ def test_diffraction_objects_equality(
 @pytest.mark.parametrize(
     "xtype, expected_xarray",
     [
+        # Test whether on_xtype returns the correct xarray values.
+        # The test DO instance is initialized with tth.
+        # C1: tth to tth, expect no change in xaray value
+        # 1. "tth" provided, expect tth
+        # 2. "2theta" provided, expect tth
         ("tth", np.array([30, 60])),
         ("2theta", np.array([30, 60])),
+        # C2: "q" provided, expect q
         ("q", np.array([0.51764, 1])),
+        # C3: "d" provided, expect d
         ("d", np.array([12.13818, 6.28319])),
     ],
 )
@@ -290,7 +297,7 @@ def test_scale_to(org_do_args, target_do_args, scale_inputs, expected):
 @pytest.mark.parametrize(
     "org_do_args, target_do_args, scale_inputs",
     [
-        # UC1: User did not specify anything
+        # C1: User did not specify anything
         (
             {
                 "xarray": np.array([0.1, 0.2, 0.3]),
@@ -311,7 +318,7 @@ def test_scale_to(org_do_args, target_do_args, scale_inputs, expected):
                 "offset": 0,
             },
         ),
-        # UC2: User specified more than one of q, tth, and d
+        # C2: User specified more than one of q, tth, and d
         (
             {
                 "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
@@ -352,12 +359,12 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
 @pytest.mark.parametrize(
     "wavelength, xarray, yarray, xtype_1, xtype_2, value, expected_index",
     [
-        # UC1: Exact match
+        # U1: Exact match
         (4 * np.pi, np.array([30.005, 60]), np.array([1, 2]), "tth", "tth", 30.005, [0]),
-        # UC2: Target value lies in the array, returns the (first) closest index
+        # U2: Target value lies in the array, returns the (first) closest index
         (4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "tth", 45, [0]),
         (4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "q", 0.25, [0]),
-        # UC3: Target value out of the range, returns the closest index
+        # U3: Target value out of the range, returns the closest index
         (4 * np.pi, np.array([0.25, 0.5, 0.71]), np.array([1, 2, 3]), "q", "q", 0.1, [0]),
         (4 * np.pi, np.array([30, 60]), np.array([1, 2]), "tth", "tth", 63, [1]),
     ],
