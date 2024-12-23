@@ -45,22 +45,6 @@ def _load_config(file_path):
         return {}
 
 
-def _create_global_config(args):
-    username = input(
-        f"Please enter the name you would want future work to be credited to " f"[{args.get('username', '')}]:  "
-    ).strip() or args.get("username", "")
-    email = input(f"Please enter the your email " f"[{args.get('email', '')}]:  ").strip() or args.get("email", "")
-    return_bool = False if username is None or email is None else True
-    with open(Path().home() / "diffpyconfig.json", "w") as f:
-        f.write(json.dumps({"username": _stringify(username), "email": _stringify(email)}))
-    print(
-        f"You can manually edit the config file at {Path().home() / 'diffpyconfig.json'} using any text editor.\n"
-        f"Or you can update the config file by passing new values to get_user_info(), "
-        f"see examples here: https://www.diffpy.org/diffpy.utils/examples/toolsexample.html"
-    )
-    return return_bool
-
-
 def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
     """
     Get name, email and orcid of the owner/user from various sources and return it as a metadata dictionary
