@@ -50,7 +50,7 @@ class DiffractionObject:
         The array containing the quantity of q, tth, d values.
     input_xtype : str
         The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES}
-    id : uuid
+    _uuid : uuid
         The unique identifier for the diffraction object.
     scat_quantity : str
         The type of scattering experiment (e.g., "x-ray", "neutron"). Default is an empty string "".
@@ -127,7 +127,7 @@ class DiffractionObject:
         >>> print(do.metadata)
         """
 
-        self._id = uuid.uuid4()
+        self._uuid = uuid.uuid4()
         self._input_data(xarray, yarray, xtype, wavelength, scat_quantity, name, metadata)
 
     def _input_data(self, xarray, yarray, xtype, wavelength, scat_quantity, name, metadata):
@@ -299,12 +299,12 @@ class DiffractionObject:
         raise AttributeError(_setter_wmsg("input_xtype"))
 
     @property
-    def id(self):
-        return self._id
+    def uuid(self):
+        return self._uuid
 
-    @id.setter
-    def id(self, _):
-        raise AttributeError(_setter_wmsg("id"))
+    @uuid.setter
+    def uuid(self, _):
+        raise AttributeError(_setter_wmsg("uuid"))
 
     def get_array_index(self, value, xtype=None):
         """Return the index of the closest value in the array associated with
