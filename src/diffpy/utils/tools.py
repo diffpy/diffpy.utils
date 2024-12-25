@@ -4,7 +4,6 @@ from copy import copy
 from pathlib import Path
 
 
-
 def clean_dict(obj):
     """Remove keys from the dictionary where the corresponding value is None.
 
@@ -26,9 +25,7 @@ def clean_dict(obj):
 
 
 def _stringify(obj):
-    """
-    Convert None to an empty string.
-
+    """Convert None to an empty string.
 
     Parameters
     ----------
@@ -44,9 +41,8 @@ def _stringify(obj):
 
 
 def _load_config(file_path):
-    """
-    Load configuration from a .json file.
->>>>>>> de55560eb525ef412c38bb31d21d43d9b170d3f6
+    """Load configuration from a .json file. >>>>>>>
+    de55560eb525ef412c38bb31d21d43d9b170d3f6.
 
     Parameters
     ----------
