@@ -32,7 +32,6 @@ def test_q_to_tth(wavelength, q, expected_tth, wavelength_warning_msg):
             actual_tth = q_to_tth(q, wavelength)
     else:
         actual_tth = q_to_tth(q, wavelength)
-
     assert np.allclose(expected_tth, actual_tth)
 
 
@@ -205,14 +204,14 @@ def test_tth_to_d(wavelength, tth, expected_d, divide_by_zero_warning_expected, 
 @pytest.mark.parametrize(
     "wavelength, tth, expected_error_type, expected_error_msg",
     [
-        # C1: User specified an invalid tth value of > 180 degrees (without wavelength)
+        # C1: Invalid tth value of > 180 degrees, no wavelength, expect two theta ValueError
         (
             None,
             np.array([0, 30, 60, 90, 120, 181]),
             ValueError,
             "Two theta exceeds 180 degrees. Please check the input values for errors.",
         ),
-        # C2: User specified an invalid tth value of > 180 degrees (with wavelength)
+        # C2: Invalid tth value of > 180 degrees with wavelength, expect two theta ValueError
         (
             4 * np.pi,
             np.array([0, 30, 60, 90, 120, 181]),
@@ -229,13 +228,13 @@ def test_tth_to_d_invalid(wavelength, tth, expected_error_type, expected_error_m
 @pytest.mark.parametrize(
     "wavelength, d, expected_tth, divide_by_zero_warning_expected",
     [
-        # C1: Empty d values, no wavelength, return empty arrays
+        # C1: Empty d values, no wavelength, expect empty tth values
         (None, np.empty((0)), np.empty((0)), False),
-        # C2: Empty d values, wavelength specified, return empty arrays
+        # C2: Empty d values with wavelength, expect empty tth values
         (4 * np.pi, np.empty((0)), np.empty(0), False),
-        # C3: User specified valid d values, no wavelength, return empty arrays
+        # C3: Valid d values, no wavelength, expect valid and non-empty tth values
         (None, np.array([1, 0.8, 0.6, 0.4, 0.2, 0]), np.array([0, 1, 2, 3, 4, 5]), True),
-        # C4: User specified valid d values (with wavelength)
+        # C4: Valid d values with wavelength, expect valid and non-empty thh values
         (
             4 * np.pi,
             np.array([4 * np.pi, 4 / np.sqrt(2) * np.pi, 4 / np.sqrt(3) * np.pi]),
@@ -254,16 +253,15 @@ def test_d_to_tth(wavelength, d, expected_tth, divide_by_zero_warning_expected, 
                 actual_tth = d_to_tth(d, wavelength)
     else:
         actual_tth = d_to_tth(d, wavelength)
-
     assert np.allclose(actual_tth, expected_tth)
 
 
 @pytest.mark.parametrize(
     "wavelength, d, expected_error_type",
     [
-        # C1: User specified invalid d values that result in tth > 180 degrees
+        # C1: Invalid d values that result in tth > 180 degrees, expect invalid q, d, or wavelength ValueError
         (4 * np.pi, np.array([1.2, 1, 0.8, 0.6, 0.4, 0.2]), ValueError),
-        # C2: User specified a wrong wavelength that result in tth > 180 degrees
+        # C2: Wrong wavelength that result in tth > 180 degreesm, expect invalid q, d, or wavelength ValueError
         (100, np.array([1.2, 1, 0.8, 0.6, 0.4, 0.2]), ValueError),
     ],
 )
