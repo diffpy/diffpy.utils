@@ -4,6 +4,7 @@ from copy import copy
 from pathlib import Path
 
 
+
 def clean_dict(obj):
     """Remove keys from the dictionary where the corresponding value is None.
 
@@ -24,8 +25,10 @@ def clean_dict(obj):
     return obj
 
 
-def stringify(obj):
-    """Convert None to an empty string.
+def _stringify(obj):
+    """
+    Convert None to an empty string.
+
 
     Parameters
     ----------
@@ -40,8 +43,10 @@ def stringify(obj):
     return obj if obj is not None else ""
 
 
-def load_config(file_path):
-    """Load configuration from a .json file.
+def _load_config(file_path):
+    """
+    Load configuration from a .json file.
+>>>>>>> de55560eb525ef412c38bb31d21d43d9b170d3f6
 
     Parameters
     ----------
@@ -60,29 +65,6 @@ def load_config(file_path):
         return config
     else:
         return {}
-
-
-def _sorted_merge(*dicts):
-    merged = {}
-    for d in dicts:
-        merged.update(d)
-    return merged
-
-
-def _create_global_config(args):
-    username = input(
-        f"Please enter the name you would want future work to be credited to " f"[{args.get('username', '')}]:  "
-    ).strip() or args.get("username", "")
-    email = input(f"Please enter the your email " f"[{args.get('email', '')}]:  ").strip() or args.get("email", "")
-    return_bool = False if username is None or email is None else True
-    with open(Path().home() / "diffpyconfig.json", "w") as f:
-        f.write(json.dumps({"username": stringify(username), "email": stringify(email)}))
-    print(
-        f"You can manually edit the config file at {Path().home() / 'diffpyconfig.json'} using any text editor.\n"
-        f"Or you can update the config file by passing new values to get_user_info(), "
-        f"see examples here: https://www.diffpy.org/diffpy.utils/examples/toolsexample.html"
-    )
-    return return_bool
 
 
 def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
@@ -111,7 +93,7 @@ def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
         The name of the user who will show as owner in the metadata that is stored with the data
     owner_email: string, optional, default is the value stored in the global or local config file.
         The email of the user/owner
-    owner_name:  string, optional, default is the value stored in the global or local config file.
+    owner_orcid:  string, optional, default is the value stored in the global or local config file.
         The ORCID id of the user/owner
 
     Returns
@@ -124,8 +106,8 @@ def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
     for key, value in copy(runtime_info).items():
         if value is None or value == "":
             del runtime_info[key]
-    global_config = load_config(Path().home() / "diffpyconfig.json")
-    local_config = load_config(Path().cwd() / "diffpyconfig.json")
+    global_config = _load_config(Path().home() / "diffpyconfig.json")
+    local_config = _load_config(Path().cwd() / "diffpyconfig.json")
     # if global_config is None and local_config is None:
     #     print(
     #         "No global configuration file was found containing "
