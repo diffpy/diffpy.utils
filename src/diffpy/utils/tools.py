@@ -41,8 +41,7 @@ def _stringify(obj):
 
 
 def _load_config(file_path):
-    """Load configuration from a .json file. >>>>>>>
-    de55560eb525ef412c38bb31d21d43d9b170d3f6.
+    """Load configuration from a .json file.
 
     Parameters
     ----------
