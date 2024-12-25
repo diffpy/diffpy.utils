@@ -107,13 +107,16 @@ def test_check_and_build_global_config(test_inputs, expected, user_filesystem, m
     # remove the config file from home that came with user_filesystem
     os.remove(confile)
     mocker.patch("builtins.input", side_effect=test_inputs["user_inputs"])
-    check_and_build_global_config()
+    actual_bool = check_and_build_global_config()
     try:
         with open(confile, "r") as f:
             actual = json.load(f)
+        expected_bool = True
     except FileNotFoundError:
+        expected_bool = False
         actual = None
     assert actual == expected
+    assert actual_bool == expected_bool
 
 
 def test_check_and_build_global_config_file_exists(user_filesystem, mocker):
@@ -121,7 +124,8 @@ def test_check_and_build_global_config_file_exists(user_filesystem, mocker):
     os.chdir(user_filesystem[1])
     confile = user_filesystem[0] / "diffpyconfig.json"
     expected = {"owner_name": "home_ownername", "owner_email": "home@email.com", "owner_orcid": "home_orcid"}
-    check_and_build_global_config()
+    actual_bool = check_and_build_global_config()
+    assert actual_bool is True
     with open(confile, "r") as f:
         actual = json.load(f)
     assert actual == expected
@@ -133,7 +137,8 @@ def test_check_and_build_global_config_skipped(user_filesystem, mocker):
     confile = user_filesystem[0] / "diffpyconfig.json"
     # remove the config file from home that came with user_filesystem
     os.remove(confile)
-    check_and_build_global_config(skip_config_creation=True)
+    actual_bool = check_and_build_global_config(skip_config_creation=True)
+    assert actual_bool is False
     assert not confile.exists()
 
 

@@ -123,11 +123,40 @@ def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
 
 
 def check_and_build_global_config(skip_config_creation=False):
+    """
+    Checks for a global diffpu config file in user's home directory and creates one if it is missing
+
+    The file it looks for is called diffpyconfig.json.  This can contain anything in json format, but
+    minimally contains information about the computer owner.  The information is used
+    when diffpy objects are created and saved to files or databases to retain ownership information
+    of datasets.  For example, it is used by diffpy.utils.tools.get_user_info().
+
+    If the function finds no config file in the user's home directory it interrupts execution
+    and prompts the user for name, email, and orcid information.  It then creates the config file
+    with this information inside it.
+
+    The function returns True if the file exists and False otherwise.
+
+    If you would like to check for a file but not run the file creation workflow you can set
+    the optional argument skip_config_creation to True.
+
+    Parameters
+    ----------
+    skip_config_creation: bool, optional, Default is False
+      The bool that will override the creation workflow even if no config file exists.
+
+    Returns
+    -------
+    bool: True if the file exists and False otherwise.
+
+    """
+    config_exists = False
     config_path = Path().home() / "diffpyconfig.json"
-    if skip_config_creation:
-        return
     if config_path.is_file():
-        return
+        config_exists = True
+        return config_exists
+    if skip_config_creation:
+        return config_exists
     intro_text = (
         "No global configuration file was found containing information about the user to "
         "associate with the data.\n By following the prompts below you can add your name "
@@ -154,10 +183,11 @@ def check_and_build_global_config(skip_config_creation=False):
             f"delete the config file and this workflow will rerun next time you run this "
             f"program.  Or you may open the config file in a text editor and manually edit the"
             f"entries.  For more information, see: "
-            f"https://diffpy.githu.io/diffpy.utils/examples/tools_example.html"
+            f"https://diffpy.github.io/diffpy.utils/examples/tools_example.html"
         )
         print(outro_text)
-        return
+        config_exists = True
+    return config_exists
 
 
 def get_package_info(package_names, metadata=None):
