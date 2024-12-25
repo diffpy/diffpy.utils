@@ -225,7 +225,7 @@ def test_tth_to_d_invalid(wavelength, tth, expected_error_type, expected_error_m
         (4 * np.pi, np.empty((0)), np.empty(0), False),
         # C3: Valid d values, no wavelength, expect valid and non-empty tth values
         (None, np.array([1, 0.8, 0.6, 0.4, 0.2, 0]), np.array([0, 1, 2, 3, 4, 5]), True),
-        ( # C4: Valid d values with wavelength, expect valid and non-empty thh values
+        (  # C4: Valid d values with wavelength, expect valid and non-empty thh values
             4 * np.pi,
             np.array([4 * np.pi, 4 / np.sqrt(2) * np.pi, 4 / np.sqrt(3) * np.pi]),
             np.array([60.0, 90.0, 120.0]),
