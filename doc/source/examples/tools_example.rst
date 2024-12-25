@@ -95,6 +95,10 @@ it will only run once.  However, if you want to bypass this behavior,
 ``check_and_build_global_config()`` takes an optional boolean ``skip_config_creation`` parameter that
 could be set to ``True`` at runtime to override the config creation.
 
+``check_and_build_global_config()`` returns ``True`` if the config file exists (whether it created it or not)
+and ``False`` if the config file does not exist in the user's home allowing you to develop your own
+workflow for handling missing config files after running it with ``skip_config_creation=True``.
+
 I entered the wrong information in my config file so it always loads incorrect information, how do I fix that?
 --------------------------------------------------------------------------------------------------------------
 
