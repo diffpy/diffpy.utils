@@ -114,6 +114,10 @@ After receiving the inputs, the function will write the information to
 the `diffpyconfig.json` file in your home directory.
 
 
+``check_and_build_global_config()`` returns ``True`` if the config file exists (whether it created it or not)
+and ``False`` if the config file does not exist in the user's home allowing you to develop your own
+workflow for handling missing config files after running it with ``skip_config_creation=True``.
+
 I entered the wrong information in my config file so it always loads incorrect information, how do I fix that?
 --------------------------------------------------------------------------------------------------------------
 

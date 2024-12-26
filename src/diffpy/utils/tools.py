@@ -79,7 +79,7 @@ def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
       "owner_email": "<your_associated_email>>@email.com",
       "owner_orcid": "<your_associated_orcid if you would like this stored with your data>>"
     }
-    You may also store any other gloabl-level information that you would like associated with your
+    You may also store any other global-level information that you would like associated with your
     diffraction data in this file
 
     Parameters
@@ -103,20 +103,81 @@ def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
             del runtime_info[key]
     global_config = _load_config(Path().home() / "diffpyconfig.json")
     local_config = _load_config(Path().cwd() / "diffpyconfig.json")
-    # if global_config is None and local_config is None:
-    #     print(
-    #         "No global configuration file was found containing "
-    #         "information about the user to associate with the data.\n"
-    #         "By following the prompts below you can add your name and email to this file on the current "
-    #         "computer and your name will be automatically associated with subsequent diffpy data by default.\n"
-    #         "This is not recommended on a shared or public computer. "
-    #         "You will only have to do that once.\n"
-    #         "For more information, please refer to www.diffpy.org/diffpy.utils/examples/toolsexample.html"
-    #     )
     user_info = global_config
     user_info.update(local_config)
     user_info.update(runtime_info)
     return user_info
+
+
+def check_and_build_global_config(skip_config_creation=False):
+    """Checks for a global diffpu config file in user's home directory and
+    creates one if it is missing.
+
+    The file it looks for is called diffpyconfig.json.  This can contain anything in json format, but
+    minimally contains information about the computer owner.  The information is used
+    when diffpy objects are created and saved to files or databases to retain ownership information
+    of datasets.  For example, it is used by diffpy.utils.tools.get_user_info().
+
+    If the function finds no config file in the user's home directory it interrupts execution
+    and prompts the user for name, email, and orcid information.  It then creates the config file
+    with this information inside it.
+
+    The function returns True if the file exists and False otherwise.
+
+    If you would like to check for a file but not run the file creation workflow you can set
+    the optional argument skip_config_creation to True.
+
+    Parameters
+    ----------
+    skip_config_creation: bool, optional, Default is False
+      The bool that will override the creation workflow even if no config file exists.
+
+    Returns
+    -------
+    bool: True if the file exists and False otherwise.
+    """
+    config_exists = False
+    config_path = Path().home() / "diffpyconfig.json"
+    if config_path.is_file():
+        config_exists = True
+        return config_exists
+    if skip_config_creation:
+        return config_exists
+    intro_text = (
+        "No global configuration file was found containing information about the user to "
+        "associate with the data.\n By following the prompts below you can add your name "
+        "and email to this file on the current "
+        "computer and your name will be automatically associated with subsequent diffpy data by default.\n"
+        "This is not recommended on a shared or public computer. "
+        "You will only have to do that once.\n"
+        "For more information, please refer to www.diffpy.org/diffpy.utils/examples/toolsexample.html"
+    )
+    print(intro_text)
+    username = input("Please enter the name you would want future work to be credited to: ").strip()
+    email = input("Please enter your email: ").strip()
+    orcid = input("Please enter your orcid ID if you know it: ").strip()
+    config = {
+        "owner_name": _stringify(username),
+        "owner_email": _stringify(email),
+        "owner_orcid": _stringify(orcid),
+    }
+    if email != "" or orcid != "" or username != "":
+        config["owner_orcid"] = _stringify(orcid)
+        with open(config_path, "w") as f:
+            f.write(json.dumps(config))
+        outro_text = (
+            f"The config file at {Path().home() / 'diffpyconfig.json'} has been created. "
+            f"The values  {config} were entered.\n"
+            f"These values will be inserted as metadata with your data in apps that use "
+            f"diffpy.get_user_info(). If you would like to update these values, either "
+            f"delete the config file and this workflow will rerun next time you run this "
+            f"program.  Or you may open the config file in a text editor and manually edit the"
+            f"entries.  For more information, see: "
+            f"https://diffpy.github.io/diffpy.utils/examples/tools_example.html"
+        )
+        print(outro_text)
+        config_exists = True
+    return config_exists
 
 
 def get_package_info(package_names, metadata=None):
