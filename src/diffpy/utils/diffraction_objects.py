@@ -288,9 +288,9 @@ class DiffractionObject:
         Examples
         --------
         >>> my_do.all_arrays[:, 0]  # yarray
-        >>> my_do.all_arrays[:, 1]  # `xarray` in q
-        >>> my_do.all_arrays[:, 2]  # `xarray` in tth
-        >>> my_do.all_arrays[:, 3]  # `xarray` in d
+        >>> my_do.all_arrays[:, 1]  # xarray in q
+        >>> my_do.all_arrays[:, 2]  # xarray in tth
+        >>> my_do.all_arrays[:, 3]  # xarray in d
         """
         return self._all_arrays
 
