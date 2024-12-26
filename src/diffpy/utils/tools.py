@@ -136,8 +136,7 @@ def get_package_info(package_names, metadata=None):
 
 
 def compute_mu_using_xraydb(sample, energy, density=None):
-    """
-    compute mu using the XrayDB database
+    """Compute mu using the XrayDB database.
 
     Reference: https://xraypy.github.io/XrayDB/python.html#xraydb.material_mu
 
