@@ -12,8 +12,7 @@
 # See LICENSE.rst for license information.
 #
 ##############################################################################
-
-"""Shared utilities for diffpy packages"""
+"""Shared utilities for diffpy packages."""
 
 # package version
 from diffpy.utils.version import __version__

@@ -29,8 +29,7 @@ def _validate_inputs(q, wavelength):
 
 
 def q_to_tth(q, wavelength):
-    r"""
-    Helper function to convert q to two-theta.
+    r"""Helper function to convert q to two-theta.
 
     If wavelength is missing, returns x-values that are integer indexes
 
@@ -72,9 +71,7 @@ def q_to_tth(q, wavelength):
 
 
 def tth_to_q(tth, wavelength):
-    r"""
-
-    Helper function to convert two-theta to q on independent variable axis.
+    r"""Helper function to convert two-theta to q on independent variable axis.
 
     If wavelength is missing, returns independent variable axis as integer indexes.
 
@@ -120,8 +117,8 @@ def tth_to_q(tth, wavelength):
 
 
 def q_to_d(q):
-    r"""
-    Helper function to convert q to d on independent variable axis, using :math:`d = \frac{2 \pi}{q}`.
+    r"""Helper function to convert q to d on independent variable axis, using
+    :math:`d = \frac{2 \pi}{q}`.
 
     Parameters
     ----------
@@ -140,8 +137,7 @@ def q_to_d(q):
 
 
 def tth_to_d(tth, wavelength):
-    r"""
-    Helper function to convert two-theta to d on independent variable axis.
+    r"""Helper function to convert two-theta to d on independent variable axis.
 
     The formula is .. math:: d = \frac{\lambda}{2 \sin\left(\frac{2\theta}{2}\right)}.
 
@@ -174,8 +170,7 @@ def tth_to_d(tth, wavelength):
 
 
 def d_to_q(d):
-    r"""
-    Helper function to convert q to d using :math:`d = \frac{2 \pi}{q}`.
+    r"""Helper function to convert q to d using :math:`d = \frac{2 \pi}{q}`.
 
     Parameters
     ----------
@@ -194,8 +189,7 @@ def d_to_q(d):
 
 
 def d_to_tth(d, wavelength):
-    r"""
-    Helper function to convert d to two-theta on independent variable axis.
+    r"""Helper function to convert d to two-theta on independent variable axis.
 
     The formula is .. math:: 2\theta = 2 \arcsin\left(\frac{\lambda}{2d}\right).
 
