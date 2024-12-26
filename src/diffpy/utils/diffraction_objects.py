@@ -46,12 +46,6 @@ class DiffractionObject:
 
     Attributes
     ----------
-    all_arrays : ndarray
-        The array containing the quantity of q, tth, d values.
-    input_xtype : str
-        The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES}
-    id : uuid
-        The unique identifier for the diffraction object.
     scat_quantity : str
         The type of scattering experiment (e.g., "x-ray", "neutron"). Default is an empty string "".
     wavelength : float
@@ -127,7 +121,7 @@ class DiffractionObject:
         >>> print(do.metadata)
         """
 
-        self._id = uuid.uuid4()
+        self._uuid = uuid.uuid4()
         self._input_data(xarray, yarray, xtype, wavelength, scat_quantity, name, metadata)
 
     def _input_data(self, xarray, yarray, xtype, wavelength, scat_quantity, name, metadata):
@@ -284,6 +278,23 @@ class DiffractionObject:
 
     @property
     def all_arrays(self):
+        """The 2D array containing `xarray` and `yarray` values.
+
+        Returns
+        -------
+        ndarray
+            The shape (len(data), 4) 2D array with columns containing the `yarray` (intensity)
+            and the `xarray` values in q, tth, and d.
+
+        Examples
+        --------
+        To access specific arrays individually, use these slices:
+
+        >>> my_do.all_arrays[:, 0]  # yarray
+        >>> my_do.all_arrays[:, 1]  # xarray in q
+        >>> my_do.all_arrays[:, 2]  # xarray in tth
+        >>> my_do.all_arrays[:, 3]  # xarray in d
+        """
         return self._all_arrays
 
     @all_arrays.setter
@@ -292,6 +303,13 @@ class DiffractionObject:
 
     @property
     def input_xtype(self):
+        """The type of the independent variable in `xarray`.
+
+        Returns
+        -------
+        str
+            The type of `xarray`, which must be one of {*XQUANTITIES}.
+        """
         return self._input_xtype
 
     @input_xtype.setter
@@ -299,12 +317,19 @@ class DiffractionObject:
         raise AttributeError(_setter_wmsg("input_xtype"))
 
     @property
-    def id(self):
-        return self._id
+    def uuid(self):
+        """The unique identifier for the DiffractionObject instance.
 
-    @id.setter
-    def id(self, _):
-        raise AttributeError(_setter_wmsg("id"))
+        Returns
+        -------
+        uuid
+            The unique identifier of the DiffractionObject instance.
+        """
+        return self._uuid
+
+    @uuid.setter
+    def uuid(self, _):
+        raise AttributeError(_setter_wmsg("uuid"))
 
     def get_array_index(self, value, xtype=None):
         """Return the index of the closest value in the array associated with
@@ -319,7 +344,8 @@ class DiffractionObject:
 
         Returns
         -------
-        the index of the value in the array
+        list
+            The list containing the index of the closest value in the array.
         """
 
         xtype = self._input_xtype
