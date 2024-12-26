@@ -5,8 +5,7 @@ from pathlib import Path
 
 
 def clean_dict(obj):
-    """
-    Remove keys from the dictionary where the corresponding value is None.
+    """Remove keys from the dictionary where the corresponding value is None.
 
     Parameters
     ----------
@@ -17,7 +16,6 @@ def clean_dict(obj):
     -------
     dict:
         The cleaned dictionary with keys removed where the value is None.
-
     """
     obj = obj if obj is not None else {}
     for key, value in copy(obj).items():
@@ -26,9 +24,8 @@ def clean_dict(obj):
     return obj
 
 
-def stringify(obj):
-    """
-    Convert None to an empty string.
+def _stringify(obj):
+    """Convert None to an empty string.
 
     Parameters
     ----------
@@ -43,9 +40,8 @@ def stringify(obj):
     return obj if obj is not None else ""
 
 
-def load_config(file_path):
-    """
-    Load configuration from a .json file.
+def _load_config(file_path):
+    """Load configuration from a .json file.
 
     Parameters
     ----------
@@ -56,7 +52,6 @@ def load_config(file_path):
     -------
     dict:
         The configuration dictionary or {} if the config file does not exist.
-
     """
     config_file = Path(file_path).resolve()
     if config_file.is_file():
@@ -67,16 +62,9 @@ def load_config(file_path):
         return {}
 
 
-def _sorted_merge(*dicts):
-    merged = {}
-    for d in dicts:
-        merged.update(d)
-    return merged
-
-
 def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
-    """
-    Get name, email and orcid of the owner/user from various sources and return it as a metadata dictionary
+    """Get name, email and orcid of the owner/user from various sources and
+    return it as a metadata dictionary.
 
     The function looks for the information in json format configuration files with the name 'diffpyconfig.json'.
     These can be in the user's home directory and in the current working directory.  The information in the
@@ -100,7 +88,7 @@ def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
         The name of the user who will show as owner in the metadata that is stored with the data
     owner_email: string, optional, default is the value stored in the global or local config file.
         The email of the user/owner
-    owner_name:  string, optional, default is the value stored in the global or local config file.
+    owner_orcid:  string, optional, default is the value stored in the global or local config file.
         The ORCID id of the user/owner
 
     Returns
@@ -108,14 +96,13 @@ def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
     dict:
         The dictionary containing username, email and orcid of the user/owner, and any other information
         stored in the global or local config files.
-
     """
     runtime_info = {"owner_name": owner_name, "owner_email": owner_email, "owner_orcid": owner_orcid}
     for key, value in copy(runtime_info).items():
         if value is None or value == "":
             del runtime_info[key]
-    global_config = load_config(Path().home() / "diffpyconfig.json")
-    local_config = load_config(Path().cwd() / "diffpyconfig.json")
+    global_config = _load_config(Path().home() / "diffpyconfig.json")
+    local_config = _load_config(Path().cwd() / "diffpyconfig.json")
     user_info = global_config
     user_info.update(local_config)
     user_info.update(runtime_info)
@@ -123,8 +110,8 @@ def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
 
 
 def check_and_build_global_config(skip_config_creation=False):
-    """
-    Checks for a global diffpu config file in user's home directory and creates one if it is missing
+    """Checks for a global diffpu config file in user's home directory and
+    creates one if it is missing.
 
     The file it looks for is called diffpyconfig.json.  This can contain anything in json format, but
     minimally contains information about the computer owner.  The information is used
@@ -148,7 +135,6 @@ def check_and_build_global_config(skip_config_creation=False):
     Returns
     -------
     bool: True if the file exists and False otherwise.
-
     """
     config_exists = False
     config_path = Path().home() / "diffpyconfig.json"
@@ -170,9 +156,13 @@ def check_and_build_global_config(skip_config_creation=False):
     username = input("Please enter the name you would want future work to be credited to: ").strip()
     email = input("Please enter your email: ").strip()
     orcid = input("Please enter your orcid ID if you know it: ").strip()
-    config = {"owner_name": stringify(username), "owner_email": stringify(email), "owner_orcid": stringify(orcid)}
+    config = {
+        "owner_name": _stringify(username),
+        "owner_email": _stringify(email),
+        "owner_orcid": _stringify(orcid),
+    }
     if email != "" or orcid != "" or username != "":
-        config["owner_orcid"] = stringify(orcid)
+        config["owner_orcid"] = _stringify(orcid)
         with open(config_path, "w") as f:
             f.write(json.dumps(config))
         outro_text = (
@@ -191,8 +181,7 @@ def check_and_build_global_config(skip_config_creation=False):
 
 
 def get_package_info(package_names, metadata=None):
-    """
-    Fetches package version and updates it into (given) metadata.
+    """Fetches package version and updates it into (given) metadata.
 
     Package info stored in metadata as {'package_info': {'package_name': 'version_number'}}.
 
@@ -206,7 +195,6 @@ def get_package_info(package_names, metadata=None):
     -------
     dict:
         The updated metadata dict with package info inserted.
-
     """
     if metadata is None:
         metadata = {}

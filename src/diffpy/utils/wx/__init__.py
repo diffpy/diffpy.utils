@@ -12,6 +12,4 @@
 # See LICENSE_DANSE.txt for license information.
 #
 ##############################################################################
-
-"""Utilities related wx Python GUIs.
-"""
+"""Utilities related wx Python GUIs."""

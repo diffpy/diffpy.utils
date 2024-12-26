@@ -12,6 +12,4 @@
 # See LICENSE_DANSE.txt for license information.
 #
 ##############################################################################
-
-"""Various utilities related to data parsing and manipulation.
-"""
+"""Various utilities related to data parsing and manipulation."""
