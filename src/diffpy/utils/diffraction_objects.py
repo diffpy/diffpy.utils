@@ -283,10 +283,13 @@ class DiffractionObject:
         Returns
         -------
         ndarray
-            The 2D array containing the `xarray` values in q, tth, d, and `yarray`.
+            The shape (len(data), 4) 2D array with columns containing the `yarray` (intensity)
+            and the `xarray` values in q, tth, d, and `yarray`.
 
         Examples
         --------
+        To access specific arrays individually, use these slices:
+        
         >>> my_do.all_arrays[:, 0]  # yarray
         >>> my_do.all_arrays[:, 1]  # xarray in q
         >>> my_do.all_arrays[:, 2]  # xarray in tth
