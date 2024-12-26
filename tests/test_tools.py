@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from diffpy.utils.tools import get_package_info, get_user_info
+from diffpy.utils.tools import compute_mu_using_xraydb, get_package_info, get_user_info
 
 # def _setup_dirs(monkeypatch, user_filesystem):
 #     home_dir, cwd_dir = user_filesystem.home_dir, user_filesystem.cwd_dir
@@ -189,3 +189,9 @@ def test_get_package_info(monkeypatch, inputs, expected):
     )
     actual_metadata = get_package_info(inputs[0], metadata=inputs[1])
     assert actual_metadata == expected
+
+
+def test_compute_mu_using_xraydb():
+    sample, energy, density = "ZrO2", 17445.362740959618, 1.009
+    actual_mu = compute_mu_using_xraydb(sample, energy, density=density)
+    assert actual_mu == pytest.approx(1.252, rel=1e-4, abs=0.1)

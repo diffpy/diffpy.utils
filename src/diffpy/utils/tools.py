@@ -3,6 +3,8 @@ import json
 from copy import copy
 from pathlib import Path
 
+from xraydb import material_mu
+
 
 def _stringify(obj):
     """
@@ -131,3 +133,26 @@ def get_package_info(package_names, metadata=None):
         pkg_info.update({package: importlib.metadata.version(package)})
     metadata["package_info"] = pkg_info
     return metadata
+
+
+def compute_mu_using_xraydb(sample, energy, density=None):
+    """
+    compute mu using the XrayDB database
+
+    Reference: https://xraypy.github.io/XrayDB/python.html#xraydb.material_mu
+
+    Parameters
+    ----------
+    sample str
+        the chemical formula or the name of the material
+    energy float
+        the energy in eV
+    density float or None
+        material density in gr/cm^3
+
+    Returns
+    -------
+    the attenuation coefficient mu in mm^{-1}
+    """
+    mu = material_mu(sample, energy, density=density, kind="total") / 10
+    return mu
