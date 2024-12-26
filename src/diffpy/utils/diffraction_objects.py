@@ -289,7 +289,7 @@ class DiffractionObject:
         Examples
         --------
         To access specific arrays individually, use these slices:
-        
+
         >>> my_do.all_arrays[:, 0]  # yarray
         >>> my_do.all_arrays[:, 1]  # xarray in q
         >>> my_do.all_arrays[:, 2]  # xarray in tth
