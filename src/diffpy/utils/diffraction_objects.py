@@ -278,12 +278,12 @@ class DiffractionObject:
 
     @property
     def all_arrays(self):
-        """The array containing `xarray` values in q, d, tth, and `yarray`.
+        """The 2D array containing `xarray` and `yarray` values.
 
         Returns
         -------
         ndarray
-            The 2D matrix containing the `xarray` objects values and `yarray`.
+            The 2D array containing the `xarray` values in q, tth, d, and `yarray`.
 
         Examples
         --------
