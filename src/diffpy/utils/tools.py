@@ -136,29 +136,29 @@ def get_package_info(package_names, metadata=None):
 
 
 def compute_mu_using_xraydb(sample_composition, energy, density=None, packing_fraction=1):
-    """
-    Compute the attenuation coefficient (mu) using the XrayDB database
+    """Compute the attenuation coefficient (mu) using the XrayDB database.
 
-    This function calculates mu based on the sample composition and energy.
+    Computes mu based on the sample composition and energy.
     If density is not provided, a standard reference density (e.g., 0.987 g/cm^3 for H2O) is used.
     User can provide either a measured density or an estimated packing fraction (with a standard density).
     It is recommended to specify the density, especially for materials like ZrO2, where it can vary.
-    Reference: https://xraypy.github.io/XrayDB/python.html#xraydb.material_mu
+    Reference: https://xraypy.github.io/XrayDB/python.html#xraydb.material_mu.
 
     Parameters
     ----------
-    sample_composition: str
-        The chemical formula or the name of the material
-    energy: float
-        The energy in eV
-    density: float, optional, Default is None
+    sample_composition : str
+        The chemical formula or the name of the material.
+    energy : float
+        The energy in eV.
+    density : float, optional, Default is None
         The mass density of the packed powder/sample in gr/cm^3. If None, a standard density from XrayDB is used.
-    packing_fraction: float, optional, Default is 1
-        The fraction of sample in the capillary (between 0 and 1)
+    packing_fraction : float, optional, Default is 1
+        The fraction of sample in the capillary (between 0 and 1).
 
     Returns
     -------
-    the attenuation coefficient mu in mm^{-1}
+    mu : float
+        The attenuation coefficient mu in mm^{-1}.
     """
     mu = material_mu(sample_composition, energy, density=density, kind="total") * packing_fraction / 10
     return mu

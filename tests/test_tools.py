@@ -191,25 +191,63 @@ def test_get_package_info(monkeypatch, inputs, expected):
     assert actual_metadata == expected
 
 
-params_mu = [
-    # C1: user didn't specify density or packing fraction
-    ({"sample_composition": "H2O", "energy": 10000, "density": None, "packing_fraction": 1}, 0.5330),
-    # C2: user specified packing fraction only
-    ({"sample_composition": "H2O", "energy": 10000, "density": None, "packing_fraction": 0.5}, 0.2665),
-    # C3: user specified density only
-    ({"sample_composition": "H2O", "energy": 10000, "density": 0.997, "packing_fraction": 1}, 0.5330),
-    ({"sample_composition": "H2O", "energy": 10000, "density": 0.4985, "packing_fraction": 1}, 0.2665),
-    # C4: user specified a standard density and a packing fraction
-    ({"sample_composition": "H2O", "energy": 10000, "density": 0.997, "packing_fraction": 0.5}, 0.2665),
-]
-
-
-@pytest.mark.parametrize("inputs, expected", params_mu)
-def test_compute_mu_using_xraydb(inputs, expected):
+@pytest.mark.parametrize(
+    "inputs, expected_mu",
+    [
+        # Test whether the function returns the correct mu
+        (  # C1: No density or packing fraction provided, expect to compute mu based on standard density
+            {
+                "sample_composition": "H2O",
+                "energy": 10000,
+                "density": None,
+                "packing_fraction": 1,
+            },
+            0.5330,
+        ),
+        (  # C2: Packing fraction (=0.5) provided only, expect to return half of mu based on standard density
+            {
+                "sample_composition": "H2O",
+                "energy": 10000,
+                "density": None,
+                "packing_fraction": 0.5,
+            },
+            0.2665,
+        ),
+        (  # C3: Density provided only, expect to compute mu based on density
+            # 1. Standard density provided, expect to return the same mu as C1
+            {
+                "sample_composition": "H2O",
+                "energy": 10000,
+                "density": 0.997,
+                "packing_fraction": 1,
+            },
+            0.5330,
+        ),
+        (  # 2. Lower density for H2O (half of standard), expect to return half of mu based on standard density
+            {
+                "sample_composition": "H2O",
+                "energy": 10000,
+                "density": 0.4985,
+                "packing_fraction": 1,
+            },
+            0.2665,
+        ),
+        (  # C4: Both standard density and packing fraction are provided, expect to compute the same mu as C2
+            {
+                "sample_composition": "H2O",
+                "energy": 10000,
+                "density": 0.997,
+                "packing_fraction": 0.5,
+            },
+            0.2665,
+        ),
+    ],
+)
+def test_compute_mu_using_xraydb(inputs, expected_mu):
     actual_mu = compute_mu_using_xraydb(
         inputs["sample_composition"],
         inputs["energy"],
         density=inputs["density"],
         packing_fraction=inputs["packing_fraction"],
     )
-    assert actual_mu == pytest.approx(expected, rel=0.01, abs=0.1)
+    assert actual_mu == pytest.approx(expected_mu, rel=0.01, abs=0.1)
