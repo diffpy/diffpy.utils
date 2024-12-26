@@ -46,12 +46,6 @@ class DiffractionObject:
 
     Attributes
     ----------
-    all_arrays : ndarray
-        The array containing the quantity of q, tth, d values.
-    input_xtype : str
-        The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES}
-    _uuid : uuid
-        The unique identifier for the diffraction object.
     scat_quantity : str
         The type of scattering experiment (e.g., "x-ray", "neutron"). Default is an empty string "".
     wavelength : float
@@ -284,6 +278,20 @@ class DiffractionObject:
 
     @property
     def all_arrays(self):
+        """The array containing `xarray` values in q, d, tth, and `yarray`.
+
+        Returns
+        -------
+        ndarray
+            The 2D matrix containing the `xarray` objects values and `yarray`.
+
+        Examples
+        --------
+        >>> my_do.all_arrays[:, 0]  # yarray
+        >>> my_do.all_arrays[:, 1]  # `xarray` in q
+        >>> my_do.all_arrays[:, 2]  # `xarray` in tth
+        >>> my_do.all_arrays[:, 3]  # `xarray` in d
+        """
         return self._all_arrays
 
     @all_arrays.setter
@@ -292,6 +300,13 @@ class DiffractionObject:
 
     @property
     def input_xtype(self):
+        """The type of the independent variable in `xarray`.
+
+        Returns
+        -------
+        str
+            The type of `xarray`, which must be one of {*XQUANTITIES}.
+        """
         return self._input_xtype
 
     @input_xtype.setter
@@ -300,6 +315,13 @@ class DiffractionObject:
 
     @property
     def uuid(self):
+        """The unique identifier for the DiffractionObject instance.
+
+        Returns
+        -------
+        uuid
+            The unique identifier of the DiffractionObject instance.
+        """
         return self._uuid
 
     @uuid.setter
@@ -319,7 +341,8 @@ class DiffractionObject:
 
         Returns
         -------
-        the index of the value in the array
+        list
+            The list containing the index of the closest value in the array.
         """
 
         xtype = self._input_xtype
