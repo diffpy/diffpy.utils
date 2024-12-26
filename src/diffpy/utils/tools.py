@@ -136,8 +136,7 @@ def get_package_info(package_names, metadata=None):
 
 
 def compute_mu_using_xraydb(sample_composition, energy, density=None, packing_fraction=1):
-    """
-    Compute the attenuation coefficient (mu) using the XrayDB database
+    """Compute the attenuation coefficient (mu) using the XrayDB database.
 
     This function calculates mu based on the sample composition and energy.
     If density is not provided, a standard reference density (e.g., 0.987 g/cm^3 for H2O) is used.
