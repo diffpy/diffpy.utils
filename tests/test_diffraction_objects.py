@@ -190,29 +190,11 @@ def test_init_invalid_xtype():
 @pytest.mark.parametrize(
     "org_do_args, target_do_args, scale_inputs, expected",
     [
-        # Test whether scale_to() scales to the expected values
-        (  # C1: Same x-array and y-array with 2.1 offset, expect yarray shifted by 2.1 offset
-            {
-                "xarray": np.array([10, 15, 25, 30, 60, 140]),
-                "yarray": np.array([2, 3, 4, 5, 6, 7]),
-                "xtype": "tth",
-                "wavelength": 2 * np.pi,
-            },
-            {
-                "xarray": np.array([10, 15, 25, 30, 60, 140]),
-                "yarray": np.array([2, 3, 4, 5, 6, 7]),
-                "xtype": "tth",
-                "wavelength": 2 * np.pi,
-            },
-            {
-                "q": None,
-                "tth": 60,
-                "d": None,
-                "offset": 2.1,
-            },
-            {"xtype": "tth", "yarray": np.array([4.1, 5.1, 6.1, 7.1, 8.1, 9.1])},
-        ),
-        (  # C2: Same length x-arrays with exact x-value match
+        # Test whether the original y-array is scaled as expected
+        (  # C1: Same x-arrays
+            # x-value has exact matches at tth=60 (y=60) and tth=60 (y=6),
+            # for original and target diffraction objects,
+            # expect original y-array to multiply by 6/60=1/10
             {
                 "xarray": np.array([10, 15, 25, 30, 60, 140]),
                 "yarray": np.array([10, 20, 25, 30, 60, 100]),
@@ -233,7 +215,10 @@ def test_init_invalid_xtype():
             },
             {"xtype": "tth", "yarray": np.array([1, 2, 2.5, 3, 6, 10])},
         ),
-        (  # C3: Same length x-arrays with approximate x-value match
+        (  # C2: Different x-arrays with same length,
+            # x-value has closest match at q=0.12 (y=10) and q=0.14 (y=1)
+            # for original and target diffraction objects,
+            # expect original y-array to multiply by 1/10
             {
                 "xarray": np.array([0.12, 0.24, 0.31, 0.4]),
                 "yarray": np.array([10, 20, 40, 60]),
@@ -254,7 +239,10 @@ def test_init_invalid_xtype():
             },
             {"xtype": "q", "yarray": np.array([1, 2, 4, 6])},
         ),
-        (  # C4: Different x-array lengths with approximate x-value match
+        (  # C3: Different x-array lengths
+            # x-value has closest matches at tth=61 (y=50) and tth=62 (y=5),
+            # for original and target diffraction objects,
+            # expect original y-array to multiply by 5/50=1/10
             {
                 "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
                 "yarray": np.array([10, 20, 30, 40, 50, 60, 100]),
@@ -273,8 +261,28 @@ def test_init_invalid_xtype():
                 "d": None,
                 "offset": 0,
             },
-            # C5: Scaling factor is calculated at index = 4 (tth=61) for self and index = 5 for target (tth=62)
             {"xtype": "tth", "yarray": np.array([1, 2, 3, 4, 5, 6, 10])},
+        ),
+        (  # C4: Same x-array and y-array with 2.1 offset, expect y-array to shift up by 2.1
+            {
+                "xarray": np.array([10, 15, 25, 30, 60, 140]),
+                "yarray": np.array([2, 3, 4, 5, 6, 7]),
+                "xtype": "tth",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "xarray": np.array([10, 15, 25, 30, 60, 140]),
+                "yarray": np.array([2, 3, 4, 5, 6, 7]),
+                "xtype": "tth",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "q": None,
+                "tth": 60,
+                "d": None,
+                "offset": 2.1,
+            },
+            {"xtype": "tth", "yarray": np.array([4.1, 5.1, 6.1, 7.1, 8.1, 9.1])},
         ),
     ],
 )
