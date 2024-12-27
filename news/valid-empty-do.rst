@@ -1,6 +1,6 @@
 **Added:**
 
-* unit tests for initializing DiffractionObject object with empty xarray and yarray array
+* unit tests for initializing DiffractionObject with empty array in xarray and yarray
 
 **Changed:**
 
