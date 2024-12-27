@@ -191,28 +191,7 @@ def test_init_invalid_xtype():
     "org_do_args, target_do_args, scale_inputs, expected",
     [
         # Test whether the original y-array is scaled as expected
-        (  # C1: Same x-array and y-array with 2.1 offset, expect y-array to shift up by 2.1
-            {
-                "xarray": np.array([10, 15, 25, 30, 60, 140]),
-                "yarray": np.array([2, 3, 4, 5, 6, 7]),
-                "xtype": "tth",
-                "wavelength": 2 * np.pi,
-            },
-            {
-                "xarray": np.array([10, 15, 25, 30, 60, 140]),
-                "yarray": np.array([2, 3, 4, 5, 6, 7]),
-                "xtype": "tth",
-                "wavelength": 2 * np.pi,
-            },
-            {
-                "q": None,
-                "tth": 60,
-                "d": None,
-                "offset": 2.1,
-            },
-            {"xtype": "tth", "yarray": np.array([4.1, 5.1, 6.1, 7.1, 8.1, 9.1])},
-        ),
-        (  # C2: Same x-arrays
+        (  # C1: Same x-arrays
             # x-value has exact matches at tth=60 (y=60) and tth=60 (y=6),
             # for original and target diffraction objects,
             # expect original y-array to multiply by 6/60=1/10
@@ -236,7 +215,7 @@ def test_init_invalid_xtype():
             },
             {"xtype": "tth", "yarray": np.array([1, 2, 2.5, 3, 6, 10])},
         ),
-        (  # C3: Different x-arrays with same length,
+        (  # C2: Different x-arrays with same length,
             # x-value has closest match at q=0.12 (y=10) and q=0.14 (y=1)
             # for original and target diffraction objects,
             # expect original y-array to multiply by 1/10
@@ -260,7 +239,7 @@ def test_init_invalid_xtype():
             },
             {"xtype": "q", "yarray": np.array([1, 2, 4, 6])},
         ),
-        (  # C4: Different x-array lengths
+        (  # C3: Different x-array lengths
             # x-value has closest matches at tth=61 (y=50) and tth=62 (y=5),
             # for original and target diffraction objects,
             # expect original y-array to multiply by 5/50=1/10
@@ -283,6 +262,27 @@ def test_init_invalid_xtype():
                 "offset": 0,
             },
             {"xtype": "tth", "yarray": np.array([1, 2, 3, 4, 5, 6, 10])},
+        ),
+        (  # C4: Same x-array and y-array with 2.1 offset, expect y-array to shift up by 2.1
+            {
+                "xarray": np.array([10, 15, 25, 30, 60, 140]),
+                "yarray": np.array([2, 3, 4, 5, 6, 7]),
+                "xtype": "tth",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "xarray": np.array([10, 15, 25, 30, 60, 140]),
+                "yarray": np.array([2, 3, 4, 5, 6, 7]),
+                "xtype": "tth",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "q": None,
+                "tth": 60,
+                "d": None,
+                "offset": 2.1,
+            },
+            {"xtype": "tth", "yarray": np.array([4.1, 5.1, 6.1, 7.1, 8.1, 9.1])},
         ),
     ],
 )
