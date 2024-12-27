@@ -14,9 +14,15 @@ DQUANTITIES = ["d", "dspace"]
 XQUANTITIES = ANGLEQUANTITIES + DQUANTITIES + QQUANTITIES
 XUNITS = ["degrees", "radians", "rad", "deg", "inv_angs", "inv_nm", "nm-1", "A-1"]
 
-x_grid_emsg = (
-    "objects are not on the same x-grid. You may add them using the self.add method "
-    "and specifying how to handle the mismatch."
+x_grid_length_mismatch_emsg = (
+    "The two objects have different x-array lengths. "
+    "Please ensure the length of the x-value during initialization is identical."
+)
+
+invalid_add_type_emsg = (
+    "You may only add a DiffractionObject with another DiffractionObject or a scalar value. "
+    "Please rerun by adding another DiffractionObject instance or a scalar value. "
+    "e.g., my_do_1 + my_do_2 or my_do + 10"
 )
 
 
@@ -169,32 +175,44 @@ class DiffractionObject:
         return True
 
     def __add__(self, other):
-        summed = deepcopy(self)
-        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
-            summed.on_tth[1] = self.on_tth[1] + other
-            summed.on_q[1] = self.on_q[1] + other
-        elif not isinstance(other, DiffractionObject):
-            raise TypeError("I only know how to sum two DiffractionObject objects")
-        elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_emsg)
-        else:
-            summed.on_tth[1] = self.on_tth[1] + other.on_tth[1]
-            summed.on_q[1] = self.on_q[1] + other.on_q[1]
-        return summed
+        """Add a scalar value or another DiffractionObject to the xarrays of
+        the DiffractionObject.
 
-    def __radd__(self, other):
-        summed = deepcopy(self)
-        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
-            summed.on_tth[1] = self.on_tth[1] + other
-            summed.on_q[1] = self.on_q[1] + other
-        elif not isinstance(other, DiffractionObject):
-            raise TypeError("I only know how to sum two Scattering_object objects")
-        elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_emsg)
+        Parameters
+        ----------
+        other : DiffractionObject or int or float
+            The object to add to the current DiffractionObject. If `other` is a scalar value,
+            it will be added to all xarrays. The length of the xarrays must match if `other` is
+            an instance of DiffractionObject.
+
+        Returns
+        -------
+        DiffractionObject
+            The new and deep-copied DiffractionObject instance after adding values to the xarrays.
+
+        Raises
+        ------
+        ValueError
+            Raised when the length of the xarrays of the two DiffractionObject instances do not match.
+        TypeError
+            Raised when the type of `other` is not an instance of DiffractionObject, int, or float.
+        """
+        summed_do = deepcopy(self)
+        # Add scalar value to all xarrays by broadcasting
+        if isinstance(other, (int, float)):
+            summed_do._all_arrays[:, 1] += other
+            summed_do._all_arrays[:, 2] += other
+            summed_do._all_arrays[:, 3] += other
+        # Add xarrays of two DiffractionObject instances
+        elif isinstance(other, DiffractionObject):
+            if len(self.on_tth()[0]) != len(other.on_tth()[0]):
+                raise ValueError(x_grid_length_mismatch_emsg)
+            summed_do._all_arrays[:, 1] += other.on_q()[0]
+            summed_do._all_arrays[:, 2] += other.on_tth()[0]
+            summed_do._all_arrays[:, 3] += other.on_d()[0]
         else:
-            summed.on_tth[1] = self.on_tth[1] + other.on_tth[1]
-            summed.on_q[1] = self.on_q[1] + other.on_q[1]
-        return summed
+            raise TypeError(invalid_add_type_emsg)
+        return summed_do
 
     def __sub__(self, other):
         subtracted = deepcopy(self)
@@ -204,7 +222,7 @@ class DiffractionObject:
         elif not isinstance(other, DiffractionObject):
             raise TypeError("I only know how to subtract two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_emsg)
+            raise RuntimeError(x_grid_length_mismatch_emsg)
         else:
             subtracted.on_tth[1] = self.on_tth[1] - other.on_tth[1]
             subtracted.on_q[1] = self.on_q[1] - other.on_q[1]
@@ -218,7 +236,7 @@ class DiffractionObject:
         elif not isinstance(other, DiffractionObject):
             raise TypeError("I only know how to subtract two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_emsg)
+            raise RuntimeError(x_grid_length_mismatch_emsg)
         else:
             subtracted.on_tth[1] = other.on_tth[1] - self.on_tth[1]
             subtracted.on_q[1] = other.on_q[1] - self.on_q[1]
@@ -232,19 +250,7 @@ class DiffractionObject:
         elif not isinstance(other, DiffractionObject):
             raise TypeError("I only know how to multiply two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_emsg)
-        else:
-            multiplied.on_tth[1] = self.on_tth[1] * other.on_tth[1]
-            multiplied.on_q[1] = self.on_q[1] * other.on_q[1]
-        return multiplied
-
-    def __rmul__(self, other):
-        multiplied = deepcopy(self)
-        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
-            multiplied.on_tth[1] = other * self.on_tth[1]
-            multiplied.on_q[1] = other * self.on_q[1]
-        elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_emsg)
+            raise RuntimeError(x_grid_length_mismatch_emsg)
         else:
             multiplied.on_tth[1] = self.on_tth[1] * other.on_tth[1]
             multiplied.on_q[1] = self.on_q[1] * other.on_q[1]
@@ -258,7 +264,7 @@ class DiffractionObject:
         elif not isinstance(other, DiffractionObject):
             raise TypeError("I only know how to multiply two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_emsg)
+            raise RuntimeError(x_grid_length_mismatch_emsg)
         else:
             divided.on_tth[1] = self.on_tth[1] / other.on_tth[1]
             divided.on_q[1] = self.on_q[1] / other.on_q[1]
@@ -270,7 +276,7 @@ class DiffractionObject:
             divided.on_tth[1] = other / self.on_tth[1]
             divided.on_q[1] = other / self.on_q[1]
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_emsg)
+            raise RuntimeError(x_grid_length_mismatch_emsg)
         else:
             divided.on_tth[1] = other.on_tth[1] / self.on_tth[1]
             divided.on_q[1] = other.on_q[1] / self.on_q[1]
