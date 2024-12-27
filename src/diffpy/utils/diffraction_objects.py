@@ -196,16 +196,16 @@ class DiffractionObject:
             Raised when the length of the xarrays of the two DiffractionObject instances do not match.
         TypeError
             Raised when the type of `other` is not an instance of DiffractionObject, int, or float.
-        
+
         Examples
         --------
         Add a scalar value to the xarrays of the DiffractionObject instance:
         >>> new_do = my_do + 10.1
-        
+
         Add the xarrays of two DiffractionObject instances:
         >>> new_do = my_do_1 + my_do_2
         """
-        
+
         summed_do = deepcopy(self)
         # Add scalar value to all xarrays by broadcasting
         if isinstance(other, (int, float)):
