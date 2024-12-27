@@ -334,13 +334,3 @@ class TextDataLoader(object):
 
 
 # End of class TextDataLoader
-
-
-def isfloat(s):
-    """True if s is convertible to float."""
-    try:
-        float(s)
-        return True
-    except ValueError:
-        pass
-    return False
