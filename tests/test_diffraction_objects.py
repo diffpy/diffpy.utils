@@ -215,7 +215,7 @@ def test_init_invalid_xtype():
         (  # C2: Same x-arrays
             # x-value has exact matches at tth=60 (y=60) and tth=60 (y=6),
             # for original and target diffraction objects,
-            # expect y-array to multiply by 6/60=1/10
+            # expect original y-array to multiply by 6/60=1/10
             {
                 "xarray": np.array([10, 15, 25, 30, 60, 140]),
                 "yarray": np.array([10, 20, 25, 30, 60, 100]),
@@ -239,7 +239,7 @@ def test_init_invalid_xtype():
         (  # C3: Different x-arrays with same length,
             # x-value has closest match at q=0.12 (y=10) and q=0.14 (y=1)
             # for original and target diffraction objects,
-            # expect y-array to multiply by 1/10
+            # expect original y-array to multiply by 1/10
             {
                 "xarray": np.array([0.12, 0.24, 0.31, 0.4]),
                 "yarray": np.array([10, 20, 40, 60]),
@@ -263,7 +263,7 @@ def test_init_invalid_xtype():
         (  # C4: Different x-array lengths
             # x-value has closest matches at tth=61 (y=50) and tth=62 (y=5),
             # for original and target diffraction objects,
-            # expect y-array to multiply by 5/50=1/10
+            # expect original y-array to multiply by 5/50=1/10
             {
                 "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
                 "yarray": np.array([10, 20, 30, 40, 50, 60, 100]),
