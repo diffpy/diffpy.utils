@@ -190,7 +190,7 @@ def test_init_invalid_xtype():
 @pytest.mark.parametrize(
     "org_do_args, target_do_args, scale_inputs, expected",
     [
-        # Test whether scale_to() scales to the expected values
+        # Test whether the original y-array is scaled as expected
         (  # C1: Same x-array and y-array with 2.1 offset, expect y-array to shift up by 2.1
             {
                 "xarray": np.array([10, 15, 25, 30, 60, 140]),
