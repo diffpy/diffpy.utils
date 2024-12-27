@@ -468,10 +468,61 @@ def test_dump(tmp_path, mocker):
 
 
 @pytest.mark.parametrize(
-    "do_init_args, expected_do_dict, divide_by_zero_warning_expected",
+    "do_init_args, expected_do_dict, divide_by_zero_warning_expected, wavelength_warning_expected",
     [
         # Test __dict__ of DiffractionObject instance initialized with valid arguments
-        (  # C1: Minimum arguments provided for init, expect all attributes set without None
+        (  # C1: Instantiate DO with empty arrays, expect it to be a valid DO, but with everything empty
+            {
+                "xarray": np.empty(0),
+                "yarray": np.empty(0),
+                "xtype": "tth",
+            },
+            {
+                "_all_arrays": np.array([]),
+                "_input_xtype": "tth",
+                "metadata": {},
+                "name": "",
+                "scat_quantity": "",
+                "qmin": np.float64(np.inf),
+                "qmax": np.float64(0.0),
+                "tthmin": np.float64(np.inf),
+                "tthmax": np.float64(0.0),
+                "dmin": np.float64(np.inf),
+                "dmax": np.float64(0.0),
+                "wavelength": None,
+            },
+            False,
+            True,
+        ),
+        (  # C2: Instantiate just DO with empty array like in C1 but with wavelength, xtype, name, and metadata
+            # expect a valid DO with empty arrays, but with some non-array attributes
+            {
+                "xarray": np.empty(0),
+                "yarray": np.empty(0),
+                "xtype": "tth",
+                "name": "test_name",
+                "wavelength": 1.54,
+                "metadata": {"item_1": "1", "item_2": "2"},
+            },
+            {
+                "_all_arrays": np.array([]),
+                "_input_xtype": "tth",
+                "metadata": {"item_1": "1", "item_2": "2"},
+                "name": "test_name",
+                "scat_quantity": "",
+                "qmin": np.float64(np.inf),
+                "qmax": np.float64(0.0),
+                "tthmin": np.float64(np.inf),
+                "tthmax": np.float64(0.0),
+                "dmin": np.float64(np.inf),
+                "dmax": np.float64(0.0),
+                "wavelength": 1.54,
+            },
+            False,
+            False,
+        ),
+        (  # C3: Minimum arguments provided for init with non-empty values for xarray and yarray and wavelength
+            # expect all attributes set without None
             {
                 "xarray": np.array([0.0, 90.0, 180.0]),
                 "yarray": np.array([1.0, 2.0, 3.0]),
@@ -499,8 +550,9 @@ def test_dump(tmp_path, mocker):
                 "wavelength": 4.0 * np.pi,
             },
             True,
+            False,
         ),
-        (  # C2: Initialize with an optional scat_quantity argument, expect non-empty string for scat_quantity
+        (  # C4: Same as C3, but with an optional scat_quantity argument, expect non-empty string for scat_quantity
             {
                 "xarray": np.array([np.inf, 2 * np.sqrt(2) * np.pi, 2 * np.pi]),
                 "yarray": np.array([1.0, 2.0, 3.0]),
@@ -529,12 +581,22 @@ def test_dump(tmp_path, mocker):
                 "wavelength": 4.0 * np.pi,
             },
             False,
+            False,
         ),
     ],
 )
-def test_init_valid(do_init_args, expected_do_dict, divide_by_zero_warning_expected):
+def test_init_valid(
+    do_init_args,
+    expected_do_dict,
+    divide_by_zero_warning_expected,
+    wavelength_warning_expected,
+    wavelength_warning_msg,
+):
     if divide_by_zero_warning_expected:
         with pytest.warns(RuntimeWarning, match="divide by zero encountered in divide"):
+            actual_do_dict = DiffractionObject(**do_init_args).__dict__
+    elif wavelength_warning_expected:
+        with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
             actual_do_dict = DiffractionObject(**do_init_args).__dict__
     else:
         actual_do_dict = DiffractionObject(**do_init_args).__dict__
