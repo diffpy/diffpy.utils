@@ -539,7 +539,7 @@ def test_init_valid(do_init_args, expected_do_dict, divide_by_zero_warning_expec
     else:
         actual_do_dict = DiffractionObject(**do_init_args).__dict__
     diff = DeepDiff(
-        actual_do_dict, expected_do_dict, ignore_order=True, significant_digits=13, exclude_paths="root['_id']"
+        actual_do_dict, expected_do_dict, ignore_order=True, significant_digits=13, exclude_paths="root['_uuid']"
     )
     assert diff == {}
 
@@ -583,27 +583,29 @@ def test_all_array_setter(do_minimal):
         do.all_arrays = np.empty((4, 4))
 
 
-def test_id_getter(do_minimal):
+def test_uuid_getter(do_minimal):
     do = do_minimal
-    assert hasattr(do, "id")
-    assert isinstance(do.id, UUID)
-    assert len(str(do.id)) == 36
+    assert hasattr(do, "uuid")
+    assert isinstance(do.uuid, UUID)
+    assert len(str(do.uuid)) == 36
 
 
-def test_id_getter_with_mock(mocker, do_minimal):
-    mocker.patch.object(DiffractionObject, "id", new_callable=lambda: UUID("d67b19c6-3016-439f-81f7-cf20a04bee87"))
+def test_uuid_getter_with_mock(mocker, do_minimal):
+    mocker.patch.object(
+        DiffractionObject, "uuid", new_callable=lambda: UUID("d67b19c6-3016-439f-81f7-cf20a04bee87")
+    )
     do = do_minimal
-    assert do.id == UUID("d67b19c6-3016-439f-81f7-cf20a04bee87")
+    assert do.uuid == UUID("d67b19c6-3016-439f-81f7-cf20a04bee87")
 
 
-def test_id_setter_error(do_minimal):
+def test_uuid_setter_error(do_minimal):
     do = do_minimal
 
     with pytest.raises(
         AttributeError,
-        match="Direct modification of attribute 'id' is not allowed. Please use 'input_data' to modify 'id'.",
+        match="Direct modification of attribute 'uuid' is not allowed. Please use 'input_data' to modify 'uuid'.",
     ):
-        do.id = uuid.uuid4()
+        do.uuid = uuid.uuid4()
 
 
 def test_xarray_yarray_length_mismatch():

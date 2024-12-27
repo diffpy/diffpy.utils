@@ -12,9 +12,7 @@
 # See LICENSE_DANSE.txt for license information.
 #
 ##############################################################################
-
-"""Common functions for manipulating wx.grid.Grid.
-"""
+"""Common functions for manipulating wx.grid.Grid."""
 
 import wx
 
@@ -53,7 +51,9 @@ def getSelectionColumns(grid):
 
 def getSelectedCells(grid):
     """Get list of (row, col) pairs of all selected cells.
-    Unlike grid.GetSelectedCells this returns them all no matter how they were selected.
+
+    Unlike grid.GetSelectedCells this returns them all no matter how
+    they were selected.
     """
     rows = grid.GetNumberRows()
     cols = grid.GetNumberCols()
@@ -75,8 +75,8 @@ def getSelectedCells(grid):
 
 
 def limitSelectionToRows(grid, indices):
-    """Limit selection to the specified row indices.
-    No action for empty indices.
+    """Limit selection to the specified row indices. No action for empty
+    indices.
 
     Parameters
     ----------
@@ -112,10 +112,10 @@ def limitSelectionToRows(grid, indices):
 def quickResizeColumns(grid, indices):
     """Resize the columns that were recently affected by cell changes.
 
-    This is faster than the normal grid AutoSizeColumns, since the latter loops
-    over the entire grid. In addition, this will not cause a
-    EVT_GRID_CMD_CELL_CHANGE event to be thrown, which can cause recursion.
-    This method will only increase column size.
+    This is faster than the normal grid AutoSizeColumns, since the
+    latter loops over the entire grid. In addition, this will not cause
+    a EVT_GRID_CMD_CELL_CHANGE event to be thrown, which can cause
+    recursion. This method will only increase column size.
     """
     # Get the columns and maximum text width in each one
     dc = wx.ScreenDC()
@@ -140,8 +140,9 @@ def quickResizeColumns(grid, indices):
 
 
 def _indicesToBlocks(indices):
-    """Convert a list of integer indices to a list of (start, stop) tuples.
-    The (start, stop) tuple defines a continuous block, where the stop index is included in the block.
+    """Convert a list of integer indices to a list of (start, stop) tuples. The
+    (start, stop) tuple defines a continuous block, where the stop index is
+    included in the block.
 
     Parameters
     ----------
