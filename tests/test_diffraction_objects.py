@@ -155,7 +155,7 @@ def test_diffraction_objects_equality(
 
 
 @pytest.mark.parametrize(
-    "xtype, expected_all_arrays",
+    "xtype, expected_xarray",
     [
         # Test whether on_xtype returns the correct xarray values.
         # C1: tth to tth, expect no change in xarray value
@@ -169,10 +169,10 @@ def test_diffraction_objects_equality(
         ("d", np.array([12.13818, 6.28319])),
     ],
 )
-def test_on_xtype(xtype, expected_all_arrays, do_minimal_tth):
+def test_on_xtype(xtype, expected_xarray, do_minimal_tth):
     do = do_minimal_tth
     actual_xrray, actual_yarray = do.on_xtype(xtype)
-    assert np.allclose(actual_xrray, expected_all_arrays)
+    assert np.allclose(actual_xrray, expected_xarray)
     assert np.allclose(actual_yarray, np.array([1, 2]))
 
 
