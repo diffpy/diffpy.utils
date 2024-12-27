@@ -331,29 +331,29 @@ class DiffractionObject:
     def uuid(self, _):
         raise AttributeError(_setter_wmsg("uuid"))
 
-    def get_array_index(self, value, xtype=None):
+    def get_array_index(self, xtype, xvalue):
         """Return the index of the closest value in the array associated with
-        the specified xtype.
+        the specified xtype and the value provided.
 
         Parameters
         ----------
-        xtype str
-            the xtype used to access the array
-        value float
-            the target value to search for
+        xtype : str
+            The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES}.
+        xvalue : float
+            The value of the xtype to find the closest index for.
 
         Returns
         -------
-        list
-            The list containing the index of the closest value in the array.
+        int
+            The index of the closest value in the array associated with the specified xtype and the value provided.
         """
 
         xtype = self._input_xtype
-        array = self.on_xtype(xtype)[0]
-        if len(array) == 0:
+        xarray = self.on_xtype(xtype)[0]
+        if len(xarray) == 0:
             raise ValueError(f"The '{xtype}' array is empty. Please ensure it is initialized.")
-        i = (np.abs(array - value)).argmin()
-        return i
+        index = (np.abs(xarray - xvalue)).argmin()
+        return index
 
     def _set_arrays(self, xarray, yarray, xtype):
         self._all_arrays = np.empty(shape=(len(xarray), 4))
