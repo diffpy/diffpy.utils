@@ -155,7 +155,7 @@ def test_diffraction_objects_equality(
 
 
 @pytest.mark.parametrize(
-    "xtype, expected_xarray",
+    "xtype, expected_all_arrays",
     [
         # Test whether on_xtype returns the correct xarray values.
         # C1: tth to tth, expect no change in xarray value
@@ -169,10 +169,10 @@ def test_diffraction_objects_equality(
         ("d", np.array([12.13818, 6.28319])),
     ],
 )
-def test_on_xtype(xtype, expected_xarray, do_minimal_tth):
+def test_on_xtype(xtype, expected_all_arrays, do_minimal_tth):
     do = do_minimal_tth
     actual_xrray, actual_yarray = do.on_xtype(xtype)
-    assert np.allclose(actual_xrray, expected_xarray)
+    assert np.allclose(actual_xrray, expected_all_arrays)
     assert np.allclose(actual_yarray, np.array([1, 2]))
 
 
@@ -702,3 +702,62 @@ def test_copy_object(do_minimal):
     do_copy = do.copy()
     assert do == do_copy
     assert id(do) != id(do_copy)
+
+
+@pytest.mark.parametrize(
+    "starting_all_arrays, scalar_value, expected_all_arrays",
+    [
+        # Test scalar addition to xarray values (q, tth, d) and expect no change to yarray values
+        (  # C1: Add integer of 5, expect xarray to increase by by 5
+            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]]),
+            5,
+            np.array([[1.0, 5.51763809, 35.0, 17.13818192], [2.0, 6.0, 65.0, 11.28318531]]),
+        ),
+        (  # C2: Add float of 5.1, expect xarray to be added by 5.1
+            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]]),
+            5.1,
+            np.array([[1.0, 5.61763809, 35.1, 17.23818192], [2.0, 6.1, 65.1, 11.38318531]]),
+        ),
+    ],
+)
+def test_addition_operator_by_scalar(starting_all_arrays, scalar_value, expected_all_arrays, do_minimal_tth):
+    do = do_minimal_tth
+    assert np.allclose(do.all_arrays, starting_all_arrays)
+    do_sum = do + scalar_value
+    assert np.allclose(do_sum.all_arrays, expected_all_arrays)
+
+
+@pytest.mark.parametrize(
+    "LHS_all_arrays, RHS_all_arrays, expected_all_arrays_sum",
+    [
+        # Test addition of two DO objects, expect combined xarray values (q, tth, d) and no change to yarray
+        (  # C1: Add two DO objects with identical xarray values, expect sum of xarray values
+            (np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]]),),
+            (np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]]),),
+            np.array([[1.0, 1.03527618, 60.0, 24.27636384], [2.0, 2.0, 120.0, 12.56637061]]),
+        ),
+    ],
+)
+def test_addition_operator_by_another_do(LHS_all_arrays, RHS_all_arrays, expected_all_arrays_sum, do_minimal_tth):
+    assert np.allclose(do_minimal_tth.all_arrays, LHS_all_arrays)
+    do_LHS = do_minimal_tth
+    do_RHS = do_minimal_tth
+    do_sum = do_LHS + do_RHS
+    assert np.allclose(do_LHS.all_arrays, LHS_all_arrays)
+    assert np.allclose(do_RHS.all_arrays, RHS_all_arrays)
+    assert np.allclose(do_sum.all_arrays, expected_all_arrays_sum)
+
+
+def test_addition_operator_invalid_type(do_minimal_tth, invalid_add_type_error_msg):
+    # Add a string to a DO object, expect TypeError, only scalar (int, float) allowed for addition
+    do_LHS = do_minimal_tth
+    with pytest.raises(TypeError, match=re.escape(invalid_add_type_error_msg)):
+        do_LHS + "string_value"
+
+
+def test_addition_operator_invalid_xarray_length(do_minimal, do_minimal_tth, x_grid_size_mismatch_error_msg):
+    # Combine two DO objects, one with empty xarrays (do_minimal) and the other with non-empty xarrays
+    do_LHS = do_minimal
+    do_RHS = do_minimal_tth
+    with pytest.raises(ValueError, match=re.escape(x_grid_size_mismatch_error_msg)):
+        do_LHS + do_RHS

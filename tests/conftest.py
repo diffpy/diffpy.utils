@@ -63,3 +63,20 @@ def invalid_q_or_d_or_wavelength_error_msg():
         "The supplied input array and wavelength will result in an impossible two-theta. "
         "Please check these values and re-instantiate the DiffractionObject with correct values."
     )
+
+
+@pytest.fixture
+def invalid_add_type_error_msg():
+    return (
+        "You may only add a DiffractionObject with another DiffractionObject or a scalar value. "
+        "Please rerun by adding another DiffractionObject instance or a scalar value. "
+        "e.g., my_do_1 + my_do_2 or my_do + 10"
+    )
+
+
+@pytest.fixture
+def x_grid_size_mismatch_error_msg():
+    return (
+        "The two objects have different x-array lengths. "
+        "Please ensure the length of the x-value during initialization is identical."
+    )
