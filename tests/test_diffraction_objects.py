@@ -364,7 +364,7 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
                 "xtype": "tth",
                 "value": 30.005,
             },
-            [0],
+            0,
         ),
         (  # C2: Target value lies in the array, expect the (first) closest index
             {
@@ -377,7 +377,7 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
                 "xtype": "tth",
                 "value": 45,
             },
-            [0],
+            0,
         ),
         (
             {
@@ -390,7 +390,7 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
                 "xtype": "q",
                 "value": 0.25,
             },
-            [0],
+            0,
         ),
         # C3: Target value out of the range, expect the closest index
         (  # 1. Test with xtype of "q"
@@ -404,7 +404,7 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
                 "xtype": "q",
                 "value": 0.1,
             },
-            [0],
+            0,
         ),
         (  # 2. Test with xtype of "tth"
             {
@@ -417,20 +417,20 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
                 "xtype": "tth",
                 "value": 63,
             },
-            [1],
+            1,
         ),
     ],
 )
 def test_get_array_index(do_args, get_array_index_inputs, expected_index):
     do = DiffractionObject(**do_args)
-    actual_index = do.get_array_index(get_array_index_inputs["value"], get_array_index_inputs["xtype"])
+    actual_index = do.get_array_index(get_array_index_inputs["xtype"], get_array_index_inputs["value"])
     assert actual_index == expected_index
 
 
 def test_get_array_index_bad():
     do = DiffractionObject(wavelength=2 * np.pi, xarray=np.array([]), yarray=np.array([]), xtype="tth")
     with pytest.raises(ValueError, match=re.escape("The 'tth' array is empty. Please ensure it is initialized.")):
-        do.get_array_index(value=30)
+        do.get_array_index(xtype="tth", xvalue=30)
 
 
 def test_dump(tmp_path, mocker):
