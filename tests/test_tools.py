@@ -171,59 +171,61 @@ def test_get_package_info(monkeypatch, inputs, expected):
     "inputs, expected_mu",
     [
         # Test whether the function returns the correct mu
-        (  # C1: No density or packing fraction (only for known material), expect to get mu from database
-            {
-                "sample_composition": "H2O",
-                "energy": 10,
-            },
-            0.5330,
+        (  # C1: Composition, energy, and mass density provided, expect to get mu based on mass density
+            # 1. Fully dense mass density
+            {"sample_composition": "quartz", "energy": 10, "sample_mass_density": 2.65},
+            5.0368,
         ),
-        (  # C2: Packing fraction (=0.5) provided only (only for known material)
-            {
-                "sample_composition": "H2O",
-                "energy": 10,
-                "packing_fraction": 0.5,
-            },
-            0.2665,
-        ),
-        (  # C3: Density provided only, expect to compute mu based on it
-            # 1. Known material
-            {
-                "sample_composition": "H2O",
-                "energy": 10,
-                "density": 0.987,
-            },
-            0.5330,
-        ),
-        (  # 2. Unknown material
+        (  # 2. Measured mass density
             {
                 "sample_composition": "ZrO2",
-                "energy": 17,
-                "density": 1.009,
+                "energy": 17.445,
+                "sample_mass_density": 1.009,
             },
-            1.252,
+            1.2522,
         ),
-        (  # C4: Both density and packing fraction are provided, expect to compute mu based on both
-            # 1. Known material
+        (  # C2: Composition, energy, and packing fraction provided, expect to get mu based on packing fraction
+            # Reuse pattern from C1.1 here
             {
-                "sample_composition": "H2O",
+                "sample_composition": "quartz",
                 "energy": 10,
-                "density": 0.997,
                 "packing_fraction": 0.5,
             },
-            0.2665,
-        ),
-        (  # 2. Unknown material
-            {
-                "sample_composition": "ZrO2",
-                "energy": 17,
-                "density": 1.009,
-                "packing_fraction": 0.5,
-            },
-            0.626,
+            2.5184,
         ),
     ],
 )
 def test_compute_mu_using_xraydb(inputs, expected_mu):
     actual_mu = compute_mu_using_xraydb(**inputs)
-    assert actual_mu == pytest.approx(expected_mu, rel=0.01, abs=0.1)
+    assert actual_mu == pytest.approx(expected_mu, rel=1e-6, abs=1e-4)
+
+
+@pytest.mark.parametrize(
+    "inputs",
+    [
+        # Test when the function raises ValueError
+        # C1: Both mass density and packing fraction are provided
+        (
+            {
+                "sample_composition": "quartz",
+                "energy": 10,
+                "sample_mass_density": 2.65,
+                "packing_fraction": 1,
+            }
+        ),
+        # C2: None of mass density or packing fraction are provided
+        (
+            {
+                "sample_composition": "quartz",
+                "energy": 10,
+            }
+        ),
+    ],
+)
+def test_compute_mu_using_xraydb_bad(inputs):
+    with pytest.raises(
+        ValueError,
+        match="You must specify either sample_mass_density or packing_fraction, but not both. "
+        "Please rerun specifying only one.",
+    ):
+        compute_mu_using_xraydb(**inputs)

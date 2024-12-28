@@ -1,5 +1,6 @@
 import importlib.metadata
 import json
+import warnings
 from copy import copy
 from pathlib import Path
 
@@ -210,12 +211,12 @@ def get_package_info(package_names, metadata=None):
     return metadata
 
 
-def compute_mu_using_xraydb(sample_composition, energy, density=None, packing_fraction=1):
+def compute_mu_using_xraydb(sample_composition, energy, sample_mass_density=None, packing_fraction=None):
     """Compute the attenuation coefficient (mu) using the XrayDB database.
 
     Computes mu based on the sample composition and energy.
-    User can provide a measured density or an estimated packing fraction.
-    Specifying the density is recommended, though not required for some pure or standard materials.
+    User should provide a sample mass density or a packing fraction.
+    If neither density nor packing fraction is specified, or if both are specified, a ValueError will be raised.
     Reference: https://xraypy.github.io/XrayDB/python.html#xraydb.material_mu.
 
     Parameters
@@ -223,10 +224,10 @@ def compute_mu_using_xraydb(sample_composition, energy, density=None, packing_fr
     sample_composition : str
         The chemical formula or the name of the material.
     energy : float
-        The energy in keV.
-    density : float, optional, Default is None
+        The energy of the incident x-rays in keV.
+    sample_mass_density : float, optional, Default is None
         The mass density of the packed powder/sample in gr/cm^3.
-    packing_fraction : float, optional, Default is 1
+    packing_fraction : float, optional, Default is None
         The fraction of sample in the capillary (between 0 and 1).
 
     Returns
@@ -234,5 +235,21 @@ def compute_mu_using_xraydb(sample_composition, energy, density=None, packing_fr
     mu : float
         The attenuation coefficient mu in mm^{-1}.
     """
-    mu = material_mu(sample_composition, energy * 1000, density=density, kind="total") * packing_fraction / 10
+    if (sample_mass_density is None and packing_fraction is None) or (
+        sample_mass_density is not None and packing_fraction is not None
+    ):
+        raise ValueError(
+            "You must specify either sample_mass_density or packing_fraction, but not both. "
+            "Please rerun specifying only one."
+        )
+    if sample_mass_density is not None:
+        mu = material_mu(sample_composition, energy * 1000, density=sample_mass_density, kind="total") / 10
+    else:
+        warnings.warn(
+            "Warning: Density is set to None if a packing fraction is specified, "
+            "which may cause errors for some materials. "
+            "We recommend specifying sample mass density for now. "
+            "Auto-density calculation is coming soon."
+        )
+        mu = material_mu(sample_composition, energy * 1000, density=None, kind="total") * packing_fraction / 10
     return mu
