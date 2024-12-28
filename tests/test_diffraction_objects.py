@@ -705,7 +705,7 @@ def test_copy_object(do_minimal):
 
 
 @pytest.mark.parametrize(
-    "starting_all_arrays, scalar_value, expected_all_arrays",
+    "starting_all_arrays, scalar_to_add, expected_all_arrays",
     [
         # Test scalar addition to xarray values (q, tth, d) and expect no change to yarray values
         (  # C1: Add integer of 5, expect xarray to increase by by 5
@@ -720,11 +720,13 @@ def test_copy_object(do_minimal):
         ),
     ],
 )
-def test_addition_operator_by_scalar(starting_all_arrays, scalar_value, expected_all_arrays, do_minimal_tth):
+def test_addition_operator_by_scalar(starting_all_arrays, scalar_to_add, expected_all_arrays, do_minimal_tth):
     do = do_minimal_tth
     assert np.allclose(do.all_arrays, starting_all_arrays)
-    do_sum = do + scalar_value
-    assert np.allclose(do_sum.all_arrays, expected_all_arrays)
+    do_sum_RHS = do + scalar_to_add
+    do_sum_LHS = scalar_to_add + do
+    assert np.allclose(do_sum_RHS.all_arrays, expected_all_arrays)
+    assert np.allclose(do_sum_LHS.all_arrays, expected_all_arrays)
 
 
 @pytest.mark.parametrize(
@@ -750,10 +752,12 @@ def test_addition_operator_by_another_do(LHS_all_arrays, RHS_all_arrays, expecte
 
 def test_addition_operator_invalid_type(do_minimal_tth, invalid_add_type_error_msg):
     # Add a string to a DO object, expect TypeError, only scalar (int, float) allowed for addition
-    do_LHS = do_minimal_tth
+    do = do_minimal_tth
     with pytest.raises(TypeError, match=re.escape(invalid_add_type_error_msg)):
-        do_LHS + "string_value"
-
+        do + "string_value"
+    with pytest.raises(TypeError, match=re.escape(invalid_add_type_error_msg)):
+        "string_value" + do
+    
 
 def test_addition_operator_invalid_xarray_length(do_minimal, do_minimal_tth, x_grid_size_mismatch_error_msg):
     # Combine two DO objects, one with empty xarrays (do_minimal) and the other with non-empty xarrays
