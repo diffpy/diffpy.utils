@@ -757,7 +757,7 @@ def test_addition_operator_invalid_type(do_minimal_tth, invalid_add_type_error_m
         do + "string_value"
     with pytest.raises(TypeError, match=re.escape(invalid_add_type_error_msg)):
         "string_value" + do
-    
+
 
 def test_addition_operator_invalid_xarray_length(do_minimal, do_minimal_tth, x_grid_size_mismatch_error_msg):
     # Combine two DO objects, one with empty xarrays (do_minimal) and the other with non-empty xarrays
