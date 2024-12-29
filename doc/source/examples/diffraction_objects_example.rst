@@ -117,6 +117,13 @@ For convenience, you can also apply an offset to the scaled new diffraction obje
 
     scaled_and_offset_measured = measured.scale_to(calculated, q=5.5, offset=0.5)
 
+You can call `scale_to()` without specifying a value for `q`, `tth`, or `d`.
+In this case, the scaling will be done based on the maximal x-array value of both diffraction objects:
+
+.. code-block:: python
+
+    scaled_measured = measured.scale_to(calculated)
+
 DiffractionObject convenience functions
 ---------------------------------------
 
