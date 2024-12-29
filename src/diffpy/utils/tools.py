@@ -1,6 +1,5 @@
 import importlib.metadata
 import json
-import warnings
 from copy import copy
 from pathlib import Path
 
@@ -212,11 +211,15 @@ def get_package_info(package_names, metadata=None):
 
 
 def get_density_from_cloud(sample_composition, mp_token=""):
-    """Function to get material density from the MP database.
+    """Function to get material density from the MP or COD database.
 
     It is not implemented yet.
     """
-    raise NotImplementedError
+    raise NotImplementedError(
+        "So sorry, density computation from composition is not implemented right now. "
+        "We hope to have this implemented in the next release. "
+        "Please rerun specifying a sample mass density."
+    )
 
 
 def compute_mu_using_xraydb(sample_composition, energy, sample_mass_density=None, packing_fraction=None):
@@ -250,15 +253,8 @@ def compute_mu_using_xraydb(sample_composition, energy, sample_mass_density=None
             "You must specify either sample_mass_density or packing_fraction, but not both. "
             "Please rerun specifying only one."
         )
-    if packing_fraction is None:
-        packing_fraction = 1
-        try:
-            sample_mass_density = get_density_from_cloud(sample_composition) * packing_fraction
-        except NotImplementedError:
-            warnings.warn(
-                "Density computation is not implemented right now. "
-                "Please rerun specifying a sample mass density."
-            )
+    if packing_fraction is not None:
+        sample_mass_density = get_density_from_cloud(sample_composition) * packing_fraction
     energy_eV = energy * 1000
     mu = material_mu(sample_composition, energy_eV, density=sample_mass_density, kind="total") / 10
     return mu
