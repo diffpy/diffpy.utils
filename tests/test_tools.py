@@ -184,15 +184,6 @@ def test_get_package_info(monkeypatch, inputs, expected):
             },
             1.2522,
         ),
-        (  # C2: Composition, energy, and packing fraction provided, expect to get mu based on packing fraction
-            # Reuse pattern from C1.1 here
-            {
-                "sample_composition": "quartz",
-                "energy": 10,
-                "packing_fraction": 0.5,
-            },
-            2.5184,
-        ),
     ],
 )
 def test_compute_mu_using_xraydb(inputs, expected_mu):

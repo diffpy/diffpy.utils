@@ -211,6 +211,14 @@ def get_package_info(package_names, metadata=None):
     return metadata
 
 
+def get_density_from_cloud(sample_composition, mp_token=""):
+    """Function to get material density from the MP database.
+
+    It is not implemented yet.
+    """
+    raise NotImplementedError
+
+
 def compute_mu_using_xraydb(sample_composition, energy, sample_mass_density=None, packing_fraction=None):
     """Compute the attenuation coefficient (mu) using the XrayDB database.
 
@@ -242,14 +250,15 @@ def compute_mu_using_xraydb(sample_composition, energy, sample_mass_density=None
             "You must specify either sample_mass_density or packing_fraction, but not both. "
             "Please rerun specifying only one."
         )
-    if sample_mass_density is not None:
-        mu = material_mu(sample_composition, energy * 1000, density=sample_mass_density, kind="total") / 10
-    else:
-        warnings.warn(
-            "Warning: Density is set to None if a packing fraction is specified, "
-            "which may cause errors for some materials. "
-            "We recommend specifying sample mass density for now. "
-            "Auto-density calculation is coming soon."
-        )
-        mu = material_mu(sample_composition, energy * 1000, density=None, kind="total") * packing_fraction / 10
+    if packing_fraction is None:
+        packing_fraction = 1
+        try:
+            sample_mass_density = get_density_from_cloud(sample_composition) * packing_fraction
+        except NotImplementedError:
+            warnings.warn(
+                "Density computation is not implemented right now. "
+                "Please rerun specifying a sample mass density."
+            )
+    energy_eV = energy * 1000
+    mu = material_mu(sample_composition, energy_eV, density=sample_mass_density, kind="total") / 10
     return mu
