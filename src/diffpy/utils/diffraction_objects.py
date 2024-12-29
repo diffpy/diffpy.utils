@@ -396,14 +396,14 @@ class DiffractionObject:
     def on_d(self):
         return [self.all_arrays[:, 3], self.all_arrays[:, 0]]
 
-    def scale_to(self, target_diff_object, q=None, tth=None, d=None, offset=0):
+    def scale_to(self, target_diff_object, q=None, tth=None, d=None, offset=None):
         """Returns a new diffraction object which is the current object but
         rescaled in y to the target.
 
+        By default, if none of `q`, `tth`, or `d` are provided,
+        the scaling is based on the maximal x-array value from both objects.
         The y-value in the target at the closest specified x-value will be used as the factor to scale to.
         The entire array is scaled by this factor so that one object places on top of the other at that point.
-        If none of `q`, `tth`, or `d` are provided,
-        the scaling will be based on the maximal x-array value from both objects.
         If multiple values of `q`, `tth`, or `d` are provided, an error will be raised.
 
         Parameters
@@ -411,17 +411,20 @@ class DiffractionObject:
         target_diff_object: DiffractionObject
             the diffraction object you want to scale the current one onto
 
-        q, tth, d : float, optional, default is q with the maximal x-array value of the current object
+        q, tth, d : float, optional, default is q with the maximal x-array value from each object
             The value of the x-array where you want the curves to line up vertically.
             Specify a value on one of the allowed grids, q, tth, or d), e.g., q=10.
 
-        offset : float, optional, default is 0
+        offset : float, optional, default is None
             an offset to add to the scaled y-values
 
         Returns
         -------
         the rescaled DiffractionObject as a new object
         """
+        if offset is None:
+            offset = 0
+
         scaled = self.copy()
         count = sum([q is not None, tth is not None, d is not None])
         if count > 1:
