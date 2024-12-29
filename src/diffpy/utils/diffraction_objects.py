@@ -240,21 +240,15 @@ class DiffractionObject:
     __rmul__ = __mul__
 
     def __truediv__(self, other):
+        self._check_operation_compatibility(other)
+        divided_do = deepcopy(self)
+        if isinstance(other, (int, float)):
+            divided_do._all_arrays[:, 0] /= other
+        if isinstance(other, DiffractionObject):
+            divided_do._all_arrays[:, 0] /= other.all_arrays[:, 0]
+        return divided_do
 
-        divided = deepcopy(self)
-        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
-            divided.on_tth[1] = other / self.on_tth[1]
-            divided.on_q[1] = other / self.on_q[1]
-        elif not isinstance(other, DiffractionObject):
-            raise TypeError("I only know how to multiply two Scattering_object objects")
-        elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(y_grid_length_mismatch_emsg)
-        else:
-            divided.on_tth[1] = self.on_tth[1] / other.on_tth[1]
-            divided.on_q[1] = self.on_q[1] / other.on_q[1]
-        return divided
-
-    __rmul__ = __mul__
+    __rtruediv__ = __truediv__
 
     def _check_operation_compatibility(self, other):
         if not isinstance(other, (DiffractionObject, int, float)):

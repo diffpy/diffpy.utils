@@ -713,64 +713,84 @@ def test_copy_object(do_minimal):
 
 
 @pytest.mark.parametrize(
-    "operation, starting_all_arrays, scalar_value, expected_all_arrays",
+    "operation, starting_yarray, scalar_value, expected_yarray",
     [
-        # C1: Test scalar addition to yarray values (intensity), expect no change to xarrays (q, tth, d)
-        (  # 1. Add integer 5
+        # C1: Test scalar addition to y-values (intensity), expect no change to x-values (q, tth, d)
+        (  # 1. Add 5
             "add",
-            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]]),
+            np.array([1.0, 2.0]),
             5,
-            np.array([[6.0, 0.51763809, 30.0, 12.13818192], [7.0, 1.0, 60.0, 6.28318531]]),
+            np.array([6.0, 7.0]),
         ),
-        (  # 2. Add float 5.1
+        (  # 2. Add 5.1
             "add",
-            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]]),
+            np.array([1.0, 2.0]),
             5.1,
-            np.array([[6.1, 0.51763809, 30.0, 12.13818192], [7.1, 1.0, 60.0, 6.28318531]]),
+            np.array([6.1, 7.1]),
         ),
-        # C2. Test scalar subtraction to yarray values (intensity), expect no change to xarrays (q, tth, d)
-        (  # 1. Subtract integer 1
+        # C2: Test scalar subtraction to y-values (intensity), expect no change to x-values (q, tth, d)
+        (  # 1. Subtract 1
             "sub",
-            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]]),
+            np.array([1.0, 2.0]),
             1,
-            np.array([[0.0, 0.51763809, 30.0, 12.13818192], [1.0, 1.0, 60.0, 6.28318531]]),
+            np.array([0.0, 1.0]),
         ),
-        (  # 2. Subtract float 0.5
+        (  # 2. Subtract 0.5
             "sub",
-            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]]),
+            np.array([1.0, 2.0]),
             0.5,
-            np.array([[0.5, 0.51763809, 30.0, 12.13818192], [1.5, 1.0, 60.0, 6.28318531]]),
+            np.array([0.5, 1.5]),
         ),
-        # C2. Test scalar multiplication to yarray values (intensity), expect no change to xarrays (q, tth, d)
-        (  # 1. Multipliy by integer 2
+        # C3: Test scalar multiplication to y-values (intensity), expect no change to x-values (q, tth, d)
+        (  # 1. Multiply by 2
             "mul",
-            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]]),
+            np.array([1.0, 2.0]),
             2,
-            np.array([[2.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
+            np.array([2.0, 4.0]),
         ),
-        (  # 2. Multipliy by float 0.5
+        (  # 2. Multiply by 2.5
             "mul",
-            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]]),
+            np.array([1.0, 2.0]),
             2.5,
-            np.array([[2.5, 0.51763809, 30.0, 12.13818192], [5.0, 1.0, 60.0, 6.28318531]]),
+            np.array([2.5, 5.0]),
+        ),
+        # C4: Test scalar division to y-values (intensity), expect no change to x-values (q, tth, d)
+        (  # 1. Divide by 2
+            "div",
+            np.array([1.0, 2.0]),
+            2,
+            np.array([0.5, 1.0]),
+        ),
+        (  # 2. Divide by 2.5
+            "div",
+            np.array([1.0, 2.0]),
+            2.5,
+            np.array([0.4, 0.8]),
         ),
     ],
 )
-def test_scalar_operations(operation, starting_all_arrays, scalar_value, expected_all_arrays, do_minimal_tth):
+def test_scalar_operations(operation, starting_yarray, scalar_value, expected_yarray, do_minimal_tth):
     do = do_minimal_tth
-    assert np.allclose(do.all_arrays, starting_all_arrays)
+    expected_xarray_constant = np.array([[0.51763809, 30.0, 12.13818192], [1.0, 60.0, 6.28318531]])
+    assert np.allclose(do.all_arrays[:, [1, 2, 3]], expected_xarray_constant)
+    assert np.allclose(do.all_arrays[:, 0], starting_yarray)
     if operation == "add":
-        result_right = do + scalar_value
-        result_left = scalar_value + do
+        do_right_op = do + scalar_value
+        do_left_op = scalar_value + do
     elif operation == "sub":
-        result_right = do - scalar_value
-        result_left = scalar_value - do
+        do_right_op = do - scalar_value
+        do_left_op = scalar_value - do
     elif operation == "mul":
-        result_right = do * scalar_value
-        result_left = scalar_value * do
-
-    assert np.allclose(result_right.all_arrays, expected_all_arrays)
-    assert np.allclose(result_left.all_arrays, expected_all_arrays)
+        do_right_op = do * scalar_value
+        do_left_op = scalar_value * do
+    elif operation == "div":
+        do_right_op = do / scalar_value
+        do_left_op = scalar_value / do
+    assert np.allclose(do_right_op.all_arrays[:, 0], expected_yarray)
+    assert np.allclose(do_left_op.all_arrays[:, 0], expected_yarray)
+    # Ensure x-values are unchanged
+    assert np.allclose(do_right_op.all_arrays[:, [1, 2, 3]], expected_xarray_constant)
+    assert np.allclose(do_left_op.all_arrays[:, [1, 2, 3]], expected_xarray_constant)
 
 
 @pytest.mark.parametrize(
@@ -792,6 +812,11 @@ def test_scalar_operations(operation, starting_all_arrays, scalar_value, expecte
             "mul",
             np.array([[1.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
             np.array([[1.0, 6.28318531, 100.70777771, 1], [4.0, 3.14159265, 45.28748053, 2.0]]),
+        ),
+        (
+            "div",
+            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [1.0, 1.0, 60.0, 6.28318531]]),
+            np.array([[1.0, 6.28318531, 100.70777771, 1], [1.0, 3.14159265, 45.28748053, 2.0]]),
         ),
     ],
 )
@@ -820,31 +845,45 @@ def test_binary_operator_on_do(
     elif operation == "mul":
         do_1_y_modified = do_1 * do_2
         do_2_y_modified = do_2 * do_1
+    elif operation == "div":
+        do_1_y_modified = do_1 / do_2
+        do_2_y_modified = do_2 / do_1
 
     assert np.allclose(do_1_y_modified.all_arrays, expected_do_1_all_arrays_with_y_modified)
     assert np.allclose(do_2_y_modified.all_arrays, expected_do_2_all_arrays_with_y_modified)
 
 
-def test_addition_operator_invalid_type(do_minimal_tth, invalid_add_type_error_msg):
-    # Add a string to a DO object, expect TypeError, only scalar (int, float) allowed for addition
+def test_operator_invalid_type(do_minimal_tth, invalid_add_type_error_msg):
     do = do_minimal_tth
-    with pytest.raises(TypeError, match=re.escape(invalid_add_type_error_msg)):
-        do + "string_value"
-    with pytest.raises(TypeError, match=re.escape(invalid_add_type_error_msg)):
-        "string_value" + do
-    with pytest.raises(TypeError, match=re.escape(invalid_add_type_error_msg)):
-        do - "string_value"
-    with pytest.raises(TypeError, match=re.escape(invalid_add_type_error_msg)):
-        "string_value" - do
+    invalid_value = "string_value"
+
+    operations = [
+        (lambda x, y: x + y),  # Test addition
+        (lambda x, y: x - y),  # Test subtraction
+        (lambda x, y: x * y),  # Test multiplication
+        (lambda x, y: x / y),  # Test division
+    ]
+
+    # Test each operation with both orderings of operands
+    for operation in operations:
+        with pytest.raises(TypeError, match=re.escape(invalid_add_type_error_msg)):
+            operation(do, invalid_value)
+        with pytest.raises(TypeError, match=re.escape(invalid_add_type_error_msg)):
+            operation(invalid_value, do)
 
 
-def test_addition_operator_invalid_yarray_length(do_minimal, do_minimal_tth, y_grid_size_mismatch_error_msg):
-    # Combine two DO objects, one with empty xarrays (do_minimal) and the other with non-empty xarrays
+@pytest.mark.parametrize("operation", ["add", "sub", "mul", "div"])
+def test_operator_invalid_yarray_length(operation, do_minimal, do_minimal_tth, y_grid_size_mismatch_error_msg):
     do_1 = do_minimal
     do_2 = do_minimal_tth
     assert len(do_1.all_arrays[:, 0]) == 0
     assert len(do_2.all_arrays[:, 0]) == 2
     with pytest.raises(ValueError, match=re.escape(y_grid_size_mismatch_error_msg)):
-        do_1 + do_2
-    with pytest.raises(ValueError, match=re.escape(y_grid_size_mismatch_error_msg)):
-        do_1 - do_2
+        if operation == "add":
+            do_1 + do_2
+        elif operation == "sub":
+            do_1 - do_2
+        elif operation == "mul":
+            do_1 * do_2
+        elif operation == "div":
+            do_1 / do_2
