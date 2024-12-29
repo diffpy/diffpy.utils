@@ -14,15 +14,15 @@ DQUANTITIES = ["d", "dspace"]
 XQUANTITIES = ANGLEQUANTITIES + DQUANTITIES + QQUANTITIES
 XUNITS = ["degrees", "radians", "rad", "deg", "inv_angs", "inv_nm", "nm-1", "A-1"]
 
-x_grid_length_mismatch_emsg = (
-    "The two objects have different x-array lengths. "
-    "Please ensure the length of the x-value during initialization is identical."
+y_grid_length_mismatch_emsg = (
+    "The two objects have different y-array lengths. "
+    "Please ensure the length of the y-value during initialization is identical."
 )
 
 invalid_add_type_emsg = (
     "You may only add a DiffractionObject with another DiffractionObject or a scalar value. "
     "Please rerun by adding another DiffractionObject instance or a scalar value. "
-    "e.g., my_do_1 + my_do_2 or my_do + 10"
+    "e.g., my_do_1 + my_do_2 or my_do + 10 or 10 + my_do"
 )
 
 
@@ -175,55 +175,56 @@ class DiffractionObject:
         return True
 
     def __add__(self, other):
-        """Add a scalar value or another DiffractionObject to the xarrays of
-        the DiffractionObject.
+        """Add a scalar value or another DiffractionObject to the yarray of the
+        DiffractionObject.
 
         Parameters
         ----------
         other : DiffractionObject or int or float
             The object to add to the current DiffractionObject. If `other` is a scalar value,
-            it will be added to all xarrays. The length of the xarrays must match if `other` is
+            it will be added to all yarray. The length of the yarray must match if `other` is
             an instance of DiffractionObject.
 
         Returns
         -------
         DiffractionObject
-            The new and deep-copied DiffractionObject instance after adding values to the xarrays.
+            The new and deep-copied DiffractionObject instance after adding values to the yarray.
 
         Raises
         ------
         ValueError
-            Raised when the length of the xarrays of the two DiffractionObject instances do not match.
+            Raised when the length of the yarray of the two DiffractionObject instances do not match.
         TypeError
             Raised when the type of `other` is not an instance of DiffractionObject, int, or float.
 
         Examples
         --------
-        Add a scalar value to the xarrays of the DiffractionObject instance:
+        Add a scalar value to the yarray of the DiffractionObject instance:
         >>> new_do = my_do + 10.1
+        >>> new_do = 10.1 + my_do
 
-        Add the xarrays of two DiffractionObject instances:
+        Add the yarray of two DiffractionObject instances:
         >>> new_do = my_do_1 + my_do_2
         """
 
+        self._check_operation_compatibility(other)
         summed_do = deepcopy(self)
-        # Add scalar value to all xarrays by broadcasting
         if isinstance(other, (int, float)):
-            summed_do._all_arrays[:, 1] += other
-            summed_do._all_arrays[:, 2] += other
-            summed_do._all_arrays[:, 3] += other
-        # Add xarrays of two DiffractionObject instances
-        elif isinstance(other, DiffractionObject):
-            if len(self.on_tth()[0]) != len(other.on_tth()[0]):
-                raise ValueError(x_grid_length_mismatch_emsg)
-            summed_do._all_arrays[:, 1] += other.on_q()[0]
-            summed_do._all_arrays[:, 2] += other.on_tth()[0]
-            summed_do._all_arrays[:, 3] += other.on_d()[0]
-        else:
-            raise TypeError(invalid_add_type_emsg)
+            summed_do._all_arrays[:, 0] += other
+        if isinstance(other, DiffractionObject):
+            summed_do._all_arrays[:, 0] += other.all_arrays[:, 0]
         return summed_do
 
     __radd__ = __add__
+
+    def _check_operation_compatibility(self, other):
+        if not isinstance(other, (DiffractionObject, int, float)):
+            raise TypeError(invalid_add_type_emsg)
+        if isinstance(other, DiffractionObject):
+            self_yarray = self.all_arrays[:, 0]
+            other_yarray = other.all_arrays[:, 0]
+            if len(self_yarray) != len(other_yarray):
+                raise ValueError(y_grid_length_mismatch_emsg)
 
     def __sub__(self, other):
         subtracted = deepcopy(self)
@@ -233,7 +234,7 @@ class DiffractionObject:
         elif not isinstance(other, DiffractionObject):
             raise TypeError("I only know how to subtract two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_length_mismatch_emsg)
+            raise RuntimeError(y_grid_length_mismatch_emsg)
         else:
             subtracted.on_tth[1] = self.on_tth[1] - other.on_tth[1]
             subtracted.on_q[1] = self.on_q[1] - other.on_q[1]
@@ -247,7 +248,7 @@ class DiffractionObject:
         elif not isinstance(other, DiffractionObject):
             raise TypeError("I only know how to subtract two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_length_mismatch_emsg)
+            raise RuntimeError(y_grid_length_mismatch_emsg)
         else:
             subtracted.on_tth[1] = other.on_tth[1] - self.on_tth[1]
             subtracted.on_q[1] = other.on_q[1] - self.on_q[1]
@@ -261,7 +262,7 @@ class DiffractionObject:
         elif not isinstance(other, DiffractionObject):
             raise TypeError("I only know how to multiply two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_length_mismatch_emsg)
+            raise RuntimeError(y_grid_length_mismatch_emsg)
         else:
             multiplied.on_tth[1] = self.on_tth[1] * other.on_tth[1]
             multiplied.on_q[1] = self.on_q[1] * other.on_q[1]
@@ -273,7 +274,7 @@ class DiffractionObject:
             multiplied.on_tth[1] = other * self.on_tth[1]
             multiplied.on_q[1] = other * self.on_q[1]
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_length_mismatch_emsg)
+            raise RuntimeError(y_grid_length_mismatch_emsg)
         else:
             multiplied.on_tth[1] = self.on_tth[1] * other.on_tth[1]
             multiplied.on_q[1] = self.on_q[1] * other.on_q[1]
@@ -287,7 +288,7 @@ class DiffractionObject:
         elif not isinstance(other, DiffractionObject):
             raise TypeError("I only know how to multiply two Scattering_object objects")
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_length_mismatch_emsg)
+            raise RuntimeError(y_grid_length_mismatch_emsg)
         else:
             divided.on_tth[1] = self.on_tth[1] / other.on_tth[1]
             divided.on_q[1] = self.on_q[1] / other.on_q[1]
@@ -299,7 +300,7 @@ class DiffractionObject:
             divided.on_tth[1] = other / self.on_tth[1]
             divided.on_q[1] = other / self.on_q[1]
         elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_length_mismatch_emsg)
+            raise RuntimeError(y_grid_length_mismatch_emsg)
         else:
             divided.on_tth[1] = other.on_tth[1] / self.on_tth[1]
             divided.on_q[1] = other.on_q[1] / self.on_q[1]
