@@ -715,6 +715,7 @@ def test_copy_object(do_minimal):
 @pytest.mark.parametrize(
     "operation, starting_yarray, scalar_value, expected_yarray",
     [
+        # Test scalar addition, subtraction, multiplication, and division to y-values by adding a scalar value
         # C1: Test scalar addition to y-values (intensity), expect no change to x-values (q, tth, d)
         (  # 1. Add 5
             "add",
@@ -796,6 +797,7 @@ def test_scalar_operations(operation, starting_yarray, scalar_value, expected_ya
 @pytest.mark.parametrize(
     "operation, " "expected_do_1_all_arrays_with_y_modified, " "expected_do_2_all_arrays_with_y_modified",
     [
+        # Test addition, subtraction, multiplication, and division of two DO objects
         (  # Test addition of two DO objects, expect combined yarray values
             "add",
             np.array([[2.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
@@ -852,6 +854,7 @@ def test_binary_operator_on_do(
 
 
 def test_operator_invalid_type(do_minimal_tth, invalid_add_type_error_msg):
+    # Add a string to a DiffractionObject, expect TypeError
     do = do_minimal_tth
     invalid_value = "string_value"
     operations = [
@@ -860,7 +863,6 @@ def test_operator_invalid_type(do_minimal_tth, invalid_add_type_error_msg):
         (lambda x, y: x * y),  # Test multiplication
         (lambda x, y: x / y),  # Test division
     ]
-    # Add a string to a DiffractionObject, expect TypeError
     for operation in operations:
         with pytest.raises(TypeError, match=re.escape(invalid_add_type_error_msg)):
             operation(do, invalid_value)
@@ -870,11 +872,11 @@ def test_operator_invalid_type(do_minimal_tth, invalid_add_type_error_msg):
 
 @pytest.mark.parametrize("operation", ["add", "sub", "mul", "div"])
 def test_operator_invalid_yarray_length(operation, do_minimal, do_minimal_tth, y_grid_size_mismatch_error_msg):
+    # Add two DO objects with different yarray lengths, expect ValueError
     do_1 = do_minimal
     do_2 = do_minimal_tth
     assert len(do_1.all_arrays[:, 0]) == 0
     assert len(do_2.all_arrays[:, 0]) == 2
-    # Add two DO objets with different yarray lengths, expect ValueError
     with pytest.raises(ValueError, match=re.escape(y_grid_size_mismatch_error_msg)):
         if operation == "add":
             do_1 + do_2
