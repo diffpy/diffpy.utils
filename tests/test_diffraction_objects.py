@@ -807,7 +807,6 @@ def test_scalar_operations(operation, starting_yarray, scalar_value, expected_ya
             np.array([[0.0, 6.28318531, 100.70777771, 1], [0.0, 3.14159265, 45.28748053, 2.0]]),
         ),
         (  # Test multiplication of two DO objects, expect multiplication in yarray values
-            
             "mul",
             np.array([[1.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
             np.array([[1.0, 6.28318531, 100.70777771, 1], [4.0, 3.14159265, 45.28748053, 2.0]]),
