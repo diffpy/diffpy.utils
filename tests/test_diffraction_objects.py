@@ -743,7 +743,7 @@ def test_addition_operator_by_scalar(starting_all_arrays, scalar_to_add, expecte
     "expected_do_1_all_arrays_with_y_summed, "
     "expected_do_2_all_arrays_with_y_summed",
     [
-        # Test addition of two DO objects, expect combined xarray values (q, tth, d) and no change to yarray
+        # Test addition of two DO objects, expect combined yarray values and no change to xarrays ((q, tth, d)
         (  # C1: Add two DO objects, expect sum of yarray values
             (np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]]),),
             (np.array([[1.0, 6.28318531, 100.70777771, 1], [2.0, 3.14159265, 45.28748053, 2.0]]),),
