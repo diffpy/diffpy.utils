@@ -48,6 +48,12 @@ def do_minimal_tth():
 
 
 @pytest.fixture
+def do_minimal_d():
+    # Create an instance of DiffractionObject with non-empty xarray, yarray, and wavelength values
+    return DiffractionObject(wavelength=1.54, xarray=np.array([1, 2]), yarray=np.array([1, 2]), xtype="d")
+
+
+@pytest.fixture
 def wavelength_warning_msg():
     return (
         "No wavelength has been specified. You can continue to use the DiffractionObject, but "
@@ -62,4 +68,21 @@ def invalid_q_or_d_or_wavelength_error_msg():
     return (
         "The supplied input array and wavelength will result in an impossible two-theta. "
         "Please check these values and re-instantiate the DiffractionObject with correct values."
+    )
+
+
+@pytest.fixture
+def invalid_add_type_error_msg():
+    return (
+        "You may only add a DiffractionObject with another DiffractionObject or a scalar value. "
+        "Please rerun by adding another DiffractionObject instance or a scalar value. "
+        "e.g., my_do_1 + my_do_2 or my_do + 10 or 10 + my_do"
+    )
+
+
+@pytest.fixture
+def y_grid_size_mismatch_error_msg():
+    return (
+        "The two objects have different y-array lengths. "
+        "Please ensure the length of the y-value during initialization is identical."
     )
