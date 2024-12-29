@@ -400,9 +400,8 @@ class DiffractionObject:
         """Returns a new diffraction object which is the current object but
         rescaled in y to the target.
 
-        By default, if none of `q`, `tth`, or `d` are provided,
-        the scaling is based on the maximal x-array value from both objects.
-        The y-value in the target at the closest specified x-value will be used as the factor to scale to.
+        By default, if `q`, `tth`, or `d` are not provided, scaling is based on the max q-value from each object.
+        Otherwise, y-value in the target at the closest specified x-value will be used as the factor to scale to.
         The entire array is scaled by this factor so that one object places on top of the other at that point.
         If multiple values of `q`, `tth`, or `d` are provided, an error will be raised.
 
@@ -411,7 +410,7 @@ class DiffractionObject:
         target_diff_object: DiffractionObject
             the diffraction object you want to scale the current one onto
 
-        q, tth, d : float, optional, default is q with the maximal x-array value from each object
+        q, tth, d : float, optional, default is the max q-value from each object
             The value of the x-array where you want the curves to line up vertically.
             Specify a value on one of the allowed grids, q, tth, or d), e.g., q=10.
 

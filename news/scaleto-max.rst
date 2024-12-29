@@ -1,6 +1,6 @@
 **Added:**
 
-* new feature in `scale_to()` to run without specifying an x-value
+* new feature in `scale_to()`: default scaling is based on the max q-value in each diffraction object.
 
 **Changed:**
 
