@@ -402,14 +402,16 @@ class DiffractionObject:
 
         The y-value in the target at the closest specified x-value will be used as the factor to scale to.
         The entire array is scaled by this factor so that one object places on top of the other at that point.
-        If multiple values of `q`, `tth`, or `d` are provided, or none are provided, an error will be raised.
+        If none of `q`, `tth`, or `d` are provided,
+        the scaling will be based on the maximal x-array value from both objects.
+        If multiple values of `q`, `tth`, or `d` are provided, an error will be raised.
 
         Parameters
         ----------
         target_diff_object: DiffractionObject
             the diffraction object you want to scale the current one onto
 
-        q, tth, d : float, optional, must specify exactly one of them
+        q, tth, d : float, optional, default is q with the maximal x-array value of the current object
             The value of the x-array where you want the curves to line up vertically.
             Specify a value on one of the allowed grids, q, tth, or d), e.g., q=10.
 
@@ -422,10 +424,15 @@ class DiffractionObject:
         """
         scaled = self.copy()
         count = sum([q is not None, tth is not None, d is not None])
-        if count != 1:
+        if count > 1:
             raise ValueError(
-                "You must specify exactly one of 'q', 'tth', or 'd'. Please rerun specifying only one."
+                "You must specify none or exactly one of 'q', 'tth', or 'd'. "
+                "Please provide either none or one value."
             )
+
+        if count == 0:
+            scaled._all_arrays[:, 0] *= max(target_diff_object.on_q()[1]) / max(self.on_q()[1])
+            return scaled
 
         xtype = "q" if q is not None else "tth" if tth is not None else "d"
         data = self.on_xtype(xtype)
