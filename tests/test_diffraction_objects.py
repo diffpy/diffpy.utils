@@ -741,18 +741,33 @@ def test_copy_object(do_minimal):
             0.5,
             np.array([[0.5, 0.51763809, 30.0, 12.13818192], [1.5, 1.0, 60.0, 6.28318531]]),
         ),
+        # C2. Test scalar multiplication to yarray values (intensity), expect no change to xarrays (q, tth, d)
+        (  # 1. Multipliy by integer 2
+            "mul",
+            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]]),
+            2,
+            np.array([[2.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
+        ),
+        (  # 2. Multipliy by float 0.5
+            "mul",
+            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]]),
+            2.5,
+            np.array([[2.5, 0.51763809, 30.0, 12.13818192], [5.0, 1.0, 60.0, 6.28318531]]),
+        ),
     ],
 )
 def test_scalar_operations(operation, starting_all_arrays, scalar_value, expected_all_arrays, do_minimal_tth):
     do = do_minimal_tth
     assert np.allclose(do.all_arrays, starting_all_arrays)
-
     if operation == "add":
         result_right = do + scalar_value
         result_left = scalar_value + do
     elif operation == "sub":
         result_right = do - scalar_value
         result_left = scalar_value - do
+    elif operation == "mul":
+        result_right = do * scalar_value
+        result_left = scalar_value * do
 
     assert np.allclose(result_right.all_arrays, expected_all_arrays)
     assert np.allclose(result_left.all_arrays, expected_all_arrays)
@@ -772,6 +787,11 @@ def test_scalar_operations(operation, starting_all_arrays, scalar_value, expecte
             "sub",
             np.array([[0.0, 0.51763809, 30.0, 12.13818192], [0.0, 1.0, 60.0, 6.28318531]]),
             np.array([[0.0, 6.28318531, 100.70777771, 1], [0.0, 3.14159265, 45.28748053, 2.0]]),
+        ),
+        (
+            "mul",
+            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
+            np.array([[1.0, 6.28318531, 100.70777771, 1], [4.0, 3.14159265, 45.28748053, 2.0]]),
         ),
     ],
 )
@@ -797,6 +817,9 @@ def test_binary_operator_on_do(
     elif operation == "sub":
         do_1_y_modified = do_1 - do_2
         do_2_y_modified = do_2 - do_1
+    elif operation == "mul":
+        do_1_y_modified = do_1 * do_2
+        do_2_y_modified = do_2 * do_1
 
     assert np.allclose(do_1_y_modified.all_arrays, expected_do_1_all_arrays_with_y_modified)
     assert np.allclose(do_2_y_modified.all_arrays, expected_do_2_all_arrays_with_y_modified)

@@ -229,18 +229,13 @@ class DiffractionObject:
     __rsub__ = __sub__
 
     def __mul__(self, other):
-        multiplied = deepcopy(self)
-        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
-            multiplied.on_tth[1] = other * self.on_tth[1]
-            multiplied.on_q[1] = other * self.on_q[1]
-        elif not isinstance(other, DiffractionObject):
-            raise TypeError("I only know how to multiply two Scattering_object objects")
-        elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(y_grid_length_mismatch_emsg)
-        else:
-            multiplied.on_tth[1] = self.on_tth[1] * other.on_tth[1]
-            multiplied.on_q[1] = self.on_q[1] * other.on_q[1]
-        return multiplied
+        self._check_operation_compatibility(other)
+        multiplied_do = deepcopy(self)
+        if isinstance(other, (int, float)):
+            multiplied_do._all_arrays[:, 0] *= other
+        if isinstance(other, DiffractionObject):
+            multiplied_do._all_arrays[:, 0] *= other.all_arrays[:, 0]
+        return multiplied_do
 
     __rmul__ = __mul__
 
