@@ -796,24 +796,23 @@ def test_scalar_operations(operation, starting_yarray, scalar_value, expected_ya
 @pytest.mark.parametrize(
     "operation, " "expected_do_1_all_arrays_with_y_modified, " "expected_do_2_all_arrays_with_y_modified",
     [
-        # Test addition of two DO objects, expect combined yarray values
-        (
+        (  # Test addition of two DO objects, expect combined yarray values
             "add",
             np.array([[2.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
             np.array([[2.0, 6.28318531, 100.70777771, 1], [4.0, 3.14159265, 45.28748053, 2.0]]),
         ),
-        # Test subtraction of two DO objects, expect differences in yarray values
-        (
+        (  # Test subtraction of two DO objects, expect differences in yarray values
             "sub",
             np.array([[0.0, 0.51763809, 30.0, 12.13818192], [0.0, 1.0, 60.0, 6.28318531]]),
             np.array([[0.0, 6.28318531, 100.70777771, 1], [0.0, 3.14159265, 45.28748053, 2.0]]),
         ),
-        (
+        (  # Test multiplication of two DO objects, expect multiplication in yarray values
+            
             "mul",
             np.array([[1.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
             np.array([[1.0, 6.28318531, 100.70777771, 1], [4.0, 3.14159265, 45.28748053, 2.0]]),
         ),
-        (
+        (  # Test division of two DO objects, expect division in yarray values
             "div",
             np.array([[1.0, 0.51763809, 30.0, 12.13818192], [1.0, 1.0, 60.0, 6.28318531]]),
             np.array([[1.0, 6.28318531, 100.70777771, 1], [1.0, 3.14159265, 45.28748053, 2.0]]),
@@ -856,15 +855,13 @@ def test_binary_operator_on_do(
 def test_operator_invalid_type(do_minimal_tth, invalid_add_type_error_msg):
     do = do_minimal_tth
     invalid_value = "string_value"
-
     operations = [
         (lambda x, y: x + y),  # Test addition
         (lambda x, y: x - y),  # Test subtraction
         (lambda x, y: x * y),  # Test multiplication
         (lambda x, y: x / y),  # Test division
     ]
-
-    # Test each operation with both orderings of operands
+    # Add a string to a DiffractionObject, expect TypeError
     for operation in operations:
         with pytest.raises(TypeError, match=re.escape(invalid_add_type_error_msg)):
             operation(do, invalid_value)
@@ -878,6 +875,7 @@ def test_operator_invalid_yarray_length(operation, do_minimal, do_minimal_tth, y
     do_2 = do_minimal_tth
     assert len(do_1.all_arrays[:, 0]) == 0
     assert len(do_2.all_arrays[:, 0]) == 2
+    # Add two DO objets with different yarray lengths, expect ValueError
     with pytest.raises(ValueError, match=re.escape(y_grid_size_mismatch_error_msg)):
         if operation == "add":
             do_1 + do_2
