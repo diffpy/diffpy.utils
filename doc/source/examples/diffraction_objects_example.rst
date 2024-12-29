@@ -106,6 +106,16 @@ we would replace the code above with
 The ``scale_to()`` method returns a new ``DiffractionObject`` which we can assign to a new
 variable and make use of,
 
+The default behavior is to align the objects based on the maximal q-value of each diffraction object,
+so they will align at the intensity at these indices.
+
+.. code-block:: python
+
+    scaled_measured = measured.scale_to(calculated)
+
+If this doesn't give the desirable results, you can specify an ``xtype=value`` to scale
+based on the closest x-value in both objects. For example:
+
 .. code-block:: python
 
     scaled_measured = measured.scale_to(calculated, q=5.5)
@@ -116,13 +126,6 @@ For convenience, you can also apply an offset to the scaled new diffraction obje
 .. code-block:: python
 
     scaled_and_offset_measured = measured.scale_to(calculated, q=5.5, offset=0.5)
-
-You can call `scale_to()` without specifying a value for `q`, `tth`, or `d`.
-In this case, the scaling will be done based on the maximal x-array value of both diffraction objects:
-
-.. code-block:: python
-
-    scaled_measured = measured.scale_to(calculated)
 
 DiffractionObject convenience functions
 ---------------------------------------
