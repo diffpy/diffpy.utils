@@ -217,42 +217,16 @@ class DiffractionObject:
 
     __radd__ = __add__
 
-    def _check_operation_compatibility(self, other):
-        if not isinstance(other, (DiffractionObject, int, float)):
-            raise TypeError(invalid_add_type_emsg)
-        if isinstance(other, DiffractionObject):
-            self_yarray = self.all_arrays[:, 0]
-            other_yarray = other.all_arrays[:, 0]
-            if len(self_yarray) != len(other_yarray):
-                raise ValueError(y_grid_length_mismatch_emsg)
-
     def __sub__(self, other):
-        subtracted = deepcopy(self)
-        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
-            subtracted.on_tth[1] = self.on_tth[1] - other
-            subtracted.on_q[1] = self.on_q[1] - other
-        elif not isinstance(other, DiffractionObject):
-            raise TypeError("I only know how to subtract two Scattering_object objects")
-        elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(y_grid_length_mismatch_emsg)
-        else:
-            subtracted.on_tth[1] = self.on_tth[1] - other.on_tth[1]
-            subtracted.on_q[1] = self.on_q[1] - other.on_q[1]
-        return subtracted
+        self._check_operation_compatibility(other)
+        subtracted_do = deepcopy(self)
+        if isinstance(other, (int, float)):
+            subtracted_do._all_arrays[:, 0] -= other
+        if isinstance(other, DiffractionObject):
+            subtracted_do._all_arrays[:, 0] -= other.all_arrays[:, 0]
+        return subtracted_do
 
-    def __rsub__(self, other):
-        subtracted = deepcopy(self)
-        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
-            subtracted.on_tth[1] = other - self.on_tth[1]
-            subtracted.on_q[1] = other - self.on_q[1]
-        elif not isinstance(other, DiffractionObject):
-            raise TypeError("I only know how to subtract two Scattering_object objects")
-        elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(y_grid_length_mismatch_emsg)
-        else:
-            subtracted.on_tth[1] = other.on_tth[1] - self.on_tth[1]
-            subtracted.on_q[1] = other.on_q[1] - self.on_q[1]
-        return subtracted
+    __rsub__ = __sub__
 
     def __mul__(self, other):
         multiplied = deepcopy(self)
@@ -268,19 +242,10 @@ class DiffractionObject:
             multiplied.on_q[1] = self.on_q[1] * other.on_q[1]
         return multiplied
 
-    def __rmul__(self, other):
-        multiplied = deepcopy(self)
-        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
-            multiplied.on_tth[1] = other * self.on_tth[1]
-            multiplied.on_q[1] = other * self.on_q[1]
-        elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(y_grid_length_mismatch_emsg)
-        else:
-            multiplied.on_tth[1] = self.on_tth[1] * other.on_tth[1]
-            multiplied.on_q[1] = self.on_q[1] * other.on_q[1]
-        return multiplied
+    __rmul__ = __mul__
 
     def __truediv__(self, other):
+
         divided = deepcopy(self)
         if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
             divided.on_tth[1] = other / self.on_tth[1]
@@ -294,17 +259,16 @@ class DiffractionObject:
             divided.on_q[1] = self.on_q[1] / other.on_q[1]
         return divided
 
-    def __rtruediv__(self, other):
-        divided = deepcopy(self)
-        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
-            divided.on_tth[1] = other / self.on_tth[1]
-            divided.on_q[1] = other / self.on_q[1]
-        elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(y_grid_length_mismatch_emsg)
-        else:
-            divided.on_tth[1] = other.on_tth[1] / self.on_tth[1]
-            divided.on_q[1] = other.on_q[1] / self.on_q[1]
-        return divided
+    __rmul__ = __mul__
+
+    def _check_operation_compatibility(self, other):
+        if not isinstance(other, (DiffractionObject, int, float)):
+            raise TypeError(invalid_add_type_emsg)
+        if isinstance(other, DiffractionObject):
+            self_yarray = self.all_arrays[:, 0]
+            other_yarray = other.all_arrays[:, 0]
+            if self_yarray.shape != other_yarray.shape:
+                raise ValueError(y_grid_length_mismatch_emsg)
 
     @property
     def all_arrays(self):
