@@ -254,9 +254,7 @@ class DiffractionObject:
         if not isinstance(other, (DiffractionObject, int, float)):
             raise TypeError(invalid_add_type_emsg)
         if isinstance(other, DiffractionObject):
-            self_yarray = self.all_arrays[:, 0]
-            other_yarray = other.all_arrays[:, 0]
-            if self_yarray.shape != other_yarray.shape:
+            if self.all_arrays.shape != other.all_arrays.shape:
                 raise ValueError(y_grid_length_mismatch_emsg)
 
     @property
