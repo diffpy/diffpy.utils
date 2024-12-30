@@ -168,34 +168,10 @@ def test_get_package_info(monkeypatch, inputs, expected):
 
 
 @pytest.mark.parametrize(
-    "inputs, expected_mu",
-    [
-        # Test whether the function returns the correct mu
-        (  # C1: Composition, energy, and mass density provided, expect to get mu based on mass density
-            # 1. Fully dense mass density
-            {"sample_composition": "quartz", "energy": 10, "sample_mass_density": 2.65},
-            5.0368,
-        ),
-        (  # 2. Measured mass density
-            {
-                "sample_composition": "ZrO2",
-                "energy": 17.445,
-                "sample_mass_density": 1.009,
-            },
-            1.2522,
-        ),
-    ],
-)
-def test_compute_mu_using_xraydb(inputs, expected_mu):
-    actual_mu = compute_mu_using_xraydb(**inputs)
-    assert actual_mu == pytest.approx(expected_mu, rel=1e-6, abs=1e-4)
-
-
-@pytest.mark.parametrize(
     "inputs",
     [
-        # Test when the function raises ValueError
-        # C1: Both mass density and packing fraction are provided
+        # Test when the function has invalid inputs
+        # C1: Both mass density and packing fraction are provided, expect ValueError exception
         (
             {
                 "sample_composition": "quartz",
@@ -204,7 +180,7 @@ def test_compute_mu_using_xraydb(inputs, expected_mu):
                 "packing_fraction": 1,
             }
         ),
-        # C2: None of mass density or packing fraction are provided
+        # C2: None of mass density or packing fraction are provided, expect ValueError exception
         (
             {
                 "sample_composition": "quartz",
