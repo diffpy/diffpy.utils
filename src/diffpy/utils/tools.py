@@ -6,6 +6,7 @@ from pathlib import Path
 import numpy as np
 from scipy.optimize import dual_annealing
 from scipy.signal import convolve
+from xraydb import material_mu
 
 from diffpy.utils.parsers.loaddata import loadData
 
@@ -192,6 +193,57 @@ def get_package_info(package_names, metadata=None):
         pkg_info.update({package: importlib.metadata.version(package)})
     metadata["package_info"] = pkg_info
     return metadata
+
+
+def get_density_from_cloud(sample_composition, mp_token=""):
+    """Function to get material density from the MP or COD database.
+
+    It is not implemented yet.
+    """
+    raise NotImplementedError(
+        "So sorry, density computation from composition is not implemented right now. "
+        "We hope to have this implemented in the next release. "
+        "Please rerun specifying a sample mass density."
+    )
+
+
+def compute_mu_using_xraydb(sample_composition, energy, sample_mass_density=None, packing_fraction=None):
+    """Compute the attenuation coefficient (mu) using the XrayDB database.
+
+    Computes mu based on the sample composition and energy.
+    User should provide a sample mass density or a packing fraction.
+    If neither density nor packing fraction is specified, or if both are specified, a ValueError will be raised.
+    Reference: https://xraypy.github.io/XrayDB/python.html#xraydb.material_mu.
+
+    Parameters
+    ----------
+    sample_composition : str
+        The chemical formula of the material.
+    energy : float
+        The energy of the incident x-rays in keV.
+    sample_mass_density : float, optional, Default is None
+        The mass density of the packed powder/sample in g/cm*3.
+    packing_fraction : float, optional, Default is None
+        The fraction of sample in the capillary (between 0 and 1).
+        Specify either sample_mass_density or packing_fraction but not both.
+
+    Returns
+    -------
+    mu : float
+        The attenuation coefficient mu in mm^{-1}.
+    """
+    if (sample_mass_density is None and packing_fraction is None) or (
+        sample_mass_density is not None and packing_fraction is not None
+    ):
+        raise ValueError(
+            "You must specify either sample_mass_density or packing_fraction, but not both. "
+            "Please rerun specifying only one."
+        )
+    if packing_fraction is not None:
+        sample_mass_density = get_density_from_cloud(sample_composition) * packing_fraction
+    energy_eV = energy * 1000
+    mu = material_mu(sample_composition, energy_eV, density=sample_mass_density, kind="total") / 10
+    return mu
 
 
 def _top_hat(z, half_slit_width):
