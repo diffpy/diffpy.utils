@@ -1,6 +1,6 @@
 **Added:**
 
-* Function that can be used to compute muD (absorption coefficient) from a file containing an absorption profile 
+* Function that can be used to compute muD (absorption coefficient) from a file containing an absorption profile
   from a line-scan through the sample
 
 **Changed:**
