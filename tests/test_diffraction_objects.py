@@ -191,7 +191,23 @@ def test_init_invalid_xtype():
     "org_do_args, target_do_args, scale_inputs, expected",
     [
         # Test whether the original y-array is scaled as expected
-        (  # C1: Same x-arrays
+        (  # C1: none of q, tth, d, provided, expect to scale on the maximal intensity from each object
+            {
+                "xarray": np.array([0.1, 0.2, 0.3]),
+                "yarray": np.array([1, 2, 3]),
+                "xtype": "q",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "xarray": np.array([0.05, 0.1, 0.2, 0.3]),
+                "yarray": np.array([5, 10, 20, 30]),
+                "xtype": "q",
+                "wavelength": 2 * np.pi,
+            },
+            {},
+            {"xtype": "q", "yarray": np.array([10, 20, 30])},
+        ),
+        (  # C2: Same x-arrays
             # x-value has exact matches at tth=60 (y=60) and tth=60 (y=6),
             # for original and target diffraction objects,
             # expect original y-array to multiply by 6/60=1/10
@@ -207,15 +223,10 @@ def test_init_invalid_xtype():
                 "xtype": "tth",
                 "wavelength": 2 * np.pi,
             },
-            {
-                "q": None,
-                "tth": 60,
-                "d": None,
-                "offset": 0,
-            },
+            {"tth": 60},
             {"xtype": "tth", "yarray": np.array([1, 2, 2.5, 3, 6, 10])},
         ),
-        (  # C2: Different x-arrays with same length,
+        (  # C3: Different x-arrays with same length,
             # x-value has closest match at q=0.12 (y=10) and q=0.14 (y=1)
             # for original and target diffraction objects,
             # expect original y-array to multiply by 1/10
@@ -231,15 +242,10 @@ def test_init_invalid_xtype():
                 "xtype": "q",
                 "wavelength": 2 * np.pi,
             },
-            {
-                "q": 0.1,
-                "tth": None,
-                "d": None,
-                "offset": 0,
-            },
+            {"q": 0.1},
             {"xtype": "q", "yarray": np.array([1, 2, 4, 6])},
         ),
-        (  # C3: Different x-array lengths
+        (  # C4: Different x-array lengths
             # x-value has closest matches at tth=61 (y=50) and tth=62 (y=5),
             # for original and target diffraction objects,
             # expect original y-array to multiply by 5/50=1/10
@@ -255,52 +261,11 @@ def test_init_invalid_xtype():
                 "xtype": "tth",
                 "wavelength": 2 * np.pi,
             },
-            {
-                "q": None,
-                "tth": 60,
-                "d": None,
-                "offset": 0,
-            },
+            {"tth": 60},
             {"xtype": "tth", "yarray": np.array([1, 2, 3, 4, 5, 6, 10])},
         ),
-        (  # C4: Same x-array and y-array with 2.1 offset, expect y-array to shift up by 2.1
-            {
-                "xarray": np.array([10, 15, 25, 30, 60, 140]),
-                "yarray": np.array([2, 3, 4, 5, 6, 7]),
-                "xtype": "tth",
-                "wavelength": 2 * np.pi,
-            },
-            {
-                "xarray": np.array([10, 15, 25, 30, 60, 140]),
-                "yarray": np.array([2, 3, 4, 5, 6, 7]),
-                "xtype": "tth",
-                "wavelength": 2 * np.pi,
-            },
-            {
-                "q": None,
-                "tth": 60,
-                "d": None,
-                "offset": 2.1,
-            },
-            {"xtype": "tth", "yarray": np.array([4.1, 5.1, 6.1, 7.1, 8.1, 9.1])},
-        ),
-    ],
-)
-def test_scale_to(org_do_args, target_do_args, scale_inputs, expected):
-    original_do = DiffractionObject(**org_do_args)
-    target_do = DiffractionObject(**target_do_args)
-    scaled_do = original_do.scale_to(
-        target_do, q=scale_inputs["q"], tth=scale_inputs["tth"], d=scale_inputs["d"], offset=scale_inputs["offset"]
-    )
-    # Check the intensity data is the same as expected
-    assert np.allclose(scaled_do.on_xtype(expected["xtype"])[1], expected["yarray"])
-
-
-@pytest.mark.parametrize(
-    "org_do_args, target_do_args, scale_inputs",
-    [
-        # Test expected errors produced from scale_to() with invalid inputs
-        (  # C1: none of q, tth, d, provided, expect ValueError
+        (  # C5.1: Reuse test case from C1, none of q, tth, d, provided, but include an offset,
+            # expect scaled y-array in C1 to shift up by 2
             {
                 "xarray": np.array([0.1, 0.2, 0.3]),
                 "yarray": np.array([1, 2, 3]),
@@ -313,14 +278,40 @@ def test_scale_to(org_do_args, target_do_args, scale_inputs, expected):
                 "xtype": "q",
                 "wavelength": 2 * np.pi,
             },
-            {
-                "q": None,
-                "tth": None,
-                "d": None,
-                "offset": 0,
-            },
+            {"offset": 2},
+            {"xtype": "q", "yarray": np.array([12, 22, 32])},
         ),
-        (  # C2: tth and d both provided, expect ValueErrort
+        (  # C5.2: Reuse test case from C4, but include an offset, expect scaled y-array in C4 to shift up by 2
+            {
+                "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
+                "yarray": np.array([10, 20, 30, 40, 50, 60, 100]),
+                "xtype": "tth",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "xarray": np.array([20, 25.5, 32, 45, 50, 62, 100, 125, 140]),
+                "yarray": np.array([1.1, 2, 3, 3.5, 4, 5, 10, 12, 13]),
+                "xtype": "tth",
+                "wavelength": 2 * np.pi,
+            },
+            {"tth": 60, "offset": 2},
+            {"xtype": "tth", "yarray": np.array([3, 4, 5, 6, 7, 8, 12])},
+        ),
+    ],
+)
+def test_scale_to(org_do_args, target_do_args, scale_inputs, expected):
+    original_do = DiffractionObject(**org_do_args)
+    target_do = DiffractionObject(**target_do_args)
+    scaled_do = original_do.scale_to(target_do, **scale_inputs)
+    # Check the intensity data is the same as expected
+    assert np.allclose(scaled_do.on_xtype(expected["xtype"])[1], expected["yarray"])
+
+
+@pytest.mark.parametrize(
+    "org_do_args, target_do_args, scale_inputs",
+    [
+        # Test expected errors produced from scale_to() with invalid inputs
+        (  # C2: tth and d both provided, expect ValueError
             {
                 "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
                 "yarray": np.array([10, 20, 30, 40, 50, 60, 100]),
@@ -334,10 +325,8 @@ def test_scale_to(org_do_args, target_do_args, scale_inputs, expected):
                 "wavelength": 2 * np.pi,
             },
             {
-                "q": None,
                 "tth": 60,
                 "d": 10,
-                "offset": 0,
             },
         ),
     ],
@@ -346,15 +335,11 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
     original_do = DiffractionObject(**org_do_args)
     target_do = DiffractionObject(**target_do_args)
     with pytest.raises(
-        ValueError, match="You must specify exactly one of 'q', 'tth', or 'd'. Please rerun specifying only one."
+        ValueError,
+        match="You must specify none or exactly one of 'q', 'tth', or 'd'. "
+        "Please provide either none or one value.",
     ):
-        original_do.scale_to(
-            target_do,
-            q=scale_inputs["q"],
-            tth=scale_inputs["tth"],
-            d=scale_inputs["d"],
-            offset=scale_inputs["offset"],
-        )
+        original_do.scale_to(target_do, **scale_inputs)
 
 
 @pytest.mark.parametrize(

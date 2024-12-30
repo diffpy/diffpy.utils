@@ -377,36 +377,47 @@ class DiffractionObject:
     def on_d(self):
         return [self.all_arrays[:, 3], self.all_arrays[:, 0]]
 
-    def scale_to(self, target_diff_object, q=None, tth=None, d=None, offset=0):
+    def scale_to(self, target_diff_object, q=None, tth=None, d=None, offset=None):
         """Returns a new diffraction object which is the current object but
         rescaled in y to the target.
 
-        The y-value in the target at the closest specified x-value will be used as the factor to scale to.
+        By default, if `q`, `tth`, or `d` are not provided, scaling is based on the max intensity from each object.
+        Otherwise, y-value in the target at the closest specified x-value will be used as the factor to scale to.
         The entire array is scaled by this factor so that one object places on top of the other at that point.
-        If multiple values of `q`, `tth`, or `d` are provided, or none are provided, an error will be raised.
+        If multiple values of `q`, `tth`, or `d` are provided, an error will be raised.
 
         Parameters
         ----------
         target_diff_object: DiffractionObject
-            the diffraction object you want to scale the current one onto
+            The diffraction object you want to scale the current one onto.
 
-        q, tth, d : float, optional, must specify exactly one of them
+        q, tth, d : float, optional, default is None
             The value of the x-array where you want the curves to line up vertically.
             Specify a value on one of the allowed grids, q, tth, or d), e.g., q=10.
 
-        offset : float, optional, default is 0
-            an offset to add to the scaled y-values
+        offset : float, optional, default is None
+            The offset to add to the scaled y-values.
 
         Returns
         -------
-        the rescaled DiffractionObject as a new object
+        scaled : DiffractionObject
+            The rescaled DiffractionObject as a new object.
         """
+        if offset is None:
+            offset = 0
         scaled = self.copy()
         count = sum([q is not None, tth is not None, d is not None])
-        if count != 1:
+        if count > 1:
             raise ValueError(
-                "You must specify exactly one of 'q', 'tth', or 'd'. Please rerun specifying only one."
+                "You must specify none or exactly one of 'q', 'tth', or 'd'. "
+                "Please provide either none or one value."
             )
+
+        if count == 0:
+            q_target_max = max(target_diff_object.on_q()[1])
+            q_self_max = max(self.on_q()[1])
+            scaled._all_arrays[:, 0] = scaled._all_arrays[:, 0] * q_target_max / q_self_max + offset
+            return scaled
 
         xtype = "q" if q is not None else "tth" if tth is not None else "d"
         data = self.on_xtype(xtype)
