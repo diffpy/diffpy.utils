@@ -104,10 +104,9 @@ we would replace the code above with
     plt.show()
 
 The ``scale_to()`` method returns a new ``DiffractionObject`` which we can assign to a new
-variable and make use of,
+variable and make use of.
 
-The default behavior is to align the objects based on the maximal q-value of each diffraction object,
-so they will align at the intensity at these indices.
+The default behavior is to align the objects based on the maximal value of each diffraction object.
 
 .. code-block:: python
 
