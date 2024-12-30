@@ -190,29 +190,11 @@ def test_init_invalid_xtype():
 @pytest.mark.parametrize(
     "org_do_args, target_do_args, scale_inputs, expected",
     [
-        # Test whether scale_to() scales to the expected values
-        (  # C1: Same x-array and y-array with 2.1 offset, expect yarray shifted by 2.1 offset
-            {
-                "xarray": np.array([10, 15, 25, 30, 60, 140]),
-                "yarray": np.array([2, 3, 4, 5, 6, 7]),
-                "xtype": "tth",
-                "wavelength": 2 * np.pi,
-            },
-            {
-                "xarray": np.array([10, 15, 25, 30, 60, 140]),
-                "yarray": np.array([2, 3, 4, 5, 6, 7]),
-                "xtype": "tth",
-                "wavelength": 2 * np.pi,
-            },
-            {
-                "q": None,
-                "tth": 60,
-                "d": None,
-                "offset": 2.1,
-            },
-            {"xtype": "tth", "yarray": np.array([4.1, 5.1, 6.1, 7.1, 8.1, 9.1])},
-        ),
-        (  # C2: Same length x-arrays with exact x-value match
+        # Test whether the original y-array is scaled as expected
+        (  # C1: Same x-arrays
+            # x-value has exact matches at tth=60 (y=60) and tth=60 (y=6),
+            # for original and target diffraction objects,
+            # expect original y-array to multiply by 6/60=1/10
             {
                 "xarray": np.array([10, 15, 25, 30, 60, 140]),
                 "yarray": np.array([10, 20, 25, 30, 60, 100]),
@@ -233,7 +215,10 @@ def test_init_invalid_xtype():
             },
             {"xtype": "tth", "yarray": np.array([1, 2, 2.5, 3, 6, 10])},
         ),
-        (  # C3: Same length x-arrays with approximate x-value match
+        (  # C2: Different x-arrays with same length,
+            # x-value has closest match at q=0.12 (y=10) and q=0.14 (y=1)
+            # for original and target diffraction objects,
+            # expect original y-array to multiply by 1/10
             {
                 "xarray": np.array([0.12, 0.24, 0.31, 0.4]),
                 "yarray": np.array([10, 20, 40, 60]),
@@ -254,7 +239,10 @@ def test_init_invalid_xtype():
             },
             {"xtype": "q", "yarray": np.array([1, 2, 4, 6])},
         ),
-        (  # C4: Different x-array lengths with approximate x-value match
+        (  # C3: Different x-array lengths
+            # x-value has closest matches at tth=61 (y=50) and tth=62 (y=5),
+            # for original and target diffraction objects,
+            # expect original y-array to multiply by 5/50=1/10
             {
                 "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
                 "yarray": np.array([10, 20, 30, 40, 50, 60, 100]),
@@ -273,8 +261,28 @@ def test_init_invalid_xtype():
                 "d": None,
                 "offset": 0,
             },
-            # C5: Scaling factor is calculated at index = 4 (tth=61) for self and index = 5 for target (tth=62)
             {"xtype": "tth", "yarray": np.array([1, 2, 3, 4, 5, 6, 10])},
+        ),
+        (  # C4: Same x-array and y-array with 2.1 offset, expect y-array to shift up by 2.1
+            {
+                "xarray": np.array([10, 15, 25, 30, 60, 140]),
+                "yarray": np.array([2, 3, 4, 5, 6, 7]),
+                "xtype": "tth",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "xarray": np.array([10, 15, 25, 30, 60, 140]),
+                "yarray": np.array([2, 3, 4, 5, 6, 7]),
+                "xtype": "tth",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "q": None,
+                "tth": 60,
+                "d": None,
+                "offset": 2.1,
+            },
+            {"xtype": "tth", "yarray": np.array([4.1, 5.1, 6.1, 7.1, 8.1, 9.1])},
         ),
     ],
 )
@@ -364,7 +372,7 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
                 "xtype": "tth",
                 "value": 30.005,
             },
-            [0],
+            0,
         ),
         (  # C2: Target value lies in the array, expect the (first) closest index
             {
@@ -377,7 +385,7 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
                 "xtype": "tth",
                 "value": 45,
             },
-            [0],
+            0,
         ),
         (
             {
@@ -390,7 +398,7 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
                 "xtype": "q",
                 "value": 0.25,
             },
-            [0],
+            0,
         ),
         # C3: Target value out of the range, expect the closest index
         (  # 1. Test with xtype of "q"
@@ -404,7 +412,7 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
                 "xtype": "q",
                 "value": 0.1,
             },
-            [0],
+            0,
         ),
         (  # 2. Test with xtype of "tth"
             {
@@ -417,20 +425,20 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
                 "xtype": "tth",
                 "value": 63,
             },
-            [1],
+            1,
         ),
     ],
 )
 def test_get_array_index(do_args, get_array_index_inputs, expected_index):
     do = DiffractionObject(**do_args)
-    actual_index = do.get_array_index(get_array_index_inputs["value"], get_array_index_inputs["xtype"])
+    actual_index = do.get_array_index(get_array_index_inputs["xtype"], get_array_index_inputs["value"])
     assert actual_index == expected_index
 
 
 def test_get_array_index_bad():
     do = DiffractionObject(wavelength=2 * np.pi, xarray=np.array([]), yarray=np.array([]), xtype="tth")
     with pytest.raises(ValueError, match=re.escape("The 'tth' array is empty. Please ensure it is initialized.")):
-        do.get_array_index(value=30)
+        do.get_array_index(xtype="tth", xvalue=30)
 
 
 def test_dump(tmp_path, mocker):
@@ -468,10 +476,61 @@ def test_dump(tmp_path, mocker):
 
 
 @pytest.mark.parametrize(
-    "do_init_args, expected_do_dict, divide_by_zero_warning_expected",
+    "do_init_args, expected_do_dict, divide_by_zero_warning_expected, wavelength_warning_expected",
     [
         # Test __dict__ of DiffractionObject instance initialized with valid arguments
-        (  # C1: Minimum arguments provided for init, expect all attributes set without None
+        (  # C1: Instantiate DO with empty arrays, expect it to be a valid DO, but with everything empty
+            {
+                "xarray": np.empty(0),
+                "yarray": np.empty(0),
+                "xtype": "tth",
+            },
+            {
+                "_all_arrays": np.array([]),
+                "_input_xtype": "tth",
+                "metadata": {},
+                "name": "",
+                "scat_quantity": "",
+                "qmin": np.float64(np.inf),
+                "qmax": np.float64(0.0),
+                "tthmin": np.float64(np.inf),
+                "tthmax": np.float64(0.0),
+                "dmin": np.float64(np.inf),
+                "dmax": np.float64(0.0),
+                "wavelength": None,
+            },
+            False,
+            True,
+        ),
+        (  # C2: Instantiate just DO with empty array like in C1 but with wavelength, xtype, name, and metadata
+            # expect a valid DO with empty arrays, but with some non-array attributes
+            {
+                "xarray": np.empty(0),
+                "yarray": np.empty(0),
+                "xtype": "tth",
+                "name": "test_name",
+                "wavelength": 1.54,
+                "metadata": {"item_1": "1", "item_2": "2"},
+            },
+            {
+                "_all_arrays": np.array([]),
+                "_input_xtype": "tth",
+                "metadata": {"item_1": "1", "item_2": "2"},
+                "name": "test_name",
+                "scat_quantity": "",
+                "qmin": np.float64(np.inf),
+                "qmax": np.float64(0.0),
+                "tthmin": np.float64(np.inf),
+                "tthmax": np.float64(0.0),
+                "dmin": np.float64(np.inf),
+                "dmax": np.float64(0.0),
+                "wavelength": 1.54,
+            },
+            False,
+            False,
+        ),
+        (  # C3: Minimum arguments provided for init with non-empty values for xarray and yarray and wavelength
+            # expect all attributes set without None
             {
                 "xarray": np.array([0.0, 90.0, 180.0]),
                 "yarray": np.array([1.0, 2.0, 3.0]),
@@ -499,8 +558,9 @@ def test_dump(tmp_path, mocker):
                 "wavelength": 4.0 * np.pi,
             },
             True,
+            False,
         ),
-        (  # C2: Initialize with an optional scat_quantity argument, expect non-empty string for scat_quantity
+        (  # C4: Same as C3, but with an optional scat_quantity argument, expect non-empty string for scat_quantity
             {
                 "xarray": np.array([np.inf, 2 * np.sqrt(2) * np.pi, 2 * np.pi]),
                 "yarray": np.array([1.0, 2.0, 3.0]),
@@ -529,12 +589,22 @@ def test_dump(tmp_path, mocker):
                 "wavelength": 4.0 * np.pi,
             },
             False,
+            False,
         ),
     ],
 )
-def test_init_valid(do_init_args, expected_do_dict, divide_by_zero_warning_expected):
+def test_init_valid(
+    do_init_args,
+    expected_do_dict,
+    divide_by_zero_warning_expected,
+    wavelength_warning_expected,
+    wavelength_warning_msg,
+):
     if divide_by_zero_warning_expected:
         with pytest.warns(RuntimeWarning, match="divide by zero encountered in divide"):
+            actual_do_dict = DiffractionObject(**do_init_args).__dict__
+    elif wavelength_warning_expected:
+        with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
             actual_do_dict = DiffractionObject(**do_init_args).__dict__
     else:
         actual_do_dict = DiffractionObject(**do_init_args).__dict__
@@ -640,3 +710,179 @@ def test_copy_object(do_minimal):
     do_copy = do.copy()
     assert do == do_copy
     assert id(do) != id(do_copy)
+
+
+@pytest.mark.parametrize(
+    "operation, starting_yarray, scalar_value, expected_yarray",
+    [
+        # Test scalar addition, subtraction, multiplication, and division to y-values by adding a scalar value
+        # C1: Test scalar addition to y-values (intensity), expect no change to x-values (q, tth, d)
+        (  # 1. Add 5
+            "add",
+            np.array([1.0, 2.0]),
+            5,
+            np.array([6.0, 7.0]),
+        ),
+        (  # 2. Add 5.1
+            "add",
+            np.array([1.0, 2.0]),
+            5.1,
+            np.array([6.1, 7.1]),
+        ),
+        # C2: Test scalar subtraction to y-values (intensity), expect no change to x-values (q, tth, d)
+        (  # 1. Subtract 1
+            "sub",
+            np.array([1.0, 2.0]),
+            1,
+            np.array([0.0, 1.0]),
+        ),
+        (  # 2. Subtract 0.5
+            "sub",
+            np.array([1.0, 2.0]),
+            0.5,
+            np.array([0.5, 1.5]),
+        ),
+        # C3: Test scalar multiplication to y-values (intensity), expect no change to x-values (q, tth, d)
+        (  # 1. Multiply by 2
+            "mul",
+            np.array([1.0, 2.0]),
+            2,
+            np.array([2.0, 4.0]),
+        ),
+        (  # 2. Multiply by 2.5
+            "mul",
+            np.array([1.0, 2.0]),
+            2.5,
+            np.array([2.5, 5.0]),
+        ),
+        # C4: Test scalar division to y-values (intensity), expect no change to x-values (q, tth, d)
+        (  # 1. Divide by 2
+            "div",
+            np.array([1.0, 2.0]),
+            2,
+            np.array([0.5, 1.0]),
+        ),
+        (  # 2. Divide by 2.5
+            "div",
+            np.array([1.0, 2.0]),
+            2.5,
+            np.array([0.4, 0.8]),
+        ),
+    ],
+)
+def test_scalar_operations(operation, starting_yarray, scalar_value, expected_yarray, do_minimal_tth):
+    do = do_minimal_tth
+    expected_xarray_constant = np.array([[0.51763809, 30.0, 12.13818192], [1.0, 60.0, 6.28318531]])
+    assert np.allclose(do.all_arrays[:, [1, 2, 3]], expected_xarray_constant)
+    assert np.allclose(do.all_arrays[:, 0], starting_yarray)
+    if operation == "add":
+        do_right_op = do + scalar_value
+        do_left_op = scalar_value + do
+    elif operation == "sub":
+        do_right_op = do - scalar_value
+        do_left_op = scalar_value - do
+    elif operation == "mul":
+        do_right_op = do * scalar_value
+        do_left_op = scalar_value * do
+    elif operation == "div":
+        do_right_op = do / scalar_value
+        do_left_op = scalar_value / do
+    assert np.allclose(do_right_op.all_arrays[:, 0], expected_yarray)
+    assert np.allclose(do_left_op.all_arrays[:, 0], expected_yarray)
+    # Ensure x-values are unchanged
+    assert np.allclose(do_right_op.all_arrays[:, [1, 2, 3]], expected_xarray_constant)
+    assert np.allclose(do_left_op.all_arrays[:, [1, 2, 3]], expected_xarray_constant)
+
+
+@pytest.mark.parametrize(
+    "operation, " "expected_do_1_all_arrays_with_y_modified, " "expected_do_2_all_arrays_with_y_modified",
+    [
+        # Test addition, subtraction, multiplication, and division of two DO objects
+        (  # Test addition of two DO objects, expect combined yarray values
+            "add",
+            np.array([[2.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
+            np.array([[2.0, 6.28318531, 100.70777771, 1], [4.0, 3.14159265, 45.28748053, 2.0]]),
+        ),
+        (  # Test subtraction of two DO objects, expect differences in yarray values
+            "sub",
+            np.array([[0.0, 0.51763809, 30.0, 12.13818192], [0.0, 1.0, 60.0, 6.28318531]]),
+            np.array([[0.0, 6.28318531, 100.70777771, 1], [0.0, 3.14159265, 45.28748053, 2.0]]),
+        ),
+        (  # Test multiplication of two DO objects, expect multiplication in yarray values
+            "mul",
+            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
+            np.array([[1.0, 6.28318531, 100.70777771, 1], [4.0, 3.14159265, 45.28748053, 2.0]]),
+        ),
+        (  # Test division of two DO objects, expect division in yarray values
+            "div",
+            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [1.0, 1.0, 60.0, 6.28318531]]),
+            np.array([[1.0, 6.28318531, 100.70777771, 1], [1.0, 3.14159265, 45.28748053, 2.0]]),
+        ),
+    ],
+)
+def test_binary_operator_on_do(
+    operation,
+    expected_do_1_all_arrays_with_y_modified,
+    expected_do_2_all_arrays_with_y_modified,
+    do_minimal_tth,
+    do_minimal_d,
+):
+    do_1 = do_minimal_tth
+    do_2 = do_minimal_d
+    assert np.allclose(
+        do_1.all_arrays, np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]])
+    )
+    assert np.allclose(
+        do_2.all_arrays, np.array([[1.0, 6.28318531, 100.70777771, 1], [2.0, 3.14159265, 45.28748053, 2.0]])
+    )
+
+    if operation == "add":
+        do_1_y_modified = do_1 + do_2
+        do_2_y_modified = do_2 + do_1
+    elif operation == "sub":
+        do_1_y_modified = do_1 - do_2
+        do_2_y_modified = do_2 - do_1
+    elif operation == "mul":
+        do_1_y_modified = do_1 * do_2
+        do_2_y_modified = do_2 * do_1
+    elif operation == "div":
+        do_1_y_modified = do_1 / do_2
+        do_2_y_modified = do_2 / do_1
+
+    assert np.allclose(do_1_y_modified.all_arrays, expected_do_1_all_arrays_with_y_modified)
+    assert np.allclose(do_2_y_modified.all_arrays, expected_do_2_all_arrays_with_y_modified)
+
+
+def test_operator_invalid_type(do_minimal_tth, invalid_add_type_error_msg):
+    # Add a string to a DiffractionObject, expect TypeError
+    do = do_minimal_tth
+    invalid_value = "string_value"
+    operations = [
+        (lambda x, y: x + y),  # Test addition
+        (lambda x, y: x - y),  # Test subtraction
+        (lambda x, y: x * y),  # Test multiplication
+        (lambda x, y: x / y),  # Test division
+    ]
+    for operation in operations:
+        with pytest.raises(TypeError, match=re.escape(invalid_add_type_error_msg)):
+            operation(do, invalid_value)
+        with pytest.raises(TypeError, match=re.escape(invalid_add_type_error_msg)):
+            operation(invalid_value, do)
+
+
+@pytest.mark.parametrize("operation", ["add", "sub", "mul", "div"])
+def test_operator_invalid_yarray_length(operation, do_minimal, do_minimal_tth, y_grid_size_mismatch_error_msg):
+    # Add two DO objects with different yarray lengths, expect ValueError
+    do_1 = do_minimal
+    do_2 = do_minimal_tth
+    assert len(do_1.all_arrays[:, 0]) == 0
+    assert len(do_2.all_arrays[:, 0]) == 2
+    with pytest.raises(ValueError, match=re.escape(y_grid_size_mismatch_error_msg)):
+        if operation == "add":
+            do_1 + do_2
+        elif operation == "sub":
+            do_1 - do_2
+        elif operation == "mul":
+            do_1 * do_2
+        elif operation == "div":
+            do_1 / do_2

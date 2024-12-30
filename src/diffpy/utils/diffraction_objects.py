@@ -14,9 +14,15 @@ DQUANTITIES = ["d", "dspace"]
 XQUANTITIES = ANGLEQUANTITIES + DQUANTITIES + QQUANTITIES
 XUNITS = ["degrees", "radians", "rad", "deg", "inv_angs", "inv_nm", "nm-1", "A-1"]
 
-x_grid_emsg = (
-    "objects are not on the same x-grid. You may add them using the self.add method "
-    "and specifying how to handle the mismatch."
+y_grid_length_mismatch_emsg = (
+    "The two objects have different y-array lengths. "
+    "Please ensure the length of the y-value during initialization is identical."
+)
+
+invalid_add_type_emsg = (
+    "You may only add a DiffractionObject with another DiffractionObject or a scalar value. "
+    "Please rerun by adding another DiffractionObject instance or a scalar value. "
+    "e.g., my_do_1 + my_do_2 or my_do + 10 or 10 + my_do"
 )
 
 
@@ -169,112 +175,87 @@ class DiffractionObject:
         return True
 
     def __add__(self, other):
-        summed = deepcopy(self)
-        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
-            summed.on_tth[1] = self.on_tth[1] + other
-            summed.on_q[1] = self.on_q[1] + other
-        elif not isinstance(other, DiffractionObject):
-            raise TypeError("I only know how to sum two DiffractionObject objects")
-        elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_emsg)
-        else:
-            summed.on_tth[1] = self.on_tth[1] + other.on_tth[1]
-            summed.on_q[1] = self.on_q[1] + other.on_q[1]
-        return summed
+        """Add a scalar value or another DiffractionObject to the yarray of the
+        DiffractionObject.
 
-    def __radd__(self, other):
-        summed = deepcopy(self)
-        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
-            summed.on_tth[1] = self.on_tth[1] + other
-            summed.on_q[1] = self.on_q[1] + other
-        elif not isinstance(other, DiffractionObject):
-            raise TypeError("I only know how to sum two Scattering_object objects")
-        elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_emsg)
-        else:
-            summed.on_tth[1] = self.on_tth[1] + other.on_tth[1]
-            summed.on_q[1] = self.on_q[1] + other.on_q[1]
-        return summed
+        Parameters
+        ----------
+        other : DiffractionObject or int or float
+            The object to add to the current DiffractionObject. If `other` is a scalar value,
+            it will be added to all yarray. The length of the yarray must match if `other` is
+            an instance of DiffractionObject.
+
+        Returns
+        -------
+        DiffractionObject
+            The new and deep-copied DiffractionObject instance after adding values to the yarray.
+
+        Raises
+        ------
+        ValueError
+            Raised when the length of the yarray of the two DiffractionObject instances do not match.
+        TypeError
+            Raised when the type of `other` is not an instance of DiffractionObject, int, or float.
+
+        Examples
+        --------
+        Add a scalar value to the yarray of the DiffractionObject instance:
+        >>> new_do = my_do + 10.1
+        >>> new_do = 10.1 + my_do
+
+        Add the yarray of two DiffractionObject instances:
+        >>> new_do = my_do_1 + my_do_2
+        """
+
+        self._check_operation_compatibility(other)
+        summed_do = deepcopy(self)
+        if isinstance(other, (int, float)):
+            summed_do._all_arrays[:, 0] += other
+        if isinstance(other, DiffractionObject):
+            summed_do._all_arrays[:, 0] += other.all_arrays[:, 0]
+        return summed_do
+
+    __radd__ = __add__
 
     def __sub__(self, other):
-        subtracted = deepcopy(self)
-        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
-            subtracted.on_tth[1] = self.on_tth[1] - other
-            subtracted.on_q[1] = self.on_q[1] - other
-        elif not isinstance(other, DiffractionObject):
-            raise TypeError("I only know how to subtract two Scattering_object objects")
-        elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_emsg)
-        else:
-            subtracted.on_tth[1] = self.on_tth[1] - other.on_tth[1]
-            subtracted.on_q[1] = self.on_q[1] - other.on_q[1]
-        return subtracted
+        self._check_operation_compatibility(other)
+        subtracted_do = deepcopy(self)
+        if isinstance(other, (int, float)):
+            subtracted_do._all_arrays[:, 0] -= other
+        if isinstance(other, DiffractionObject):
+            subtracted_do._all_arrays[:, 0] -= other.all_arrays[:, 0]
+        return subtracted_do
 
-    def __rsub__(self, other):
-        subtracted = deepcopy(self)
-        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
-            subtracted.on_tth[1] = other - self.on_tth[1]
-            subtracted.on_q[1] = other - self.on_q[1]
-        elif not isinstance(other, DiffractionObject):
-            raise TypeError("I only know how to subtract two Scattering_object objects")
-        elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_emsg)
-        else:
-            subtracted.on_tth[1] = other.on_tth[1] - self.on_tth[1]
-            subtracted.on_q[1] = other.on_q[1] - self.on_q[1]
-        return subtracted
+    __rsub__ = __sub__
 
     def __mul__(self, other):
-        multiplied = deepcopy(self)
-        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
-            multiplied.on_tth[1] = other * self.on_tth[1]
-            multiplied.on_q[1] = other * self.on_q[1]
-        elif not isinstance(other, DiffractionObject):
-            raise TypeError("I only know how to multiply two Scattering_object objects")
-        elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_emsg)
-        else:
-            multiplied.on_tth[1] = self.on_tth[1] * other.on_tth[1]
-            multiplied.on_q[1] = self.on_q[1] * other.on_q[1]
-        return multiplied
+        self._check_operation_compatibility(other)
+        multiplied_do = deepcopy(self)
+        if isinstance(other, (int, float)):
+            multiplied_do._all_arrays[:, 0] *= other
+        if isinstance(other, DiffractionObject):
+            multiplied_do._all_arrays[:, 0] *= other.all_arrays[:, 0]
+        return multiplied_do
 
-    def __rmul__(self, other):
-        multiplied = deepcopy(self)
-        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
-            multiplied.on_tth[1] = other * self.on_tth[1]
-            multiplied.on_q[1] = other * self.on_q[1]
-        elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_emsg)
-        else:
-            multiplied.on_tth[1] = self.on_tth[1] * other.on_tth[1]
-            multiplied.on_q[1] = self.on_q[1] * other.on_q[1]
-        return multiplied
+    __rmul__ = __mul__
 
     def __truediv__(self, other):
-        divided = deepcopy(self)
-        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
-            divided.on_tth[1] = other / self.on_tth[1]
-            divided.on_q[1] = other / self.on_q[1]
-        elif not isinstance(other, DiffractionObject):
-            raise TypeError("I only know how to multiply two Scattering_object objects")
-        elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_emsg)
-        else:
-            divided.on_tth[1] = self.on_tth[1] / other.on_tth[1]
-            divided.on_q[1] = self.on_q[1] / other.on_q[1]
-        return divided
+        self._check_operation_compatibility(other)
+        divided_do = deepcopy(self)
+        if isinstance(other, (int, float)):
+            divided_do._all_arrays[:, 0] /= other
+        if isinstance(other, DiffractionObject):
+            divided_do._all_arrays[:, 0] /= other.all_arrays[:, 0]
+        return divided_do
 
-    def __rtruediv__(self, other):
-        divided = deepcopy(self)
-        if isinstance(other, int) or isinstance(other, float) or isinstance(other, np.ndarray):
-            divided.on_tth[1] = other / self.on_tth[1]
-            divided.on_q[1] = other / self.on_q[1]
-        elif self.on_tth[0].all() != other.on_tth[0].all():
-            raise RuntimeError(x_grid_emsg)
-        else:
-            divided.on_tth[1] = other.on_tth[1] / self.on_tth[1]
-            divided.on_q[1] = other.on_q[1] / self.on_q[1]
-        return divided
+    __rtruediv__ = __truediv__
+
+    def _check_operation_compatibility(self, other):
+        if not isinstance(other, (DiffractionObject, int, float)):
+            raise TypeError(invalid_add_type_emsg)
+        if isinstance(other, DiffractionObject):
+            if self.all_arrays.shape != other.all_arrays.shape:
+                raise ValueError(y_grid_length_mismatch_emsg)
 
     @property
     def all_arrays(self):
@@ -331,29 +312,29 @@ class DiffractionObject:
     def uuid(self, _):
         raise AttributeError(_setter_wmsg("uuid"))
 
-    def get_array_index(self, value, xtype=None):
+    def get_array_index(self, xtype, xvalue):
         """Return the index of the closest value in the array associated with
-        the specified xtype.
+        the specified xtype and the value provided.
 
         Parameters
         ----------
-        xtype str
-            the xtype used to access the array
-        value float
-            the target value to search for
+        xtype : str
+            The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES}.
+        xvalue : float
+            The value of the xtype to find the closest index for.
 
         Returns
         -------
-        list
-            The list containing the index of the closest value in the array.
+        int
+            The index of the closest value in the array associated with the specified xtype and the value provided.
         """
 
         xtype = self._input_xtype
-        array = self.on_xtype(xtype)[0]
-        if len(array) == 0:
+        xarray = self.on_xtype(xtype)[0]
+        if len(xarray) == 0:
             raise ValueError(f"The '{xtype}' array is empty. Please ensure it is initialized.")
-        i = (np.abs(array - value)).argmin()
-        return i
+        index = (np.abs(xarray - xvalue)).argmin()
+        return index
 
     def _set_arrays(self, xarray, yarray, xtype):
         self._all_arrays = np.empty(shape=(len(xarray), 4))
