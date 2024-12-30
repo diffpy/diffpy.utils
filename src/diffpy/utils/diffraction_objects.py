@@ -408,22 +408,22 @@ class DiffractionObject:
         Parameters
         ----------
         target_diff_object: DiffractionObject
-            the diffraction object you want to scale the current one onto
+            The diffraction object you want to scale the current one onto.
 
-        q, tth, d : float, optional, default is the max q-value from each object
+        q, tth, d : float, optional, default is None
             The value of the x-array where you want the curves to line up vertically.
             Specify a value on one of the allowed grids, q, tth, or d), e.g., q=10.
 
         offset : float, optional, default is None
-            an offset to add to the scaled y-values
+            The offset to add to the scaled y-values.
 
         Returns
         -------
-        the rescaled DiffractionObject as a new object
+        scaled : DiffractionObject
+            The rescaled DiffractionObject as a new object.
         """
         if offset is None:
             offset = 0
-
         scaled = self.copy()
         count = sum([q is not None, tth is not None, d is not None])
         if count > 1:
