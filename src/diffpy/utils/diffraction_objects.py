@@ -14,9 +14,10 @@ DQUANTITIES = ["d", "dspace"]
 XQUANTITIES = ANGLEQUANTITIES + DQUANTITIES + QQUANTITIES
 XUNITS = ["degrees", "radians", "rad", "deg", "inv_angs", "inv_nm", "nm-1", "A-1"]
 
-y_grid_length_mismatch_emsg = (
-    "The two objects have different y-array lengths. "
-    "Please ensure the length of the y-value during initialization is identical."
+x_values_not_equal_emsg = (
+    "The two objects have different values in x arrays (my_do.all_arrays[:, [1, 2, 3]]). "
+    "Please ensure the x values of the two objects are identical by re-instantiating "
+    "the DiffractionObject with the correct x value inputs."
 )
 
 invalid_add_type_emsg = (
@@ -255,7 +256,9 @@ class DiffractionObject:
             raise TypeError(invalid_add_type_emsg)
         if isinstance(other, DiffractionObject):
             if self.all_arrays.shape != other.all_arrays.shape:
-                raise ValueError(y_grid_length_mismatch_emsg)
+                raise ValueError(x_values_not_equal_emsg)
+            if not np.allclose(self.all_arrays[:, [1, 2, 3]], other.all_arrays[:, [1, 2, 3]]):
+                raise ValueError(x_values_not_equal_emsg)
 
     @property
     def all_arrays(self):
