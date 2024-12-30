@@ -433,7 +433,9 @@ class DiffractionObject:
             )
 
         if count == 0:
-            scaled._all_arrays[:, 0] *= max(target_diff_object.on_q()[1]) / max(self.on_q()[1])
+            q_target_max = max(target_diff_object.on_q()[1])
+            q_self_max = max(self.on_q()[1])
+            scaled._all_arrays[:, 0] = scaled._all_arrays[:, 0] * q_target_max / q_self_max + offset
             return scaled
 
         xtype = "q" if q is not None else "tth" if tth is not None else "d"

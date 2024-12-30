@@ -264,21 +264,38 @@ def test_init_invalid_xtype():
             {"tth": 60},
             {"xtype": "tth", "yarray": np.array([1, 2, 3, 4, 5, 6, 10])},
         ),
-        (  # C5: Same x-array and y-array with 2.1 offset, expect y-array to shift up by 2.1
+        (  # C5.1: Reuse test case from C1, none of q, tth, d, provided, but include an offset,
+            # expect scaled y-array in C1 to shift up by 2
             {
-                "xarray": np.array([10, 15, 25, 30, 60, 140]),
-                "yarray": np.array([2, 3, 4, 5, 6, 7]),
+                "xarray": np.array([0.1, 0.2, 0.3]),
+                "yarray": np.array([1, 2, 3]),
+                "xtype": "q",
+                "wavelength": 2 * np.pi,
+            },
+            {
+                "xarray": np.array([0.05, 0.1, 0.2, 0.3]),
+                "yarray": np.array([5, 10, 20, 30]),
+                "xtype": "q",
+                "wavelength": 2 * np.pi,
+            },
+            {"offset": 2},
+            {"xtype": "q", "yarray": np.array([12, 22, 32])},
+        ),
+        (  # C5.2: Reuse test case from C4, but include an offset, expect scaled y-array in C4 to shift up by 2
+            {
+                "xarray": np.array([10, 25, 30.1, 40.2, 61, 120, 140]),
+                "yarray": np.array([10, 20, 30, 40, 50, 60, 100]),
                 "xtype": "tth",
                 "wavelength": 2 * np.pi,
             },
             {
-                "xarray": np.array([10, 15, 25, 30, 60, 140]),
-                "yarray": np.array([2, 3, 4, 5, 6, 7]),
+                "xarray": np.array([20, 25.5, 32, 45, 50, 62, 100, 125, 140]),
+                "yarray": np.array([1.1, 2, 3, 3.5, 4, 5, 10, 12, 13]),
                 "xtype": "tth",
                 "wavelength": 2 * np.pi,
             },
-            {"tth": 60, "offset": 2.1},
-            {"xtype": "tth", "yarray": np.array([4.1, 5.1, 6.1, 7.1, 8.1, 9.1])},
+            {"tth": 60, "offset": 2},
+            {"xtype": "tth", "yarray": np.array([3, 4, 5, 6, 7, 8, 12])},
         ),
     ],
 )
