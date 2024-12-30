@@ -171,19 +171,17 @@ def test_get_package_info(monkeypatch, inputs, expected):
     "inputs",
     [
         # Test when the function has invalid inputs
-        # C1: Both mass density and packing fraction are provided, expect ValueError exception
-        (
+        (  # C1: Both mass density and packing fraction are provided, expect ValueError exception
             {
-                "sample_composition": "quartz",
+                "sample_composition": "SiO2",
                 "energy": 10,
                 "sample_mass_density": 2.65,
                 "packing_fraction": 1,
             }
         ),
-        # C2: None of mass density or packing fraction are provided, expect ValueError exception
-        (
+        (  # C2: None of mass density or packing fraction are provided, expect ValueError exception
             {
-                "sample_composition": "quartz",
+                "sample_composition": "SiO2",
                 "energy": 10,
             }
         ),
