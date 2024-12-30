@@ -218,13 +218,14 @@ def compute_mu_using_xraydb(sample_composition, energy, sample_mass_density=None
     Parameters
     ----------
     sample_composition : str
-        The chemical formula or the name of the material.
+        The chemical formula of the material.
     energy : float
         The energy of the incident x-rays in keV.
     sample_mass_density : float, optional, Default is None
-        The mass density of the packed powder/sample in gr/cm^3.
+        The mass density of the packed powder/sample in g/cm*3.
     packing_fraction : float, optional, Default is None
         The fraction of sample in the capillary (between 0 and 1).
+        Specify either sample_mass_density or packing_fraction but not both.
 
     Returns
     -------
