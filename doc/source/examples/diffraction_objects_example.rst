@@ -156,7 +156,7 @@ which will modify the intensity values (``yarrays``) without affecting other pro
     doubled_object = 2 * diff_object1           # Double the intensities
     reduced_intensity = diff_object1 / 2        # Halves the intensities
 
-You can also do binary operations between two diffraction objects, as long as their yarrays have the same length.
+You can also do binary operations between two diffraction objects, as long as they are on the same ``q/tth/d-array``.
 The operation will apply to the intensity values, while other properties
 (such as ``xarrays``, ``xtype``, and ``metadata``) will be inherited
 from the left-hand side diffraction object (``diff_object1``).
