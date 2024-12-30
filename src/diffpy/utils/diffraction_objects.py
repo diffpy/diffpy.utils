@@ -400,7 +400,7 @@ class DiffractionObject:
         """Returns a new diffraction object which is the current object but
         rescaled in y to the target.
 
-        By default, if `q`, `tth`, or `d` are not provided, scaling is based on the max q-value from each object.
+        By default, if `q`, `tth`, or `d` are not provided, scaling is based on the max intensity from each object.
         Otherwise, y-value in the target at the closest specified x-value will be used as the factor to scale to.
         The entire array is scaled by this factor so that one object places on top of the other at that point.
         If multiple values of `q`, `tth`, or `d` are provided, an error will be raised.

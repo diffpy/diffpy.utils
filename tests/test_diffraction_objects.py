@@ -191,7 +191,7 @@ def test_init_invalid_xtype():
     "org_do_args, target_do_args, scale_inputs, expected",
     [
         # Test whether the original y-array is scaled as expected
-        (  # C1: none of q, tth, d, provided, expect to scale on the maximal x-arrays
+        (  # C1: none of q, tth, d, provided, expect to scale on the maximal intensity from each object
             {
                 "xarray": np.array([0.1, 0.2, 0.3]),
                 "yarray": np.array([1, 2, 3]),
