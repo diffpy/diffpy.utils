@@ -129,14 +129,14 @@ For convenience, you can also apply an offset to the scaled new diffraction obje
 DiffractionObject convenience functions
 ---------------------------------------
 
-1) create a copy of a diffraction object using the ``copy`` method
+1. create a copy of a diffraction object using the ``copy`` method
    when you want to preserve the original data while working with a modified version.
 
 .. code-block:: python
 
     copy_of_calculated = calculated.copy()
 
-2) test the equality of two diffraction objects.  For example,
+2. test the equality of two diffraction objects.  For example,
 
 .. code-block:: python
 
@@ -145,15 +145,38 @@ DiffractionObject convenience functions
 
 will return ``True``.
 
-3) make arithmetic operations on the intensities of diffraction objects. e.g.,
+3. make arithmetic operations on the intensities of diffraction objects.
+For example, you can do scalar operations on a single diffraction object,
+which will modify the intensity values (``yarrays``) without affecting other properties:
 
 .. code-block:: python
 
-    doubled_object = 2 * diff_object1     # Double the intensities
-    sum_object = diff_object1 + diff_object2    # Sum the intensities
-    subtract_scaled = diff_object1 - 5 * diff_object2   # subtract 5 * obj2 from obj 1
+    increased_intensity = diff_object1 + 5      # Increases the intensities by 5
+    decreased_intensity = diff_object1 - 1      # Decreases the intensities by 1
+    doubled_object = 2 * diff_object1           # Double the intensities
+    reduced_intensity = diff_object1 / 2        # Halves the intensities
 
-4) get the value of the DiffractionObject at a given point in one of the xarrays
+You can also do binary operations between two diffraction objects, as long as their yarrays have the same length.
+The operation will apply to the intensity values, while other properties
+(such as ``xarrays``, ``xtype``, and ``metadata``) will be inherited
+from the left-hand side diffraction object (``diff_object1``).
+For example:
+
+.. code-block:: python
+
+    sum_object = diff_object1 + diff_object2            # Sum the intensities
+    subtract_scaled = diff_object1 - 5 * diff_object2   # Subtract 5 * obj2 from obj 1
+    multiplied_object = diff_object1 * diff_object2     # Multiply the intensities
+    divided_object = diff_object1 / diff_object2        # Divide the intensities
+
+You cannot perform operations between diffraction objects and incompatible types.
+For example, attempting to add a diffraction object and a string will raise an error:
+
+.. code-block:: python
+
+    diff_object1 + "string_value"       # This will raise an error
+
+4. get the value of the DiffractionObject at a given point in one of the xarrays
 
 .. code-block:: python
 
@@ -170,7 +193,7 @@ you can find its closest index for ``q=0.25`` by typing either of the following:
     index = do.get_array_index(0.25) # no xtype passed, defaults to do._input_xtype, or in this example, q
     index = do.get_array_index(0.25, xtype="q") # explicitly choose an xtype to specify a value
 
-5) The ``dump`` function saves the diffraction data and relevant information to an xy format file with headers
+5. The ``dump`` function saves the diffraction data and relevant information to an xy format file with headers
 (widely used chi format used, for example, by Fit2D and diffpy.  These files can be read by ``LoadData()``
 in ``diffpy.utils.parsers``).
 
