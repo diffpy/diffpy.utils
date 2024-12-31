@@ -418,12 +418,33 @@ class DiffractionObject:
             return self.on_d(), "d"
 
     def on_q(self):
+        """Return the tuple of two 1D numpy arrays containing q and y data.
+
+        Returns
+        -------
+        (xarray, yarray) : tuple of ndarray
+            The tuple containing two 1D numpy arrays with q and y data
+        """
         return [self.all_arrays[:, 1], self.all_arrays[:, 0]]
 
     def on_tth(self):
+        """Return the tuple of two 1D numpy arrays containing tth and y data.
+
+        Returns
+        -------
+        (xarray, yarray) : tuple of ndarray
+            The tuple containing two 1D numpy arrays with tth and y data
+        """
         return [self.all_arrays[:, 2], self.all_arrays[:, 0]]
 
     def on_d(self):
+        """Return the tuple of two 1D numpy arrays containing d and y data.
+
+        Returns
+        -------
+        (xarray, yarray) : tuple of ndarray
+            The tuple containing two 1D numpy arrays with d and y data
+        """
         return [self.all_arrays[:, 3], self.all_arrays[:, 0]]
 
     def scale_to(self, target_diff_object, q=None, tth=None, d=None, offset=None):
@@ -507,6 +528,16 @@ class DiffractionObject:
             raise ValueError(_xtype_wmsg(xtype))
 
     def dump(self, filepath, xtype=None):
+        """Dump the xarray and yarray of the diffraction object to a two-column
+        file, with the associated information included in the header.
+
+        Parameters
+        ----------
+        filepath : str
+            The filepath where the diffraction object will be dumped
+        xtype : str, optional, default is q
+            The type of quantity for the independent variable chosen from {*XQUANTITIES, }
+        """
         if xtype is None:
             xtype = "q"
         if xtype in QQUANTITIES:
