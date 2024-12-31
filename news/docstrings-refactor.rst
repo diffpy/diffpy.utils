@@ -1,6 +1,6 @@
 **Added:**
 
-* No news added: this branch was used to refactor the docstrings in the codebase without adding new features
+* Improved API documentation in `DiffractionObject` methods and properties using the NumPy docstring format and PEP 256
 
 **Changed:**
 

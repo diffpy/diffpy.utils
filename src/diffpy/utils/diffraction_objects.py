@@ -190,7 +190,7 @@ class DiffractionObject:
         Returns
         -------
         DiffractionObject
-            THe new DiffractionObject instance with modified yarray values. This instance is a deep copy of the
+            The new DiffractionObject instance with modified yarray values. This instance is a deep copy of the
             original with the additions applied.
 
         Raises
