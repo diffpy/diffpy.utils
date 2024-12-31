@@ -34,4 +34,3 @@ diffpy.utils.parsers.serialization module
     :members:
     :undoc-members:
     :show-inheritance:
-

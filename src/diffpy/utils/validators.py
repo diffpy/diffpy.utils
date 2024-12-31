@@ -1,6 +1,5 @@
 def is_number(string):
-    """
-    Check if the provided string can be converted to a float.
+    """Check if the provided string can be converted to a float.
 
     Parameters
     ----------
@@ -31,10 +30,10 @@ def is_number(string):
 
     >>> is_number("NaN")
     True
-    
+
     >>> is_number("Infinity")
     True
-    
+
     >>> is_number("Inf")
     True
     """
