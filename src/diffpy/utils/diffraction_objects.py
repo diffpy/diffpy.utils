@@ -422,7 +422,7 @@ class DiffractionObject:
 
         Returns
         -------
-        (xarray, yarray) : tuple of ndarray
+        (q-array, y-array) : tuple of ndarray
             The tuple containing two 1D numpy arrays with q and y data
         """
         return [self.all_arrays[:, 1], self.all_arrays[:, 0]]
@@ -432,7 +432,7 @@ class DiffractionObject:
 
         Returns
         -------
-        (xarray, yarray) : tuple of ndarray
+        (tth-array, y-array) : tuple of ndarray
             The tuple containing two 1D numpy arrays with tth and y data
         """
         return [self.all_arrays[:, 2], self.all_arrays[:, 0]]
@@ -442,7 +442,7 @@ class DiffractionObject:
 
         Returns
         -------
-        (xarray, yarray) : tuple of ndarray
+        (d-array, y-array) : tuple of ndarray
             The tuple containing two 1D numpy arrays with d and y data
         """
         return [self.all_arrays[:, 3], self.all_arrays[:, 0]]
@@ -537,6 +537,14 @@ class DiffractionObject:
             The filepath where the diffraction object will be dumped
         xtype : str, optional, default is q
             The type of quantity for the independent variable chosen from {*XQUANTITIES, }
+
+        Examples
+        --------
+        To save a diffraction object to a file named "diffraction_data.chi" with
+        the independent variable 'q':
+
+        >>> file = "diffraction_data.chi"
+        >>> do.dump(file, xtype="q")
         """
         if xtype is None:
             xtype = "q"
