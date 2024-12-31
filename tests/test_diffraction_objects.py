@@ -780,28 +780,28 @@ def test_scalar_operations(operation, starting_yarray, scalar_value, expected_ya
 
 
 @pytest.mark.parametrize(
-    "operation, " "expected_do_1_all_arrays_with_y_modified, " "expected_do_2_all_arrays_with_y_modified",
+    "operation, expected_do_1_all_arrays_with_y_modified, expected_do_2_all_arrays_with_y_modified",
     [
         # Test addition, subtraction, multiplication, and division of two DO objects
         (  # Test addition of two DO objects, expect combined yarray values
             "add",
             np.array([[2.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
-            np.array([[2.0, 6.28318531, 100.70777771, 1], [4.0, 3.14159265, 45.28748053, 2.0]]),
+            np.array([[2.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
         ),
         (  # Test subtraction of two DO objects, expect differences in yarray values
             "sub",
             np.array([[0.0, 0.51763809, 30.0, 12.13818192], [0.0, 1.0, 60.0, 6.28318531]]),
-            np.array([[0.0, 6.28318531, 100.70777771, 1], [0.0, 3.14159265, 45.28748053, 2.0]]),
+            np.array([[0.0, 0.51763809, 30.0, 12.13818192], [0.0, 1.0, 60.0, 6.28318531]]),
         ),
         (  # Test multiplication of two DO objects, expect multiplication in yarray values
             "mul",
             np.array([[1.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
-            np.array([[1.0, 6.28318531, 100.70777771, 1], [4.0, 3.14159265, 45.28748053, 2.0]]),
+            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
         ),
         (  # Test division of two DO objects, expect division in yarray values
             "div",
             np.array([[1.0, 0.51763809, 30.0, 12.13818192], [1.0, 1.0, 60.0, 6.28318531]]),
-            np.array([[1.0, 6.28318531, 100.70777771, 1], [1.0, 3.14159265, 45.28748053, 2.0]]),
+            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [1.0, 1.0, 60.0, 6.28318531]]),
         ),
     ],
 )
@@ -810,15 +810,14 @@ def test_binary_operator_on_do(
     expected_do_1_all_arrays_with_y_modified,
     expected_do_2_all_arrays_with_y_modified,
     do_minimal_tth,
-    do_minimal_d,
 ):
     do_1 = do_minimal_tth
-    do_2 = do_minimal_d
+    do_2 = do_minimal_tth
     assert np.allclose(
         do_1.all_arrays, np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]])
     )
     assert np.allclose(
-        do_2.all_arrays, np.array([[1.0, 6.28318531, 100.70777771, 1], [2.0, 3.14159265, 45.28748053, 2.0]])
+        do_2.all_arrays, np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]])
     )
 
     if operation == "add":
@@ -856,13 +855,31 @@ def test_operator_invalid_type(do_minimal_tth, invalid_add_type_error_msg):
 
 
 @pytest.mark.parametrize("operation", ["add", "sub", "mul", "div"])
-def test_operator_invalid_yarray_length(operation, do_minimal, do_minimal_tth, y_grid_size_mismatch_error_msg):
-    # Add two DO objects with different yarray lengths, expect ValueError
+def test_operator_invalid_xarray_values_not_equal(
+    operation, do_minimal_tth, do_minimal_d, x_values_not_equal_error_msg
+):
+    # Add two DO objects with different xarray values but equal in shape, expect ValueError
+    do_1 = do_minimal_tth
+    do_2 = do_minimal_d
+    with pytest.raises(ValueError, match=re.escape(x_values_not_equal_error_msg)):
+        if operation == "add":
+            do_1 + do_2
+        elif operation == "sub":
+            do_1 - do_2
+        elif operation == "mul":
+            do_1 * do_2
+        elif operation == "div":
+            do_1 / do_2
+
+
+@pytest.mark.parametrize("operation", ["add", "sub", "mul", "div"])
+def test_operator_invalid_xarray_shape_not_equal(
+    operation, do_minimal, do_minimal_tth, x_values_not_equal_error_msg
+):
+    # Add two DO objects with different xarrays shape, expect ValueError
     do_1 = do_minimal
     do_2 = do_minimal_tth
-    assert len(do_1.all_arrays[:, 0]) == 0
-    assert len(do_2.all_arrays[:, 0]) == 2
-    with pytest.raises(ValueError, match=re.escape(y_grid_size_mismatch_error_msg)):
+    with pytest.raises(ValueError, match=re.escape(x_values_not_equal_error_msg)):
         if operation == "add":
             do_1 + do_2
         elif operation == "sub":
