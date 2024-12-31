@@ -17,6 +17,8 @@ import os
 
 import numpy
 
+from diffpy.utils import validators
+
 
 def loadData(filename, minrows=10, headers=False, hdel="=", hignore=None, **kwargs):
     """Find and load data from a text file.
@@ -139,7 +141,7 @@ def loadData(filename, minrows=10, headers=False, hdel="=", hignore=None, **kwar
                     name = hpair[0]
                     value = hpair[1]
                     # check if data value should be stored as float
-                    if isfloat(hpair[1]):
+                    if validators.is_number(hpair[1]):
                         value = float(hpair[1])
                     hdata.update({name: value})
             # continue search for the start of datablock
@@ -331,16 +333,3 @@ class TextDataLoader(object):
             self.headers.append(header)
             self.datasets.append(data)
         return
-
-
-# End of class TextDataLoader
-
-
-def isfloat(s):
-    """True if s is convertible to float."""
-    try:
-        float(s)
-        return True
-    except ValueError:
-        pass
-    return False
