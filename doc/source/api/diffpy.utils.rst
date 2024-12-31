@@ -16,15 +16,46 @@ Subpackages
 
     diffpy.utils.parsers
     diffpy.utils.wx
-    diffpy.utils.scattering_objects
 
 Submodules
 ----------
+
+diffpy.utils.transforms module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: diffpy.utils.transforms
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+diffpy.utils.validators module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: diffpy.utils.validators
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 diffpy.utils.tools module
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: diffpy.utils.tools
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+diffpy.utils.user_config module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: diffpy.utils.user_config
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+diffpy.utils.diffraction_objects module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: diffpy.utils.diffraction_objects
     :members:
     :undoc-members:
     :show-inheritance:
@@ -37,19 +68,3 @@ diffpy.utils.resampler module
     :undoc-members:
     :show-inheritance:
 
-
-diffpy.utils.user_config module
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. automodule:: diffpy.utils.user_config
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-diffpy.utils.diffraction_objects module
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. automodule:: diffpy.utils.diffraction_objects
-    :members:
-    :undoc-members:
-    :show-inheritance:
