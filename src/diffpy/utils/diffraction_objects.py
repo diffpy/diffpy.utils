@@ -492,7 +492,7 @@ class DiffractionObject:
         Returns
         -------
         (xarray, yarray) : tuple of ndarray
-            A tuple containing two 1D numpy arrays with x and y data for the specified xtype.
+            The tuple containing two 1D numpy arrays with x and y data for the specified xtype.
         """
         if xtype.lower() in ANGLEQUANTITIES:
             return self.on_tth()
