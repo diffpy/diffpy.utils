@@ -93,18 +93,18 @@ class DiffractionObject:
             The dependent variable array corresponding to intensity values.
         xtype : str
             The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES}.
-        wavelength : float, optional
-            The wavelength of the incoming beam, specified in angstroms (Å). Default is none.
-        scat_quantity : str, optional
-            The type of scattering experiment (e.g., "x-ray", "neutron"). Default is an empty string "".
-        name : str, optional
-            The name or label for the scattering data. Default is an empty string "".
-        metadata : dict, optional
-            The additional metadata associated with the diffraction object. Default is {}.
+        wavelength : float, optional, default is None.
+            The wavelength of the incoming beam, specified in angstroms (Å)
+        scat_quantity : str, optional, default is an empty string "".
+            The type of scattering experiment (e.g., "x-ray", "neutron").
+        name : str, optional, default is an empty string "".
+            The name or label for the scattering data.
+        metadata : dict, optional, default is an empty dictionary {}
+            The additional metadata associated with the diffraction object.
 
         Examples
         --------
-        Create a DiffractionObject for X-ray scattering data
+        Create a DiffractionObject for X-ray scattering data:
         >>> import numpy as np
         >>> from diffpy.utils.diffraction_objects import DiffractionObject
         ...
@@ -181,30 +181,32 @@ class DiffractionObject:
 
         Parameters
         ----------
-        other : DiffractionObject or int or float
-            The object to add to the current DiffractionObject. If `other` is a scalar value,
-            it will be added to all yarray. The length of the yarray must match if `other` is
-            an instance of DiffractionObject.
+        other : DiffractionObject, int, or float
+            The item to be added. If `other` is a scalar value, this value will be added to each element of the
+            yarray of this DiffractionObject instance. If `other` is another DiffractionObject, the yarrays of the
+            two DiffractionObjects will be combined element-wise. The result is a new DiffractionObject instance,
+            representing the addition and using the xarray from the left-hand side DiffractionObject.
 
         Returns
         -------
         DiffractionObject
-            The new and deep-copied DiffractionObject instance after adding values to the yarray.
+            The new DiffractionObject instance with modified yarray values. This instance is a deep copy of the
+            original with the additions applied.
 
         Raises
         ------
         ValueError
-            Raised when the length of the yarray of the two DiffractionObject instances do not match.
+            Raised when the xarrays of two DiffractionObject instances are not equal.
         TypeError
-            Raised when the type of `other` is not an instance of DiffractionObject, int, or float.
+            Raised when `other` is not an instance of DiffractionObject, int, or float.
 
         Examples
         --------
-        Add a scalar value to the yarray of the DiffractionObject instance:
+        Add a scalar value to the yarray of a DiffractionObject instance:
         >>> new_do = my_do + 10.1
         >>> new_do = 10.1 + my_do
 
-        Add the yarray of two DiffractionObject instances:
+        Combine the yarrays of two DiffractionObject instances:
         >>> new_do = my_do_1 + my_do_2
         """
 
@@ -219,6 +221,21 @@ class DiffractionObject:
     __radd__ = __add__
 
     def __sub__(self, other):
+        """Subtract scalar value or another DiffractionObject to the yarray of
+        the DiffractionObject.
+
+        This method behaves similarly to the `__add__` method, but performs subtraction instead of addition.
+        For details on parameters, returns, and exceptions, refer to the documentation for `__add__`.
+
+        Examples
+        --------
+        Subtract a scalar value from the yarray of a DiffractionObject instance:
+        >>> new_do = my_do - 10.1
+
+        Subtract the yarrays of two DiffractionObject instances:
+        >>> new_do = my_do_1 - my_do_2
+        """
+
         self._check_operation_compatibility(other)
         subtracted_do = deepcopy(self)
         if isinstance(other, (int, float)):
@@ -230,6 +247,21 @@ class DiffractionObject:
     __rsub__ = __sub__
 
     def __mul__(self, other):
+        """Multiply a scalar value or another DiffractionObject with the yarray
+        of this DiffractionObject.
+
+        This method behaves similarly to the `__add__` method, but performs multiplication instead of addition.
+        For details on parameters, returns, and exceptions, refer to the documentation for `__add__`.
+
+        Examples
+        --------
+        Multiply a scalar value with the yarray of a DiffractionObject instance:
+        >>> new_do = my_do * 3.5
+
+        Multiply the yarrays of two DiffractionObject instances:
+        >>> new_do = my_do_1 * my_do_2
+        """
+
         self._check_operation_compatibility(other)
         multiplied_do = deepcopy(self)
         if isinstance(other, (int, float)):
@@ -241,6 +273,20 @@ class DiffractionObject:
     __rmul__ = __mul__
 
     def __truediv__(self, other):
+        """Divide the yarray of this DiffractionObject by a scalar value or
+        another DiffractionObject.
+
+        This method behaves similarly to the `__add__` method, but performs division instead of addition.
+        For details on parameters, returns, and exceptions, refer to the documentation for `__add__`.
+
+        Examples
+        --------
+        Divide the yarray of a DiffractionObject instance by a scalar value:
+        >>> new_do = my_do / 2.0
+
+        Divide the yarrays of two DiffractionObject instances:
+        >>> new_do = my_do_1 / my_do_2
+        """
         self._check_operation_compatibility(other)
         divided_do = deepcopy(self)
         if isinstance(other, (int, float)):
@@ -291,7 +337,7 @@ class DiffractionObject:
 
         Returns
         -------
-        str
+        input_xtype : str
             The type of `xarray`, which must be one of {*XQUANTITIES}.
         """
         return self._input_xtype
@@ -306,7 +352,7 @@ class DiffractionObject:
 
         Returns
         -------
-        uuid
+        uuid : UUID
             The unique identifier of the DiffractionObject instance.
         """
         return self._uuid
@@ -328,7 +374,7 @@ class DiffractionObject:
 
         Returns
         -------
-        int
+        index : int
             The index of the closest value in the array associated with the specified xtype and the value provided.
         """
 
@@ -381,7 +427,7 @@ class DiffractionObject:
         return [self.all_arrays[:, 3], self.all_arrays[:, 0]]
 
     def scale_to(self, target_diff_object, q=None, tth=None, d=None, offset=None):
-        """Returns a new diffraction object which is the current object but
+        """Return a new diffraction object which is the current object but
         rescaled in y to the target.
 
         By default, if `q`, `tth`, or `d` are not provided, scaling is based on the max intensity from each object.
@@ -403,12 +449,12 @@ class DiffractionObject:
 
         Returns
         -------
-        scaled : DiffractionObject
+        scaled_do : DiffractionObject
             The rescaled DiffractionObject as a new object.
         """
         if offset is None:
             offset = 0
-        scaled = self.copy()
+        scaled_do = self.copy()
         count = sum([q is not None, tth is not None, d is not None])
         if count > 1:
             raise ValueError(
@@ -419,8 +465,8 @@ class DiffractionObject:
         if count == 0:
             q_target_max = max(target_diff_object.on_q()[1])
             q_self_max = max(self.on_q()[1])
-            scaled._all_arrays[:, 0] = scaled._all_arrays[:, 0] * q_target_max / q_self_max + offset
-            return scaled
+            scaled_do._all_arrays[:, 0] = scaled_do._all_arrays[:, 0] * q_target_max / q_self_max + offset
+            return scaled_do
 
         xtype = "q" if q is not None else "tth" if tth is not None else "d"
         data = self.on_xtype(xtype)
@@ -430,21 +476,26 @@ class DiffractionObject:
 
         xindex_data = (np.abs(data[0] - xvalue)).argmin()
         xindex_target = (np.abs(target[0] - xvalue)).argmin()
-        scaled._all_arrays[:, 0] = data[1] * target[1][xindex_target] / data[1][xindex_data] + offset
-        return scaled
+        scaled_do._all_arrays[:, 0] = data[1] * target[1][xindex_target] / data[1][xindex_data] + offset
+        return scaled_do
 
     def on_xtype(self, xtype):
-        """Return a list of two 1D np array with x and y data, raise an error
-        if the specified xtype is invalid.
+        """Return a tuple of two 1D numpy arrays containing x and y data.
 
         Parameters
         ----------
-        xtype str
-            the type of quantity for the independent variable from {*XQUANTITIES, }
+        xtype : str
+            The type of quantity for the independent variable chosen from {*XQUANTITIES, }
+
+        Raises
+        ------
+        ValueError
+            Raised when the specified xtype is not among {*XQUANTITIES, }
 
         Returns
         -------
-        a list of two 1D np array with x and y data
+        (xarray, yarray) : tuple of ndarray
+            The tuple containing two 1D numpy arrays with x and y data for the specified xtype.
         """
         if xtype.lower() in ANGLEQUANTITIES:
             return self.on_tth()
@@ -485,6 +536,6 @@ class DiffractionObject:
         Returns
         -------
         DiffractionObject
-            A new instance of DiffractionObject, which is a deep copy of the current instance.
+            The new instance of DiffractionObject, which is a deep copy of the current instance.
         """
         return deepcopy(self)

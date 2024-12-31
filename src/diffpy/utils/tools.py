@@ -11,20 +11,20 @@ from xraydb import material_mu
 from diffpy.utils.parsers.loaddata import loadData
 
 
-def _stringify(obj):
+def _stringify(string_value):
     """Convert None to an empty string.
 
     Parameters
     ----------
-    obj: str
-        The object to convert. If None, return an empty string.
+    string_value : str or None
+        The value to be converted. If None, an empty string is returned.
 
     Returns
     -------
-    str or None:
-        The converted string if obj is not None, otherwise an empty string.
+    str
+        The original string if string_value is not None, otherwise an empty string.
     """
-    return obj if obj is not None else ""
+    return string_value if string_value is not None else ""
 
 
 def _load_config(file_path):
@@ -32,12 +32,12 @@ def _load_config(file_path):
 
     Parameters
     ----------
-    file_path: Path
+    file_path : Path
         The path to the configuration file.
 
     Returns
     -------
-    dict:
+    config : dict
         The configuration dictionary or {} if the config file does not exist.
     """
     config_file = Path(file_path).resolve()
@@ -50,7 +50,7 @@ def _load_config(file_path):
 
 
 def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
-    """Get name, email and orcid of the owner/user from various sources and
+    """Get name, email, and orcid of the owner/user from various sources and
     return it as a metadata dictionary.
 
     The function looks for the information in json format configuration files with the name 'diffpyconfig.json'.
@@ -71,16 +71,16 @@ def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
 
     Parameters
     ----------
-    owner_name: string, optional, default is the value stored in the global or local config file.
+    owner_name : str, optional, default is the value stored in the global or local config file.
         The name of the user who will show as owner in the metadata that is stored with the data
-    owner_email: string, optional, default is the value stored in the global or local config file.
+    owner_email : str, optional, default is the value stored in the global or local config file.
         The email of the user/owner
-    owner_orcid:  string, optional, default is the value stored in the global or local config file.
+    owner_orcid : str, optional, default is the value stored in the global or local config file.
         The ORCID id of the user/owner
 
     Returns
     -------
-    dict:
+    user_info : dict
         The dictionary containing username, email and orcid of the user/owner, and any other information
         stored in the global or local config files.
     """
@@ -97,7 +97,7 @@ def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
 
 
 def check_and_build_global_config(skip_config_creation=False):
-    """Checks for a global diffpu config file in user's home directory and
+    """Check for a global diffpu config file in user's home directory and
     creates one if it is missing.
 
     The file it looks for is called diffpyconfig.json.  This can contain anything in json format, but
@@ -116,12 +116,13 @@ def check_and_build_global_config(skip_config_creation=False):
 
     Parameters
     ----------
-    skip_config_creation: bool, optional, Default is False
-      The bool that will override the creation workflow even if no config file exists.
+    skip_config_creation : bool, optional, default is False.
+        The boolean that will override the creation workflow even if no config file exists.
 
     Returns
     -------
-    bool: True if the file exists and False otherwise.
+    config_exists : bool
+        The boolean indicating whether the config file exists.
     """
     config_exists = False
     config_path = Path().home() / "diffpyconfig.json"
@@ -168,7 +169,7 @@ def check_and_build_global_config(skip_config_creation=False):
 
 
 def get_package_info(package_names, metadata=None):
-    """Fetches package version and updates it into (given) metadata.
+    """Fetch package version and updates it into (given) metadata.
 
     Package info stored in metadata as {'package_info': {'package_name': 'version_number'}}.
 
@@ -180,7 +181,7 @@ def get_package_info(package_names, metadata=None):
 
     Returns
     -------
-    dict:
+    metadata : dict
         The updated metadata dict with package info inserted.
     """
     if metadata is None:
