@@ -28,7 +28,7 @@ def _validate_inputs(q, wavelength):
         raise ValueError(invalid_q_or_d_or_wavelength_emsg)
 
 
-def q_to_tth(q, wavelength) -> np.ndarray:
+def q_to_tth(q, wavelength):
     r"""Helper function to convert q to two-theta.
 
     If wavelength is missing, returns x-values that are integer indexes
