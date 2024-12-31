@@ -28,6 +28,14 @@ diffpy.utils.transforms module
     :undoc-members:
     :show-inheritance:
 
+diffpy.utils.validators module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: diffpy.utils.validators
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 diffpy.utils.tools module
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 

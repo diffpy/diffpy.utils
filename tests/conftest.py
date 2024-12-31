@@ -81,8 +81,9 @@ def invalid_add_type_error_msg():
 
 
 @pytest.fixture
-def y_grid_size_mismatch_error_msg():
+def x_values_not_equal_error_msg():
     return (
-        "The two objects have different y-array lengths. "
-        "Please ensure the length of the y-value during initialization is identical."
+        "The two objects have different values in x arrays (my_do.all_arrays[:, [1, 2, 3]]). "
+        "Please ensure the x values of the two objects are identical by re-instantiating "
+        "the DiffractionObject with the correct x value inputs."
     )
