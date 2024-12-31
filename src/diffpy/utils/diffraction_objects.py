@@ -540,11 +540,21 @@ class DiffractionObject:
 
         Examples
         --------
-        To save a diffraction object to a file named "diffraction_data.chi" with
-        the independent variable 'q':
+        To save a diffraction object to a file named "diffraction_data.chi" in the current directory
+        with the independent variable 'q':
 
         >>> file = "diffraction_data.chi"
         >>> do.dump(file, xtype="q")
+
+        To save the diffraction data to a file in a subfolder `output`:
+
+        >>> file = "./output/diffraction_data.chi"
+        >>> do.dump(file, xtype="q")
+
+        To save the diffraction data with a different independent variable, such as 'tth':
+
+        >>> file = "diffraction_data_tth.chi"
+        >>> do.dump(file, xtype="tth")
         """
         if xtype is None:
             xtype = "q"
