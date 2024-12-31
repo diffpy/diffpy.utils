@@ -28,7 +28,7 @@ def _validate_inputs(q, wavelength):
         raise ValueError(invalid_q_or_d_or_wavelength_emsg)
 
 
-def q_to_tth(q, wavelength):
+def q_to_tth(q, wavelength) -> np.ndarray:
     r"""Helper function to convert q to two-theta.
 
     If wavelength is missing, returns x-values that are integer indexes
@@ -47,8 +47,8 @@ def q_to_tth(q, wavelength):
 
     Parameters
     ----------
-    q : 1D array
-        The array of :math:`q` values numpy.array([qs]).
+    q : ndarray
+        The 1D array of :math:`q` values numpy.array([qs]).
         The units of q must be reciprocal of the units of wavelength.
 
     wavelength : float
@@ -56,8 +56,8 @@ def q_to_tth(q, wavelength):
 
     Returns
     -------
-    tth : 1D array
-        The array of :math:`2\theta` values in degrees numpy.array([tths]).
+    tth : ndarray
+        The 1D array of :math:`2\theta` values in degrees numpy.array([tths]).
     """
     _validate_inputs(q, wavelength)
     q.astype(float)
@@ -89,17 +89,17 @@ def tth_to_q(tth, wavelength):
 
     Parameters
     ----------
-    tth : 1D array
-        The array of :math:`2\theta` values np.array([tths]).
+    tth : ndarray
+        The 1D array of :math:`2\theta` values np.array([tths]).
         The units of tth are expected in degrees.
 
     wavelength : float
-        Wavelength of the incoming x-rays/neutrons/electrons
+        The wavelength of the incoming x-rays/neutrons/electrons.
 
     Returns
     -------
-    q : 1D array
-        The array of :math:`q` values np.array([qs]).
+    q : ndarray
+        The 1D array of :math:`q` values np.array([qs]).
         The units for the q-values are the inverse of the units of the provided wavelength.
     """
     tth.astype(float)
@@ -122,14 +122,14 @@ def q_to_d(q):
 
     Parameters
     ----------
-    q : 1D array
-        The array of :math:`q` values np.array([qs]).
+    q : ndarray
+        The 1D array of :math:`q` values np.array([qs]).
         The units of q must be reciprocal of the units of wavelength.
 
     Returns
     -------
-    d : 1D array
-        The array of :math:`d` values np.array([ds]).
+    d : ndarray
+        The 1D array of :math:`d` values np.array([ds]).
     """
     if 0 in q:
         print(inf_output_imsg)
@@ -145,17 +145,17 @@ def tth_to_d(tth, wavelength):
 
     Parameters
     ----------
-    tth : 1D array
-        The array of :math:`2\theta` values np.array([tths]).
+    tth : nsarray
+        The 1D array of :math:`2\theta` values np.array([tths]).
         The units of tth are expected in degrees.
 
     wavelength : float
-        Wavelength of the incoming x-rays/neutrons/electrons
+        The wavelength of the incoming x-rays/neutrons/electrons.
 
     Returns
     -------
-    d : 1D array
-        The array of :math:`d` values np.array([ds]).
+    d : nsarray
+        The 1D array of :math:`d` values np.array([ds]).
     """
     q = tth_to_q(tth, wavelength)
     d = copy(tth)
@@ -174,13 +174,13 @@ def d_to_q(d):
 
     Parameters
     ----------
-    d : 1D array
-        The array of :math:`d` values np.array([ds]).
+    d : nsarray
+        The 1D array of :math:`d` values np.array([ds]).
 
     Returns
     -------
-    q : 1D array
-        The array of :math:`q` values np.array([qs]).
+    q : nsarray
+        The 1D array of :math:`q` values np.array([qs]).
         The units of q must be reciprocal of the units of wavelength.
     """
     if 0 in d:
@@ -197,16 +197,16 @@ def d_to_tth(d, wavelength):
 
     Parameters
     ----------
-    d : 1D array
-        The array of :math:`d` values np.array([ds]).
+    d : nsarray
+        The 1D array of :math:`d` values np.array([ds]).
 
     wavelength : float
-        Wavelength of the incoming x-rays/neutrons/electrons
+        The wavelength of the incoming x-rays/neutrons/electrons.
 
     Returns
     -------
-    tth : 1D array
-        The array of :math:`2\theta` values np.array([tths]).
+    tth : nsarray
+        The 1D array of :math:`2\theta` values np.array([tths]).
         The units of tth are expected in degrees.
     """
     q = d_to_q(d)
