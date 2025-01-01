@@ -17,7 +17,9 @@ import sys
 import time
 from importlib.metadata import version
 from pathlib import Path
+
 import requests
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use Path().resolve() to make it absolute, like shown here.
@@ -68,8 +70,10 @@ copyright = "%Y, The Trustees of Columbia University in the City of New York"
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 
+
 def _get_latest_release_from_github(org: str, repo_name: str) -> str:
-    """Get the highest version release (including prereleases) from GitHub repository."""
+    """Get the highest version release (including prereleases) from GitHub
+    repository."""
     url = f"https://api.github.com/repos/{org}/{repo_name}/releases"
     response = requests.get(url)
     releases = response.json()
@@ -78,6 +82,7 @@ def _get_latest_release_from_github(org: str, repo_name: str) -> str:
         return "No valid releases found"
     latest_version_release = valid_releases[0]["tag_name"]
     return latest_version_release
+
 
 # Get the latest release version from GitHub repository
 org = "diffpy"
