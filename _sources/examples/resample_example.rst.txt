@@ -13,14 +13,17 @@ given enough datapoints.
 1) To start, unzip :download:`parser_data<./example_data/parser_data.zip>`. Then, load the data table from ``Nickel.gr``
    and ``NiTarget.gr``. These datasets are based on data from `Atomic Pair Distribution Function Analysis: A Primer
    <https://global.oup.com/academic/product/atomic-pair-distribution-function-analysis-9780198885801?cc=us&lang=en&>`_.
-   ::
 
-     from diffpy.utils.parsers.loaddata import loadData
-     nickel_datatable = loadData('<PATH to Nickel.gr>')
-     nitarget_datatable = loadData('<PATH to NiTarget.gr>')
+.. code-block:: python
 
-   Each data table has two columns: first is the grid and second is the function value.
-   To extract the columns, we can utilize the serialize function ... ::
+       from diffpy.utils.parsers.loaddata import loadData
+       nickel_datatable = loadData('<PATH to Nickel.gr>')
+       nitarget_datatable = loadData('<PATH to NiTarget.gr>')
+
+Each data table has two columns: first is the grid and second is the function value.
+To extract the columns, we can utilize the serialize function ...
+
+.. code-block:: python
 
      from diffpy.utils.parsers.serialization import serialize_data
      nickel_data = serialize_data('Nickel.gr', {}, nickel_datatable, dt_colnames=['grid', 'func'])
@@ -30,42 +33,64 @@ given enough datapoints.
      target_grid = nickel_data['Nickel.gr']['grid']
      target_func = nickel_data['Nickel.gr']['func']
 
-   ... or you can use any other column extracting method you prefer.
+To extract the columns, we can utilize the serialize function ...
 
-2) If we plot the two on top of each other ::
+.. code-block:: python
+
+     from diffpy.utils.parsers.serialization import serialize_data
+     nickel_data = serialize_data('Nickel.gr', {}, nickel_datatable, dt_colnames=['grid', 'func'])
+     nickel_grid = nickel_data['Nickel.gr']['grid']
+     nickel_func = nickel_data['Nickel.gr']['func']
+     target_data = serialize_data('NiTarget.gr', {}, nitarget_datatable, dt_colnames=['grid', 'function'])
+     target_grid = nickel_data['Nickel.gr']['grid']
+     target_func = nickel_data['Nickel.gr']['func']
+
+... or you can use any other column extracting method you prefer.
+
+2) If we plot the two on top of each other
+
+.. code-block:: python
 
      import matplotlib.pyplot as plt
      plt.plot(target_grid, target_func, linewidth=3)
      plt.plot(nickel_grid, nickel_func, linewidth=1)
 
-   they look pretty similar, but to truly see the difference, we should plot the difference between the two.
-   We may want to run something like ... ::
+they look pretty similar, but to truly see the difference, we should plot the difference between the two.
+We may want to run something like ...
+
+.. code-block:: python
 
      import numpy as np
      difference = np.subtract(target_func, nickel_func)
 
-   ... but this will only produce the right result if the ``target_func`` and ``nickel_func`` are on the same grid.
-   Checking the lengths of ``target_grid`` and ``nickel_grid`` shows that these grids are clearly distinct.
+... but this will only produce the right result if the ``target_func`` and ``nickel_func`` are on the same grid.
+Checking the lengths of ``target_grid`` and ``nickel_grid`` shows that these grids are clearly distinct.
 
 3) However, we can resample the two functions to be on the same grid. Since both functions have grids spanning
-   ``[0, 60]``, let us define a new grid ... ::
+   ``[0, 60]``, let us define a new grid ...
+
+.. code-block:: python
 
      grid = np.linspace(0, 60, 6001)
 
-   ... and use the diffpy.utils ``wsinterp`` function to resample on this grid.::
+... and use the diffpy.utils ``wsinterp`` function to resample on this grid.
+
+.. code-block:: python
 
      from diffpy.utils.resampler import wsinterp
      nickel_resample = wsinterp(grid, nickel_grid, nickel_func)
      target_resample = wsinterp(grid, target_grid, target_func)
 
-   We can now plot the difference to see that these two functions are quite similar.::
+We can now plot the difference to see that these two functions are quite similar.
+
+.. code-block:: python
 
      plt.plot(grid, target_resample)
      plt.plot(grid, nickel_resample)
      plt.plot(grid, target_resample - nickel_resample)
 
-   This is the desired result as the data in ``Nickel.gr`` is every tenth data point in ``NiTarget.gr``.
-   This also shows us that ``wsinterp`` can help us reconstruct a function from incomplete data.
+This is the desired result as the data in ``Nickel.gr`` is every tenth data point in ``NiTarget.gr``.
+This also shows us that ``wsinterp`` can help us reconstruct a function from incomplete data.
 
 4) In order for our function reconstruction to be perfect up to a truncation error, we require that (a) the function is
    a Fourier transform of a band-limited dataset and (b) the original grid has enough equally-spaced datapoints based on
@@ -79,7 +104,9 @@ given enough datapoints.
    Thus, our original grid requires :math:`25.0 * 60.0 / \pi < 478`. Since our grid has :math:`601` datapoints, our
    reconstruction was perfect as shown from the comparison between ``Nickel.gr`` and ``NiTarget.gr``.
 
-   This computation is implemented in the function ``nsinterp``.::
+   This computation is implemented in the function ``nsinterp``.
+
+.. code-block:: python
 
      from diffpy.utils.resampler import nsinterp
      qmin = 0

@@ -7,8 +7,8 @@ Examples
 Landing page for diffpy.utils examples.
 
 .. toctree::
-    parsers_example
-    resample_example
-    tools_example
-    transforms_example
     diffraction_objects_example
+    transforms_example
+    resample_example
+    parsers_example
+    tools_example

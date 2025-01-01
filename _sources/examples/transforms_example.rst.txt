@@ -16,6 +16,7 @@ This example will demonstrate how to use the functions in the
 
     # Example: convert q to 2theta
     from diffpy.utils.transforms import q_to_tth
+
     wavelength = 0.71
     q = np.array([0, 0.2, 0.4, 0.6, 0.8, 1])
     tth = q_to_tth(q, wavelength)
@@ -32,6 +33,7 @@ This example will demonstrate how to use the functions in the
 
     # Example: convert 2theta to q
     from diffpy.utils.transforms import tth_to_q
+
     wavelength = 0.71
     tth = np.array([0, 30, 60, 90, 120, 180])
     q = tth_to_q(tth, wavelength)
@@ -49,11 +51,13 @@ This example will demonstrate how to use the functions in the
 
     # Example: convert d to q
     from diffpy.utils.transforms import d_to_q
+
     d = np.array([1.0, 0.8, 0.6, 0.4, 0.2])
     q = d_to_q(d)
 
     # Example: convert d to 2theta
     from diffpy.utils.transforms import d_to_tth
+
     wavelength = 0.71
     d = np.array([1.0, 0.8, 0.6, 0.4, 0.2])
     tth = d_to_tth(d, wavelength)

@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>diffpy.utils documentation &mdash; diffpy.utils 3.6.0rc3 documentation</title>
+  <title>diffpy.utils documentation &mdash; diffpy.utils 3.6.0rc4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=1db8a07e"></script>
+      <script src="_static/documentation_options.js?v=f59be1ce"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -76,19 +76,24 @@
              
   <section id="title">
 <h1>diffpy.utils documentation<a class="headerlink" href="#title" title="Link to this heading"></a></h1>
-<p>diffpy.utils - Shared utilities for diffpy packages.</p>
+<p>diffpy.utils - General utilities for analyzing diffraction data</p>
 <div class="line-block">
-<div class="line">Software version 3.6.0rc3.</div>
+<div class="line">Software version 3.6.0rc4.</div>
 <div class="line">Last updated January 01, 2025.</div>
 </div>
-<p>The diffpy.utils package provides general functions for extracting data from variously formatted text files as well as
-some PDF-specific functionality. These include wx GUI utilities used by the PDFgui program and an interpolation function
-based on the Whittaker-Shannon formula for resampling a bandlimited PDF or other profile function.</p>
+<p>The diffpy.utils package provides a number of functions and classes designed to help
+researchers analyze their diffraction data.  It also includes some functionality for
+carrying out PDF analysis.  Examples are parsers for reading common format diffraction
+data files, <code class="docutils literal notranslate"><span class="pre">DiffractionObjects</span></code> that allow you to do algebra on diffraction patterns,
+tools for better capture and propagation of metadata,
+diffraction-friendly interpolation routines, as well as some other tools used across
+diffpy libraries.</p>
 <p>Click <a class="reference internal" href="utilities/utilities.html#utilities"><span class="std std-ref">here</span></a> for a full list of utilities offered by diffpy.utils.</p>
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
 <p>Illustrations of when and how one would use various diffpy.utils functions.</p>
 <ul class="simple">
+<li><p><a class="reference internal" href="examples/diffraction_objects_example.html#diffraction-objects-example"><span class="std std-ref">Manipulate and do algebra on diffraction data</span></a></p></li>
 <li><p><a class="reference internal" href="examples/parsers_example.html#parsers-example"><span class="std std-ref">File Data Extraction</span></a></p></li>
 <li><p><a class="reference internal" href="examples/resample_example.html#resample-example"><span class="std std-ref">Resampling and Data Reconstruction</span></a></p></li>
 <li><p><a class="reference internal" href="examples/tools_example.html#tools-example"><span class="std std-ref">Load and Manage User and Package Information</span></a></p></li>
@@ -98,8 +103,9 @@ based on the Whittaker-Shannon formula for resampling a bandlimited PDF or other
 <h2>Authors<a class="headerlink" href="#authors" title="Link to this heading"></a></h2>
 <p>diffpy.utils is developed by members of the Billinge Group at
 Columbia University and at Brookhaven National Laboratory including
-Pavol Juhás, Christopher L. Farrow, the Billinge Group
-and its community contributors.</p>
+Pavol Juhás, Christopher L. Farrow, Simon J. L. Billinge, Andrew Yang,
+with contributions from many Billinge Group members and
+members of the diffpy community.</p>
 <p>For a detailed list of contributors see
 <a class="reference external" href="https://github.com/diffpy/diffpy.utils/graphs/contributors">https://github.com/diffpy/diffpy.utils/graphs/contributors</a>.</p>
 </section>
@@ -107,6 +113,15 @@ and its community contributors.</p>
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
 <p>See the <a class="reference external" href="https://github.com/diffpy/diffpy.utils#installation">README</a>
 file included with the distribution.</p>
+</section>
+<section id="citation">
+<h2>Citation<a class="headerlink" href="#citation" title="Link to this heading"></a></h2>
+<p>If you use this program for a scientific research that leads to publication, we ask that you acknowledge use of the program by citing the following paper in your publication:</p>
+<blockquote>
+<div><ol class="upperalpha simple" start="16">
+<li><p>Juhás, C. L. Farrow, X. Yang, K. R. Knox and S. J. L. Billinge, Complex modeling: a strategy and software program for combining multiple information sources to solve ill posed structure and nanostructure inverse problems, Acta Crystallogr. A 71, 562-568 (2015).</p></li>
+</ol>
+</div></blockquote>
 </section>
 <section id="table-of-contents">
 <h2>Table of contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
@@ -116,11 +131,11 @@ file included with the distribution.</p>
 <li class="toctree-l1"><a class="reference internal" href="release.html">Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utilities/utilities.html">Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples.html">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/parsers_example.html">Parsers Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/resample_example.html">Resampling Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/tools_example.html">Tools Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/transforms_example.html">Transforms Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/diffraction_objects_example.html">Diffraction Objects Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/transforms_example.html">Transforms Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/resample_example.html">Resampling Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/parsers_example.html">Parsers Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/tools_example.html">Tools Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/diffpy.utils.html">Package API</a><ul>
