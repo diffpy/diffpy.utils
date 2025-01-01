@@ -11,7 +11,7 @@ authors = [
 maintainers = [
   { name="Simon J.L. Billinge group", email="simon.billinge@gmail.com" },
 ]
-description = "Shared utilities for diffpy packages"
+description = "General utilities for analyzing diffraction data"
 keywords = ["text data parsers", "wx grid", "diffraction objects"]
 readme = "README.rst"
 requires-python = ">=3.11, <3.14"
