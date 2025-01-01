@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Release Notes &mdash; diffpy.utils 3.6.0 documentation</title>
+  <title>Release Notes &mdash; diffpy.utils 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=eae21ecb"></script>
+      <script src="_static/documentation_options.js?v=f539c95a"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -92,47 +92,44 @@
 <li><p>Better wording on the capture user info functionality</p></li>
 <li><p>Spelling check via Codespell in pre-commit</p></li>
 <li><p>prettier pre-commit hook for automatic linting of .yml, .json, and .md files</p></li>
-<li><p>Function that can be used to compute muD (absorption coefficient) from a file containing an absorption profile</p></li>
+<li><p>Function that can be used to compute muD (absorption coefficient) from a file containing an absorption profile from a line-scan through the sample</p></li>
+<li><p>sbillinge username as the authorized admin for GitHub release workflow in <cite>build-wheel-release-upload.yml</cite></p></li>
+<li><p>function to compute x-ray attenuation coefficient (mu) using XrayDB</p></li>
+<li><p>class docstring for <cite>DiffractionObject</cite></p></li>
+<li><p>docforamtter in pre-commit for automatic formatting of docstrings to PEP 257</p></li>
+<li><p>Function nsinterp for automatic interpolation onto the Nyquist-Shannon grid.</p></li>
+<li><p>functionality to return the 2D array based on the specified xtype</p></li>
+<li><p>functionality in dump to allow writing data on dspace</p></li>
+<li><p>addition, multiplication, subtraction, and division operators between two DiffractionObject instances or a scalar value with another DiffractionObject for modifying yarray (intensity) values.</p></li>
+<li><p>functionality to rescale diffraction objects, placing one on top of another at a specified point</p></li>
+<li><p>new feature in <cite>scale_to()</cite>: default scaling is based on the max q-value in each diffraction object.</p></li>
+<li><p>functions to convert between d and tth</p></li>
+<li><p>unit test for expected warning when no wavelength is provided for DiffractionObject init</p></li>
+<li><p>copy() method for DiffractionObject instance</p></li>
+<li><p>docstrings for <cite>on_q</cite>, <cite>on_tth</cite>, <cite>on_d</cite>, and <cite>dump</cite> in <cite>diffraction_objects.py</cite>.</p></li>
+<li><p>prevent direct modification of <cite>all_arrays</cite> using <cite>&#64;property</cite></p></li>
+<li><p>Information on how to update the default user information</p></li>
+<li><p>Example docs for basic DiffractionObject usage</p></li>
+<li><p>deploy github pages documentation on pre-release</p></li>
+<li><p>Gettable <cite>id</cite> property to <cite>DiffractionObject</cite></p></li>
 </ul>
-<p>from a line-scan through the sample
-* sbillinge username as the authorized admin for GitHub release workflow in <cite>build-wheel-release-upload.yml</cite>
-* function to compute x-ray attenuation coefficient (mu) using XrayDB
-* class docstring for <cite>DiffractionObject</cite>
-* docforamtter in pre-commit for automatic formatting of docstrings to PEP 257
-* Function nsinterp for automatic interpolation onto the Nyquist-Shannon grid.
-* functionality to return the 2D array based on the specified xtype
-* functionality in dump to allow writing data on dspace
-* addition, multiplication, subtraction, and division operators between two DiffractionObject instances or a scalar value with another DiffractionObject for modifying yarray (intensity) values.
-* functionality to rescale diffraction objects, placing one on top of another at a specified point
-* new feature in <cite>scale_to()</cite>: default scaling is based on the max q-value in each diffraction object.
-* functions to convert between d and tth
-* unit test for expected warning when no wavelength is provided for DiffractionObject init
-* copy() method for DiffractionObject instance
-* docstrings for <cite>on_q</cite>, <cite>on_tth</cite>, <cite>on_d</cite>, and <cite>dump</cite> in <cite>diffraction_objects.py</cite>.
-* prevent direct modification of <cite>all_arrays</cite> using <cite>&#64;property</cite>
-* Information on how to update the default user information
-* Example docs for basic DiffractionObject usage
-* deploy github pages documentation on pre-release
-* Gettable <cite>id</cite> property to <cite>DiffractionObject</cite></p>
 <p><strong>Changed:</strong></p>
 <ul class="simple">
-<li><p>Refactor get_user_info to separate the tasks of getting the info from config files</p></li>
+<li><p>Refactor get_user_info to separate the tasks of getting the info from config files and creating config files when they are missing.</p></li>
+<li><p>test comment format with compact style without extra line for each comment</p></li>
+<li><p>Rename <cite>input_scattering_quantity</cite> to <cite>input_data</cite> in <cite>DiffractionObject</cite> init</p></li>
+<li><p>refactor <cite>q_to_tth()</cite> and <cite>tth_to_q()</cite> into <cite>diffpy.utils.transforms</cite> to make them available outside DiffractionObject</p></li>
+<li><p>Moved resampler out of parsers, new path is diffpy.utils.resampler</p></li>
+<li><p>Rename the <cite>isfloat</cite> function to <cite>is_number</cite>, and move it to the <cite>diffpy/utils/utilsvalidators.py</cite> directory</p></li>
+<li><p>arrays and attributes now can be inserted when a DiffractionObject is instantiated</p></li>
+<li><p>data are now stored as a (len(x),4) numpy array with intensity in column 0, the q, then tth, then d</p></li>
+<li><p><cite>DiffractionObject.on_q</cite>, <cite>…on_tth</cite> and <cite>…on_d</cite> are now methods and called as <cite>DiffractionObject.on_q()</cite> etc.`</p></li>
+<li><p>tests directory tree to match src</p></li>
+<li><p>DiffractionObject’s “id” property renamed to “uuid”</p></li>
+<li><p><cite>DiffractionObject</cite> requires 3 input parameters of <cite>xarray</cite>, <cite>yarray</cite>, <cite>xtype</cite>, to be instantiated.  It can be instantiated with empty arrays.</p></li>
+<li><p>Paths in our documentation reflect changes made in code.</p></li>
+<li><p>Enumerated list for the different ways to set user information</p></li>
 </ul>
-<p>and creating config files when they are missing.
-* test comment format with compact style without extra line for each comment
-* Rename <cite>input_scattering_quantity</cite> to <cite>input_data</cite> in <cite>DiffractionObject</cite> init
-* refactor <cite>q_to_tth()</cite> and <cite>tth_to_q()</cite> into <cite>diffpy.utils.transforms</cite> to make them available outside
-DiffractionObject
-* Moved resampler out of parsers, new path is diffpy.utils.resampler
-* Rename the <cite>isfloat</cite> function to <cite>is_number</cite>, and move it to the <cite>diffpy/utils/utilsvalidators.py</cite> directory
-* arrays and attributes now can be inserted when a DiffractionObject is instantiated
-* data are now stored as a (len(x),4) numpy array with intensity in column 0, the q, then tth, then d
-* <cite>DiffractionObject.on_q</cite>, <cite>…on_tth</cite> and <cite>…on_d</cite> are now methods and called as <cite>DiffractionObject.on_q()</cite> etc.`
-* tests directory tree to match src
-* DiffractionObject’s “id” property renamed to “uuid”
-* <cite>DiffractionObject</cite> requires 3 input parameters of <cite>xarray</cite>, <cite>yarray</cite>, <cite>xtype</cite>, to be instantiated.  It can be instantiated with empty arrays.
-* Paths in our documentation reflect changes made in code.
-* Enumerated list for the different ways to set user information</p>
 <p><strong>Deprecated:</strong></p>
 <ul class="simple">
 <li><p><cite>resample</cite> function in resampler. Replaced with <cite>wsinterp</cite> with better functionality.</p></li>
