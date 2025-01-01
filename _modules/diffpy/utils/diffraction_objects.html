@@ -1,0 +1,721 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>diffpy.utils.diffraction_objects &mdash; diffpy.utils 3.6.0rc3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=1db8a07e"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            diffpy.utils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utilities/utilities.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/diffpy.utils.html">Package API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">diffpy.utils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">diffpy.utils.diffraction_objects</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for diffpy.utils.diffraction_objects</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">diffpy.utils.tools</span> <span class="kn">import</span> <span class="n">get_package_info</span>
+<span class="kn">from</span> <span class="nn">diffpy.utils.transforms</span> <span class="kn">import</span> <span class="n">d_to_q</span><span class="p">,</span> <span class="n">d_to_tth</span><span class="p">,</span> <span class="n">q_to_d</span><span class="p">,</span> <span class="n">q_to_tth</span><span class="p">,</span> <span class="n">tth_to_d</span><span class="p">,</span> <span class="n">tth_to_q</span>
+
+<span class="n">QQUANTITIES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;q&quot;</span><span class="p">]</span>
+<span class="n">ANGLEQUANTITIES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;angle&quot;</span><span class="p">,</span> <span class="s2">&quot;tth&quot;</span><span class="p">,</span> <span class="s2">&quot;twotheta&quot;</span><span class="p">,</span> <span class="s2">&quot;2theta&quot;</span><span class="p">]</span>
+<span class="n">DQUANTITIES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;dspace&quot;</span><span class="p">]</span>
+<span class="n">XQUANTITIES</span> <span class="o">=</span> <span class="n">ANGLEQUANTITIES</span> <span class="o">+</span> <span class="n">DQUANTITIES</span> <span class="o">+</span> <span class="n">QQUANTITIES</span>
+<span class="n">XUNITS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;degrees&quot;</span><span class="p">,</span> <span class="s2">&quot;radians&quot;</span><span class="p">,</span> <span class="s2">&quot;rad&quot;</span><span class="p">,</span> <span class="s2">&quot;deg&quot;</span><span class="p">,</span> <span class="s2">&quot;inv_angs&quot;</span><span class="p">,</span> <span class="s2">&quot;inv_nm&quot;</span><span class="p">,</span> <span class="s2">&quot;nm-1&quot;</span><span class="p">,</span> <span class="s2">&quot;A-1&quot;</span><span class="p">]</span>
+
+<span class="n">x_values_not_equal_emsg</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;The two objects have different values in x arrays (my_do.all_arrays[:, [1, 2, 3]]). &quot;</span>
+    <span class="s2">&quot;Please ensure the x values of the two objects are identical by re-instantiating &quot;</span>
+    <span class="s2">&quot;the DiffractionObject with the correct x value inputs.&quot;</span>
+<span class="p">)</span>
+
+<span class="n">invalid_add_type_emsg</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;You may only add a DiffractionObject with another DiffractionObject or a scalar value. &quot;</span>
+    <span class="s2">&quot;Please rerun by adding another DiffractionObject instance or a scalar value. &quot;</span>
+    <span class="s2">&quot;e.g., my_do_1 + my_do_2 or my_do + 10 or 10 + my_do&quot;</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_xtype_wmsg</span><span class="p">(</span><span class="n">xtype</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;I don&#39;t know how to handle the xtype, &#39;</span><span class="si">{</span><span class="n">xtype</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;Please rerun specifying an xtype from </span><span class="si">{</span><span class="o">*</span><span class="n">XQUANTITIES</span><span class="p">,</span><span class="w"> </span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_setter_wmsg</span><span class="p">(</span><span class="n">attribute</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Direct modification of attribute &#39;</span><span class="si">{</span><span class="n">attribute</span><span class="si">}</span><span class="s2">&#39; is not allowed. &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;Please use &#39;input_data&#39; to modify &#39;</span><span class="si">{</span><span class="n">attribute</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="DiffractionObject">
+<a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.diffraction_objects.DiffractionObject">[docs]</a>
+<span class="k">class</span> <span class="nc">DiffractionObject</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for storing and manipulating diffraction data.</span>
+
+<span class="sd">    DiffractionObject stores data produced from X-ray, neutron,</span>
+<span class="sd">    and electron scattering experiments. The object can transform</span>
+<span class="sd">    between different scattering quantities such as q (scattering vector),</span>
+<span class="sd">    2θ (two-theta angle), and d (interplanar spacing), and perform various</span>
+<span class="sd">    operations like scaling, addition, subtraction, and comparison for equality</span>
+<span class="sd">    between diffraction objects.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scat_quantity : str</span>
+<span class="sd">        The type of scattering experiment (e.g., &quot;x-ray&quot;, &quot;neutron&quot;). Default is an empty string &quot;&quot;.</span>
+<span class="sd">    wavelength : float</span>
+<span class="sd">        The wavelength of the incoming beam, specified in angstroms (Å). Default is none.</span>
+<span class="sd">    name: str</span>
+<span class="sd">        The name or label for the scattering data. Default is an empty string &quot;&quot;.</span>
+<span class="sd">    qmin : float</span>
+<span class="sd">        The minimum q value.</span>
+<span class="sd">    qmax : float</span>
+<span class="sd">        The maximum q value.</span>
+<span class="sd">    tthmin : float</span>
+<span class="sd">        The minimum two-theta value.</span>
+<span class="sd">    tthmax : float</span>
+<span class="sd">        The maximum two-theta value.</span>
+<span class="sd">    dmin : float</span>
+<span class="sd">        The minimum d-spacing value.</span>
+<span class="sd">    dmax : float</span>
+<span class="sd">        The maximum d-spacing value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">xarray</span><span class="p">,</span>
+        <span class="n">yarray</span><span class="p">,</span>
+        <span class="n">xtype</span><span class="p">,</span>
+        <span class="n">wavelength</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">scat_quantity</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="p">{},</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a DiffractionObject instance.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        xarray : ndarray</span>
+<span class="sd">            The independent variable array containing &quot;q&quot;, &quot;tth&quot;, or &quot;d&quot; values.</span>
+<span class="sd">        yarray : ndarray</span>
+<span class="sd">            The dependent variable array corresponding to intensity values.</span>
+<span class="sd">        xtype : str</span>
+<span class="sd">            The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES}.</span>
+<span class="sd">        wavelength : float, optional, default is None.</span>
+<span class="sd">            The wavelength of the incoming beam, specified in angstroms (Å)</span>
+<span class="sd">        scat_quantity : str, optional, default is an empty string &quot;&quot;.</span>
+<span class="sd">            The type of scattering experiment (e.g., &quot;x-ray&quot;, &quot;neutron&quot;).</span>
+<span class="sd">        name : str, optional, default is an empty string &quot;&quot;.</span>
+<span class="sd">            The name or label for the scattering data.</span>
+<span class="sd">        metadata : dict, optional, default is an empty dictionary {}</span>
+<span class="sd">            The additional metadata associated with the diffraction object.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        Create a DiffractionObject for X-ray scattering data:</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; from diffpy.utils.diffraction_objects import DiffractionObject</span>
+<span class="sd">        ...</span>
+<span class="sd">        &gt;&gt;&gt; x = np.array([0.12, 0.24, 0.31, 0.4])  # independent variable (e.g., q)</span>
+<span class="sd">        &gt;&gt;&gt; y = np.array([10, 20, 40, 60])  # intensity values</span>
+<span class="sd">        &gt;&gt;&gt; metadata = {</span>
+<span class="sd">        ...     &quot;sample&quot;: &quot;rock salt from the beach&quot;,</span>
+<span class="sd">        ...     &quot;composition&quot;: &quot;NaCl&quot;,</span>
+<span class="sd">        ...     &quot;temperature&quot;: &quot;300 K,&quot;,</span>
+<span class="sd">        ...     &quot;experimenters&quot;: &quot;Phill, Sally&quot;</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; do = DiffractionObject(</span>
+<span class="sd">        ...     xarray=x,</span>
+<span class="sd">        ...     yarray=y,</span>
+<span class="sd">        ...     xtype=&quot;q&quot;,</span>
+<span class="sd">        ...     wavelength=1.54,</span>
+<span class="sd">        ...     scat_quantity=&quot;x-ray&quot;,</span>
+<span class="sd">        ...     name=&quot;beach_rock_salt_1&quot;,</span>
+<span class="sd">        ...     metadata=metadata</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; print(do.metadata)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_input_data</span><span class="p">(</span><span class="n">xarray</span><span class="p">,</span> <span class="n">yarray</span><span class="p">,</span> <span class="n">xtype</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">scat_quantity</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_input_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xarray</span><span class="p">,</span> <span class="n">yarray</span><span class="p">,</span> <span class="n">xtype</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">scat_quantity</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">xtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">XQUANTITIES</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_xtype_wmsg</span><span class="p">(</span><span class="n">xtype</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xarray</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">yarray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;xarray&#39; and &#39;yarray&#39; are different lengths.  They must &quot;</span>
+                <span class="s2">&quot;correspond to each other and have the same length. &quot;</span>
+                <span class="s2">&quot;Please re-initialize &#39;DiffractionObject&#39;&quot;</span>
+                <span class="s2">&quot;with valid &#39;xarray&#39; and &#39;yarray&#39;s&quot;</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scat_quantity</span> <span class="o">=</span> <span class="n">scat_quantity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="n">wavelength</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadata</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_input_xtype</span> <span class="o">=</span> <span class="n">xtype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_arrays</span><span class="p">(</span><span class="n">xarray</span><span class="p">,</span> <span class="n">yarray</span><span class="p">,</span> <span class="n">xtype</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_min_max_xarray</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">DiffractionObject</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="n">self_attributes</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)]</span>
+        <span class="n">other_attributes</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="vm">__dict__</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">self_attributes</span><span class="p">)</span> <span class="o">==</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">other_attributes</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">self_attributes</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+            <span class="n">other_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="ow">not</span> <span class="p">(</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">other_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="p">(</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="ow">or</span> <span class="p">(</span><span class="n">other_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">other_value</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
+                <span class="p">):</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">other_value</span><span class="p">)):</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="n">other_value</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a scalar value or another DiffractionObject to the yarray of the</span>
+<span class="sd">        DiffractionObject.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other : DiffractionObject, int, or float</span>
+<span class="sd">            The item to be added. If `other` is a scalar value, this value will be added to each element of the</span>
+<span class="sd">            yarray of this DiffractionObject instance. If `other` is another DiffractionObject, the yarrays of the</span>
+<span class="sd">            two DiffractionObjects will be combined element-wise. The result is a new DiffractionObject instance,</span>
+<span class="sd">            representing the addition and using the xarray from the left-hand side DiffractionObject.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DiffractionObject</span>
+<span class="sd">            The new DiffractionObject instance with modified yarray values. This instance is a deep copy of the</span>
+<span class="sd">            original with the additions applied.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            Raised when the xarrays of two DiffractionObject instances are not equal.</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            Raised when `other` is not an instance of DiffractionObject, int, or float.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        Add a scalar value to the yarray of a DiffractionObject instance:</span>
+<span class="sd">        &gt;&gt;&gt; new_do = my_do + 10.1</span>
+<span class="sd">        &gt;&gt;&gt; new_do = 10.1 + my_do</span>
+
+<span class="sd">        Combine the yarrays of two DiffractionObject instances:</span>
+<span class="sd">        &gt;&gt;&gt; new_do = my_do_1 + my_do_2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_operation_compatibility</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="n">summed_do</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">summed_do</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">other</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">DiffractionObject</span><span class="p">):</span>
+            <span class="n">summed_do</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">other</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">summed_do</span>
+
+    <span class="fm">__radd__</span> <span class="o">=</span> <span class="fm">__add__</span>
+
+    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Subtract scalar value or another DiffractionObject to the yarray of</span>
+<span class="sd">        the DiffractionObject.</span>
+
+<span class="sd">        This method behaves similarly to the `__add__` method, but performs subtraction instead of addition.</span>
+<span class="sd">        For details on parameters, returns, and exceptions, refer to the documentation for `__add__`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        Subtract a scalar value from the yarray of a DiffractionObject instance:</span>
+<span class="sd">        &gt;&gt;&gt; new_do = my_do - 10.1</span>
+
+<span class="sd">        Subtract the yarrays of two DiffractionObject instances:</span>
+<span class="sd">        &gt;&gt;&gt; new_do = my_do_1 - my_do_2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_operation_compatibility</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="n">subtracted_do</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">subtracted_do</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="n">other</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">DiffractionObject</span><span class="p">):</span>
+            <span class="n">subtracted_do</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="n">other</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">subtracted_do</span>
+
+    <span class="fm">__rsub__</span> <span class="o">=</span> <span class="fm">__sub__</span>
+
+    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Multiply a scalar value or another DiffractionObject with the yarray</span>
+<span class="sd">        of this DiffractionObject.</span>
+
+<span class="sd">        This method behaves similarly to the `__add__` method, but performs multiplication instead of addition.</span>
+<span class="sd">        For details on parameters, returns, and exceptions, refer to the documentation for `__add__`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        Multiply a scalar value with the yarray of a DiffractionObject instance:</span>
+<span class="sd">        &gt;&gt;&gt; new_do = my_do * 3.5</span>
+
+<span class="sd">        Multiply the yarrays of two DiffractionObject instances:</span>
+<span class="sd">        &gt;&gt;&gt; new_do = my_do_1 * my_do_2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_operation_compatibility</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="n">multiplied_do</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">multiplied_do</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="n">other</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">DiffractionObject</span><span class="p">):</span>
+            <span class="n">multiplied_do</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="n">other</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">multiplied_do</span>
+
+    <span class="fm">__rmul__</span> <span class="o">=</span> <span class="fm">__mul__</span>
+
+    <span class="k">def</span> <span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Divide the yarray of this DiffractionObject by a scalar value or</span>
+<span class="sd">        another DiffractionObject.</span>
+
+<span class="sd">        This method behaves similarly to the `__add__` method, but performs division instead of addition.</span>
+<span class="sd">        For details on parameters, returns, and exceptions, refer to the documentation for `__add__`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        Divide the yarray of a DiffractionObject instance by a scalar value:</span>
+<span class="sd">        &gt;&gt;&gt; new_do = my_do / 2.0</span>
+
+<span class="sd">        Divide the yarrays of two DiffractionObject instances:</span>
+<span class="sd">        &gt;&gt;&gt; new_do = my_do_1 / my_do_2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_operation_compatibility</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="n">divided_do</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">divided_do</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/=</span> <span class="n">other</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">DiffractionObject</span><span class="p">):</span>
+            <span class="n">divided_do</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/=</span> <span class="n">other</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">divided_do</span>
+
+    <span class="fm">__rtruediv__</span> <span class="o">=</span> <span class="fm">__truediv__</span>
+
+    <span class="k">def</span> <span class="nf">_check_operation_compatibility</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="n">DiffractionObject</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">invalid_add_type_emsg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">DiffractionObject</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_arrays</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">all_arrays</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">x_values_not_equal_emsg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">other</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">x_values_not_equal_emsg</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">all_arrays</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The 2D array containing `xarray` and `yarray` values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ndarray</span>
+<span class="sd">            The shape (len(data), 4) 2D array with columns containing the `yarray` (intensity)</span>
+<span class="sd">            and the `xarray` values in q, tth, and d.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        To access specific arrays individually, use these slices:</span>
+
+<span class="sd">        &gt;&gt;&gt; my_do.all_arrays[:, 0]  # yarray</span>
+<span class="sd">        &gt;&gt;&gt; my_do.all_arrays[:, 1]  # xarray in q</span>
+<span class="sd">        &gt;&gt;&gt; my_do.all_arrays[:, 2]  # xarray in tth</span>
+<span class="sd">        &gt;&gt;&gt; my_do.all_arrays[:, 3]  # xarray in d</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span>
+
+    <span class="nd">@all_arrays</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">all_arrays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">_setter_wmsg</span><span class="p">(</span><span class="s2">&quot;all_arrays&quot;</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">input_xtype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The type of the independent variable in `xarray`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        input_xtype : str</span>
+<span class="sd">            The type of `xarray`, which must be one of {*XQUANTITIES}.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_xtype</span>
+
+    <span class="nd">@input_xtype</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">input_xtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">_setter_wmsg</span><span class="p">(</span><span class="s2">&quot;input_xtype&quot;</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">uuid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The unique identifier for the DiffractionObject instance.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        uuid : UUID</span>
+<span class="sd">            The unique identifier of the DiffractionObject instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uuid</span>
+
+    <span class="nd">@uuid</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">uuid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">_setter_wmsg</span><span class="p">(</span><span class="s2">&quot;uuid&quot;</span><span class="p">))</span>
+
+<div class="viewcode-block" id="DiffractionObject.get_array_index">
+<a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.diffraction_objects.DiffractionObject.get_array_index">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_array_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xtype</span><span class="p">,</span> <span class="n">xvalue</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the index of the closest value in the array associated with</span>
+<span class="sd">        the specified xtype and the value provided.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        xtype : str</span>
+<span class="sd">            The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES}.</span>
+<span class="sd">        xvalue : float</span>
+<span class="sd">            The value of the xtype to find the closest index for.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        index : int</span>
+<span class="sd">            The index of the closest value in the array associated with the specified xtype and the value provided.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">xtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_xtype</span>
+        <span class="n">xarray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_xtype</span><span class="p">(</span><span class="n">xtype</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xarray</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The &#39;</span><span class="si">{</span><span class="n">xtype</span><span class="si">}</span><span class="s2">&#39; array is empty. Please ensure it is initialized.&quot;</span><span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">xarray</span> <span class="o">-</span> <span class="n">xvalue</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">index</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_set_arrays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xarray</span><span class="p">,</span> <span class="n">yarray</span><span class="p">,</span> <span class="n">xtype</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xarray</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">yarray</span>
+        <span class="k">if</span> <span class="n">xtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">QQUANTITIES</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">xarray</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">q_to_tth</span><span class="p">(</span><span class="n">xarray</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">q_to_d</span><span class="p">(</span><span class="n">xarray</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">xtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">ANGLEQUANTITIES</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">xarray</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tth_to_q</span><span class="p">(</span><span class="n">xarray</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">tth_to_d</span><span class="p">(</span><span class="n">xarray</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">xtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">DQUANTITIES</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">xarray</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_to_q</span><span class="p">(</span><span class="n">xarray</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_to_tth</span><span class="p">(</span><span class="n">xarray</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_min_max_xarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">initial</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">initial</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tthmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">initial</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tthmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">initial</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">initial</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">initial</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_original_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_xtype</span> <span class="ow">in</span> <span class="n">QQUANTITIES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_q</span><span class="p">(),</span> <span class="s2">&quot;q&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_xtype</span> <span class="ow">in</span> <span class="n">ANGLEQUANTITIES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_tth</span><span class="p">(),</span> <span class="s2">&quot;tth&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_xtype</span> <span class="ow">in</span> <span class="n">DQUANTITIES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_d</span><span class="p">(),</span> <span class="s2">&quot;d&quot;</span>
+
+<div class="viewcode-block" id="DiffractionObject.on_q">
+<a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.diffraction_objects.DiffractionObject.on_q">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_q</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the tuple of two 1D numpy arrays containing q and y data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (q-array, y-array) : tuple of ndarray</span>
+<span class="sd">            The tuple containing two 1D numpy arrays with q and y data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="DiffractionObject.on_tth">
+<a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.diffraction_objects.DiffractionObject.on_tth">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_tth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the tuple of two 1D numpy arrays containing tth and y data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (tth-array, y-array) : tuple of ndarray</span>
+<span class="sd">            The tuple containing two 1D numpy arrays with tth and y data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="DiffractionObject.on_d">
+<a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.diffraction_objects.DiffractionObject.on_d">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the tuple of two 1D numpy arrays containing d and y data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (d-array, y-array) : tuple of ndarray</span>
+<span class="sd">            The tuple containing two 1D numpy arrays with d and y data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="DiffractionObject.scale_to">
+<a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.diffraction_objects.DiffractionObject.scale_to">[docs]</a>
+    <span class="k">def</span> <span class="nf">scale_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_diff_object</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a new diffraction object which is the current object but</span>
+<span class="sd">        rescaled in y to the target.</span>
+
+<span class="sd">        By default, if `q`, `tth`, or `d` are not provided, scaling is based on the max intensity from each object.</span>
+<span class="sd">        Otherwise, y-value in the target at the closest specified x-value will be used as the factor to scale to.</span>
+<span class="sd">        The entire array is scaled by this factor so that one object places on top of the other at that point.</span>
+<span class="sd">        If multiple values of `q`, `tth`, or `d` are provided, an error will be raised.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        target_diff_object: DiffractionObject</span>
+<span class="sd">            The diffraction object you want to scale the current one onto.</span>
+
+<span class="sd">        q, tth, d : float, optional, default is None</span>
+<span class="sd">            The value of the x-array where you want the curves to line up vertically.</span>
+<span class="sd">            Specify a value on one of the allowed grids, q, tth, or d), e.g., q=10.</span>
+
+<span class="sd">        offset : float, optional, default is None</span>
+<span class="sd">            The offset to add to the scaled y-values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        scaled_do : DiffractionObject</span>
+<span class="sd">            The rescaled DiffractionObject as a new object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">offset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">scaled_do</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">q</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="n">d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;You must specify none or exactly one of &#39;q&#39;, &#39;tth&#39;, or &#39;d&#39;. &quot;</span>
+                <span class="s2">&quot;Please provide either none or one value.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">q_target_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">target_diff_object</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">q_self_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">scaled_do</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaled_do</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">q_target_max</span> <span class="o">/</span> <span class="n">q_self_max</span> <span class="o">+</span> <span class="n">offset</span>
+            <span class="k">return</span> <span class="n">scaled_do</span>
+
+        <span class="n">xtype</span> <span class="o">=</span> <span class="s2">&quot;q&quot;</span> <span class="k">if</span> <span class="n">q</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;tth&quot;</span> <span class="k">if</span> <span class="n">tth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;d&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_xtype</span><span class="p">(</span><span class="n">xtype</span><span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">target_diff_object</span><span class="o">.</span><span class="n">on_xtype</span><span class="p">(</span><span class="n">xtype</span><span class="p">)</span>
+
+        <span class="n">xvalue</span> <span class="o">=</span> <span class="n">q</span> <span class="k">if</span> <span class="n">xtype</span> <span class="o">==</span> <span class="s2">&quot;q&quot;</span> <span class="k">else</span> <span class="n">tth</span> <span class="k">if</span> <span class="n">xtype</span> <span class="o">==</span> <span class="s2">&quot;tth&quot;</span> <span class="k">else</span> <span class="n">d</span>
+
+        <span class="n">xindex_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">xvalue</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+        <span class="n">xindex_target</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">xvalue</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+        <span class="n">scaled_do</span><span class="o">.</span><span class="n">_all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">target</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">xindex_target</span><span class="p">]</span> <span class="o">/</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">xindex_data</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span>
+        <span class="k">return</span> <span class="n">scaled_do</span></div>
+
+
+<div class="viewcode-block" id="DiffractionObject.on_xtype">
+<a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.diffraction_objects.DiffractionObject.on_xtype">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_xtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xtype</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a tuple of two 1D numpy arrays containing x and y data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        xtype : str</span>
+<span class="sd">            The type of quantity for the independent variable chosen from {*XQUANTITIES, }</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            Raised when the specified xtype is not among {*XQUANTITIES, }</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (xarray, yarray) : tuple of ndarray</span>
+<span class="sd">            The tuple containing two 1D numpy arrays with x and y data for the specified xtype.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">xtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">ANGLEQUANTITIES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_tth</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">xtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">QQUANTITIES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_q</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">xtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">DQUANTITIES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_d</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_xtype_wmsg</span><span class="p">(</span><span class="n">xtype</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="DiffractionObject.dump">
+<a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.diffraction_objects.DiffractionObject.dump">[docs]</a>
+    <span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">xtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dump the xarray and yarray of the diffraction object to a two-column</span>
+<span class="sd">        file, with the associated information included in the header.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filepath : str</span>
+<span class="sd">            The filepath where the diffraction object will be dumped</span>
+<span class="sd">        xtype : str, optional, default is q</span>
+<span class="sd">            The type of quantity for the independent variable chosen from {*XQUANTITIES, }</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        To save a diffraction object to a file named &quot;diffraction_data.chi&quot; in the current directory</span>
+<span class="sd">        with the independent variable &#39;q&#39;:</span>
+
+<span class="sd">        &gt;&gt;&gt; file = &quot;diffraction_data.chi&quot;</span>
+<span class="sd">        &gt;&gt;&gt; do.dump(file, xtype=&quot;q&quot;)</span>
+
+<span class="sd">        To save the diffraction data to a file in a subfolder `output`:</span>
+
+<span class="sd">        &gt;&gt;&gt; file = &quot;./output/diffraction_data.chi&quot;</span>
+<span class="sd">        &gt;&gt;&gt; do.dump(file, xtype=&quot;q&quot;)</span>
+
+<span class="sd">        To save the diffraction data with a different independent variable, such as &#39;tth&#39;:</span>
+
+<span class="sd">        &gt;&gt;&gt; file = &quot;diffraction_data_tth.chi&quot;</span>
+<span class="sd">        &gt;&gt;&gt; do.dump(file, xtype=&quot;tth&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">xtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">xtype</span> <span class="o">=</span> <span class="s2">&quot;q&quot;</span>
+        <span class="k">if</span> <span class="n">xtype</span> <span class="ow">in</span> <span class="n">QQUANTITIES</span><span class="p">:</span>
+            <span class="n">data_to_save</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">elif</span> <span class="n">xtype</span> <span class="ow">in</span> <span class="n">ANGLEQUANTITIES</span><span class="p">:</span>
+            <span class="n">data_to_save</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">on_tth</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_tth</span><span class="p">()[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">elif</span> <span class="n">xtype</span> <span class="ow">in</span> <span class="n">DQUANTITIES</span><span class="p">:</span>
+            <span class="n">data_to_save</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">on_d</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_d</span><span class="p">()[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">_xtype_wmsg</span><span class="p">(</span><span class="n">xtype</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_package_info</span><span class="p">(</span><span class="s2">&quot;diffpy.utils&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;creation_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[DiffractionObject]</span><span class="se">\n</span><span class="s2">name = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="se">\n</span><span class="s2">wavelength = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;scat_quantity = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">scat_quantity</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">#### start data</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">data_to_save</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DiffractionObject.copy">
+<a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.diffraction_objects.DiffractionObject.copy">[docs]</a>
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a deep copy of the DiffractionObject instance.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DiffractionObject</span>
+<span class="sd">            The new instance of DiffractionObject, which is a deep copy of the current instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, The Trustees of Columbia University in the City of New York.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

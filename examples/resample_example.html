@@ -6,22 +6,22 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Resampling Example &mdash; diffpy.utils 3.5.0 documentation</title>
+  <title>Resampling Example &mdash; diffpy.utils 3.6.0rc3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=7ab3649f" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=47b26e07"></script>
+      <script src="../_static/documentation_options.js?v=1db8a07e"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Tools Example" href="toolsexample.html" />
-    <link rel="prev" title="Parsers Example" href="parsersexample.html" /> 
+    <link rel="next" title="Tools Example" href="tools_example.html" />
+    <link rel="prev" title="Parsers Example" href="parsers_example.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,9 +48,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../release.html">Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../utilities/utilities.html">Utilities</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="examples.html">Examples</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="parsersexample.html">Parsers Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers_example.html">Parsers Example</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Resampling Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="toolsexample.html">Tools Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools_example.html">Tools Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transforms_example.html">Transforms Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diffraction_objects_example.html">Diffraction Objects Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/diffpy.utils.html">Package API</a></li>
@@ -73,7 +75,7 @@
           <li class="breadcrumb-item"><a href="examples.html">Examples</a></li>
       <li class="breadcrumb-item active">Resampling Example</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/examples/resampleexample.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/examples/resample_example.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -88,16 +90,16 @@ Specifically, we will resample the grid of one function to match another for us 
 Then we will show how this resampling method lets us create a perfect reconstruction of certain functions
 given enough datapoints.</p>
 <ol class="arabic">
-<li><p>To start, unzip <a class="reference download internal" download="" href="../_downloads/62ff72d8f375ac2f72737a5807d10eaf/parserdata.zip"><code class="xref download docutils literal notranslate"><span class="pre">parserdata</span></code></a>. Then, load the data table from <code class="docutils literal notranslate"><span class="pre">Nickel.gr</span></code>
+<li><p>To start, unzip <a class="reference download internal" download="" href="../_downloads/bd886e57cf9f4de4ad76c29e2ff8bf8b/parser_data.zip"><code class="xref download docutils literal notranslate"><span class="pre">parser_data</span></code></a>. Then, load the data table from <code class="docutils literal notranslate"><span class="pre">Nickel.gr</span></code>
 and <code class="docutils literal notranslate"><span class="pre">NiTarget.gr</span></code>. These datasets are based on data from <a class="reference external" href="https://global.oup.com/academic/product/atomic-pair-distribution-function-analysis-9780198885801?cc=us&amp;lang=en&amp;">Atomic Pair Distribution Function Analysis: A Primer</a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.parsers</span> <span class="kn">import</span> <span class="n">loadData</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.parsers.loaddata</span> <span class="kn">import</span> <span class="n">loadData</span>
 <span class="n">nickel_datatable</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to Nickel.gr&gt;&#39;</span><span class="p">)</span>
 <span class="n">nitarget_datatable</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to NiTarget.gr&gt;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Each data table has two columns: first is the grid and second is the function value.
 To extract the columns, we can utilize the serialize function …</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.parsers</span> <span class="kn">import</span> <span class="n">serialize_data</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.parsers.serialization</span> <span class="kn">import</span> <span class="n">serialize_data</span>
 <span class="n">nickel_data</span> <span class="o">=</span> <span class="n">serialize_data</span><span class="p">(</span><span class="s1">&#39;Nickel.gr&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">nickel_datatable</span><span class="p">,</span> <span class="n">dt_colnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;grid&#39;</span><span class="p">,</span> <span class="s1">&#39;func&#39;</span><span class="p">])</span>
 <span class="n">nickel_grid</span> <span class="o">=</span> <span class="n">nickel_data</span><span class="p">[</span><span class="s1">&#39;Nickel.gr&#39;</span><span class="p">][</span><span class="s1">&#39;grid&#39;</span><span class="p">]</span>
 <span class="n">nickel_func</span> <span class="o">=</span> <span class="n">nickel_data</span><span class="p">[</span><span class="s1">&#39;Nickel.gr&#39;</span><span class="p">][</span><span class="s1">&#39;func&#39;</span><span class="p">]</span>
@@ -129,17 +131,17 @@ Checking the lengths of <code class="docutils literal notranslate"><span class="
 </pre></div>
 </div>
 <p>… and use the diffpy.utils <code class="docutils literal notranslate"><span class="pre">wsinterp</span></code> function to resample on this grid.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.parsers</span> <span class="kn">import</span> <span class="n">wsinterp</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.resampler</span> <span class="kn">import</span> <span class="n">wsinterp</span>
 <span class="n">nickel_resample</span> <span class="o">=</span> <span class="n">wsinterp</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">nickel_grid</span><span class="p">,</span> <span class="n">nickel_func</span><span class="p">)</span>
 <span class="n">target_resample</span> <span class="o">=</span> <span class="n">wsinterp</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">target_grid</span><span class="p">,</span> <span class="n">target_func</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>We can now plot the difference to see that these two functions are quite similar.:</p>
-<blockquote>
-<div><p>plt.plot(grid, target_resample)
-plt.plot(grid, nickel_resample)
-plt.plot(grid, target_resample - nickel_resample)</p>
-</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">target_resample</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">nickel_resample</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">target_resample</span> <span class="o">-</span> <span class="n">nickel_resample</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>This is the desired result as the data in <code class="docutils literal notranslate"><span class="pre">Nickel.gr</span></code> is every tenth data point in <code class="docutils literal notranslate"><span class="pre">NiTarget.gr</span></code>.
 This also shows us that <code class="docutils literal notranslate"><span class="pre">wsinterp</span></code> can help us reconstruct a function from incomplete data.</p>
 </li>
@@ -156,6 +158,13 @@ require at least <span class="math notranslate nohighlight">\(qmax * (rmin - rma
 <p>In the case of our dataset, our band-limit is <code class="docutils literal notranslate"><span class="pre">qmax=25.0</span></code> and our function spans <span class="math notranslate nohighlight">\(r \in (0.0, 60.0)\)</span>.
 Thus, our original grid requires <span class="math notranslate nohighlight">\(25.0 * 60.0 / \pi &lt; 478\)</span>. Since our grid has <span class="math notranslate nohighlight">\(601\)</span> datapoints, our
 reconstruction was perfect as shown from the comparison between <code class="docutils literal notranslate"><span class="pre">Nickel.gr</span></code> and <code class="docutils literal notranslate"><span class="pre">NiTarget.gr</span></code>.</p>
+<p>This computation is implemented in the function <code class="docutils literal notranslate"><span class="pre">nsinterp</span></code>.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.resampler</span> <span class="kn">import</span> <span class="n">nsinterp</span>
+<span class="n">qmin</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">qmax</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="n">nickel_resample</span> <span class="o">=</span> <span class="p">(</span><span class="n">nickel_grid</span><span class="p">,</span> <span class="n">nickel_func</span><span class="p">,</span> <span class="n">qmin</span><span class="p">,</span> <span class="n">qmax</span><span class="p">)</span>
+</pre></div>
+</div>
 </li>
 </ol>
 </section>
@@ -164,14 +173,14 @@ reconstruction was perfect as shown from the comparison between <code class="doc
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="parsersexample.html" class="btn btn-neutral float-left" title="Parsers Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="toolsexample.html" class="btn btn-neutral float-right" title="Tools Example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="parsers_example.html" class="btn btn-neutral float-left" title="Parsers Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tools_example.html" class="btn btn-neutral float-right" title="Tools Example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, The Trustees of Columbia University in the City of New York.</p>
+    <p>&#169; Copyright 2025, The Trustees of Columbia University in the City of New York.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

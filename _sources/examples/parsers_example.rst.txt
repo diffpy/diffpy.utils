@@ -8,13 +8,13 @@ Parsers Example
 This example will demonstrate how diffpy.utils lets us easily process and serialize files.
 Using the parsers module, we can load file data into simple and easy-to-work-with Python objects.
 
-1) To begin, unzip :download:`parserdata<./exampledata/parserdata.zip>` and take a look at ``data.txt``.
+1) To begin, unzip :download:`parser_data<./example_data/parser_data.zip>` and take a look at ``data.txt``.
    Our goal will be to extract and serialize the data table as well as the parameters listed in the header of this file.
 
 2) To get the data table, we will use the ``loadData`` function. The default behavior of this
    function is to find and extract a data table from a file.::
 
-     from diffpy.utils.parsers import loadData
+     from diffpy.utils.parsers.loaddata import loadData
      data_table = loadData('<PATH to data.txt>')
 
    While this will work with most datasets, on our ``data.txt`` file, we got a ``ValueError``. The reason for this is
@@ -53,7 +53,7 @@ Using the parsers module, we can load file data into simple and easy-to-work-wit
 4) Rather than working with separate ``data_table`` and ``hdata`` objects, it may be easier to combine them into a single
    dictionary. We can do so using the ``serialize_data`` function. ::
 
-     from diffpy.utils.parsers import serialize_data
+     from diffpy.utils.parsers.loaddata import serialize_data
      file_data = serialize_data('<PATH to data.txt', hdata, data_table)
      # File data is a dictionary with a single key
      # The key is the file name (in our case, 'data.txt')
@@ -84,7 +84,7 @@ Using the parsers module, we can load file data into simple and easy-to-work-wit
    The returned value, ``parsed_file_data``, is the dictionary we just added to ``serialfile.json``.
    To extract the data from the serial file, we use ``deserialize_data``. ::
 
-     from diffpy.utils.parsers import deserialize_data
+     from diffpy.utils.parsers.serialization import deserialize_data
      parsed_file_data = deserialize_data('<PATH to serialdata.json>')
 
 6) Finally, ``serialize_data`` allows us to store data from multiple text file in a single serial file. For one last bit

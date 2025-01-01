@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tools Utility &mdash; diffpy.utils 3.5.0 documentation</title>
+  <title>Resample Utility &mdash; diffpy.utils 3.6.0rc3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=7ab3649f" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=47b26e07"></script>
+      <script src="../_static/documentation_options.js?v=1db8a07e"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -62,9 +62,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Tools Utility</li>
+      <li class="breadcrumb-item active">Resample Utility</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/utilities/toolsutility.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/utilities/resample_utility.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -72,25 +72,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="tools-utility">
-<span id="id1"></span><h1>Tools Utility<a class="headerlink" href="#tools-utility" title="Link to this heading"></a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">diffpy.utils.tools</span></code> module provides tool functions for use with diffpy apps.</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">get_user_info()</span></code>: This function is designed for managing and tracking username and email information.</p>
-<p>Developers can use this function to simplify the process of loading, merging, and saving information consistently and easily.
-Additionally, it saves the effort of re-entering information, and allows overriding current information by
-passing parameters.</p>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">get_package_info()</span></code>: This function loads package name and version information into a dictionary.
-It updates the package information under the key “package_info” in the format {“package_name”: “version_number”},
-resulting in an entry in the passed metadata dictionary that looks like
-<code class="docutils literal notranslate"><span class="pre">{&quot;package_info&quot;:</span> <span class="pre">{&quot;package1&quot;:</span> <span class="pre">&quot;version_number1&quot;,</span> <span class="pre">&quot;package2&quot;:</span> <span class="pre">&quot;version_number2&quot;}</span></code> if the function is called more than
-once.</p>
-<p>Users can use these functions to track and manage versions of packages that can later be stored, for example, in an output
-file header.</p>
-</li>
+  <section id="resample-utility">
+<span id="id1"></span><h1>Resample Utility<a class="headerlink" href="#resample-utility" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">wsinterp()</span></code>: Allows users easily resample a PDF onto another grid.
+This makes use of the Whittaker-Shannon interpolation formula.
+To see the theory behind how this interpolation works and how to use
+it in practice, click <a class="reference internal" href="../examples/resample_example.html#resample-example"><span class="std std-ref">here</span></a>.</p></li>
 </ul>
-<p>For a more in-depth tutorial for how to use these tools, click <a class="reference internal" href="../examples/toolsexample.html#tools-example"><span class="std std-ref">here</span></a>.</p>
 </section>
 
 
@@ -101,7 +90,7 @@ file header.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, The Trustees of Columbia University in the City of New York.</p>
+    <p>&#169; Copyright 2025, The Trustees of Columbia University in the City of New York.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

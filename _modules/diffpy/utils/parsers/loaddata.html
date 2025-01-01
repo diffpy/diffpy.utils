@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>diffpy.utils.parsers.loaddata &mdash; diffpy.utils 3.5.0 documentation</title>
+  <title>diffpy.utils.parsers.loaddata &mdash; diffpy.utils 3.6.0rc3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=7ab3649f" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=47b26e07"></script>
+      <script src="../../../../_static/documentation_options.js?v=1db8a07e"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
@@ -87,7 +87,11 @@
 <span class="c1">#</span>
 <span class="c1">##############################################################################</span>
 
+<span class="kn">import</span> <span class="nn">os</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">from</span> <span class="nn">diffpy.utils</span> <span class="kn">import</span> <span class="n">validators</span>
 
 
 <div class="viewcode-block" id="loadData">
@@ -106,7 +110,7 @@
 <span class="sd">        Minimum number of rows in the first data block. All rows must have the same number of floating</span>
 <span class="sd">        point values.</span>
 <span class="sd">    headers: bool</span>
-<span class="sd">        when False (defualt), the function returns a numpy array of the data in the data block.</span>
+<span class="sd">        when False (default), the function returns a numpy array of the data in the data block.</span>
 <span class="sd">        When True, the function instead returns a dictionary of parameters and their corresponding</span>
 <span class="sd">        values parsed from header (information prior the data block). See hdel and hignore for options</span>
 <span class="sd">        to help with parsing header information.</span>
@@ -175,6 +179,10 @@
             <span class="n">nc</span> <span class="o">=</span> <span class="n">nv</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">return</span> <span class="n">nc</span><span class="p">,</span> <span class="n">nv</span>
 
+    <span class="c1"># Check if file exists before trying to open</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> cannot be found. Please rerun the program specifying a valid filename.&quot;</span><span class="p">)</span>
+
     <span class="c1"># make sure fid gets cleaned up</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fid</span><span class="p">:</span>
         <span class="c1"># search for the start of datablock</span>
@@ -209,7 +217,7 @@
                     <span class="n">name</span> <span class="o">=</span> <span class="n">hpair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                     <span class="n">value</span> <span class="o">=</span> <span class="n">hpair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                     <span class="c1"># check if data value should be stored as float</span>
-                    <span class="k">if</span> <span class="n">isfloat</span><span class="p">(</span><span class="n">hpair</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                    <span class="k">if</span> <span class="n">validators</span><span class="o">.</span><span class="n">is_number</span><span class="p">(</span><span class="n">hpair</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
                         <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">hpair</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
                     <span class="n">hdata</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
             <span class="c1"># continue search for the start of datablock</span>
@@ -411,25 +419,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-
-
-<span class="c1"># End of class TextDataLoader</span>
-
-
-<div class="viewcode-block" id="isfloat">
-<a class="viewcode-back" href="../../../../api/diffpy.utils.parsers.html#diffpy.utils.parsers.loaddata.isfloat">[docs]</a>
-<span class="k">def</span> <span class="nf">isfloat</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;True if s is convertible to float.&quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-        <span class="k">pass</span>
-    <span class="k">return</span> <span class="kc">False</span></div>
-
-
-
-<span class="c1"># End of file</span>
 </pre></div>
 
            </div>
@@ -439,7 +428,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, The Trustees of Columbia University in the City of New York.</p>
+    <p>&#169; Copyright 2025, The Trustees of Columbia University in the City of New York.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

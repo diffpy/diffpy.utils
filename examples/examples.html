@@ -6,21 +6,21 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Examples &mdash; diffpy.utils 3.5.0 documentation</title>
+  <title>Examples &mdash; diffpy.utils 3.6.0rc3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=7ab3649f" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=47b26e07"></script>
+      <script src="../_static/documentation_options.js?v=1db8a07e"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Parsers Example" href="parsersexample.html" />
+    <link rel="next" title="Parsers Example" href="parsers_example.html" />
     <link rel="prev" title="Utilities" href="../utilities/utilities.html" /> 
 </head>
 
@@ -48,9 +48,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../release.html">Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../utilities/utilities.html">Utilities</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="parsersexample.html">Parsers Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="resampleexample.html">Resampling Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="toolsexample.html">Tools Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers_example.html">Parsers Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resample_example.html">Resampling Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools_example.html">Tools Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transforms_example.html">Transforms Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diffraction_objects_example.html">Diffraction Objects Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/diffpy.utils.html">Package API</a></li>
@@ -85,9 +87,25 @@
 <p>Landing page for diffpy.utils examples.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="parsersexample.html">Parsers Example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="resampleexample.html">Resampling Example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="toolsexample.html">Tools Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsers_example.html">Parsers Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resample_example.html">Resampling Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools_example.html">Tools Example</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tools_example.html#automatically-capture-user-info">Automatically Capture User Info</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tools_example.html#load-user-info-into-your-program">Load user info into your program</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tools_example.html#where-does-get-user-info-get-the-user-information-from">Where does <code class="docutils literal notranslate"><span class="pre">get_user_info()</span></code> get the user information from?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tools_example.html#what-if-no-config-files-exist-yet">What if no config files exist yet?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tools_example.html#what-happens-when-you-run-check-and-build-global-config">What happens when you run <code class="docutils literal notranslate"><span class="pre">check_and_build_global_config()</span></code>?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tools_example.html#i-entered-the-wrong-information-in-my-config-file-so-it-always-loads-incorrect-information-how-do-i-fix-that">I entered the wrong information in my config file so it always loads incorrect information, how do I fix that?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tools_example.html#automatically-capture-info-about-a-software-package-being-used">Automatically Capture Info about a Software Package Being Used</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="transforms_example.html">Transforms Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diffraction_objects_example.html">Diffraction Objects Example</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="diffraction_objects_example.html#diffractionobject-convenience-functions">DiffractionObject convenience functions</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>
@@ -97,13 +115,13 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../utilities/utilities.html" class="btn btn-neutral float-left" title="Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="parsersexample.html" class="btn btn-neutral float-right" title="Parsers Example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="parsers_example.html" class="btn btn-neutral float-right" title="Parsers Example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, The Trustees of Columbia University in the City of New York.</p>
+    <p>&#169; Copyright 2025, The Trustees of Columbia University in the City of New York.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

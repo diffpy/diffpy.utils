@@ -1,0 +1,293 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diffraction Objects Example &mdash; diffpy.utils 3.6.0rc3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1db8a07e"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="diffpy.utils package" href="../api/diffpy.utils.html" />
+    <link rel="prev" title="Transforms Example" href="transforms_example.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            diffpy.utils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utilities/utilities.html">Utilities</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="examples.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="parsers_example.html">Parsers Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resample_example.html">Resampling Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools_example.html">Tools Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transforms_example.html">Transforms Example</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Diffraction Objects Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/diffpy.utils.html">Package API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">diffpy.utils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="examples.html">Examples</a></li>
+      <li class="breadcrumb-item active">Diffraction Objects Example</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/diffraction_objects_example.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>Diffraction Objects Example<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p>This example will demonstrate how to use the functions in the <code class="docutils literal notranslate"><span class="pre">diffpy.utils.diffraction_objects</span></code> module
+to create a <code class="docutils literal notranslate"><span class="pre">DiffractionObject</span></code> instance and analyze your diffraction data using relevant functions.</p>
+<p>To create a <code class="docutils literal notranslate"><span class="pre">DiffractionObject</span></code>, you need to specify the type of the independent variable
+(referred to as <code class="docutils literal notranslate"><span class="pre">xtype</span></code>, e.g., one of <code class="docutils literal notranslate"><span class="pre">q</span></code>, <code class="docutils literal notranslate"><span class="pre">tth</span></code>, or <code class="docutils literal notranslate"><span class="pre">d</span></code>),
+the <code class="docutils literal notranslate"><span class="pre">xarray</span></code> of the <code class="docutils literal notranslate"><span class="pre">x</span></code> values, and a <code class="docutils literal notranslate"><span class="pre">yarray</span></code> of the corresponding intensity values.
+It is strongly encouraged to specify the <code class="docutils literal notranslate"><span class="pre">wavelength</span></code> in order to access
+most of the other functionalities in the class.
+Additionally, you can specify the type of your scattering experiment using the <code class="docutils literal notranslate"><span class="pre">scat_quantity</span></code> parameter,
+the name of your diffraction object using the <code class="docutils literal notranslate"><span class="pre">name</span></code> parameter,
+and a <code class="docutils literal notranslate"><span class="pre">metadata</span></code> dictionary containing relevant information about the data. Here’s an example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">diffpy.utils.diffraction_objects</span> <span class="kn">import</span> <span class="n">DiffractionObject</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.12</span><span class="p">,</span> <span class="mf">0.24</span><span class="p">,</span> <span class="mf">0.31</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">])</span>  <span class="c1"># independent variable (e.g., q)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">])</span>  <span class="c1"># intensity values</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;sample&quot;</span><span class="p">:</span> <span class="s2">&quot;rock salt from the beach&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;composition&quot;</span><span class="p">:</span> <span class="s2">&quot;NaCl&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="s2">&quot;300 K,&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;experimenters&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Phil&quot;</span><span class="p">,</span> <span class="s2">&quot;Sally&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">my_do</span> <span class="o">=</span> <span class="n">DiffractionObject</span><span class="p">(</span>
+     <span class="n">xarray</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+     <span class="n">yarray</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+     <span class="n">xtype</span><span class="o">=</span><span class="s2">&quot;q&quot;</span><span class="p">,</span>
+     <span class="n">wavelength</span><span class="o">=</span><span class="mf">1.54</span><span class="p">,</span>
+     <span class="n">scat_quantity</span><span class="o">=</span><span class="s2">&quot;x-ray&quot;</span><span class="p">,</span>
+     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;beach_rock_salt_1&quot;</span><span class="p">,</span>
+     <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>By creating a <code class="docutils literal notranslate"><span class="pre">DiffractionObject</span></code> instance, you store not only the diffraction data
+but also all the associated information for analysis.</p>
+<p><code class="docutils literal notranslate"><span class="pre">DiffractionObject</span></code> automatically populates the <code class="docutils literal notranslate"><span class="pre">xarray</span></code> onto each of <code class="docutils literal notranslate"><span class="pre">q</span></code>, <code class="docutils literal notranslate"><span class="pre">tth</span></code>, and <code class="docutils literal notranslate"><span class="pre">d</span></code>-spacing.
+Let’s say you want to plot your data vs. Q.  To do this you would type</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">my_do</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">my_do</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>and to plot the same data vs. two-theta type</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">my_do</span><span class="o">.</span><span class="n">on_tth</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">my_do</span><span class="o">.</span><span class="n">on_tth</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>These <cite>on_q()</cite>, <cite>on_tth()</cite>, etc., methods return a list with the x-array as the first element
+and the intensity array as the second element.</p>
+<p>We can also accomplish the same thing by passing the xtype as a string to the <code class="docutils literal notranslate"><span class="pre">on_xtype()</span></code> method,
+i.e.,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_on_q</span> <span class="o">=</span> <span class="n">my_do</span><span class="o">.</span><span class="n">on_xtype</span><span class="p">(</span><span class="s2">&quot;q&quot;</span><span class="p">)</span>
+<span class="n">data_on_tth</span> <span class="o">=</span> <span class="n">my_do</span><span class="o">.</span><span class="n">on_xtype</span><span class="p">(</span><span class="s2">&quot;tth&quot;</span><span class="p">)</span>
+<span class="n">data_on_d</span> <span class="o">=</span> <span class="n">my_do</span><span class="o">.</span><span class="n">on_xtype</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data_on_d</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data_on_d</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>This makes it very easy to compare a diffraction pattern that was measured or calculated
+on one <code class="docutils literal notranslate"><span class="pre">xtype</span></code> with one that was measured or calculated on another.  E.g., suppose that you
+have a calculated powder pattern from a CIF file that was calculated on a d-spacing grid using
+some software package, and
+you want to know if a diffraction pattern you have measured on a Q-grid is the same material.
+You could simply load them both as diffraction objects and plot them together on the same grid.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">calculated</span> <span class="o">=</span> <span class="n">DiffractionObject</span><span class="p">(</span><span class="n">xcalc</span><span class="p">,</span> <span class="n">ycalc</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">)</span>
+<span class="n">measured</span> <span class="o">=</span> <span class="n">DiffractionObject</span><span class="p">(</span><span class="n">xmeas</span><span class="p">,</span> <span class="n">ymeas</span><span class="p">,</span> <span class="s2">&quot;tth&quot;</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="mf">0.717</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">calculated</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">calculated</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">measured</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">measured</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now, let’s say that these two diffraction patterns were on very different scales.  The measured one
+has a peak intensity of 10,000, but the calculated one only goes to 1.
+With diffraction objects this is easy to handle.  We choose a point on the x-axis where
+we want to scale the two together and we use the <code class="docutils literal notranslate"><span class="pre">scale_to()</span></code> method,</p>
+<p>Continuing the example above, if we wanted to scale the two patterns together at a position
+Q=5.5 inverse angstroms, where for the sake of argument we assume the
+calculated curve has a strong peak,
+we would replace the code above with</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">calculated</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">calculated</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">measured</span><span class="o">.</span><span class="n">scale_to</span><span class="p">(</span><span class="n">calculated</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">5.5</span><span class="p">)</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">measured</span><span class="o">.</span><span class="n">scale_to</span><span class="p">(</span><span class="n">calculated</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">5.5</span><span class="p">)</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">scale_to()</span></code> method returns a new <code class="docutils literal notranslate"><span class="pre">DiffractionObject</span></code> which we can assign to a new
+variable and make use of.</p>
+<p>The default behavior is to align the objects based on the maximal value of each diffraction object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">scaled_measured</span> <span class="o">=</span> <span class="n">measured</span><span class="o">.</span><span class="n">scale_to</span><span class="p">(</span><span class="n">calculated</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If this doesn’t give the desirable results, you can specify an <code class="docutils literal notranslate"><span class="pre">xtype=value</span></code> to scale
+based on the closest x-value in both objects. For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">scaled_measured</span> <span class="o">=</span> <span class="n">measured</span><span class="o">.</span><span class="n">scale_to</span><span class="p">(</span><span class="n">calculated</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">5.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For convenience, you can also apply an offset to the scaled new diffraction object with the optional
+<code class="docutils literal notranslate"><span class="pre">offset</span></code> argument, for example,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">scaled_and_offset_measured</span> <span class="o">=</span> <span class="n">measured</span><span class="o">.</span><span class="n">scale_to</span><span class="p">(</span><span class="n">calculated</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="diffractionobject-convenience-functions">
+<h2>DiffractionObject convenience functions<a class="headerlink" href="#diffractionobject-convenience-functions" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>create a copy of a diffraction object using the <code class="docutils literal notranslate"><span class="pre">copy</span></code> method
+when you want to preserve the original data while working with a modified version.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">copy_of_calculated</span> <span class="o">=</span> <span class="n">calculated</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>test the equality of two diffraction objects.  For example,</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diff_object2</span> <span class="o">=</span> <span class="n">diff_object1</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">diff_object2</span> <span class="o">==</span> <span class="n">diff_object1</span>
+</pre></div>
+</div>
+<p>will return <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p>3. make arithmetic operations on the intensities of diffraction objects.
+For example, you can do scalar operations on a single diffraction object,
+which will modify the intensity values (<code class="docutils literal notranslate"><span class="pre">yarrays</span></code>) without affecting other properties:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">increased_intensity</span> <span class="o">=</span> <span class="n">diff_object1</span> <span class="o">+</span> <span class="mi">5</span>      <span class="c1"># Increases the intensities by 5</span>
+<span class="n">decreased_intensity</span> <span class="o">=</span> <span class="n">diff_object1</span> <span class="o">-</span> <span class="mi">1</span>      <span class="c1"># Decreases the intensities by 1</span>
+<span class="n">doubled_object</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">diff_object1</span>           <span class="c1"># Double the intensities</span>
+<span class="n">reduced_intensity</span> <span class="o">=</span> <span class="n">diff_object1</span> <span class="o">/</span> <span class="mi">2</span>        <span class="c1"># Halves the intensities</span>
+</pre></div>
+</div>
+<p>You can also do binary operations between two diffraction objects, as long as they are on the same <code class="docutils literal notranslate"><span class="pre">q/tth/d-array</span></code>.
+The operation will apply to the intensity values, while other properties
+(such as <code class="docutils literal notranslate"><span class="pre">xarrays</span></code>, <code class="docutils literal notranslate"><span class="pre">xtype</span></code>, and <code class="docutils literal notranslate"><span class="pre">metadata</span></code>) will be inherited
+from the left-hand side diffraction object (<code class="docutils literal notranslate"><span class="pre">diff_object1</span></code>).
+For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sum_object</span> <span class="o">=</span> <span class="n">diff_object1</span> <span class="o">+</span> <span class="n">diff_object2</span>            <span class="c1"># Sum the intensities</span>
+<span class="n">subtract_scaled</span> <span class="o">=</span> <span class="n">diff_object1</span> <span class="o">-</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">diff_object2</span>   <span class="c1"># Subtract 5 * obj2 from obj 1</span>
+<span class="n">multiplied_object</span> <span class="o">=</span> <span class="n">diff_object1</span> <span class="o">*</span> <span class="n">diff_object2</span>     <span class="c1"># Multiply the intensities</span>
+<span class="n">divided_object</span> <span class="o">=</span> <span class="n">diff_object1</span> <span class="o">/</span> <span class="n">diff_object2</span>        <span class="c1"># Divide the intensities</span>
+</pre></div>
+</div>
+<p>You cannot perform operations between diffraction objects and incompatible types.
+For example, attempting to add a diffraction object and a string will raise an error:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diff_object1</span> <span class="o">+</span> <span class="s2">&quot;string_value&quot;</span>       <span class="c1"># This will raise an error</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>get the value of the DiffractionObject at a given point in one of the xarrays</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tth_ninety_index</span> <span class="o">=</span> <span class="n">diff_object1</span><span class="o">.</span><span class="n">get_array_index</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="n">xtype</span><span class="o">=</span><span class="s2">&quot;tth&quot;</span><span class="p">)</span>
+<span class="n">intensity_at_ninety</span> <span class="o">=</span> <span class="n">diff_object1</span><span class="o">.</span><span class="n">on_tth</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="n">tth_ninety_index</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>If you do not specify an <code class="docutils literal notranslate"><span class="pre">xtype</span></code>, it will default to the <code class="docutils literal notranslate"><span class="pre">xtype</span></code> used when creating the <code class="docutils literal notranslate"><span class="pre">DiffractionObject</span></code>.
+For example, if you have created a <code class="docutils literal notranslate"><span class="pre">DiffractionObject</span></code> called <code class="docutils literal notranslate"><span class="pre">do</span></code> with <code class="docutils literal notranslate"><span class="pre">xtype=&quot;q&quot;</span></code>,
+you can find its closest index for <code class="docutils literal notranslate"><span class="pre">q=0.25</span></code> by typing either of the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">do</span><span class="o">.</span><span class="n">_input_xtype</span><span class="p">)</span>     <span class="c1"># remind ourselves which array was input.  prints &quot;q&quot; in this case.</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">do</span><span class="o">.</span><span class="n">get_array_index</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span> <span class="c1"># no xtype passed, defaults to do._input_xtype, or in this example, q</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">do</span><span class="o">.</span><span class="n">get_array_index</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">xtype</span><span class="o">=</span><span class="s2">&quot;q&quot;</span><span class="p">)</span> <span class="c1"># explicitly choose an xtype to specify a value</span>
+</pre></div>
+</div>
+<p>5. The <code class="docutils literal notranslate"><span class="pre">dump</span></code> function saves the diffraction data and relevant information to an xy format file with headers
+(widely used chi format used, for example, by Fit2D and diffpy.  These files can be read by <code class="docutils literal notranslate"><span class="pre">LoadData()</span></code>
+in <code class="docutils literal notranslate"><span class="pre">diffpy.utils.parsers</span></code>).</p>
+<p>You can choose which of the data axes (<code class="docutils literal notranslate"><span class="pre">q</span></code>, <code class="docutils literal notranslate"><span class="pre">tth</span></code>, or <code class="docutils literal notranslate"><span class="pre">d</span></code>) to export, with <code class="docutils literal notranslate"><span class="pre">q</span></code> as the default.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assume you have created a Diffraction Object do</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;diffraction_data.chi&quot;</span>
+<span class="n">do</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">xtype</span><span class="o">=</span><span class="s2">&quot;q&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the saved file <code class="docutils literal notranslate"><span class="pre">diffraction_data.chi</span></code>,
+relevant metadata are also written in the header (<code class="docutils literal notranslate"><span class="pre">username</span></code>, <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">scattering</span> <span class="pre">quantity</span></code>, <code class="docutils literal notranslate"><span class="pre">metadata</span></code>, etc.).
+The datetime when the DiffractionObject was created and the version of the
+software (see the Section on <code class="docutils literal notranslate"><span class="pre">get_package_info()</span></code> for more information)
+is automatically recorded as well.
+The diffraction data is saved as two columns: the <code class="docutils literal notranslate"><span class="pre">q</span></code> values and corresponding intensity values.
+This ensures your diffraction data, along with all other information,
+is properly documented and saved for future reference.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="transforms_example.html" class="btn btn-neutral float-left" title="Transforms Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api/diffpy.utils.html" class="btn btn-neutral float-right" title="diffpy.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, The Trustees of Columbia University in the City of New York.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

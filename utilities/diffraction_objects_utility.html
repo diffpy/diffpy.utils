@@ -1,0 +1,127 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diffraction Objects Utility &mdash; diffpy.utils 3.6.0rc3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1db8a07e"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            diffpy.utils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/diffpy.utils.html">Package API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">diffpy.utils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Diffraction Objects Utility</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/utilities/diffraction_objects_utility.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="diffraction-objects-utility">
+<span id="id1"></span><h1>Diffraction Objects Utility<a class="headerlink" href="#diffraction-objects-utility" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">diffpy.utils.diffraction_objects</span></code> module provides a set of powerful functions for analyzing diffraction data.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DiffractionObject()</span></code>: This function creates a diffraction object that stores your diffraction data
+and associated information. If a <code class="docutils literal notranslate"><span class="pre">wavelength</span></code> is specified, it can automatically populate data
+across different independent axes (e.g., <code class="docutils literal notranslate"><span class="pre">q</span></code>, <code class="docutils literal notranslate"><span class="pre">tth</span></code>, and <code class="docutils literal notranslate"><span class="pre">d</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">on_xtype()</span></code>: This function allows developers to access diffraction data on different independent axes
+(<code class="docutils literal notranslate"><span class="pre">q</span></code>, <code class="docutils literal notranslate"><span class="pre">tth</span></code>, and <code class="docutils literal notranslate"><span class="pre">d</span></code>).
+It is useful when you need to convert or view the data between axes,
+working with the axis that best fits your analysis.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_array_index()</span></code>: This function finds the closest index in the independent variable axis (<code class="docutils literal notranslate"><span class="pre">xarray</span></code>)
+to a targeted value. It simplifies the process of working with different spacing.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scale_to()</span></code>: This function rescales one diffraction object to align with another at a specific value.
+This is helpful for comparing diffraction data with different intensity values or lengths,
+ensuring they are directly comparable and visually aligned.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">copy()</span></code>: This function creates a deep copy of a diffraction object,
+allowing you to preserve the original data while making modifications to a separate copy.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dump()</span></code>: This function saves both diffraction data and all associated information to a file.
+It also automatically tracks the analysis time and software version you used.</p></li>
+</ul>
+<p>For a more in-depth tutorial for how to use these tools, click <a class="reference internal" href="../examples/diffraction_objects_example.html#diffraction-objects-example"><span class="std std-ref">here</span></a>.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, The Trustees of Columbia University in the City of New York.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
