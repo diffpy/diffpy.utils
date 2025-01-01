@@ -21,8 +21,7 @@ Release Notes
 * Better wording on the capture user info functionality
 * Spelling check via Codespell in pre-commit
 * prettier pre-commit hook for automatic linting of .yml, .json, and .md files
-* Function that can be used to compute muD (absorption coefficient) from a file containing an absorption profile
-from a line-scan through the sample
+* Function that can be used to compute muD (absorption coefficient) from a file containing an absorption profile from a line-scan through the sample
 * sbillinge username as the authorized admin for GitHub release workflow in `build-wheel-release-upload.yml`
 * function to compute x-ray attenuation coefficient (mu) using XrayDB
 * class docstring for `DiffractionObject`
@@ -45,12 +44,10 @@ from a line-scan through the sample
 
 **Changed:**
 
-* Refactor get_user_info to separate the tasks of getting the info from config files
-and creating config files when they are missing.
+* Refactor get_user_info to separate the tasks of getting the info from config files and creating config files when they are missing.
 * test comment format with compact style without extra line for each comment
 * Rename `input_scattering_quantity` to `input_data` in `DiffractionObject` init
-* refactor `q_to_tth()` and `tth_to_q()` into `diffpy.utils.transforms` to make them available outside
-DiffractionObject
+* refactor `q_to_tth()` and `tth_to_q()` into `diffpy.utils.transforms` to make them available outside DiffractionObject
 * Moved resampler out of parsers, new path is diffpy.utils.resampler
 * Rename the `isfloat` function to `is_number`, and move it to the `diffpy/utils/utilsvalidators.py` directory
 * arrays and attributes now can be inserted when a DiffractionObject is instantiated
