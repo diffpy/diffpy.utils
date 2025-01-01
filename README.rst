@@ -38,14 +38,16 @@
 diffpy.utils Package
 ========================================================================
 
-General purpose shared utilities for the diffpy libraries.
+General utilities for analyzing diffraction data
 
-The diffpy.utils package provides functions for extracting array data from
-variously formatted text files, an interpolation function based on the
-Whittaker-Shannon formula that can be used to resample a PDF or other profile
-function over a new grid, `DiffractionObject` for conveniently manipulating
-diffraction data, and some wx GUI utilities used by the PDFgui
-program.
+The diffpy.utils package provides a number of functions and classes designed to help
+researchers analyze their diffraction data.  It also includes some functionality for
+carrying out PDF analysis.  Examples are parsers for reading common format diffraction
+data files, ``DiffractionObjects`` that allow you to do algebra on diffraction patterns,
+tools for better capture and propagation of metadata,
+diffraction-friendly interpolation routines, as well as some other tools used across
+diffpy libraries.
+
 
 Citation
 --------
