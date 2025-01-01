@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Release Notes &mdash; diffpy.utils 3.6.0rc4 documentation</title>
+  <title>Release Notes &mdash; diffpy.utils 3.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=f59be1ce"></script>
+      <script src="_static/documentation_options.js?v=eae21ecb"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -77,7 +77,85 @@
   <section id="release-notes">
 <span id="index-0"></span><h1>Release Notes<a class="headerlink" href="#release-notes" title="Link to this heading"></a></h1>
 <section id="id1">
-<h2>3.5.0<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<h2>3.6.0<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p><strong>Added:</strong></p>
+<ul class="simple">
+<li><p>unit tests for initializing DiffractionObject with empty array in xarray and yarray</p></li>
+<li><p>function to return the index of the closest value to the specified value in an array.</p></li>
+<li><p>functions to convert between d and q</p></li>
+<li><p>catch division by zero warning messages in tests</p></li>
+<li><p>functionality to raise useful warning and error messages during angular conversion between two theta and q</p></li>
+<li><p>Improved API documentation in <cite>DiffractionObject</cite> methods and properties using the NumPy docstring format and PEP 256</p></li>
+<li><p>validate xtype belongs to XQUANTITIES during DiffractionObject init</p></li>
+<li><p>Group’s Pytest practices for using &#64;pytest.mark.parametrize in test_diffraction_objects.py</p></li>
+<li><p>unit tests for __add__ operation for DiffractionObject</p></li>
+<li><p>Better wording on the capture user info functionality</p></li>
+<li><p>Spelling check via Codespell in pre-commit</p></li>
+<li><p>prettier pre-commit hook for automatic linting of .yml, .json, and .md files</p></li>
+<li><p>Function that can be used to compute muD (absorption coefficient) from a file containing an absorption profile</p></li>
+</ul>
+<p>from a line-scan through the sample
+* sbillinge username as the authorized admin for GitHub release workflow in <cite>build-wheel-release-upload.yml</cite>
+* function to compute x-ray attenuation coefficient (mu) using XrayDB
+* class docstring for <cite>DiffractionObject</cite>
+* docforamtter in pre-commit for automatic formatting of docstrings to PEP 257
+* Function nsinterp for automatic interpolation onto the Nyquist-Shannon grid.
+* functionality to return the 2D array based on the specified xtype
+* functionality in dump to allow writing data on dspace
+* addition, multiplication, subtraction, and division operators between two DiffractionObject instances or a scalar value with another DiffractionObject for modifying yarray (intensity) values.
+* functionality to rescale diffraction objects, placing one on top of another at a specified point
+* new feature in <cite>scale_to()</cite>: default scaling is based on the max q-value in each diffraction object.
+* functions to convert between d and tth
+* unit test for expected warning when no wavelength is provided for DiffractionObject init
+* copy() method for DiffractionObject instance
+* docstrings for <cite>on_q</cite>, <cite>on_tth</cite>, <cite>on_d</cite>, and <cite>dump</cite> in <cite>diffraction_objects.py</cite>.
+* prevent direct modification of <cite>all_arrays</cite> using <cite>&#64;property</cite>
+* Information on how to update the default user information
+* Example docs for basic DiffractionObject usage
+* deploy github pages documentation on pre-release
+* Gettable <cite>id</cite> property to <cite>DiffractionObject</cite></p>
+<p><strong>Changed:</strong></p>
+<ul class="simple">
+<li><p>Refactor get_user_info to separate the tasks of getting the info from config files</p></li>
+</ul>
+<p>and creating config files when they are missing.
+* test comment format with compact style without extra line for each comment
+* Rename <cite>input_scattering_quantity</cite> to <cite>input_data</cite> in <cite>DiffractionObject</cite> init
+* refactor <cite>q_to_tth()</cite> and <cite>tth_to_q()</cite> into <cite>diffpy.utils.transforms</cite> to make them available outside
+DiffractionObject
+* Moved resampler out of parsers, new path is diffpy.utils.resampler
+* Rename the <cite>isfloat</cite> function to <cite>is_number</cite>, and move it to the <cite>diffpy/utils/utilsvalidators.py</cite> directory
+* arrays and attributes now can be inserted when a DiffractionObject is instantiated
+* data are now stored as a (len(x),4) numpy array with intensity in column 0, the q, then tth, then d
+* <cite>DiffractionObject.on_q</cite>, <cite>…on_tth</cite> and <cite>…on_d</cite> are now methods and called as <cite>DiffractionObject.on_q()</cite> etc.`
+* tests directory tree to match src
+* DiffractionObject’s “id” property renamed to “uuid”
+* <cite>DiffractionObject</cite> requires 3 input parameters of <cite>xarray</cite>, <cite>yarray</cite>, <cite>xtype</cite>, to be instantiated.  It can be instantiated with empty arrays.
+* Paths in our documentation reflect changes made in code.
+* Enumerated list for the different ways to set user information</p>
+<p><strong>Deprecated:</strong></p>
+<ul class="simple">
+<li><p><cite>resample</cite> function in resampler. Replaced with <cite>wsinterp</cite> with better functionality.</p></li>
+<li><p>Diffraction_object class, renamed to DiffractionObject</p></li>
+</ul>
+<p><strong>Fixed:</strong></p>
+<ul class="simple">
+<li><p>additional information to users to relieve frustration in finding how to update global config</p></li>
+<li><p>Unittest to Pytest migration for test_loaddata.py</p></li>
+<li><p>file paths of the test files according to new tests directory tree</p></li>
+<li><p>Typo for get_package_info example</p></li>
+<li><p>return type of <cite>get_array_index</cite> method in <cite>DiffractionObject</cite> to return integer instead of list</p></li>
+</ul>
+<p><strong>Removed:</strong></p>
+<ul class="simple">
+<li><p>scattering_objects layer in importing diffraction_objects</p></li>
+<li><p><cite>user_config.py</cite>. Replaced by <cite>_load_config</cite> and <cite>check_and_build_global_config</cite> in <cite>tools.py</cite>.</p></li>
+<li><p>Relative imports in parser’s __init__.py</p></li>
+<li><p><cite>set_angles_from_list</cite>, <cite>set_angles_from</cite>, <cite>set_qs_from_range</cite> methods in <cite>DiffractionObject</cite></p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>3.5.0<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <p><strong>Added:</strong></p>
 <ul class="simple">
 <li><p>Support for Python 3.13</p></li>
@@ -87,8 +165,8 @@
 <li><p>Support for Python 3.10</p></li>
 </ul>
 </section>
-<section id="id2">
-<h2>3.4.3<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="id3">
+<h2>3.4.3<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
 <p><strong>Added:</strong></p>
 <ul class="simple">
 <li><p>Diffraction_objects mentioned in the README</p></li>
@@ -101,8 +179,8 @@
 <li><p>Add pip dependencies under pip.txt and conda dependencies under conda.txt</p></li>
 </ul>
 </section>
-<section id="id3">
-<h2>3.4.2<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<section id="id4">
+<h2>3.4.2<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <p><strong>Added:</strong></p>
 <ul class="simple">
 <li><p>link docs in the README</p></li>
@@ -116,8 +194,8 @@
 <li><p>Updated package structure to new group standard</p></li>
 </ul>
 </section>
-<section id="id4">
-<h2>3.4.0<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<section id="id5">
+<h2>3.4.0<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
 <p><strong>Added:</strong></p>
 <ul class="simple">
 <li><p>utility for handling the capture of username and email for diffpy applications</p></li>
