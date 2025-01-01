@@ -203,6 +203,7 @@ class DiffractionObject:
         Examples
         --------
         Add a scalar value to the yarray of a DiffractionObject instance:
+        >>> my_do = DiffractionObject(wavelength=2 * np.pi, xarray=np.array([30, 60]), yarray=np.array([1, 2]), xtype="tth")
         >>> new_do = my_do + 10.1
         >>> new_do = 10.1 + my_do
 

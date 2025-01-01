@@ -23,7 +23,7 @@ def is_number(string):
     True
 
     >>> is_number("007")
-    True
+    False
 
     >>> is_number("five")
     False
