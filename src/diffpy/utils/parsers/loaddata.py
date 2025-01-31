@@ -20,7 +20,9 @@ import numpy
 from diffpy.utils import validators
 
 
-def loadData(filename, minrows=10, headers=False, hdel="=", hignore=None, **kwargs):
+def loadData(
+    filename, minrows=10, headers=False, hdel="=", hignore=None, **kwargs
+):
     """Find and load data from a text file.
 
     The data block is identified as the first matrix block of at least minrows rows and constant number of columns.
@@ -105,7 +107,9 @@ def loadData(filename, minrows=10, headers=False, hdel="=", hignore=None, **kwar
 
     # Check if file exists before trying to open
     if not os.path.exists(filename):
-        raise IOError(f"File {filename} cannot be found. Please rerun the program specifying a valid filename.")
+        raise IOError(
+            f"File {filename} cannot be found. Please rerun the program specifying a valid filename."
+        )
 
     # make sure fid gets cleaned up
     with open(filename, "rb") as fid:
@@ -134,7 +138,10 @@ def loadData(filename, minrows=10, headers=False, hdel="=", hignore=None, **kwar
                         if hignore is not None:
                             for tag in hignore:
                                 taglen = len(tag)
-                                if len(hpair[0]) >= taglen and hpair[0][:taglen] == tag:
+                                if (
+                                    len(hpair[0]) >= taglen
+                                    and hpair[0][:taglen] == tag
+                                ):
                                     flag = False
                 # add header data
                 if flag:
@@ -258,7 +265,13 @@ class TextDataLoader(object):
         # nf - number of words, ok - has data
         self._linerecs = numpy.recarray(
             (nlines,),
-            dtype=[("idx", int), ("nw0", int), ("nw1", int), ("nf", int), ("ok", bool)],
+            dtype=[
+                ("idx", int),
+                ("nw0", int),
+                ("nw1", int),
+                ("nf", int),
+                ("ok", bool),
+            ],
         )
         lr = self._linerecs
         lr.idx = numpy.arange(nlines)
@@ -319,7 +332,9 @@ class TextDataLoader(object):
             if self.usecols is None:
                 data = numpy.reshape(lw.value[bb1.nw0 : ee1.nw1], (-1, bb1.nf))
             else:
-                tdata = numpy.empty((len(self.usecols), dend - dbeg), dtype=float)
+                tdata = numpy.empty(
+                    (len(self.usecols), dend - dbeg), dtype=float
+                )
                 for j, trow in zip(self.usecols, tdata):
                     j %= bb1.nf
                     trow[:] = lw.value[bb1.nw0 + j : ee1.nw1 : bb1.nf]

@@ -9,14 +9,14 @@ wavelength_warning_emsg = (
     "To specify a wavelength, if you have do = DiffractionObject(xarray, yarray, 'tth'), "
     "you may set do.wavelength = 1.54 for a wavelength of 1.54 angstroms."
 )
-invalid_tth_emsg = "Two theta exceeds 180 degrees. Please check the input values for errors."
+invalid_tth_emsg = (
+    "Two theta exceeds 180 degrees. Please check the input values for errors."
+)
 invalid_q_or_d_or_wavelength_emsg = (
     "The supplied input array and wavelength will result in an impossible two-theta. "
     "Please check these values and re-instantiate the DiffractionObject with correct values."
 )
-inf_output_imsg = (
-    "INFO: The largest output value in the array is infinite. This is allowed, but it will not be plotted."
-)
+inf_output_imsg = "INFO: The largest output value in the array is infinite. This is allowed, but it will not be plotted."
 
 
 def _validate_inputs(q, wavelength):

@@ -3,7 +3,14 @@ import re
 import numpy as np
 import pytest
 
-from diffpy.utils.transforms import d_to_q, d_to_tth, q_to_d, q_to_tth, tth_to_d, tth_to_q
+from diffpy.utils.transforms import (
+    d_to_q,
+    d_to_tth,
+    q_to_d,
+    q_to_tth,
+    tth_to_d,
+    tth_to_q,
+)
 
 
 @pytest.mark.parametrize(
@@ -30,7 +37,9 @@ from diffpy.utils.transforms import d_to_q, d_to_tth, q_to_d, q_to_tth, tth_to_d
 )
 def test_q_to_tth(wavelength, q, expected_tth, wavelength_warning_msg):
     if wavelength is None:
-        with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
+        with pytest.warns(
+            UserWarning, match=re.escape(wavelength_warning_msg)
+        ):
             actual_tth = q_to_tth(q, wavelength)
     else:
         actual_tth = q_to_tth(q, wavelength)
@@ -53,7 +62,9 @@ def test_q_to_tth(wavelength, q, expected_tth, wavelength_warning_msg):
         ),
     ],
 )
-def test_q_to_tth_bad(wavelength, q, expected_error_type, invalid_q_or_d_or_wavelength_error_msg):
+def test_q_to_tth_bad(
+    wavelength, q, expected_error_type, invalid_q_or_d_or_wavelength_error_msg
+):
     expected_error_msg = invalid_q_or_d_or_wavelength_error_msg
     with pytest.raises(expected_error_type, match=expected_error_msg):
         q_to_tth(wavelength, q)
@@ -83,7 +94,9 @@ def test_q_to_tth_bad(wavelength, q, expected_error_type, invalid_q_or_d_or_wave
 )
 def test_tth_to_q(wavelength, tth, expected_q, wavelength_warning_msg):
     if wavelength is None:
-        with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
+        with pytest.warns(
+            UserWarning, match=re.escape(wavelength_warning_msg)
+        ):
             actual_q = tth_to_q(tth, wavelength)
     else:
         actual_q = tth_to_q(tth, wavelength)
@@ -109,7 +122,9 @@ def test_tth_to_q(wavelength, tth, expected_q, wavelength_warning_msg):
         ),
     ],
 )
-def test_tth_to_q_bad(wavelength, tth, expected_error_type, expected_error_msg):
+def test_tth_to_q_bad(
+    wavelength, tth, expected_error_type, expected_error_msg
+):
     with pytest.raises(expected_error_type, match=expected_error_msg):
         tth_to_q(tth, wavelength)
 
@@ -122,12 +137,16 @@ def test_tth_to_q_bad(wavelength, tth, expected_error_type, expected_error_msg):
         (np.array([]), np.array([]), False),
         # C2:
         (  # 1. Valid q values, expect d values without warning
-            np.array([0.1, 1 * np.pi, 2 * np.pi, 3 * np.pi, 4 * np.pi, 5 * np.pi]),
+            np.array(
+                [0.1, 1 * np.pi, 2 * np.pi, 3 * np.pi, 4 * np.pi, 5 * np.pi]
+            ),
             np.array([62.83185307, 2, 1, 0.66667, 0.5, 0.4]),
             False,
         ),
         (  # 2. Valid q values containing 0, expect d values with divide by zero warning
-            np.array([0, 1 * np.pi, 2 * np.pi, 3 * np.pi, 4 * np.pi, 5 * np.pi]),
+            np.array(
+                [0, 1 * np.pi, 2 * np.pi, 3 * np.pi, 4 * np.pi, 5 * np.pi]
+            ),
             np.array([np.inf, 2, 1, 0.66667, 0.5, 0.4]),
             True,
         ),
@@ -135,7 +154,9 @@ def test_tth_to_q_bad(wavelength, tth, expected_error_type, expected_error_msg):
 )
 def test_q_to_d(q, expected_d, warning_expected):
     if warning_expected:
-        with pytest.warns(RuntimeWarning, match="divide by zero encountered in divide"):
+        with pytest.warns(
+            RuntimeWarning, match="divide by zero encountered in divide"
+        ):
             actual_d = q_to_d(q)
     else:
         actual_d = q_to_d(q)
@@ -157,7 +178,9 @@ def test_q_to_d(q, expected_d, warning_expected):
 )
 def test_d_to_q(d, expected_q, zero_divide_error_expected):
     if zero_divide_error_expected:
-        with pytest.warns(RuntimeWarning, match="divide by zero encountered in divide"):
+        with pytest.warns(
+            RuntimeWarning, match="divide by zero encountered in divide"
+        ):
             actual_q = d_to_q(d)
     else:
         actual_q = d_to_q(d)
@@ -173,7 +196,12 @@ def test_d_to_q(d, expected_q, zero_divide_error_expected):
         # C2: Empty tth values, wavelength provided, expect empty d values
         (4 * np.pi, np.array([]), np.array([]), False),
         # C3: User specified valid tth values between 0-180 degrees (without wavelength)
-        (None, np.array([0, 30, 60, 90, 120, 180]), np.array([0, 1, 2, 3, 4, 5]), False),
+        (
+            None,
+            np.array([0, 30, 60, 90, 120, 180]),
+            np.array([0, 1, 2, 3, 4, 5]),
+            False,
+        ),
         (  # C4: User specified valid tth values between 0-180 degrees (with wavelength)
             4 * np.pi,
             np.array([0, 30.0, 60.0, 90.0, 120.0, 180.0]),
@@ -182,12 +210,22 @@ def test_d_to_q(d, expected_q, zero_divide_error_expected):
         ),
     ],
 )
-def test_tth_to_d(wavelength, tth, expected_d, divide_by_zero_warning_expected, wavelength_warning_msg):
+def test_tth_to_d(
+    wavelength,
+    tth,
+    expected_d,
+    divide_by_zero_warning_expected,
+    wavelength_warning_msg,
+):
     if wavelength is None:
-        with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
+        with pytest.warns(
+            UserWarning, match=re.escape(wavelength_warning_msg)
+        ):
             actual_d = tth_to_d(tth, wavelength)
     elif divide_by_zero_warning_expected:
-        with pytest.warns(RuntimeWarning, match="divide by zero encountered in divide"):
+        with pytest.warns(
+            RuntimeWarning, match="divide by zero encountered in divide"
+        ):
             actual_d = tth_to_d(tth, wavelength)
     else:
         actual_d = tth_to_d(tth, wavelength)
@@ -211,7 +249,9 @@ def test_tth_to_d(wavelength, tth, expected_d, divide_by_zero_warning_expected, 
         ),
     ],
 )
-def test_tth_to_d_invalid(wavelength, tth, expected_error_type, expected_error_msg):
+def test_tth_to_d_invalid(
+    wavelength, tth, expected_error_type, expected_error_msg
+):
     with pytest.raises(expected_error_type, match=expected_error_msg):
         tth_to_d(tth, wavelength)
 
@@ -224,22 +264,41 @@ def test_tth_to_d_invalid(wavelength, tth, expected_error_type, expected_error_m
         # C2: Empty d values with wavelength, expect empty tth values
         (4 * np.pi, np.empty((0)), np.empty(0), False),
         # C3: Valid d values, no wavelength, expect valid and non-empty tth values
-        (None, np.array([1, 0.8, 0.6, 0.4, 0.2, 0]), np.array([0, 1, 2, 3, 4, 5]), True),
+        (
+            None,
+            np.array([1, 0.8, 0.6, 0.4, 0.2, 0]),
+            np.array([0, 1, 2, 3, 4, 5]),
+            True,
+        ),
         (  # C4: Valid d values with wavelength, expect valid and non-empty thh values
             4 * np.pi,
-            np.array([4 * np.pi, 4 / np.sqrt(2) * np.pi, 4 / np.sqrt(3) * np.pi]),
+            np.array(
+                [4 * np.pi, 4 / np.sqrt(2) * np.pi, 4 / np.sqrt(3) * np.pi]
+            ),
             np.array([60.0, 90.0, 120.0]),
             False,
         ),
     ],
 )
-def test_d_to_tth(wavelength, d, expected_tth, divide_by_zero_warning_expected, wavelength_warning_msg):
+def test_d_to_tth(
+    wavelength,
+    d,
+    expected_tth,
+    divide_by_zero_warning_expected,
+    wavelength_warning_msg,
+):
     if wavelength is None and not divide_by_zero_warning_expected:
-        with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
+        with pytest.warns(
+            UserWarning, match=re.escape(wavelength_warning_msg)
+        ):
             actual_tth = d_to_tth(d, wavelength)
     elif wavelength is None and divide_by_zero_warning_expected:
-        with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
-            with pytest.warns(RuntimeWarning, match="divide by zero encountered in divide"):
+        with pytest.warns(
+            UserWarning, match=re.escape(wavelength_warning_msg)
+        ):
+            with pytest.warns(
+                RuntimeWarning, match="divide by zero encountered in divide"
+            ):
                 actual_tth = d_to_tth(d, wavelength)
     else:
         actual_tth = d_to_tth(d, wavelength)
@@ -255,7 +314,9 @@ def test_d_to_tth(wavelength, d, expected_tth, divide_by_zero_warning_expected, 
         (100, np.array([1.2, 1, 0.8, 0.6, 0.4, 0.2]), ValueError),
     ],
 )
-def test_d_to_tth_bad(wavelength, d, expected_error_type, invalid_q_or_d_or_wavelength_error_msg):
+def test_d_to_tth_bad(
+    wavelength, d, expected_error_type, invalid_q_or_d_or_wavelength_error_msg
+):
     expected_error_msg = invalid_q_or_d_or_wavelength_error_msg
     with pytest.raises(expected_error_type, match=expected_error_msg):
         d_to_tth(d, wavelength)

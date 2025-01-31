@@ -6,13 +6,29 @@ from copy import deepcopy
 import numpy as np
 
 from diffpy.utils.tools import get_package_info
-from diffpy.utils.transforms import d_to_q, d_to_tth, q_to_d, q_to_tth, tth_to_d, tth_to_q
+from diffpy.utils.transforms import (
+    d_to_q,
+    d_to_tth,
+    q_to_d,
+    q_to_tth,
+    tth_to_d,
+    tth_to_q,
+)
 
 QQUANTITIES = ["q"]
 ANGLEQUANTITIES = ["angle", "tth", "twotheta", "2theta"]
 DQUANTITIES = ["d", "dspace"]
 XQUANTITIES = ANGLEQUANTITIES + DQUANTITIES + QQUANTITIES
-XUNITS = ["degrees", "radians", "rad", "deg", "inv_angs", "inv_nm", "nm-1", "A-1"]
+XUNITS = [
+    "degrees",
+    "radians",
+    "rad",
+    "deg",
+    "inv_angs",
+    "inv_nm",
+    "nm-1",
+    "A-1",
+]
 
 x_values_not_equal_emsg = (
     "The two objects have different values in x arrays (my_do.all_arrays[:, [1, 2, 3]]). "
@@ -129,9 +145,13 @@ class DiffractionObject:
         """
 
         self._uuid = uuid.uuid4()
-        self._input_data(xarray, yarray, xtype, wavelength, scat_quantity, name, metadata)
+        self._input_data(
+            xarray, yarray, xtype, wavelength, scat_quantity, name, metadata
+        )
 
-    def _input_data(self, xarray, yarray, xtype, wavelength, scat_quantity, name, metadata):
+    def _input_data(
+        self, xarray, yarray, xtype, wavelength, scat_quantity, name, metadata
+    ):
         if xtype not in XQUANTITIES:
             raise ValueError(_xtype_wmsg(xtype))
         if len(xarray) != len(yarray):
@@ -152,8 +172,12 @@ class DiffractionObject:
     def __eq__(self, other):
         if not isinstance(other, DiffractionObject):
             return NotImplemented
-        self_attributes = [key for key in self.__dict__ if not key.startswith("_")]
-        other_attributes = [key for key in other.__dict__ if not key.startswith("_")]
+        self_attributes = [
+            key for key in self.__dict__ if not key.startswith("_")
+        ]
+        other_attributes = [
+            key for key in other.__dict__ if not key.startswith("_")
+        ]
         if not sorted(self_attributes) == sorted(other_attributes):
             return False
         for key in self_attributes:
@@ -167,8 +191,13 @@ class DiffractionObject:
                     or not np.isclose(value, other_value, rtol=1e-5)
                 ):
                     return False
-            elif isinstance(value, list) and all(isinstance(i, np.ndarray) for i in value):
-                if not all(np.allclose(i, j, rtol=1e-5) for i, j in zip(value, other_value)):
+            elif isinstance(value, list) and all(
+                isinstance(i, np.ndarray) for i in value
+            ):
+                if not all(
+                    np.allclose(i, j, rtol=1e-5)
+                    for i, j in zip(value, other_value)
+                ):
                     return False
             else:
                 if value != other_value:
@@ -303,7 +332,9 @@ class DiffractionObject:
         if isinstance(other, DiffractionObject):
             if self.all_arrays.shape != other.all_arrays.shape:
                 raise ValueError(x_values_not_equal_emsg)
-            if not np.allclose(self.all_arrays[:, [1, 2, 3]], other.all_arrays[:, [1, 2, 3]]):
+            if not np.allclose(
+                self.all_arrays[:, [1, 2, 3]], other.all_arrays[:, [1, 2, 3]]
+            ):
                 raise ValueError(x_values_not_equal_emsg)
 
     @property
@@ -381,7 +412,9 @@ class DiffractionObject:
         xtype = self._input_xtype
         xarray = self.on_xtype(xtype)[0]
         if len(xarray) == 0:
-            raise ValueError(f"The '{xtype}' array is empty. Please ensure it is initialized.")
+            raise ValueError(
+                f"The '{xtype}' array is empty. Please ensure it is initialized."
+            )
         index = (np.abs(xarray - xvalue)).argmin()
         return index
 
@@ -447,7 +480,9 @@ class DiffractionObject:
         """
         return [self.all_arrays[:, 3], self.all_arrays[:, 0]]
 
-    def scale_to(self, target_diff_object, q=None, tth=None, d=None, offset=None):
+    def scale_to(
+        self, target_diff_object, q=None, tth=None, d=None, offset=None
+    ):
         """Return a new diffraction object which is the current object but
         rescaled in y to the target.
 
@@ -486,7 +521,10 @@ class DiffractionObject:
         if count == 0:
             q_target_max = max(target_diff_object.on_q()[1])
             q_self_max = max(self.on_q()[1])
-            scaled_do._all_arrays[:, 0] = scaled_do._all_arrays[:, 0] * q_target_max / q_self_max + offset
+            scaled_do._all_arrays[:, 0] = (
+                scaled_do._all_arrays[:, 0] * q_target_max / q_self_max
+                + offset
+            )
             return scaled_do
 
         xtype = "q" if q is not None else "tth" if tth is not None else "d"
@@ -497,7 +535,9 @@ class DiffractionObject:
 
         xindex_data = (np.abs(data[0] - xvalue)).argmin()
         xindex_target = (np.abs(target[0] - xvalue)).argmin()
-        scaled_do._all_arrays[:, 0] = data[1] * target[1][xindex_target] / data[1][xindex_data] + offset
+        scaled_do._all_arrays[:, 0] = (
+            data[1] * target[1][xindex_target] / data[1][xindex_data] + offset
+        )
         return scaled_do
 
     def on_xtype(self, xtype):
@@ -561,12 +601,16 @@ class DiffractionObject:
         if xtype in QQUANTITIES:
             data_to_save = np.column_stack((self.on_q()[0], self.on_q()[1]))
         elif xtype in ANGLEQUANTITIES:
-            data_to_save = np.column_stack((self.on_tth()[0], self.on_tth()[1]))
+            data_to_save = np.column_stack(
+                (self.on_tth()[0], self.on_tth()[1])
+            )
         elif xtype in DQUANTITIES:
             data_to_save = np.column_stack((self.on_d()[0], self.on_d()[1]))
         else:
             warnings.warn(_xtype_wmsg(xtype))
-        self.metadata.update(get_package_info("diffpy.utils", metadata=self.metadata))
+        self.metadata.update(
+            get_package_info("diffpy.utils", metadata=self.metadata)
+        )
         self.metadata["creation_time"] = datetime.datetime.now()
 
         with open(filepath, "w") as f:

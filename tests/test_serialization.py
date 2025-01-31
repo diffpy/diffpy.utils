@@ -3,7 +3,10 @@ from pathlib import Path
 import numpy
 import pytest
 
-from diffpy.utils.parsers.custom_exceptions import ImproperSizeError, UnsupportedTypeError
+from diffpy.utils.parsers.custom_exceptions import (
+    ImproperSizeError,
+    UnsupportedTypeError,
+)
 from diffpy.utils.parsers.loaddata import loadData
 from diffpy.utils.parsers.serialization import deserialize_data, serialize_data
 
@@ -23,7 +26,13 @@ def test_load_multiple(tmp_path, datafile):
         data_table = loadData(headerfile)
 
         # check path extraction
-        generated_data = serialize_data(headerfile, hdata, data_table, dt_colnames=["r", "gr"], show_path=True)
+        generated_data = serialize_data(
+            headerfile,
+            hdata,
+            data_table,
+            dt_colnames=["r", "gr"],
+            show_path=True,
+        )
         assert headerfile == Path(generated_data[headerfile.name].pop("path"))
 
         # rerun without path information and save to file
@@ -60,28 +69,54 @@ def test_exceptions(datafile):
 
     # various dt_colnames inputs
     with pytest.raises(ImproperSizeError):
-        serialize_data(loadfile, hdata, data_table, dt_colnames=["one", "two", "three is too many"])
+        serialize_data(
+            loadfile,
+            hdata,
+            data_table,
+            dt_colnames=["one", "two", "three is too many"],
+        )
     # check proper output
-    normal = serialize_data(loadfile, hdata, data_table, dt_colnames=["r", "gr"])
+    normal = serialize_data(
+        loadfile, hdata, data_table, dt_colnames=["r", "gr"]
+    )
     data_name = list(normal.keys())[0]
     r_list = normal[data_name]["r"]
     gr_list = normal[data_name]["gr"]
     # three equivalent ways to denote no column names
-    missing_parameter = serialize_data(loadfile, hdata, data_table, show_path=False)
-    empty_parameter = serialize_data(loadfile, hdata, data_table, show_path=False, dt_colnames=[])
-    none_entry_parameter = serialize_data(loadfile, hdata, data_table, show_path=False, dt_colnames=[None, None])
+    missing_parameter = serialize_data(
+        loadfile, hdata, data_table, show_path=False
+    )
+    empty_parameter = serialize_data(
+        loadfile, hdata, data_table, show_path=False, dt_colnames=[]
+    )
+    none_entry_parameter = serialize_data(
+        loadfile, hdata, data_table, show_path=False, dt_colnames=[None, None]
+    )
     # check equivalence
     assert missing_parameter == empty_parameter
     assert missing_parameter == none_entry_parameter
-    assert numpy.allclose(missing_parameter[data_name]["data table"], data_table)
+    assert numpy.allclose(
+        missing_parameter[data_name]["data table"], data_table
+    )
     # extract a single column
-    r_extract = serialize_data(loadfile, hdata, data_table, show_path=False, dt_colnames=["r"])
-    gr_extract = serialize_data(loadfile, hdata, data_table, show_path=False, dt_colnames=[None, "gr"])
-    incorrect_r_extract = serialize_data(loadfile, hdata, data_table, show_path=False, dt_colnames=[None, "r"])
+    r_extract = serialize_data(
+        loadfile, hdata, data_table, show_path=False, dt_colnames=["r"]
+    )
+    gr_extract = serialize_data(
+        loadfile, hdata, data_table, show_path=False, dt_colnames=[None, "gr"]
+    )
+    incorrect_r_extract = serialize_data(
+        loadfile, hdata, data_table, show_path=False, dt_colnames=[None, "r"]
+    )
     # check proper columns extracted
-    assert numpy.allclose(gr_extract[data_name]["gr"], incorrect_r_extract[data_name]["r"])
+    assert numpy.allclose(
+        gr_extract[data_name]["gr"], incorrect_r_extract[data_name]["r"]
+    )
     assert "r" not in gr_extract[data_name]
-    assert "gr" not in r_extract[data_name] and "gr" not in incorrect_r_extract[data_name]
+    assert (
+        "gr" not in r_extract[data_name]
+        and "gr" not in incorrect_r_extract[data_name]
+    )
     # check correct values extracted
     assert numpy.allclose(r_extract[data_name]["r"], r_list)
     assert numpy.allclose(gr_extract[data_name]["gr"], gr_list)

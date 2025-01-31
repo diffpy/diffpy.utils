@@ -76,5 +76,7 @@ def test_loadData_headers(datafile):
     delimiter = ": "  # what our data should be separated by
 
     # Load data with headers
-    hdata = loadData(loaddatawithheaders, headers=True, hdel=delimiter, hignore=hignore)
+    hdata = loadData(
+        loaddatawithheaders, headers=True, hdel=delimiter, hignore=hignore
+    )
     assert hdata == expected

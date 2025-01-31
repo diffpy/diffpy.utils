@@ -51,5 +51,7 @@ class ImproperSizeError(Exception):
 
     def __init__(self, bad_object, message=None):
         if message is None:
-            self.message = f"The size of {bad_object} is different than expected."
+            self.message = (
+                f"The size of {bad_object} is different than expected."
+            )
         super().__init__(self.message)

@@ -142,10 +142,16 @@ from diffpy.utils.diffraction_objects import XQUANTITIES, DiffractionObject
     ],
 )
 def test_diffraction_objects_equality(
-    do_args_1, do_args_2, expected_equality, wavelength_warning_expected, wavelength_warning_msg
+    do_args_1,
+    do_args_2,
+    expected_equality,
+    wavelength_warning_expected,
+    wavelength_warning_msg,
 ):
     if wavelength_warning_expected:
-        with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
+        with pytest.warns(
+            UserWarning, match=re.escape(wavelength_warning_msg)
+        ):
             do_1 = DiffractionObject(**do_args_1)
             do_2 = DiffractionObject(**do_args_2)
     else:
@@ -184,7 +190,12 @@ def test_init_invalid_xtype():
             f"Please rerun specifying an xtype from {*XQUANTITIES, }"
         ),
     ):
-        return DiffractionObject(xarray=np.empty(0), yarray=np.empty(0), xtype="invalid_type", wavelength=1.54)
+        return DiffractionObject(
+            xarray=np.empty(0),
+            yarray=np.empty(0),
+            xtype="invalid_type",
+            wavelength=1.54,
+        )
 
 
 @pytest.mark.parametrize(
@@ -304,7 +315,9 @@ def test_scale_to(org_do_args, target_do_args, scale_inputs, expected):
     target_do = DiffractionObject(**target_do_args)
     scaled_do = original_do.scale_to(target_do, **scale_inputs)
     # Check the intensity data is the same as expected
-    assert np.allclose(scaled_do.on_xtype(expected["xtype"])[1], expected["yarray"])
+    assert np.allclose(
+        scaled_do.on_xtype(expected["xtype"])[1], expected["yarray"]
+    )
 
 
 @pytest.mark.parametrize(
@@ -416,13 +429,25 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
 )
 def test_get_array_index(do_args, get_array_index_inputs, expected_index):
     do = DiffractionObject(**do_args)
-    actual_index = do.get_array_index(get_array_index_inputs["xtype"], get_array_index_inputs["value"])
+    actual_index = do.get_array_index(
+        get_array_index_inputs["xtype"], get_array_index_inputs["value"]
+    )
     assert actual_index == expected_index
 
 
 def test_get_array_index_bad():
-    do = DiffractionObject(wavelength=2 * np.pi, xarray=np.array([]), yarray=np.array([]), xtype="tth")
-    with pytest.raises(ValueError, match=re.escape("The 'tth' array is empty. Please ensure it is initialized.")):
+    do = DiffractionObject(
+        wavelength=2 * np.pi,
+        xarray=np.array([]),
+        yarray=np.array([]),
+        xtype="tth",
+    )
+    with pytest.raises(
+        ValueError,
+        match=re.escape(
+            "The 'tth' array is empty. Please ensure it is initialized."
+        ),
+    ):
         do.get_array_index(xtype="tth", xvalue=30)
 
 
@@ -430,7 +455,9 @@ def test_dump(tmp_path, mocker):
     x, y = np.linspace(0, 5, 6), np.linspace(0, 5, 6)
     directory = Path(tmp_path)
     file = directory / "testfile"
-    with pytest.warns(RuntimeWarning, match="divide by zero encountered in divide"):
+    with pytest.warns(
+        RuntimeWarning, match="divide by zero encountered in divide"
+    ):
         do = DiffractionObject(
             wavelength=1.54,
             name="test",
@@ -438,7 +465,11 @@ def test_dump(tmp_path, mocker):
             xarray=np.array(x),
             yarray=np.array(y),
             xtype="q",
-            metadata={"thing1": 1, "thing2": "thing2", "package_info": {"package2": "3.4.5"}},
+            metadata={
+                "thing1": 1,
+                "thing2": "thing2",
+                "package_info": {"package2": "3.4.5"},
+            },
         )
     mocker.patch("importlib.metadata.version", return_value="3.3.0")
     with freeze_time("2012-01-14"):
@@ -547,7 +578,9 @@ def test_dump(tmp_path, mocker):
         ),
         (  # C4: Same as C3, but with an optional scat_quantity argument, expect non-empty string for scat_quantity
             {
-                "xarray": np.array([np.inf, 2 * np.sqrt(2) * np.pi, 2 * np.pi]),
+                "xarray": np.array(
+                    [np.inf, 2 * np.sqrt(2) * np.pi, 2 * np.pi]
+                ),
                 "yarray": np.array([1.0, 2.0, 3.0]),
                 "xtype": "d",
                 "wavelength": 4.0 * np.pi,
@@ -586,15 +619,23 @@ def test_init_valid(
     wavelength_warning_msg,
 ):
     if divide_by_zero_warning_expected:
-        with pytest.warns(RuntimeWarning, match="divide by zero encountered in divide"):
+        with pytest.warns(
+            RuntimeWarning, match="divide by zero encountered in divide"
+        ):
             actual_do_dict = DiffractionObject(**do_init_args).__dict__
     elif wavelength_warning_expected:
-        with pytest.warns(UserWarning, match=re.escape(wavelength_warning_msg)):
+        with pytest.warns(
+            UserWarning, match=re.escape(wavelength_warning_msg)
+        ):
             actual_do_dict = DiffractionObject(**do_init_args).__dict__
     else:
         actual_do_dict = DiffractionObject(**do_init_args).__dict__
     diff = DeepDiff(
-        actual_do_dict, expected_do_dict, ignore_order=True, significant_digits=13, exclude_paths="root['_uuid']"
+        actual_do_dict,
+        expected_do_dict,
+        ignore_order=True,
+        significant_digits=13,
+        exclude_paths="root['_uuid']",
     )
     assert diff == {}
 
@@ -624,7 +665,10 @@ def test_init_invalid_args(
 def test_all_array_getter(do_minimal_tth):
     actual_do = do_minimal_tth
     print(actual_do.all_arrays)
-    expected_all_arrays = [[1, 0.51763809, 30, 12.13818192], [2, 1, 60, 6.28318531]]
+    expected_all_arrays = [
+        [1, 0.51763809, 30, 12.13818192],
+        [2, 1, 60, 6.28318531],
+    ]
     assert np.allclose(actual_do.all_arrays, expected_all_arrays)
 
 
@@ -647,7 +691,9 @@ def test_uuid_getter(do_minimal):
 
 def test_uuid_getter_with_mock(mocker, do_minimal):
     mocker.patch.object(
-        DiffractionObject, "uuid", new_callable=lambda: UUID("d67b19c6-3016-439f-81f7-cf20a04bee87")
+        DiffractionObject,
+        "uuid",
+        new_callable=lambda: UUID("d67b19c6-3016-439f-81f7-cf20a04bee87"),
     )
     do = do_minimal
     assert do.uuid == UUID("d67b19c6-3016-439f-81f7-cf20a04bee87")
@@ -671,7 +717,10 @@ def test_xarray_yarray_length_mismatch():
         "re-initialize 'DiffractionObject'with valid 'xarray' and 'yarray's",
     ):
         DiffractionObject(
-            xarray=np.array([1.0, 2.0]), yarray=np.array([0.0, 0.0, 0.0]), xtype="tth", wavelength=1.54
+            xarray=np.array([1.0, 2.0]),
+            yarray=np.array([0.0, 0.0, 0.0]),
+            xtype="tth",
+            wavelength=1.54,
         )
 
 
@@ -755,9 +804,13 @@ def test_copy_object(do_minimal):
         ),
     ],
 )
-def test_scalar_operations(operation, starting_yarray, scalar_value, expected_yarray, do_minimal_tth):
+def test_scalar_operations(
+    operation, starting_yarray, scalar_value, expected_yarray, do_minimal_tth
+):
     do = do_minimal_tth
-    expected_xarray_constant = np.array([[0.51763809, 30.0, 12.13818192], [1.0, 60.0, 6.28318531]])
+    expected_xarray_constant = np.array(
+        [[0.51763809, 30.0, 12.13818192], [1.0, 60.0, 6.28318531]]
+    )
     assert np.allclose(do.all_arrays[:, [1, 2, 3]], expected_xarray_constant)
     assert np.allclose(do.all_arrays[:, 0], starting_yarray)
     if operation == "add":
@@ -775,8 +828,12 @@ def test_scalar_operations(operation, starting_yarray, scalar_value, expected_ya
     assert np.allclose(do_right_op.all_arrays[:, 0], expected_yarray)
     assert np.allclose(do_left_op.all_arrays[:, 0], expected_yarray)
     # Ensure x-values are unchanged
-    assert np.allclose(do_right_op.all_arrays[:, [1, 2, 3]], expected_xarray_constant)
-    assert np.allclose(do_left_op.all_arrays[:, [1, 2, 3]], expected_xarray_constant)
+    assert np.allclose(
+        do_right_op.all_arrays[:, [1, 2, 3]], expected_xarray_constant
+    )
+    assert np.allclose(
+        do_left_op.all_arrays[:, [1, 2, 3]], expected_xarray_constant
+    )
 
 
 @pytest.mark.parametrize(
@@ -785,23 +842,63 @@ def test_scalar_operations(operation, starting_yarray, scalar_value, expected_ya
         # Test addition, subtraction, multiplication, and division of two DO objects
         (  # Test addition of two DO objects, expect combined yarray values
             "add",
-            np.array([[2.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
-            np.array([[2.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
+            np.array(
+                [
+                    [2.0, 0.51763809, 30.0, 12.13818192],
+                    [4.0, 1.0, 60.0, 6.28318531],
+                ]
+            ),
+            np.array(
+                [
+                    [2.0, 0.51763809, 30.0, 12.13818192],
+                    [4.0, 1.0, 60.0, 6.28318531],
+                ]
+            ),
         ),
         (  # Test subtraction of two DO objects, expect differences in yarray values
             "sub",
-            np.array([[0.0, 0.51763809, 30.0, 12.13818192], [0.0, 1.0, 60.0, 6.28318531]]),
-            np.array([[0.0, 0.51763809, 30.0, 12.13818192], [0.0, 1.0, 60.0, 6.28318531]]),
+            np.array(
+                [
+                    [0.0, 0.51763809, 30.0, 12.13818192],
+                    [0.0, 1.0, 60.0, 6.28318531],
+                ]
+            ),
+            np.array(
+                [
+                    [0.0, 0.51763809, 30.0, 12.13818192],
+                    [0.0, 1.0, 60.0, 6.28318531],
+                ]
+            ),
         ),
         (  # Test multiplication of two DO objects, expect multiplication in yarray values
             "mul",
-            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
-            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [4.0, 1.0, 60.0, 6.28318531]]),
+            np.array(
+                [
+                    [1.0, 0.51763809, 30.0, 12.13818192],
+                    [4.0, 1.0, 60.0, 6.28318531],
+                ]
+            ),
+            np.array(
+                [
+                    [1.0, 0.51763809, 30.0, 12.13818192],
+                    [4.0, 1.0, 60.0, 6.28318531],
+                ]
+            ),
         ),
         (  # Test division of two DO objects, expect division in yarray values
             "div",
-            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [1.0, 1.0, 60.0, 6.28318531]]),
-            np.array([[1.0, 0.51763809, 30.0, 12.13818192], [1.0, 1.0, 60.0, 6.28318531]]),
+            np.array(
+                [
+                    [1.0, 0.51763809, 30.0, 12.13818192],
+                    [1.0, 1.0, 60.0, 6.28318531],
+                ]
+            ),
+            np.array(
+                [
+                    [1.0, 0.51763809, 30.0, 12.13818192],
+                    [1.0, 1.0, 60.0, 6.28318531],
+                ]
+            ),
         ),
     ],
 )
@@ -814,10 +911,22 @@ def test_binary_operator_on_do(
     do_1 = do_minimal_tth
     do_2 = do_minimal_tth
     assert np.allclose(
-        do_1.all_arrays, np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]])
+        do_1.all_arrays,
+        np.array(
+            [
+                [1.0, 0.51763809, 30.0, 12.13818192],
+                [2.0, 1.0, 60.0, 6.28318531],
+            ]
+        ),
     )
     assert np.allclose(
-        do_2.all_arrays, np.array([[1.0, 0.51763809, 30.0, 12.13818192], [2.0, 1.0, 60.0, 6.28318531]])
+        do_2.all_arrays,
+        np.array(
+            [
+                [1.0, 0.51763809, 30.0, 12.13818192],
+                [2.0, 1.0, 60.0, 6.28318531],
+            ]
+        ),
     )
 
     if operation == "add":
@@ -833,8 +942,12 @@ def test_binary_operator_on_do(
         do_1_y_modified = do_1 / do_2
         do_2_y_modified = do_2 / do_1
 
-    assert np.allclose(do_1_y_modified.all_arrays, expected_do_1_all_arrays_with_y_modified)
-    assert np.allclose(do_2_y_modified.all_arrays, expected_do_2_all_arrays_with_y_modified)
+    assert np.allclose(
+        do_1_y_modified.all_arrays, expected_do_1_all_arrays_with_y_modified
+    )
+    assert np.allclose(
+        do_2_y_modified.all_arrays, expected_do_2_all_arrays_with_y_modified
+    )
 
 
 def test_operator_invalid_type(do_minimal_tth, invalid_add_type_error_msg):
@@ -848,9 +961,13 @@ def test_operator_invalid_type(do_minimal_tth, invalid_add_type_error_msg):
         (lambda x, y: x / y),  # Test division
     ]
     for operation in operations:
-        with pytest.raises(TypeError, match=re.escape(invalid_add_type_error_msg)):
+        with pytest.raises(
+            TypeError, match=re.escape(invalid_add_type_error_msg)
+        ):
             operation(do, invalid_value)
-        with pytest.raises(TypeError, match=re.escape(invalid_add_type_error_msg)):
+        with pytest.raises(
+            TypeError, match=re.escape(invalid_add_type_error_msg)
+        ):
             operation(invalid_value, do)
 
 
@@ -861,7 +978,9 @@ def test_operator_invalid_xarray_values_not_equal(
     # Add two DO objects with different xarray values but equal in shape, expect ValueError
     do_1 = do_minimal_tth
     do_2 = do_minimal_d
-    with pytest.raises(ValueError, match=re.escape(x_values_not_equal_error_msg)):
+    with pytest.raises(
+        ValueError, match=re.escape(x_values_not_equal_error_msg)
+    ):
         if operation == "add":
             do_1 + do_2
         elif operation == "sub":
@@ -879,7 +998,9 @@ def test_operator_invalid_xarray_shape_not_equal(
     # Add two DO objects with different xarrays shape, expect ValueError
     do_1 = do_minimal
     do_2 = do_minimal_tth
-    with pytest.raises(ValueError, match=re.escape(x_values_not_equal_error_msg)):
+    with pytest.raises(
+        ValueError, match=re.escape(x_values_not_equal_error_msg)
+    ):
         if operation == "add":
             do_1 + do_2
         elif operation == "sub":
