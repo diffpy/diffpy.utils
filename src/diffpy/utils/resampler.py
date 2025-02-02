@@ -22,11 +22,11 @@ import numpy as np
 def wsinterp(x, xp, fp, left=None, right=None):
     """One-dimensional Whittaker-Shannon interpolation.
 
-    Reconstruct a continuous signal from discrete data points by utilizing sinc functions
-    as interpolation kernels. This function interpolates the values of fp (array),
-    which are defined over xp (array), at new points x (array or float).
-    The implementation is based on E. T. Whittaker's 1915 paper
-    (https://doi.org/10.1017/S0370164600017806).
+    Reconstruct a continuous signal from discrete data points by utilizing
+    sinc functions as interpolation kernels. This function interpolates
+    the values of fp (array), which are defined over xp (array), at new points
+    x (array or float). The implementation is based on E. T. Whittaker's 1915
+    paper (https://doi.org/10.1017/S0370164600017806).
 
     Parameters
     ----------
@@ -37,17 +37,18 @@ def wsinterp(x, xp, fp, left=None, right=None):
     fp: ndarray
         The array of y values associated with xp.
     left: float
-        If given, set fp for x < xp[0] to left. Otherwise, if left is None (default) or not given,
-        set fp for x < xp[0] to fp evaluated at xp[-1].
+        If given, set fp for x < xp[0] to left. Otherwise, if left is None
+        (default) or not given, set fp for x < xp[0] to fp evaluated at xp[-1].
     right: float
-        If given, set fp for x > xp[-1] to right. Otherwise, if right is None (default) or not given, set fp for
-        x > xp[-1] to fp evaluated at xp[-1].
+        If given, set fp for x > xp[-1] to right. Otherwise, if right is None
+        (default) or not given, set fp for x > xp[-1] to fp evaluated at
+        xp[-1].
 
     Returns
     -------
     ndarray or float
-        The interpolated values at points x. Returns a single float if x is a scalar,
-        otherwise returns a numpy.ndarray.
+        The interpolated values at points x. Returns a single float if x is a
+        scalar, otherwise returns a numpy.ndarray.
     """
     scalar = np.isscalar(x)
     if scalar:
@@ -82,10 +83,11 @@ def nsinterp(xp, fp, qmin=0, qmax=25, left=None, right=None):
     """One-dimensional Whittaker-Shannon interpolation onto the Nyquist-Shannon
     grid.
 
-    Takes a band-limited function fp and original grid xp and resamples fp on the NS grid.
-    Uses the minimum number of points N required by the Nyquist sampling theorem.
-    N = (qmax-qmin)(rmax-rmin)/pi, where rmin and rmax are the ends of the real-space ranges.
-    fp must be finite, and the user inputs qmin and qmax of the frequency-domain.
+    Takes a band-limited function fp and original grid xp and resamples fp on
+    the NS grid. Uses the minimum number of points N required by the Nyquist
+    sampling theorem. N = (qmax-qmin)(rmax-rmin)/pi, where rmin and rmax are
+    the ends of the real-space ranges. fp must be finite, and the user inputs
+    qmin and qmax of the frequency-domain.
 
     Parameters
     ----------
@@ -103,8 +105,8 @@ def nsinterp(xp, fp, qmin=0, qmax=25, left=None, right=None):
     x: ndarray
         The Nyquist-Shannon grid computed for the given qmin and qmax.
     fp_at_x: ndarray
-        The interpolated values at points x. Returns a single float if x is a scalar,
-        otherwise returns a numpy.ndarray.
+        The interpolated values at points x. Returns a single float if x is a
+        scalar, otherwise returns a numpy.ndarray.
     """
     # Ensure numpy array
     xp = np.array(xp)
@@ -122,8 +124,9 @@ def nsinterp(xp, fp, qmin=0, qmax=25, left=None, right=None):
 def resample(r, s, dr):
     """Resample a PDF on a new grid.
 
-    This uses the Whittaker-Shannon interpolation formula to put s1 on a new grid if dr is less than the sampling
-    interval of r1, or linear interpolation if dr is greater than the sampling interval of r1.
+    This uses the Whittaker-Shannon interpolation formula to put s1 on a new
+    grid if dr is less than the sampling interval of r1, or linear
+    interpolation if dr is greater than the sampling interval of r1.
 
     Parameters
     ----------
@@ -140,8 +143,9 @@ def resample(r, s, dr):
     """
 
     warnings.warn(
-        "The 'resample' function is deprecated and will be removed in a future release (3.8.0). \n"
-        "'resample' has been renamed 'wsinterp' to better reflect functionality. Please use 'wsinterp' instead.",
+        "The 'resample' function is deprecated and will be removed in a "
+        "future release (3.8.0). \n'resample' has been renamed 'wsinterp' to "
+        "better reflect functionality. Please use 'wsinterp' instead.",
         DeprecationWarning,
         stacklevel=2,
     )

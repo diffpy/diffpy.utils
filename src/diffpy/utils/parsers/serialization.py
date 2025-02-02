@@ -47,16 +47,18 @@ def serialize_data(
     data_table: list or ndarray
         Data table.
     dt_colnames: list
-        Names of each column in data_table. Every name in data_table_cols will be put into the Dictionary
-        as a key with a value of that column in data_table (stored as a List). Put None for columns
-        without names. If dt_cols has less non-None entries than columns in data_table,
-        the pair {'data table': data_table} will be put in the dictionary.
-        (Default None: only entry {'data table': data_table} will be added to dictionary.)
+        Names of each column in data_table. Every name in data_table_cols will
+        be put into the Dictionary as a key with a value of that column in data
+        _table (stored as a List). Put None for columns without names. If dt_
+        cols has less non-None entries than columns in data_table, the pair {'
+        data table': data_table} will be put in the dictionary. (Default None:
+        only entry {'data table': data_table} will be added to dictionary.)
     show_path: bool
-        include a path element in the database entry (default True). If 'path' is not included in hddata,
-         extract path from filename.
+        include a path element in the database entry (default True). If 'path'
+        is not included in hddata, extract path from filename.
     serial_file
-        Serial language file to dump dictionary into. If None (default), no dumping will occur.
+        Serial language file to dump dictionary into. If None (default), no
+        dumping will occur.
 
     Returns
     -------
@@ -79,7 +81,8 @@ def serialize_data(
     data.update(hdata)
 
     # second add named columns in dt_cols
-    # performed second to prioritize overwriting hdata entries with data_table column entries
+    # performed second to prioritize overwriting hdata entries with data_table
+    # column entries
     named_columns = 0  # initial value
     max_columns = 1  # higher than named_columns to trigger 'data table' entry
     if dt_colnames is not None:
@@ -98,17 +101,24 @@ def serialize_data(
             if colname is not None:
                 if colname in hdata.keys():
                     warnings.warn(
-                        f"Entry '{colname}' in hdata has been overwritten by a data_table entry.",
+                        (
+                            f"Entry '{colname}' in hdata has been overwritten "
+                            f"by a data_table entry."
+                        ),
                         RuntimeWarning,
                     )
                 data.update({colname: list(data_table[:, idx])})
                 named_columns += 1
 
-    # finally add data_table as an entry named 'data table' if not all columns were parsed
+    # finally add data_table as an entry named 'data table' if not all columns
+    # were parsed
     if named_columns < max_columns:
         if "data table" in data.keys():
             warnings.warn(
-                "Entry 'data table' in hdata has been overwritten by data_table.",
+                (
+                    "Entry 'data table' in hdata has been overwritten by "
+                    "data_table."
+                ),
                 RuntimeWarning,
             )
         data.update({"data table": data_table})

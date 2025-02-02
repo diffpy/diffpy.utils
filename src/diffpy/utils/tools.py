@@ -22,7 +22,8 @@ def _stringify(string_value):
     Returns
     -------
     str
-        The original string if string_value is not None, otherwise an empty string.
+        The original string if string_value is not None, otherwise an empty
+        string.
     """
     return string_value if string_value is not None else ""
 
@@ -53,36 +54,40 @@ def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
     """Get name, email, and orcid of the owner/user from various sources and
     return it as a metadata dictionary.
 
-    The function looks for the information in json format configuration files with the name 'diffpyconfig.json'.
-    These can be in the user's home directory and in the current working directory.  The information in the
-    config files are combined, with the local config overriding the home-directory one.  Values for
-    owner_name, owner_email, and owner_orcid may be passed in to the function and these override the values
-    in the config files.
+    The function looks for the information in json format configuration files
+    with the name 'diffpyconfig.json'. These can be in the user's home
+    directory and in the current working directory.  The information in the
+    config files are combined, with the local config overriding the home-
+    directory one.  Values for owner_name, owner_email, and owner_orcid may be
+    passed in to the function and these override the values in the config
+    files.
 
-    A template for the config file is below.  Create a text file called 'diffpyconfig.json' in your home directory
-    and copy-paste the template into it, editing it with your real information.
+    A template for the config file is below.  Create a text file called '
+    diffpyconfig.json' in your home directory and copy-paste the template into
+    it, editing it with your real information.
     {
       "owner_name": "<your name as you would like it stored with your data>>",
       "owner_email": "<your_associated_email>>@email.com",
-      "owner_orcid": "<your_associated_orcid if you would like this stored with your data>>"
+      "owner_orcid": "<your_associated_orcid if you would like this stored with your data>>"  # noqa: E501
     }
-    You may also store any other global-level information that you would like associated with your
-    diffraction data in this file
+    You may also store any other global-level information that you would like
+    associated with your diffraction data in this file
 
     Parameters
     ----------
-    owner_name : str, optional, default is the value stored in the global or local config file.
-        The name of the user who will show as owner in the metadata that is stored with the data
-    owner_email : str, optional, default is the value stored in the global or local config file.
-        The email of the user/owner
-    owner_orcid : str, optional, default is the value stored in the global or local config file.
-        The ORCID id of the user/owner
+    owner_name : str, optional, default is the value stored in the global or
+        local config file. The name of the user who will show as owner in the
+        metadata that is stored with the data
+    owner_email : str, optional, default is the value stored in the global or
+        local config file. The email of the user/owner
+    owner_orcid : str, optional, default is the value stored in the global or
+        local config file. The ORCID id of the user/owner
 
     Returns
     -------
     user_info : dict
-        The dictionary containing username, email and orcid of the user/owner, and any other information
-        stored in the global or local config files.
+        The dictionary containing username, email and orcid of the user/owner,
+        and any other information stored in the global or local config files.
     """
     runtime_info = {
         "owner_name": owner_name,
@@ -104,24 +109,27 @@ def check_and_build_global_config(skip_config_creation=False):
     """Check for a global diffpu config file in user's home directory and
     creates one if it is missing.
 
-    The file it looks for is called diffpyconfig.json.  This can contain anything in json format, but
-    minimally contains information about the computer owner.  The information is used
-    when diffpy objects are created and saved to files or databases to retain ownership information
-    of datasets.  For example, it is used by diffpy.utils.tools.get_user_info().
+    The file it looks for is called diffpyconfig.json.  This can contain
+    anything in json format, but minimally contains information about the
+    computer owner.  The information is used when diffpy objects are created
+    and saved to files or databases to retain ownership information of datasets
+    .  For example, it is used by diffpy.utils.tools.get_user_info().
 
-    If the function finds no config file in the user's home directory it interrupts execution
-    and prompts the user for name, email, and orcid information.  It then creates the config file
-    with this information inside it.
+    If the function finds no config file in the user's home directory it
+    interrupts execution and prompts the user for name, email, and orcid
+    information.  It then creates the config file with this information inside
+    it.
 
     The function returns True if the file exists and False otherwise.
 
-    If you would like to check for a file but not run the file creation workflow you can set
-    the optional argument skip_config_creation to True.
+    If you would like to check for a file but not run the file creation
+    workflow you can set the optional argument skip_config_creation to True.
 
     Parameters
     ----------
     skip_config_creation : bool, optional, default is False.
-        The boolean that will override the creation workflow even if no config file exists.
+        The boolean that will override the creation workflow even if no config
+        file exists.
 
     Returns
     -------
@@ -136,13 +144,14 @@ def check_and_build_global_config(skip_config_creation=False):
     if skip_config_creation:
         return config_exists
     intro_text = (
-        "No global configuration file was found containing information about the user to "
-        "associate with the data.\n By following the prompts below you can add your name "
-        "and email to this file on the current "
-        "computer and your name will be automatically associated with subsequent diffpy data by default.\n"
-        "This is not recommended on a shared or public computer. "
-        "You will only have to do that once.\n"
-        "For more information, please refer to www.diffpy.org/diffpy.utils/examples/toolsexample.html"
+        "No global configuration file was found containing information about "
+        "the user to associate with the data.\n By following the prompts "
+        "below you can add your name and email to this file on the current "
+        "computer and your name will be automatically associated with "
+        "subsequent diffpy data by default.\n This is not recommended on a "
+        "shared or public computer. You will only have to do that once.\n "
+        "For more information, please refer to www.diffpy.org/diffpy.utils/ "
+        "examples/toolsexample.html"
     )
     print(intro_text)
     username = input(
@@ -160,14 +169,15 @@ def check_and_build_global_config(skip_config_creation=False):
         with open(config_path, "w") as f:
             f.write(json.dumps(config))
         outro_text = (
-            f"The config file at {Path().home() / 'diffpyconfig.json'} has been created. "
-            f"The values  {config} were entered.\n"
-            f"These values will be inserted as metadata with your data in apps that use "
-            f"diffpy.get_user_info(). If you would like to update these values, either "
-            f"delete the config file and this workflow will rerun next time you run this "
-            f"program.  Or you may open the config file in a text editor and manually edit the"
-            f"entries.  For more information, see: "
-            f"https://diffpy.github.io/diffpy.utils/examples/tools_example.html"
+            "The config file at {Path().home() / 'diffpyconfig.json'} has "
+            "been created. The values  {config} were entered.\n These values "
+            "will be inserted as metadata with your data in apps that use "
+            "diffpy.get_user_info(). If you would like to update these "
+            "values , either delete the config file and this workflow will "
+            "return next time you run this program.  Or you may open the "
+            "config file in a text editor and manually edit the entries. "
+            "For more information, see: https://diffpy.github.io/diffpy.utils"
+            "/examples/tools_example.html"
         )
         print(outro_text)
         config_exists = True
@@ -177,13 +187,15 @@ def check_and_build_global_config(skip_config_creation=False):
 def get_package_info(package_names, metadata=None):
     """Fetch package version and updates it into (given) metadata.
 
-    Package info stored in metadata as {'package_info': {'package_name': 'version_number'}}.
+    Package info stored in metadata as {'package_info': {'package_name': '
+    version_number'}}.
 
     ----------
     package_name : str or list
         The name of the package(s) to retrieve the version number for.
     metadata : dict
-        The dictionary to store the package info. If not provided, a new dictionary will be created.
+        The dictionary to store the package info. If not provided, a new
+        dictionary will be created.
 
     Returns
     -------
@@ -208,7 +220,8 @@ def get_density_from_cloud(sample_composition, mp_token=""):
     It is not implemented yet.
     """
     raise NotImplementedError(
-        "So sorry, density computation from composition is not implemented right now. "
+        "So sorry, density computation from composition is not implemented "
+        "right now. "
         "We hope to have this implemented in the next release. "
         "Please rerun specifying a sample mass density."
     )
@@ -221,7 +234,8 @@ def compute_mu_using_xraydb(
 
     Computes mu based on the sample composition and energy.
     User should provide a sample mass density or a packing fraction.
-    If neither density nor packing fraction is specified, or if both are specified, a ValueError will be raised.
+    If neither density nor packing fraction is specified, or if both are
+    specified, a ValueError will be raised.
     Reference: https://xraypy.github.io/XrayDB/python.html#xraydb.material_mu.
 
     Parameters
@@ -245,7 +259,8 @@ def compute_mu_using_xraydb(
         sample_mass_density is not None and packing_fraction is not None
     ):
         raise ValueError(
-            "You must specify either sample_mass_density or packing_fraction, but not both. "
+            "You must specify either sample_mass_density or packing_fraction, "
+            "but not both. "
             "Please rerun specifying only one."
         )
     if packing_fraction is not None:
@@ -275,8 +290,10 @@ def _model_function(z, diameter, z0, I0, mud, slope):
     """
     Compute the model function with the following steps:
     1. Let dz = z-z0, so that dz is centered at 0
-    2. Compute length l that is the effective length for computing intensity I = I0 * e^{-mu * l}:
-    - For dz within the capillary diameter, l is the chord length of the circle at position dz
+    2. Compute length l that is the effective length for computing intensity
+       I = I0 * e^{-mu * l}:
+    - For dz within the capillary diameter, l is the chord length of the
+      circle at position dz
     - For dz outside this range, l = 0
     3. Apply a linear adjustment to I0 by taking I0 as I0 - slope * z
     """
@@ -309,7 +326,8 @@ def _extend_z_and_convolve(z, diameter, half_slit_width, z0, I0, mud, slope):
     z_extended = np.concatenate([z_left_pad, z, z_right_pad])
     I_extended = _model_function(z_extended, diameter, z0, I0, mud, slope)
     kernel = _top_hat(z_extended - z_extended.mean(), half_slit_width)
-    I_convolved = I_extended  # this takes care of the case where slit width is close to 0
+    # this takes care of the case where slit width is close to 0
+    I_convolved = I_extended
     if kernel.sum() != 0:
         kernel /= kernel.sum()
         I_convolved = convolve(I_extended, kernel, mode="same")
@@ -364,12 +382,14 @@ def compute_mud(filepath):
 
     This function loads z-scan data and fits it to a model
     that convolves a top-hat function with I = I0 * e^{-mu * l}.
-    The fitting procedure is run multiple times, and we return the best-fit parameters based on the lowest rmse.
+    The fitting procedure is run multiple times, and we return the best-fit
+    parameters based on the lowest rmse.
 
     The full mathematical details are described in the paper:
-    An ad hoc Absorption Correction for Reliable Pair-Distribution Functions from Low Energy x-ray Sources,
-    Yucong Chen, Till Schertenleib, Andrew Yang, Pascal Schouwink, Wendy L. Queen and Simon J. L. Billinge,
-    in preparation.
+    An ad hoc Absorption Correction for Reliable Pair-Distribution Functions
+    from Low Energy x-ray Sources, Yucong Chen, Till Schertenleib, Andrew
+    Yang , Pascal Schouwink, Wendy L. Queen and Simon J. L. Billinge, in
+    preparation.
 
     Parameters
     ----------

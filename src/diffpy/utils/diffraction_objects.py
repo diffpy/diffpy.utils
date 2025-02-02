@@ -31,14 +31,16 @@ XUNITS = [
 ]
 
 x_values_not_equal_emsg = (
-    "The two objects have different values in x arrays (my_do.all_arrays[:, [1, 2, 3]]). "
-    "Please ensure the x values of the two objects are identical by re-instantiating "
-    "the DiffractionObject with the correct x value inputs."
+    "The two objects have different values in x arrays "
+    "my_do.all_arrays[:, [1, 2, 3]]). Please ensure the x values of the two "
+    "objects are identical by re-instantiating the DiffractionObject with the "
+    "correct x value inputs."
 )
 
 invalid_add_type_emsg = (
-    "You may only add a DiffractionObject with another DiffractionObject or a scalar value. "
-    "Please rerun by adding another DiffractionObject instance or a scalar value. "
+    "You may only add a DiffractionObject with another DiffractionObject or a"
+    "scalar value. Please rerun by adding another DiffractionObject or "
+    "a scalar value. "
     "e.g., my_do_1 + my_do_2 or my_do + 10 or 10 + my_do"
 )
 
@@ -70,11 +72,14 @@ class DiffractionObject:
     Attributes
     ----------
     scat_quantity : str
-        The type of scattering experiment (e.g., "x-ray", "neutron"). Default is an empty string "".
+        The type of scattering experiment (e.g., "x-ray", "neutron").
+        Default is an empty string "".
     wavelength : float
-        The wavelength of the incoming beam, specified in angstroms (Å). Default is none.
+        The wavelength of the incoming beam, specified in angstroms (Å).
+        Default is none.
     name: str
-        The name or label for the scattering data. Default is an empty string "".
+        The name or label for the scattering data. Default is an empty
+        string "".
     qmin : float
         The minimum q value.
     qmax : float
@@ -104,11 +109,13 @@ class DiffractionObject:
         Parameters
         ----------
         xarray : ndarray
-            The independent variable array containing "q", "tth", or "d" values.
+            The independent variable array containing "q", "tth", or "d"
+            values.
         yarray : ndarray
             The dependent variable array corresponding to intensity values.
         xtype : str
-            The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES}.
+            The type of the independent variable in `xarray`.
+            Must be one of {*XQUANTITIES}.
         wavelength : float, optional, default is None.
             The wavelength of the incoming beam, specified in angstroms (Å)
         scat_quantity : str, optional, default is an empty string "".
@@ -124,7 +131,8 @@ class DiffractionObject:
         >>> import numpy as np
         >>> from diffpy.utils.diffraction_objects import DiffractionObject
         ...
-        >>> x = np.array([0.12, 0.24, 0.31, 0.4])  # independent variable (e.g., q)
+        >>> # independent variable (e.g., q)
+        >>> x = np.array([0.12, 0.24, 0.31, 0.4])
         >>> y = np.array([10, 20, 40, 60])  # intensity values
         >>> metadata = {
         ...     "sample": "rock salt from the beach",
@@ -211,23 +219,28 @@ class DiffractionObject:
         Parameters
         ----------
         other : DiffractionObject, int, or float
-            The item to be added. If `other` is a scalar value, this value will be added to each element of the
-            yarray of this DiffractionObject instance. If `other` is another DiffractionObject, the yarrays of the
-            two DiffractionObjects will be combined element-wise. The result is a new DiffractionObject instance,
-            representing the addition and using the xarray from the left-hand side DiffractionObject.
+            The item to be added. If `other` is a scalar value, this value will
+            be added to each element of the yarray of this DiffractionObject
+            instance. If `other` is another DiffractionObject, the yarrays of
+            the two DiffractionObjects will be combined element-wise.The result
+            is a new DiffractionObject instance,representing the addition and
+            using the xarray from the left-hand side DiffractionObject.
 
         Returns
         -------
         DiffractionObject
-            The new DiffractionObject instance with modified yarray values. This instance is a deep copy of the
-            original with the additions applied.
+            The new DiffractionObject instance with modified yarray values.
+            This instance is a deep copy of the original with the additions
+            applied.
 
         Raises
         ------
         ValueError
-            Raised when the xarrays of two DiffractionObject instances are not equal.
+            Raised when the xarrays of two DiffractionObject instances are not
+            equal.
         TypeError
-            Raised when `other` is not an instance of DiffractionObject, int, or float.
+            Raised when `other` is not an instance of DiffractionObject, int,
+            or float.
 
         Examples
         --------
@@ -253,12 +266,14 @@ class DiffractionObject:
         """Subtract scalar value or another DiffractionObject to the yarray of
         the DiffractionObject.
 
-        This method behaves similarly to the `__add__` method, but performs subtraction instead of addition.
-        For details on parameters, returns, and exceptions, refer to the documentation for `__add__`.
+        This method behaves similarly to the `__add__` method, but performs
+        subtraction instead of addition.For details on parameters, returns, and
+        exceptions, refer to the documentation for `__add__`.
 
         Examples
         --------
-        Subtract a scalar value from the yarray of a DiffractionObject instance:
+        Subtract a scalar value from the yarray of a DiffractionObject
+        instance:
         >>> new_do = my_do - 10.1
 
         Subtract the yarrays of two DiffractionObject instances:
@@ -279,12 +294,14 @@ class DiffractionObject:
         """Multiply a scalar value or another DiffractionObject with the yarray
         of this DiffractionObject.
 
-        This method behaves similarly to the `__add__` method, but performs multiplication instead of addition.
-        For details on parameters, returns, and exceptions, refer to the documentation for `__add__`.
+        This method behaves similarly to the `__add__` method, but performs
+        multiplication instead of addition. For details on parameters, returns,
+        and exceptions, refer to the documentation for `__add__`.
 
         Examples
         --------
-        Multiply a scalar value with the yarray of a DiffractionObject instance:
+        Multiply a scalar value with the yarray of a DiffractionObject
+        instance:
         >>> new_do = my_do * 3.5
 
         Multiply the yarrays of two DiffractionObject instances:
@@ -305,8 +322,9 @@ class DiffractionObject:
         """Divide the yarray of this DiffractionObject by a scalar value or
         another DiffractionObject.
 
-        This method behaves similarly to the `__add__` method, but performs division instead of addition.
-        For details on parameters, returns, and exceptions, refer to the documentation for `__add__`.
+        This method behaves similarly to the `__add__` method, but performs
+        division instead of addition.For details on parameters, returns, and
+        exceptions, refer to the documentation for `__add__`.
 
         Examples
         --------
@@ -344,7 +362,8 @@ class DiffractionObject:
         Returns
         -------
         ndarray
-            The shape (len(data), 4) 2D array with columns containing the `yarray` (intensity)
+            The shape (len(data), 4) 2D array with columns containing the
+            `yarray` (intensity)
             and the `xarray` values in q, tth, and d.
 
         Examples
@@ -399,21 +418,26 @@ class DiffractionObject:
         Parameters
         ----------
         xtype : str
-            The type of the independent variable in `xarray`. Must be one of {*XQUANTITIES}.
+            The type of the independent variable in `xarray`. Must be one of
+            {*XQUANTITIES}.
         xvalue : float
             The value of the xtype to find the closest index for.
 
         Returns
         -------
         index : int
-            The index of the closest value in the array associated with the specified xtype and the value provided.
+            The index of the closest value in the array associated with the
+            specified xtype and the value provided.
         """
 
         xtype = self._input_xtype
         xarray = self.on_xtype(xtype)[0]
         if len(xarray) == 0:
             raise ValueError(
-                f"The '{xtype}' array is empty. Please ensure it is initialized."
+                (
+                    f"The '{xtype}' array is empty. "
+                    f"Please ensure it is initialized."
+                )
             )
         index = (np.abs(xarray - xvalue)).argmin()
         return index
@@ -486,10 +510,12 @@ class DiffractionObject:
         """Return a new diffraction object which is the current object but
         rescaled in y to the target.
 
-        By default, if `q`, `tth`, or `d` are not provided, scaling is based on the max intensity from each object.
-        Otherwise, y-value in the target at the closest specified x-value will be used as the factor to scale to.
-        The entire array is scaled by this factor so that one object places on top of the other at that point.
-        If multiple values of `q`, `tth`, or `d` are provided, an error will be raised.
+        By default, if `q`, `tth`, or `d` are not provided, scaling is based on
+        the max intensity from each object. Otherwise, y-value in the target at
+        the closest specified x-value will be used as the factor to scale to.
+        The entire array is scaled by this factor so that one object places on
+        top of the other at that point.If multiple values of `q`, `tth`, or `d`
+        are provided, an error will be raised.
 
         Parameters
         ----------
@@ -497,8 +523,9 @@ class DiffractionObject:
             The diffraction object you want to scale the current one onto.
 
         q, tth, d : float, optional, default is None
-            The value of the x-array where you want the curves to line up vertically.
-            Specify a value on one of the allowed grids, q, tth, or d), e.g., q=10.
+            The value of the x-array where you want the curves to line up
+            vertically. Specify a value on one of the allowed grids, q, tth,
+            or d), e.g., q=10.
 
         offset : float, optional, default is None
             The offset to add to the scaled y-values.
@@ -546,7 +573,8 @@ class DiffractionObject:
         Parameters
         ----------
         xtype : str
-            The type of quantity for the independent variable chosen from {*XQUANTITIES, }
+            The type of quantity for the independent variable chosen from
+            {*XQUANTITIES, }
 
         Raises
         ------
@@ -556,7 +584,8 @@ class DiffractionObject:
         Returns
         -------
         (xarray, yarray) : tuple of ndarray
-            The tuple containing two 1D numpy arrays with x and y data for the specified xtype.
+            The tuple containing two 1D numpy arrays with x and y data for the
+            specified xtype.
         """
         if xtype.lower() in ANGLEQUANTITIES:
             return self.on_tth()
@@ -576,12 +605,13 @@ class DiffractionObject:
         filepath : str
             The filepath where the diffraction object will be dumped
         xtype : str, optional, default is q
-            The type of quantity for the independent variable chosen from {*XQUANTITIES, }
+            The type of quantity for the independent variable chosen from
+            {*XQUANTITIES, }
 
         Examples
         --------
-        To save a diffraction object to a file named "diffraction_data.chi" in the current directory
-        with the independent variable 'q':
+        To save a diffraction object to a file named "diffraction_data.chi" in
+        the current directory with the independent variable 'q':
 
         >>> file = "diffraction_data.chi"
         >>> do.dump(file, xtype="q")
@@ -591,7 +621,8 @@ class DiffractionObject:
         >>> file = "./output/diffraction_data.chi"
         >>> do.dump(file, xtype="q")
 
-        To save the diffraction data with a different independent variable, such as 'tth':
+        To save the diffraction data with a different independent variable,
+        such as 'tth':
 
         >>> file = "diffraction_data_tth.chi"
         >>> do.dump(file, xtype="tth")
@@ -615,7 +646,8 @@ class DiffractionObject:
 
         with open(filepath, "w") as f:
             f.write(
-                f"[DiffractionObject]\nname = {self.name}\nwavelength = {self.wavelength}\n"
+                f"[DiffractionObject]\nname = {self.name}\n"
+                f"wavelength = {self.wavelength}\n"
                 f"scat_quantity = {self.scat_quantity}\n"
             )
             for key, value in self.metadata.items():
@@ -629,6 +661,7 @@ class DiffractionObject:
         Returns
         -------
         DiffractionObject
-            The new instance of DiffractionObject, which is a deep copy of the current instance.
+            The new instance of DiffractionObject, which is a deep copy of the
+            current instance.
         """
         return deepcopy(self)

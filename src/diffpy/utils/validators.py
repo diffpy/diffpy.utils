@@ -1,8 +1,9 @@
 def is_number(string):
     """Check if the provided string can be converted to a float.
 
-    Since integers can be converted to floats, this function will return True for integers as well.
-    Hence, we can use this function to check if a string is a number.
+    Since integers can be converted to floats, this function will return
+    True for integers as well. Hence, we can use this function to check if
+    a string is a number.
 
     Parameters
     ----------

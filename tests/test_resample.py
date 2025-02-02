@@ -7,7 +7,8 @@ from diffpy.utils.resampler import nsinterp, wsinterp
 
 
 def test_wsinterp():
-    # FIXME: if another SW interp function exists, run comparisons for interpolated points
+    # FIXME: if another SW interp function exists, run comparisons for
+    #        interpolated points
 
     # Sampling rate
     ssr = 44100**-1  # Standard sampling rate for human-hearable frequencies

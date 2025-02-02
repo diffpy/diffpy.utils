@@ -4,19 +4,24 @@ from copy import copy
 import numpy as np
 
 wavelength_warning_emsg = (
-    "No wavelength has been specified. You can continue to use the DiffractionObject, but "
-    "some of its powerful features will not be available. "
-    "To specify a wavelength, if you have do = DiffractionObject(xarray, yarray, 'tth'), "
-    "you may set do.wavelength = 1.54 for a wavelength of 1.54 angstroms."
+    "No wavelength has been specified. You can continue to use the "
+    "DiffractionObject, but some of its powerful features will not be "
+    "available. To specify a wavelength, if you have do = DiffractionObject( "
+    "xarray, yarray, 'tth'), you may set do.wavelength = 1.54 for a "
+    "wavelength of 1.54 angstroms."
 )
 invalid_tth_emsg = (
     "Two theta exceeds 180 degrees. Please check the input values for errors."
 )
 invalid_q_or_d_or_wavelength_emsg = (
-    "The supplied input array and wavelength will result in an impossible two-theta. "
-    "Please check these values and re-instantiate the DiffractionObject with correct values."
+    "The supplied input array and wavelength will result in an impossible two "
+    "-theta. Please check these values and re-instantiate the "
+    "DiffractionObject with correct values."
 )
-inf_output_imsg = "INFO: The largest output value in the array is infinite. This is allowed, but it will not be plotted."
+inf_output_imsg = (
+    "INFO: The largest output value in the array is infinite. "
+    "This is allowed, but it will not be plotted."
+)
 
 
 def _validate_inputs(q, wavelength):
@@ -73,7 +78,8 @@ def q_to_tth(q, wavelength):
 def tth_to_q(tth, wavelength):
     r"""Helper function to convert two-theta to q on independent variable axis.
 
-    If wavelength is missing, returns independent variable axis as integer indexes.
+    If wavelength is missing, returns independent variable axis as integer
+    indexes.
 
     By definition the relationship is:
 
@@ -100,7 +106,8 @@ def tth_to_q(tth, wavelength):
     -------
     q : ndarray
         The 1D array of :math:`q` values np.array([qs]).
-        The units for the q-values are the inverse of the units of the provided wavelength.
+        The units for the q-values are the inverse of the units of the
+        provided wavelength.
     """
     tth.astype(float)
     if np.any(np.deg2rad(tth) > np.pi):
@@ -139,7 +146,8 @@ def q_to_d(q):
 def tth_to_d(tth, wavelength):
     r"""Helper function to convert two-theta to d on independent variable axis.
 
-    The formula is .. math:: d = \frac{\lambda}{2 \sin\left(\frac{2\theta}{2}\right)}.
+    The formula is ..
+    math::d = \frac{\lambda}{2 \sin\left(\frac{2\theta}{2}\right)}.
 
     Here we convert tth to q first, then to d.
 
@@ -191,7 +199,9 @@ def d_to_q(d):
 def d_to_tth(d, wavelength):
     r"""Helper function to convert d to two-theta on independent variable axis.
 
-    The formula is .. math:: 2\theta = 2 \arcsin\left(\frac{\lambda}{2d}\right).
+    The formula is ..
+
+    math:: 2\theta = 2 \arcsin\left(\frac{\lambda}{2d}\right).
 
     Here we convert d to q first, then to tth.
 
