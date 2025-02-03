@@ -26,7 +26,9 @@ def getSelectionRows(grid):
     rset.update(grid.GetSelectedRows())
     for r, c in grid.GetSelectedCells():
         rset.add(r)
-    blocks = zip(grid.GetSelectionBlockTopLeft(), grid.GetSelectionBlockBottomRight())
+    blocks = zip(
+        grid.GetSelectionBlockTopLeft(), grid.GetSelectionBlockBottomRight()
+    )
     for tl, br in blocks:
         rset.update(range(tl[0], br[0] + 1))
     rv = sorted(rset)
@@ -42,7 +44,9 @@ def getSelectionColumns(grid):
     cset.update(grid.GetSelectedCols())
     for r, c in grid.GetSelectedCells():
         cset.add(c)
-    blocks = zip(grid.GetSelectionBlockTopLeft(), grid.GetSelectionBlockBottomRight())
+    blocks = zip(
+        grid.GetSelectionBlockTopLeft(), grid.GetSelectionBlockBottomRight()
+    )
     for tl, br in blocks:
         cset.update(range(tl[1], br[1] + 1))
     rv = sorted(cset)
@@ -64,7 +68,9 @@ def getSelectedCells(grid):
         rcset.update(zip(cols * [r], allcols))
     for c in grid.GetSelectedCols():
         rcset.update(zip(allrows, rows * [c]))
-    blocks = zip(grid.GetSelectionBlockTopLeft(), grid.GetSelectionBlockBottomRight())
+    blocks = zip(
+        grid.GetSelectionBlockTopLeft(), grid.GetSelectionBlockBottomRight()
+    )
     for tl, br in blocks:
         brows = range(tl[0], br[0] + 1)
         bcols = range(tl[1], br[1] + 1)
