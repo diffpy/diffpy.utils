@@ -15,9 +15,9 @@ def test_loadData_default(datafile):
 
     with pytest.raises(IOError) as err:
         loadData("doesnotexist.txt")
-    assert (
-        str(err.value)
-        == "File doesnotexist.txt cannot be found. Please rerun the program specifying a valid filename."
+    assert str(err.value) == (
+        "File doesnotexist.txt cannot be found. "
+        "Please rerun the program specifying a valid filename."
     )
 
     # The default minrows=10 makes it read from the third line
