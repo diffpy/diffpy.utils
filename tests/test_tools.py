@@ -18,7 +18,8 @@ from diffpy.utils.tools import (
 
 @pytest.mark.parametrize(
     "runtime_inputs, expected",
-    [  # config file in home is present, no config in cwd.  various runtime values passed
+    [  # config file in home is present, no config in cwd.  various runtime
+        # values passed
         # C1: nothing passed in, expect uname, email, orcid from home_config
         (
             {},
@@ -28,7 +29,8 @@ from diffpy.utils.tools import (
                 "owner_orcid": "home_orcid",
             },
         ),
-        # C2: empty strings passed in, expect uname, email, orcid from home_config
+        # C2: empty strings passed in, expect uname, email, orcid from
+        # home_config
         (
             {"owner_name": "", "owner_email": "", "owner_orcid": ""},
             {
@@ -37,7 +39,8 @@ from diffpy.utils.tools import (
                 "owner_orcid": "home_orcid",
             },
         ),
-        # C3: just owner name passed in at runtime.  expect runtime_oname but others from config
+        # C3: just owner name passed in at runtime.  expect runtime_oname but
+        # others from config
         (
             {"owner_name": "runtime_ownername"},
             {
@@ -46,7 +49,8 @@ from diffpy.utils.tools import (
                 "owner_orcid": "home_orcid",
             },
         ),
-        # C4: just owner email passed in at runtime.  expect runtime_email but others from config
+        # C4: just owner email passed in at runtime.  expect runtime_email
+        # but others from config
         (
             {"owner_email": "runtime@email.com"},
             {
@@ -55,7 +59,8 @@ from diffpy.utils.tools import (
                 "owner_orcid": "home_orcid",
             },
         ),
-        # C5: just owner ci passed in at runtime.  expect runtime_orcid but others from config
+        # C5: just owner ci passed in at runtime.  expect runtime_orcid but
+        # others from config
         (
             {"owner_orcid": "runtime_orcid"},
             {
@@ -69,8 +74,8 @@ from diffpy.utils.tools import (
 def test_get_user_info_with_home_conf_file(
     runtime_inputs, expected, user_filesystem, mocker
 ):
-    # user_filesystem[0] is tmp_dir/home_dir with the global config file in it, user_filesystem[1]
-    #   is tmp_dir/cwd_dir
+    # user_filesystem[0] is tmp_dir/home_dir with the global config file in it,
+    #   user_filesystem[1] is tmp_dir/cwd_dir
     mocker.patch.object(Path, "home", return_value=user_filesystem[0])
     os.chdir(user_filesystem[1])
     actual = get_user_info(**runtime_inputs)
@@ -81,7 +86,8 @@ def test_get_user_info_with_home_conf_file(
     "runtime_inputs, expected",
     [  # tests as before but now config file present in cwd and home but orcid
         #   missing in the cwd config
-        # C1: nothing passed in, expect uname, email from local config, orcid from home_config
+        # C1: nothing passed in, expect uname, email from local config, orcid
+        # from home_config
         (
             {},
             {
@@ -90,7 +96,8 @@ def test_get_user_info_with_home_conf_file(
                 "owner_orcid": "home_orcid",
             },
         ),
-        # C2: empty strings passed in, expect uname, email, orcid from home_config
+        # C2: empty strings passed in, expect uname, email, orcid from
+        # home_config
         (
             {"owner_name": "", "owner_email": "", "owner_orcid": ""},
             {
@@ -99,7 +106,8 @@ def test_get_user_info_with_home_conf_file(
                 "owner_orcid": "home_orcid",
             },
         ),
-        # C3: just owner name passed in at runtime.  expect runtime_oname but others from config
+        # C3: just owner name passed in at runtime.  expect runtime_oname but
+        # others from config
         (
             {"owner_name": "runtime_ownername"},
             {
@@ -108,7 +116,8 @@ def test_get_user_info_with_home_conf_file(
                 "owner_orcid": "home_orcid",
             },
         ),
-        # C4: just owner email passed in at runtime.  expect runtime_email but others from config
+        # C4: just owner email passed in at runtime.  expect runtime_email
+        # but others from config
         (
             {"owner_email": "runtime@email.com"},
             {
@@ -117,7 +126,8 @@ def test_get_user_info_with_home_conf_file(
                 "owner_orcid": "home_orcid",
             },
         ),
-        # C5: just owner ci passed in at runtime.  expect runtime_orcid but others from config
+        # C5: just owner ci passed in at runtime.  expect runtime_orcid but
+        # others from config
         (
             {"owner_orcid": "runtime_orcid"},
             {
@@ -131,8 +141,8 @@ def test_get_user_info_with_home_conf_file(
 def test_get_user_info_with_local_conf_file(
     runtime_inputs, expected, user_filesystem, mocker
 ):
-    # user_filesystem[0] is tmp_dir/home_dir with the global config file in it, user_filesystem[1]
-    #   is tmp_dir/cwd_dir
+    # user_filesystem[0] is tmp_dir/home_dir with the global config file in it,
+    #   user_filesystem[1] is tmp_dir/cwd_dir
     mocker.patch.object(Path, "home", return_value=user_filesystem[0])
     os.chdir(user_filesystem[1])
     local_config_data = {
@@ -147,7 +157,8 @@ def test_get_user_info_with_local_conf_file(
 
 @pytest.mark.parametrize(
     "test_inputs,expected",
-    [  # Check check_and_build_global_config() builds correct config when config is found missing
+    [  # Check check_and_build_global_config() builds correct config when
+        #   config is found missing
         (  # C1: user inputs valid name, email and orcid
             {"user_inputs": ["input_name", "input@email.com", "input_orcid"]},
             {
@@ -160,7 +171,8 @@ def test_get_user_info_with_local_conf_file(
             {"user_inputs": ["", "", ""]},
             None,
         ),  # C2: empty strings passed in, expect no config file created
-        (  # C3: just username input, expect config file but with some empty values
+        (  # C3: just username input, expect config file but with some empty
+            # values
             {"user_inputs": ["input_name", "", ""]},
             {"owner_email": "", "owner_orcid": "", "owner_name": "input_name"},
         ),
@@ -169,8 +181,8 @@ def test_get_user_info_with_local_conf_file(
 def test_check_and_build_global_config(
     test_inputs, expected, user_filesystem, mocker
 ):
-    # user_filesystem[0] is tmp_dir/home_dir with the global config file in it, user_filesystem[1]
-    #   is tmp_dir/cwd_dir
+    # user_filesystem[0] is tmp_dir/home_dir with the global config file in it,
+    #   user_filesystem[1] is tmp_dir/cwd_dir
     mocker.patch.object(Path, "home", return_value=user_filesystem[0])
     os.chdir(user_filesystem[1])
     confile = user_filesystem[0] / "diffpyconfig.json"
@@ -262,7 +274,8 @@ def test_get_package_info(monkeypatch, inputs, expected):
     "inputs",
     [
         # Test when the function has invalid inputs
-        (  # C1: Both mass density and packing fraction are provided, expect ValueError exception
+        (  # C1: Both mass density and packing fraction are provided,
+            # expect ValueError exception
             {
                 "sample_composition": "SiO2",
                 "energy": 10,
@@ -270,7 +283,8 @@ def test_get_package_info(monkeypatch, inputs, expected):
                 "packing_fraction": 1,
             }
         ),
-        (  # C2: None of mass density or packing fraction are provided, expect ValueError exception
+        (  # C2: None of mass density or packing fraction are provided,
+            # expect ValueError exception
             {
                 "sample_composition": "SiO2",
                 "energy": 10,
@@ -281,8 +295,11 @@ def test_get_package_info(monkeypatch, inputs, expected):
 def test_compute_mu_using_xraydb_bad(inputs):
     with pytest.raises(
         ValueError,
-        match="You must specify either sample_mass_density or packing_fraction, but not both. "
-        "Please rerun specifying only one.",
+        match=(
+            "You must specify either sample_mass_density or "
+            "packing_fraction, but not both. "
+            "Please rerun specifying only one."
+        ),
     ):
         compute_mu_using_xraydb(**inputs)
 
