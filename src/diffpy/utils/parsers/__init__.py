@@ -14,6 +14,4 @@
 ##############################################################################
 """Various utilities related to data parsing and manipulation."""
 
-from diffpy.utils.parsers import loaddata
-from diffpy.utils.parsers import custom_exceptions
-from diffpy.utils.parsers import serialization
+from diffpy.utils.parsers import custom_exceptions, loaddata, serialization
