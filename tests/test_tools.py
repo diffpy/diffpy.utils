@@ -1,6 +1,7 @@
 import importlib.metadata
 import json
 import os
+import re
 from pathlib import Path
 
 import numpy as np
@@ -11,6 +12,7 @@ from diffpy.utils.tools import (
     check_and_build_global_config,
     compute_mu_using_xraydb,
     compute_mud,
+    fetch_cif_filenames,
     get_package_info,
     get_user_info,
 )
@@ -268,6 +270,45 @@ def test_get_package_info(monkeypatch, inputs, expected):
     )
     actual_metadata = get_package_info(inputs[0], metadata=inputs[1])
     assert actual_metadata == expected
+
+
+def test_fetch_cif_filenames():
+    actual_cif_filenames = fetch_cif_filenames("Cl Na")
+    expected_cif_filenames = [
+        "1000041.cif",
+        "2104025.cif",
+        "2108652.cif",
+        "2311042.cif",
+        "4300180.cif",
+        "4320809.cif",
+        "7132177.cif",
+        "9000629.cif",
+        "9003308.cif",
+        "9003309.cif",
+        "9003310.cif",
+        "9003311.cif",
+        "9003312.cif",
+        "9003313.cif",
+        "9003314.cif",
+        "9006369.cif",
+        "9006370.cif",
+        "9006371.cif",
+        "9006372.cif",
+        "9006373.cif",
+    ]
+    return sorted(actual_cif_filenames) == sorted(expected_cif_filenames)
+
+
+def test_fetch_cif_filenames_bad():
+    expected_error_msg = (
+        "No CIF files found for the given formula: NaCl. "
+        "Please ensure it's in Hill notation (e.g., 'Cl Na'). "
+        "You can use ``to_hill_notation`` for conversion. "
+        "If the formula is correct, it is possible that "
+        "no CIF files are available for this formula in the COD."
+    )
+    with pytest.raises(ValueError, match=re.escape(expected_error_msg)):
+        fetch_cif_filenames("NaCl")
 
 
 @pytest.mark.parametrize(

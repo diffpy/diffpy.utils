@@ -4,6 +4,8 @@ from copy import copy
 from pathlib import Path
 
 import numpy as np
+import requests
+from bs4 import BeautifulSoup
 from scipy.optimize import dual_annealing
 from scipy.signal import convolve
 from xraydb import material_mu
@@ -212,6 +214,61 @@ def get_package_info(package_names, metadata=None):
         pkg_info.update({package: importlib.metadata.version(package)})
     metadata["package_info"] = pkg_info
     return metadata
+
+
+def fetch_cif_filenames(hill_formula):
+    """Fetches a list of CIF filenames from the Crystallography Open Database
+    (COD) based on the given chemical formula in Hill notation, where elements
+    are separated by whitespace and the count of 1 is omitted (e.g., "Cl Na").
+
+    Parameters
+    ----------
+    hill_formula : str
+        The chemical formula in Hill notation.
+
+    Returns
+    -------
+    list of str
+        A list of CIF filenames (e.g., ["1000041.cif", "2104025.cif"]).
+
+    Raises
+    ------
+    ValueError
+        If no CIF files are found for the given formula.
+
+    Notes
+    -----
+    The data is retrieved from the Crystallography Open Database (COD).
+    If you use COD data in your research,
+    please acknowledge the COD project as described at
+    https://www.crystallography.net/cod/acknowledgements.html.
+    """
+    search_url = (
+        f"https://www.crystallography.net/cod/"
+        f"result.php?formula={hill_formula}"
+    )
+    response = requests.get(search_url)
+    if response.status_code != 200:
+        raise Exception(
+            f"Failed to retrieve search results. "
+            f"HTTP status code: {response.status_code}."
+        )
+    cif_links = BeautifulSoup(response.text, "html.parser").find_all("a")
+    cif_filenames = []
+    for link in cif_links:
+        href = link.get("href", "")
+        if href.endswith(".cif"):
+            filename = href.split("/")[-1]
+            cif_filenames.append(filename)
+    if len(cif_filenames) == 0:
+        raise ValueError(
+            f"No CIF files found for the given formula: {hill_formula}. "
+            "Please ensure it's in Hill notation (e.g., 'Cl Na'). "
+            "You can use ``to_hill_notation`` for conversion. "
+            "If the formula is correct, it is possible that "
+            "no CIF files are available for this formula in the COD."
+        )
+    return cif_filenames
 
 
 def get_density_from_cloud(sample_composition, mp_token=""):
