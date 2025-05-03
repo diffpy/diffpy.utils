@@ -1,4 +1,3 @@
 numpy
 xraydb
 scipy
-bs4
