@@ -5,7 +5,6 @@ from pathlib import Path
 
 import numpy as np
 import requests
-from bs4 import BeautifulSoup
 from scipy.optimize import dual_annealing
 from scipy.signal import convolve
 from xraydb import material_mu
@@ -235,31 +234,17 @@ def fetch_cif_filenames(hill_formula):
     ------
     ValueError
         If no CIF files are found for the given formula.
-
-    Notes
-    -----
-    The data is retrieved from the Crystallography Open Database (COD).
-    If you use COD data in your research,
-    please acknowledge the COD project as described at
-    https://www.crystallography.net/cod/acknowledgements.html.
     """
-    search_url = (
-        f"https://www.crystallography.net/cod/"
-        f"result.php?formula={hill_formula}"
-    )
-    response = requests.get(search_url)
+    base_url = "https://www.crystallography.net/cod/result.php"
+    params = {"formula": hill_formula, "format": "json"}
+    response = requests.get(base_url, params=params)
     if response.status_code != 200:
         raise Exception(
             f"Failed to retrieve search results. "
             f"HTTP status code: {response.status_code}."
         )
-    cif_links = BeautifulSoup(response.text, "html.parser").find_all("a")
-    cif_filenames = []
-    for link in cif_links:
-        href = link.get("href", "")
-        if href.endswith(".cif"):
-            filename = href.split("/")[-1]
-            cif_filenames.append(filename)
+    data = response.json()
+    cif_filenames = [str(entry["file"]) + ".cif" for entry in data]
     if len(cif_filenames) == 0:
         raise ValueError(
             f"No CIF files found for the given formula: {hill_formula}. "
