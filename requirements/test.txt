@@ -2,8 +2,5 @@ flake8
 pytest
 codecov
 coverage
-pytest-env
-pytest-mock
 pytest-cov
-freezegun
-DeepDiff
+pytest-env
