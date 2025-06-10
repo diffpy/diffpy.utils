@@ -12,7 +12,7 @@
 # See LICENSE.rst for license information.
 #
 ##############################################################################
-"""General utilities for analyzing diffraction data"""
+"""General utilities for analyzing diffraction data."""
 
 # package version
 from diffpy.utils.version import __version__  # noqa
