@@ -18,6 +18,12 @@ import time
 from importlib.metadata import version
 from pathlib import Path
 
+# Attempt to import the version dynamically from GitHub tag.
+try:
+    fullversion = version("diffpy.utils")
+except Exception:
+    fullversion = "No version found. The correct version will appear in the released version."  # noqa: E501
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use Path().resolve() to make it absolute, like shown here.
@@ -43,6 +49,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.intersphinx",
     "sphinx_rtd_theme",
+    "sphinx_copybutton",
     "m2r",
 ]
 
@@ -88,6 +95,11 @@ year = today.split()[-1]
 # substitute YEAR in the copyright string
 copyright = copyright.replace("%Y", year)
 
+# For sphinx_copybutton extension.
+# Do not copy "$" for shell commands in code-blocks.
+copybutton_prompt_text = r"^\$ "
+copybutton_prompt_is_regexp = True
+
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 exclude_patterns = ["build"]
@@ -122,6 +134,14 @@ nitpicky = True
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
+
+html_context = {
+    "display_github": True,
+    "github_user": "diffpy",
+    "github_repo": "diffpy.utils",
+    "github_version": "main",
+    "conf_py_path": "/doc/source/",
+}
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -256,7 +276,13 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ("index", "diffpy.utils", "diffpy.utils Documentation", ab_authors, 1)
+    (
+        "index",
+        "diffpy.utils",
+        "diffpy.utils Documentation",
+        ab_authors,
+        1,
+    )
 ]
 
 # If true, show URL addresses after external links.
