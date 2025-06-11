@@ -1,6 +1,6 @@
 **Added:**
 
-* Add ``spinx-copybutton`` as a dependency for doc building.
+* No news item needed, bringing package up to ``scikit-package 5v0.1.0`` standards.
 
 **Changed:**
 
@@ -12,7 +12,7 @@
 
 **Removed:**
 
-* Remove ``environment.yml``.
+* <news item>
 
 **Fixed:**
 
