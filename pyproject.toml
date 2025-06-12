@@ -6,13 +6,13 @@ build-backend = "setuptools.build_meta"
 name = "diffpy.utils"
 dynamic=['version', 'dependencies']
 authors = [
-  { name="Simon J.L. Billinge group", email="simon.billinge@gmail.com" },
+  { name="Simon Billinge", email="sb2896@columbia.edu" },
 ]
 maintainers = [
-  { name="Simon J.L. Billinge group", email="simon.billinge@gmail.com" },
+  { name="Simon Billinge", email="sb2896@columbia.edu" },
 ]
 description = "General utilities for analyzing diffraction data"
-keywords = ["text data parsers", "wx grid", "diffraction objects"]
+keywords = ['text data parsers', 'wx grid', 'diffraction objects']
 readme = "README.rst"
 requires-python = ">=3.11, <3.14"
 classifiers = [
@@ -27,7 +27,7 @@ classifiers = [
         'Operating System :: Unix',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
-	'Programming Language :: Python :: 3.13',
+        'Programming Language :: Python :: 3.13',
         'Topic :: Scientific/Engineering :: Physics',
         'Topic :: Scientific/Engineering :: Chemistry',
 ]
