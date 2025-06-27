@@ -6,16 +6,19 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>diffpy.utils package &mdash; diffpy.utils 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+  <title>diffpy.utils package &mdash; diffpy.utils 3.6.1rc0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=f539c95a"></script>
+      <script src="../_static/documentation_options.js?v=4cdc70cc"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=cca77546"></script>
       <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -45,7 +48,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release.html">Release notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../utilities/utilities.html">Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Package API</a><ul>
@@ -71,7 +74,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">diffpy.utils package</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/api/diffpy.utils.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/diffpy/diffpy.utils/blob/main/doc/source/api/diffpy.utils.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -117,7 +120,8 @@ The units of q must be reciprocal of the units of wavelength.</p>
 <dt class="sig sig-object py" id="diffpy.utils.transforms.d_to_tth">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.transforms.</span></span><span class="sig-name descname"><span class="pre">d_to_tth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/transforms.html#d_to_tth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.transforms.d_to_tth" title="Link to this definition"></a></dt>
 <dd><p>Helper function to convert d to two-theta on independent variable axis.</p>
-<p>The formula is .. math:: 2theta = 2 arcsinleft(frac{lambda}{2d}right).</p>
+<p>The formula is ..
+math:: 2theta = 2 arcsinleft(frac{lambda}{2d}right).</p>
 <p>Here we convert d to q first, then to tth.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -187,7 +191,8 @@ The units of q must be reciprocal of the units of wavelength.</p></li>
 <dt class="sig sig-object py" id="diffpy.utils.transforms.tth_to_d">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.transforms.</span></span><span class="sig-name descname"><span class="pre">tth_to_d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/transforms.html#tth_to_d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.transforms.tth_to_d" title="Link to this definition"></a></dt>
 <dd><p>Helper function to convert two-theta to d on independent variable axis.</p>
-<p>The formula is .. math:: d = frac{lambda}{2 sinleft(frac{2theta}{2}right)}.</p>
+<p>The formula is ..
+math:: d = frac{lambda}{2 sinleft(frac{2theta}{2}right)}.</p>
 <p>Here we convert tth to q first, then to d.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -210,7 +215,8 @@ The units of tth are expected in degrees.</p></li>
 <dt class="sig sig-object py" id="diffpy.utils.transforms.tth_to_q">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.transforms.</span></span><span class="sig-name descname"><span class="pre">tth_to_q</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/transforms.html#tth_to_q"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.transforms.tth_to_q" title="Link to this definition"></a></dt>
 <dd><p>Helper function to convert two-theta to q on independent variable axis.</p>
-<p>If wavelength is missing, returns independent variable axis as integer indexes.</p>
+<p>If wavelength is missing, returns independent variable axis as integer
+indexes.</p>
 <p>By definition the relationship is:</p>
 <div class="math notranslate nohighlight">
 \[\sin\left(\frac{2\theta}{2}\right) = \frac{\lambda q}{4 \pi}\]</div>
@@ -227,7 +233,8 @@ The units of tth are expected in degrees.</p></li>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>q</strong> – The 1D array of <span class="math notranslate nohighlight">\(q\)</span> values np.array([qs]).
-The units for the q-values are the inverse of the units of the provided wavelength.</p>
+The units for the q-values are the inverse of the units of the
+provided wavelength.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>ndarray</p>
@@ -242,8 +249,9 @@ The units for the q-values are the inverse of the units of the provided waveleng
 <dt class="sig sig-object py" id="diffpy.utils.validators.is_number">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.validators.</span></span><span class="sig-name descname"><span class="pre">is_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/validators.html#is_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.validators.is_number" title="Link to this definition"></a></dt>
 <dd><p>Check if the provided string can be converted to a float.</p>
-<p>Since integers can be converted to floats, this function will return True for integers as well.
-Hence, we can use this function to check if a string is a number.</p>
+<p>Since integers can be converted to floats, this function will return True
+for integers as well. Hence, we can use this function to check if a
+string is a number.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>string</strong> (<em>str</em>) – The string to evaluate for numeric conversion.</p>
@@ -298,19 +306,22 @@ Hence, we can use this function to check if a string is a number.</p>
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.tools.</span></span><span class="sig-name descname"><span class="pre">check_and_build_global_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skip_config_creation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/tools.html#check_and_build_global_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.tools.check_and_build_global_config" title="Link to this definition"></a></dt>
 <dd><p>Check for a global diffpu config file in user’s home directory and
 creates one if it is missing.</p>
-<p>The file it looks for is called diffpyconfig.json.  This can contain anything in json format, but
-minimally contains information about the computer owner.  The information is used
-when diffpy objects are created and saved to files or databases to retain ownership information
-of datasets.  For example, it is used by diffpy.utils.tools.get_user_info().</p>
-<p>If the function finds no config file in the user’s home directory it interrupts execution
-and prompts the user for name, email, and orcid information.  It then creates the config file
-with this information inside it.</p>
+<p>The file it looks for is called diffpyconfig.json.  This can contain
+anything in json format, but minimally contains information about the
+computer owner.  The information is used when diffpy objects are created
+and saved to files or databases to retain ownership information of
+datasets.  For example, it is used by diffpy.utils.tools.get_user_info().</p>
+<p>If the function finds no config file in the user’s home directory it
+interrupts execution and prompts the user for name, email, and orcid
+information.  It then creates the config file with this information
+inside it.</p>
 <p>The function returns True if the file exists and False otherwise.</p>
-<p>If you would like to check for a file but not run the file creation workflow you can set
-the optional argument skip_config_creation to True.</p>
+<p>If you would like to check for a file but not run the file creation
+workflow you can set the optional argument skip_config_creation to True.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>skip_config_creation</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default is False.</em>) – The boolean that will override the creation workflow even if no config file exists.</p>
+<dd class="field-odd"><p><strong>skip_config_creation</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default is False.</em>) – The boolean that will override the creation workflow even if no
+config file exists.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>config_exists</strong> – The boolean indicating whether the config file exists.</p>
@@ -327,7 +338,8 @@ the optional argument skip_config_creation to True.</p>
 <dd><p>Compute the attenuation coefficient (mu) using the XrayDB database.</p>
 <p>Computes mu based on the sample composition and energy.
 User should provide a sample mass density or a packing fraction.
-If neither density nor packing fraction is specified, or if both are specified, a ValueError will be raised.
+If neither density nor packing fraction is specified,
+or if both are specified, a ValueError will be raised.
 Reference: <a class="reference external" href="https://xraypy.github.io/XrayDB/python.html#xraydb.material_mu">https://xraypy.github.io/XrayDB/python.html#xraydb.material_mu</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -355,10 +367,12 @@ Specify either sample_mass_density or packing_fraction but not both.</p></li>
 holder effect.</p>
 <p>This function loads z-scan data and fits it to a model
 that convolves a top-hat function with I = I0 * e^{-mu * l}.
-The fitting procedure is run multiple times, and we return the best-fit parameters based on the lowest rmse.</p>
+The fitting procedure is run multiple times, and we return the best-fit
+parameters based on the lowest rmse.</p>
 <p>The full mathematical details are described in the paper:
-An ad hoc Absorption Correction for Reliable Pair-Distribution Functions from Low Energy x-ray Sources,
-Yucong Chen, Till Schertenleib, Andrew Yang, Pascal Schouwink, Wendy L. Queen and Simon J. L. Billinge,
+An ad hoc Absorption Correction for Reliable Pair-Distribution Functions
+from Low Energy x-ray Sources, Yucong Chen, Till Schertenleib, Andrew Yang
+, Pascal Schouwink, Wendy L. Queen and Simon J. L. Billinge,
 in preparation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -384,9 +398,11 @@ in preparation.</p>
 <dt class="sig sig-object py" id="diffpy.utils.tools.get_package_info">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.tools.</span></span><span class="sig-name descname"><span class="pre">get_package_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">package_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/tools.html#get_package_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.tools.get_package_info" title="Link to this definition"></a></dt>
 <dd><p>Fetch package version and updates it into (given) metadata.</p>
-<p>Package info stored in metadata as {‘package_info’: {‘package_name’: ‘version_number’}}.</p>
+<p>Package info stored in metadata as
+{‘package_info’: {‘package_name’: ‘version_number’}}.</p>
 <dl class="simple">
-<dt>metadata<span class="classifier">dict</span></dt><dd><p>The dictionary to store the package info. If not provided, a new dictionary will be created.</p>
+<dt>metadata<span class="classifier">dict</span></dt><dd><p>The dictionary to store the package info. If not provided, a new
+dictionary will be created.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
@@ -404,33 +420,37 @@ in preparation.</p>
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.tools.</span></span><span class="sig-name descname"><span class="pre">get_user_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">owner_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owner_email</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owner_orcid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/tools.html#get_user_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.tools.get_user_info" title="Link to this definition"></a></dt>
 <dd><p>Get name, email, and orcid of the owner/user from various sources and
 return it as a metadata dictionary.</p>
-<p>The function looks for the information in json format configuration files with the name ‘diffpyconfig.json’.
-These can be in the user’s home directory and in the current working directory.  The information in the
-config files are combined, with the local config overriding the home-directory one.  Values for
-owner_name, owner_email, and owner_orcid may be passed in to the function and these override the values
-in the config files.</p>
-<p>A template for the config file is below.  Create a text file called ‘diffpyconfig.json’ in your home directory
-and copy-paste the template into it, editing it with your real information.
+<p>The function looks for the information in json format configuration files
+with the name ‘diffpyconfig.json’. These can be in the user’s home
+directory and in the current working directory.  The information in the
+config files are combined, with the local config overriding the
+home- directory one.  Values for owner_name, owner_email, and owner_orcid
+may be passed in to the function and these override the values in the
+config files.</p>
+<p>A template for the config file is below.  Create a text file called ‘
+diffpyconfig.json’ in your home directory and copy-paste the template
+into it, editing it with your real information.
 {</p>
 <blockquote>
 <div><p>“owner_name”: “&lt;your name as you would like it stored with your data&gt;&gt;”,
 “owner_email”: “&lt;your_associated_email&gt;&gt;&#64;email.com”,
-“owner_orcid”: “&lt;your_associated_orcid if you would like this stored with your data&gt;&gt;”</p>
+“owner_orcid”: “&lt;your_associated_orcid if you would like this stored with your data&gt;&gt;”  # noqa: E501</p>
 </div></blockquote>
 <p>}
-You may also store any other global-level information that you would like associated with your
-diffraction data in this file</p>
+You may also store any other global-level information that you would like
+associated with your diffraction data in this file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>owner_name</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default is the value stored in the global</em><em> or </em><em>local config file.</em>) – The name of the user who will show as owner in the metadata that is stored with the data</p></li>
-<li><p><strong>owner_email</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default is the value stored in the global</em><em> or </em><em>local config file.</em>) – The email of the user/owner</p></li>
-<li><p><strong>owner_orcid</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default is the value stored in the global</em><em> or </em><em>local config file.</em>) – The ORCID id of the user/owner</p></li>
+<li><p><strong>owner_name</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default is the value stored in the global or</em>) – local config file. The name of the user who will show as owner in the
+metadata that is stored with the data</p></li>
+<li><p><strong>owner_email</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default is the value stored in the global or</em>) – local config file. The email of the user/owner</p></li>
+<li><p><strong>owner_orcid</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default is the value stored in the global or</em>) – local config file. The ORCID id of the user/owner</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>user_info</strong> – The dictionary containing username, email and orcid of the user/owner, and any other information
-stored in the global or local config files.</p>
+<dd class="field-even"><p><strong>user_info</strong> – The dictionary containing username, email and orcid of the user/owner
+, and any other information stored in the global or local config files.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -446,7 +466,7 @@ stored in the global or local config files.</p>
 <span id="diffpy-utils-diffraction-objects-module"></span><h3>diffpy.utils.diffraction_objects module<a class="headerlink" href="#module-diffpy.utils.diffraction_objects" title="Link to this heading"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">diffpy.utils.diffraction_objects.</span></span><span class="sig-name descname"><span class="pre">DiffractionObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scat_quantity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/diffraction_objects.html#DiffractionObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">diffpy.utils.diffraction_objects.</span></span><span class="sig-name descname"><span class="pre">DiffractionObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scat_quantity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/diffraction_objects.html#DiffractionObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for storing and manipulating diffraction data.</p>
 <p>DiffractionObject stores data produced from X-ray, neutron,
@@ -458,7 +478,8 @@ between diffraction objects.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject.scat_quantity">
 <span class="sig-name descname"><span class="pre">scat_quantity</span></span><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.scat_quantity" title="Link to this definition"></a></dt>
-<dd><p>The type of scattering experiment (e.g., “x-ray”, “neutron”). Default is an empty string “”.</p>
+<dd><p>The type of scattering experiment (e.g., “x-ray”, “neutron”). Default
+is an empty string “”.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
@@ -469,7 +490,8 @@ between diffraction objects.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject.wavelength">
 <span class="sig-name descname"><span class="pre">wavelength</span></span><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.wavelength" title="Link to this definition"></a></dt>
-<dd><p>The wavelength of the incoming beam, specified in angstroms (Å). Default is none.</p>
+<dd><p>The wavelength of the incoming beam, specified in angstroms (Å).
+Default is none.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -480,7 +502,8 @@ between diffraction objects.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject.name">
 <span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.name" title="Link to this definition"></a></dt>
-<dd><p>The name or label for the scattering data. Default is an empty string “”.</p>
+<dd><p>The name or label for the scattering data. Default is an empty string
+“”.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
@@ -556,12 +579,12 @@ between diffraction objects.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject.all_arrays">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_arrays</span></span><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.all_arrays" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_arrays</span></span><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.all_arrays" title="Link to this definition"></a></dt>
 <dd><p>The 2D array containing <cite>xarray</cite> and <cite>yarray</cite> values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The shape (len(data), 4) 2D array with columns containing the <cite>yarray</cite> (intensity)
-and the <cite>xarray</cite> values in q, tth, and d.</p>
+<dd class="field-odd"><p>The shape (len(data), 4) 2D array with columns containing the `
+yarray` (intensity) and the <cite>xarray</cite> values in q, tth, and d.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>ndarray</p>
@@ -583,7 +606,8 @@ and the <cite>xarray</cite> values in q, tth, and d.</p>
 <dd><p>Create a deep copy of the DiffractionObject instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The new instance of DiffractionObject, which is a deep copy of the current instance.</p>
+<dd class="field-odd"><p>The new instance of DiffractionObject, which is a deep copy of
+the current instance.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#diffpy.utils.diffraction_objects.DiffractionObject" title="diffpy.utils.diffraction_objects.DiffractionObject">DiffractionObject</a></p>
@@ -600,13 +624,14 @@ file, with the associated information included in the header.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>filepath</strong> (<em>str</em>) – The filepath where the diffraction object will be dumped</p></li>
-<li><p><strong>xtype</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default is q</em>) – The type of quantity for the independent variable chosen from {<a href="#id1"><span class="problematic" id="id2">*</span></a>XQUANTITIES, }</p></li>
+<li><p><strong>xtype</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default is q</em>) – The type of quantity for the independent variable chosen from
+{<a href="#id1"><span class="problematic" id="id2">*</span></a>XQUANTITIES, }</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<p>To save a diffraction object to a file named “diffraction_data.chi” in the current directory
-with the independent variable ‘q’:</p>
+<p>To save a diffraction object to a file named “diffraction_data.chi”
+in the current directory with the independent variable ‘q’:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;diffraction_data.chi&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">do</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">xtype</span><span class="o">=</span><span class="s2">&quot;q&quot;</span><span class="p">)</span>
 </pre></div>
@@ -616,7 +641,8 @@ with the independent variable ‘q’:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">do</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">xtype</span><span class="o">=</span><span class="s2">&quot;q&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>To save the diffraction data with a different independent variable, such as ‘tth’:</p>
+<p>To save the diffraction data with a different independent variable,
+such as ‘tth’:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;diffraction_data_tth.chi&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">do</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">xtype</span><span class="o">=</span><span class="s2">&quot;tth&quot;</span><span class="p">)</span>
 </pre></div>
@@ -631,12 +657,14 @@ the specified xtype and the value provided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>xtype</strong> (<em>str</em>) – The type of the independent variable in <cite>xarray</cite>. Must be one of {<a href="#id3"><span class="problematic" id="id4">*</span></a>XQUANTITIES}.</p></li>
+<li><p><strong>xtype</strong> (<em>str</em>) – The type of the independent variable in <cite>xarray</cite>. Must be one
+of {<a href="#id3"><span class="problematic" id="id4">*</span></a>XQUANTITIES}.</p></li>
 <li><p><strong>xvalue</strong> (<em>float</em>) – The value of the xtype to find the closest index for.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>index</strong> – The index of the closest value in the array associated with the specified xtype and the value provided.</p>
+<dd class="field-even"><p><strong>index</strong> – The index of the closest value in the array associated with the
+specified xtype and the value provided.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
@@ -646,7 +674,7 @@ the specified xtype and the value provided.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject.input_xtype">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_xtype</span></span><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.input_xtype" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_xtype</span></span><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.input_xtype" title="Link to this definition"></a></dt>
 <dd><p>The type of the independent variable in <cite>xarray</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -706,13 +734,15 @@ the specified xtype and the value provided.</p>
 <dd><p>Return a tuple of two 1D numpy arrays containing x and y data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>xtype</strong> (<em>str</em>) – The type of quantity for the independent variable chosen from {<a href="#id7"><span class="problematic" id="id8">*</span></a>XQUANTITIES, }</p>
+<dd class="field-odd"><p><strong>xtype</strong> (<em>str</em>) – The type of quantity for the independent variable chosen from
+{<a href="#id7"><span class="problematic" id="id8">*</span></a>XQUANTITIES, }</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – Raised when the specified xtype is not among {<a href="#id9"><span class="problematic" id="id10">*</span></a>XQUANTITIES, }</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>(xarray, yarray)</strong> – The tuple containing two 1D numpy arrays with x and y data for the specified xtype.</p>
+<dd class="field-odd"><p><strong>(xarray, yarray)</strong> – The tuple containing two 1D numpy arrays with x and y data for
+the specified xtype.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>tuple of ndarray</p>
@@ -725,20 +755,26 @@ the specified xtype and the value provided.</p>
 <span class="sig-name descname"><span class="pre">scale_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_diff_object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/diffraction_objects.html#DiffractionObject.scale_to"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.scale_to" title="Link to this definition"></a></dt>
 <dd><p>Return a new diffraction object which is the current object but
 rescaled in y to the target.</p>
-<p>By default, if <cite>q</cite>, <cite>tth</cite>, or <cite>d</cite> are not provided, scaling is based on the max intensity from each object.
-Otherwise, y-value in the target at the closest specified x-value will be used as the factor to scale to.
-The entire array is scaled by this factor so that one object places on top of the other at that point.
-If multiple values of <cite>q</cite>, <cite>tth</cite>, or <cite>d</cite> are provided, an error will be raised.</p>
+<p>By default, if <cite>q</cite>, <cite>tth</cite>, or <cite>d</cite> are not provided, scaling is
+based on the max intensity from each object. Otherwise, y-value in
+the target at the closest specified x-value will be used as the
+factor to scale to. The entire array is scaled by this factor so
+that one object places on top of the other at that point. If
+multiple values of <cite>q</cite>, <cite>tth</cite>, or <cite>d</cite> are provided, an error will
+be raised.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>target_diff_object</strong> (<a class="reference internal" href="#diffpy.utils.diffraction_objects.DiffractionObject" title="diffpy.utils.diffraction_objects.DiffractionObject"><em>DiffractionObject</em></a>) – The diffraction object you want to scale the current one onto.</p></li>
-<li><p><strong>q</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default is None</em>) – The value of the x-array where you want the curves to line up vertically.
-Specify a value on one of the allowed grids, q, tth, or d), e.g., q=10.</p></li>
-<li><p><strong>tth</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default is None</em>) – The value of the x-array where you want the curves to line up vertically.
-Specify a value on one of the allowed grids, q, tth, or d), e.g., q=10.</p></li>
-<li><p><strong>d</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default is None</em>) – The value of the x-array where you want the curves to line up vertically.
-Specify a value on one of the allowed grids, q, tth, or d), e.g., q=10.</p></li>
+<li><p><strong>q</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default is None</em>) – The value of the x-array where you want the curves to line up
+vertically. Specify a value on one of the allowed grids, q, tth,
+or d), e.g., q=10.</p></li>
+<li><p><strong>tth</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default is None</em>) – The value of the x-array where you want the curves to line up
+vertically. Specify a value on one of the allowed grids, q, tth,
+or d), e.g., q=10.</p></li>
+<li><p><strong>d</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default is None</em>) – The value of the x-array where you want the curves to line up
+vertically. Specify a value on one of the allowed grids, q, tth,
+or d), e.g., q=10.</p></li>
 <li><p><strong>offset</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default is None</em>) – The offset to add to the scaled y-values.</p></li>
 </ul>
 </dd>
@@ -753,7 +789,7 @@ Specify a value on one of the allowed grids, q, tth, or d), e.g., q=10.</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject.uuid">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">uuid</span></span><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.uuid" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">uuid</span></span><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.uuid" title="Link to this definition"></a></dt>
 <dd><p>The unique identifier for the DiffractionObject instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -776,10 +812,11 @@ Specify a value on one of the allowed grids, q, tth, or d), e.g., q=10.</p></li>
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.resampler.</span></span><span class="sig-name descname"><span class="pre">nsinterp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/resampler.html#nsinterp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.resampler.nsinterp" title="Link to this definition"></a></dt>
 <dd><p>One-dimensional Whittaker-Shannon interpolation onto the Nyquist-Shannon
 grid.</p>
-<p>Takes a band-limited function fp and original grid xp and resamples fp on the NS grid.
-Uses the minimum number of points N required by the Nyquist sampling theorem.
-N = (qmax-qmin)(rmax-rmin)/pi, where rmin and rmax are the ends of the real-space ranges.
-fp must be finite, and the user inputs qmin and qmax of the frequency-domain.</p>
+<p>Takes a band-limited function fp and original grid xp and resamples fp on
+the NS grid. Uses the minimum number of points N required by the Nyquist
+sampling theorem. N = (qmax-qmin)(rmax-rmin)/pi, where rmin and rmax are
+the ends of the real-space ranges. fp must be finite, and the user inputs
+qmin and qmax of the frequency-domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -792,8 +829,8 @@ fp must be finite, and the user inputs qmin and qmax of the frequency-domain.</p
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>x</strong> (<em>ndarray</em>) – The Nyquist-Shannon grid computed for the given qmin and qmax.</p></li>
-<li><p><strong>fp_at_x</strong> (<em>ndarray</em>) – The interpolated values at points x. Returns a single float if x is a scalar,
-otherwise returns a numpy.ndarray.</p></li>
+<li><p><strong>fp_at_x</strong> (<em>ndarray</em>) – The interpolated values at points x. Returns a single float if x is a
+scalar, otherwise returns a numpy.ndarray.</p></li>
 </ul>
 </p>
 </dd>
@@ -804,8 +841,9 @@ otherwise returns a numpy.ndarray.</p></li>
 <dt class="sig sig-object py" id="diffpy.utils.resampler.resample">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.resampler.</span></span><span class="sig-name descname"><span class="pre">resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/resampler.html#resample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.resampler.resample" title="Link to this definition"></a></dt>
 <dd><p>Resample a PDF on a new grid.</p>
-<p>This uses the Whittaker-Shannon interpolation formula to put s1 on a new grid if dr is less than the sampling
-interval of r1, or linear interpolation if dr is greater than the sampling interval of r1.</p>
+<p>This uses the Whittaker-Shannon interpolation formula to put s1 on a new
+grid if dr is less than the sampling interval of r1, or linear
+interpolation if dr is greater than the sampling interval of r1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -824,26 +862,27 @@ interval of r1, or linear interpolation if dr is greater than the sampling inter
 <dt class="sig sig-object py" id="diffpy.utils.resampler.wsinterp">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.resampler.</span></span><span class="sig-name descname"><span class="pre">wsinterp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/resampler.html#wsinterp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.resampler.wsinterp" title="Link to this definition"></a></dt>
 <dd><p>One-dimensional Whittaker-Shannon interpolation.</p>
-<p>Reconstruct a continuous signal from discrete data points by utilizing sinc functions
-as interpolation kernels. This function interpolates the values of fp (array),
-which are defined over xp (array), at new points x (array or float).
-The implementation is based on E. T. Whittaker’s 1915 paper
-(<a class="reference external" href="https://doi.org/10.1017/S0370164600017806">https://doi.org/10.1017/S0370164600017806</a>).</p>
+<p>Reconstruct a continuous signal from discrete data points by utilizing
+sinc functions as interpolation kernels. This function interpolates the
+values of fp (array), which are defined over xp (array), at new points x
+(array or float). The implementation is based on E. T. Whittaker’s 1915
+paper (<a class="reference external" href="https://doi.org/10.1017/S0370164600017806">https://doi.org/10.1017/S0370164600017806</a>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> (<em>ndarray</em>) – The x values at which interpolation is computed.</p></li>
 <li><p><strong>xp</strong> (<em>ndarray</em>) – The array of known x values.</p></li>
 <li><p><strong>fp</strong> (<em>ndarray</em>) – The array of y values associated with xp.</p></li>
-<li><p><strong>left</strong> (<em>float</em>) – If given, set fp for x &lt; xp[0] to left. Otherwise, if left is None (default) or not given,
-set fp for x &lt; xp[0] to fp evaluated at xp[-1].</p></li>
-<li><p><strong>right</strong> (<em>float</em>) – If given, set fp for x &gt; xp[-1] to right. Otherwise, if right is None (default) or not given, set fp for
-x &gt; xp[-1] to fp evaluated at xp[-1].</p></li>
+<li><p><strong>left</strong> (<em>float</em>) – If given, set fp for x &lt; xp[0] to left. Otherwise, if left is None
+(default) or not given, set fp for x &lt; xp[0] to fp evaluated at xp[-1].</p></li>
+<li><p><strong>right</strong> (<em>float</em>) – If given, set fp for x &gt; xp[-1] to right. Otherwise, if right is None
+(default) or not given, set fp for x &gt; xp[-1] to fp evaluated at
+xp[-1].</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The interpolated values at points x. Returns a single float if x is a scalar,
-otherwise returns a numpy.ndarray.</p>
+<dd class="field-even"><p>The interpolated values at points x. Returns a single float if x is a
+scalar, otherwise returns a numpy.ndarray.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>ndarray or float</p>

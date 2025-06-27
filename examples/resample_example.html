@@ -6,16 +6,19 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Resampling Example &mdash; diffpy.utils 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+  <title>Resampling Example &mdash; diffpy.utils 3.6.1rc0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=f539c95a"></script>
+      <script src="../_static/documentation_options.js?v=4cdc70cc"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=cca77546"></script>
       <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -45,7 +48,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release.html">Release notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../utilities/utilities.html">Utilities</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="examples.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="diffraction_objects_example.html">Diffraction Objects Example</a></li>
@@ -75,7 +78,7 @@
           <li class="breadcrumb-item"><a href="examples.html">Examples</a></li>
       <li class="breadcrumb-item active">Resampling Example</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/examples/resample_example.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/diffpy/diffpy.utils/blob/main/doc/source/examples/resample_example.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -93,14 +96,14 @@ given enough datapoints.</p>
 <li><p>To start, unzip <a class="reference download internal" download="" href="../_downloads/bd886e57cf9f4de4ad76c29e2ff8bf8b/parser_data.zip"><code class="xref download docutils literal notranslate"><span class="pre">parser_data</span></code></a>. Then, load the data table from <code class="docutils literal notranslate"><span class="pre">Nickel.gr</span></code>
 and <code class="docutils literal notranslate"><span class="pre">NiTarget.gr</span></code>. These datasets are based on data from <a class="reference external" href="https://global.oup.com/academic/product/atomic-pair-distribution-function-analysis-9780198885801?cc=us&amp;lang=en&amp;">Atomic Pair Distribution Function Analysis: A Primer</a>.</p></li>
 </ol>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.parsers.loaddata</span> <span class="kn">import</span> <span class="n">loadData</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.parsers.loaddata</span><span class="w"> </span><span class="kn">import</span> <span class="n">loadData</span>
 <span class="n">nickel_datatable</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to Nickel.gr&gt;&#39;</span><span class="p">)</span>
 <span class="n">nitarget_datatable</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to NiTarget.gr&gt;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Each data table has two columns: first is the grid and second is the function value.
 To extract the columns, we can utilize the serialize function …</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.parsers.serialization</span> <span class="kn">import</span> <span class="n">serialize_data</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.parsers.serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">serialize_data</span>
 <span class="n">nickel_data</span> <span class="o">=</span> <span class="n">serialize_data</span><span class="p">(</span><span class="s1">&#39;Nickel.gr&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">nickel_datatable</span><span class="p">,</span> <span class="n">dt_colnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;grid&#39;</span><span class="p">,</span> <span class="s1">&#39;func&#39;</span><span class="p">])</span>
 <span class="n">nickel_grid</span> <span class="o">=</span> <span class="n">nickel_data</span><span class="p">[</span><span class="s1">&#39;Nickel.gr&#39;</span><span class="p">][</span><span class="s1">&#39;grid&#39;</span><span class="p">]</span>
 <span class="n">nickel_func</span> <span class="o">=</span> <span class="n">nickel_data</span><span class="p">[</span><span class="s1">&#39;Nickel.gr&#39;</span><span class="p">][</span><span class="s1">&#39;func&#39;</span><span class="p">]</span>
@@ -110,7 +113,7 @@ To extract the columns, we can utilize the serialize function …</p>
 </pre></div>
 </div>
 <p>To extract the columns, we can utilize the serialize function …</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.parsers.serialization</span> <span class="kn">import</span> <span class="n">serialize_data</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.parsers.serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">serialize_data</span>
 <span class="n">nickel_data</span> <span class="o">=</span> <span class="n">serialize_data</span><span class="p">(</span><span class="s1">&#39;Nickel.gr&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">nickel_datatable</span><span class="p">,</span> <span class="n">dt_colnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;grid&#39;</span><span class="p">,</span> <span class="s1">&#39;func&#39;</span><span class="p">])</span>
 <span class="n">nickel_grid</span> <span class="o">=</span> <span class="n">nickel_data</span><span class="p">[</span><span class="s1">&#39;Nickel.gr&#39;</span><span class="p">][</span><span class="s1">&#39;grid&#39;</span><span class="p">]</span>
 <span class="n">nickel_func</span> <span class="o">=</span> <span class="n">nickel_data</span><span class="p">[</span><span class="s1">&#39;Nickel.gr&#39;</span><span class="p">][</span><span class="s1">&#39;func&#39;</span><span class="p">]</span>
@@ -123,14 +126,14 @@ To extract the columns, we can utilize the serialize function …</p>
 <ol class="arabic simple" start="2">
 <li><p>If we plot the two on top of each other</p></li>
 </ol>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">target_grid</span><span class="p">,</span> <span class="n">target_func</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nickel_grid</span><span class="p">,</span> <span class="n">nickel_func</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>they look pretty similar, but to truly see the difference, we should plot the difference between the two.
 We may want to run something like …</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="n">difference</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">target_func</span><span class="p">,</span> <span class="n">nickel_func</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -144,7 +147,7 @@ Checking the lengths of <code class="docutils literal notranslate"><span class="
 </pre></div>
 </div>
 <p>… and use the diffpy.utils <code class="docutils literal notranslate"><span class="pre">wsinterp</span></code> function to resample on this grid.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.resampler</span> <span class="kn">import</span> <span class="n">wsinterp</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.resampler</span><span class="w"> </span><span class="kn">import</span> <span class="n">wsinterp</span>
 <span class="n">nickel_resample</span> <span class="o">=</span> <span class="n">wsinterp</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">nickel_grid</span><span class="p">,</span> <span class="n">nickel_func</span><span class="p">)</span>
 <span class="n">target_resample</span> <span class="o">=</span> <span class="n">wsinterp</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">target_grid</span><span class="p">,</span> <span class="n">target_func</span><span class="p">)</span>
 </pre></div>
@@ -174,7 +177,7 @@ reconstruction was perfect as shown from the comparison between <code class="doc
 <p>This computation is implemented in the function <code class="docutils literal notranslate"><span class="pre">nsinterp</span></code>.</p>
 </li>
 </ol>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.resampler</span> <span class="kn">import</span> <span class="n">nsinterp</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.resampler</span><span class="w"> </span><span class="kn">import</span> <span class="n">nsinterp</span>
 <span class="n">qmin</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">qmax</span> <span class="o">=</span> <span class="mi">25</span>
 <span class="n">nickel_resample</span> <span class="o">=</span> <span class="p">(</span><span class="n">nickel_grid</span><span class="p">,</span> <span class="n">nickel_func</span><span class="p">,</span> <span class="n">qmin</span><span class="p">,</span> <span class="n">qmax</span><span class="p">)</span>

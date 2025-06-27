@@ -6,16 +6,19 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tools Example &mdash; diffpy.utils 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+  <title>Tools Example &mdash; diffpy.utils 3.6.1rc0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=f539c95a"></script>
+      <script src="../_static/documentation_options.js?v=4cdc70cc"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=cca77546"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,7 +47,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release.html">Release notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../utilities/utilities.html">Utilities</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="examples.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="diffraction_objects_example.html">Diffraction Objects Example</a></li>
@@ -74,7 +77,7 @@
           <li class="breadcrumb-item"><a href="examples.html">Examples</a></li>
       <li class="breadcrumb-item active">Tools Example</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/examples/tools_example.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/diffpy/diffpy.utils/blob/main/doc/source/examples/tools_example.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -104,7 +107,7 @@ Using the tools module, we can efficiently get them in terms of a dictionary.</p
 it in a dictionary object e.g. if the user is “Jane Doe” with email “<a class="reference external" href="mailto:janedoe&#37;&#52;&#48;gmail&#46;com">janedoe<span>&#64;</span>gmail<span>&#46;</span>com</a>” and ORCID
 “0000-0000-0000-0000”, and if the
 function can find the information (more on this below), if you type this</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.tools</span> <span class="kn">import</span> <span class="n">get_user_info</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_user_info</span>
 <span class="n">user_info</span> <span class="o">=</span> <span class="n">get_user_info</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -141,11 +144,11 @@ called <code class="docutils literal notranslate"><span class="pre">check_and_bu
 information then writes the config file in the user’s home directory.</p>
 <p>When building an application where you want to capture data-owner information, we recommend you execute
 <code class="docutils literal notranslate"><span class="pre">check_and_build_global_config()</span></code> first followed by <code class="docutils literal notranslate"><span class="pre">get_user_info</span></code> in your app workflow.  E.g.,</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.tools</span> <span class="kn">import</span> <span class="n">check_and_build_global_config</span><span class="p">,</span> <span class="n">get_user_info</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">import</span> <span class="nn">json</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_and_build_global_config</span><span class="p">,</span> <span class="n">get_user_info</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
-<span class="k">def</span> <span class="nf">my_cool_data_enhancer_app_main</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">my_cool_data_enhancer_app_main</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
     <span class="n">check_and_build_global_config</span><span class="p">()</span>
     <span class="n">metadata_enhanced_data</span> <span class="o">=</span> <span class="n">get_user_info</span><span class="p">()</span>
     <span class="n">metadata_enhanced_data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;creation_time&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
@@ -204,7 +207,7 @@ the key “package_info”, e.g.,</p>
 </div>
 <p>If the installed version of the package “my_package” is 0.3.1.</p>
 <p>This function can be used in your code as follows</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffpy.utils.tools</span> <span class="kn">import</span> <span class="n">get_package_info</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_package_info</span>
 <span class="n">package_metadata</span> <span class="o">=</span> <span class="n">get_package_info</span><span class="p">(</span><span class="s2">&quot;my_package&quot;</span><span class="p">)</span>
 </pre></div>
 </div>

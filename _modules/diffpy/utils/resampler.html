@@ -5,16 +5,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>diffpy.utils.resampler &mdash; diffpy.utils 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+  <title>diffpy.utils.resampler &mdash; diffpy.utils 3.6.1rc0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=f539c95a"></script>
+      <script src="../../../_static/documentation_options.js?v=4cdc70cc"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=cca77546"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -41,7 +44,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../release.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release.html">Release notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../utilities/utilities.html">Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/diffpy.utils.html">Package API</a></li>
@@ -88,21 +91,21 @@
 <span class="c1">##############################################################################</span>
 <span class="sd">&quot;&quot;&quot;Various utilities related to data parsing and manipulation.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 
 <div class="viewcode-block" id="wsinterp">
 <a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.resampler.wsinterp">[docs]</a>
-<span class="k">def</span> <span class="nf">wsinterp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">wsinterp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;One-dimensional Whittaker-Shannon interpolation.</span>
 
-<span class="sd">    Reconstruct a continuous signal from discrete data points by utilizing sinc functions</span>
-<span class="sd">    as interpolation kernels. This function interpolates the values of fp (array),</span>
-<span class="sd">    which are defined over xp (array), at new points x (array or float).</span>
-<span class="sd">    The implementation is based on E. T. Whittaker&#39;s 1915 paper</span>
-<span class="sd">    (https://doi.org/10.1017/S0370164600017806).</span>
+<span class="sd">    Reconstruct a continuous signal from discrete data points by utilizing</span>
+<span class="sd">    sinc functions as interpolation kernels. This function interpolates the</span>
+<span class="sd">    values of fp (array), which are defined over xp (array), at new points x</span>
+<span class="sd">    (array or float). The implementation is based on E. T. Whittaker&#39;s 1915</span>
+<span class="sd">    paper (https://doi.org/10.1017/S0370164600017806).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -113,17 +116,18 @@
 <span class="sd">    fp: ndarray</span>
 <span class="sd">        The array of y values associated with xp.</span>
 <span class="sd">    left: float</span>
-<span class="sd">        If given, set fp for x &lt; xp[0] to left. Otherwise, if left is None (default) or not given,</span>
-<span class="sd">        set fp for x &lt; xp[0] to fp evaluated at xp[-1].</span>
+<span class="sd">        If given, set fp for x &lt; xp[0] to left. Otherwise, if left is None</span>
+<span class="sd">        (default) or not given, set fp for x &lt; xp[0] to fp evaluated at xp[-1].</span>
 <span class="sd">    right: float</span>
-<span class="sd">        If given, set fp for x &gt; xp[-1] to right. Otherwise, if right is None (default) or not given, set fp for</span>
-<span class="sd">        x &gt; xp[-1] to fp evaluated at xp[-1].</span>
+<span class="sd">        If given, set fp for x &gt; xp[-1] to right. Otherwise, if right is None</span>
+<span class="sd">        (default) or not given, set fp for x &gt; xp[-1] to fp evaluated at</span>
+<span class="sd">        xp[-1].</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ndarray or float</span>
-<span class="sd">        The interpolated values at points x. Returns a single float if x is a scalar,</span>
-<span class="sd">        otherwise returns a numpy.ndarray.</span>
+<span class="sd">        The interpolated values at points x. Returns a single float if x is a</span>
+<span class="sd">        scalar, otherwise returns a numpy.ndarray.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">scalar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">scalar</span><span class="p">:</span>
@@ -157,14 +161,15 @@
 
 <div class="viewcode-block" id="nsinterp">
 <a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.resampler.nsinterp">[docs]</a>
-<span class="k">def</span> <span class="nf">nsinterp</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">qmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">qmax</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nsinterp</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">qmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">qmax</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;One-dimensional Whittaker-Shannon interpolation onto the Nyquist-Shannon</span>
 <span class="sd">    grid.</span>
 
-<span class="sd">    Takes a band-limited function fp and original grid xp and resamples fp on the NS grid.</span>
-<span class="sd">    Uses the minimum number of points N required by the Nyquist sampling theorem.</span>
-<span class="sd">    N = (qmax-qmin)(rmax-rmin)/pi, where rmin and rmax are the ends of the real-space ranges.</span>
-<span class="sd">    fp must be finite, and the user inputs qmin and qmax of the frequency-domain.</span>
+<span class="sd">    Takes a band-limited function fp and original grid xp and resamples fp on</span>
+<span class="sd">    the NS grid. Uses the minimum number of points N required by the Nyquist</span>
+<span class="sd">    sampling theorem. N = (qmax-qmin)(rmax-rmin)/pi, where rmin and rmax are</span>
+<span class="sd">    the ends of the real-space ranges. fp must be finite, and the user inputs</span>
+<span class="sd">    qmin and qmax of the frequency-domain.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -182,8 +187,8 @@
 <span class="sd">    x: ndarray</span>
 <span class="sd">        The Nyquist-Shannon grid computed for the given qmin and qmax.</span>
 <span class="sd">    fp_at_x: ndarray</span>
-<span class="sd">        The interpolated values at points x. Returns a single float if x is a scalar,</span>
-<span class="sd">        otherwise returns a numpy.ndarray.</span>
+<span class="sd">        The interpolated values at points x. Returns a single float if x is a</span>
+<span class="sd">        scalar, otherwise returns a numpy.ndarray.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Ensure numpy array</span>
     <span class="n">xp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xp</span><span class="p">)</span>
@@ -201,11 +206,12 @@
 
 <div class="viewcode-block" id="resample">
 <a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.resampler.resample">[docs]</a>
-<span class="k">def</span> <span class="nf">resample</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">dr</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">resample</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">dr</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Resample a PDF on a new grid.</span>
 
-<span class="sd">    This uses the Whittaker-Shannon interpolation formula to put s1 on a new grid if dr is less than the sampling</span>
-<span class="sd">    interval of r1, or linear interpolation if dr is greater than the sampling interval of r1.</span>
+<span class="sd">    This uses the Whittaker-Shannon interpolation formula to put s1 on a new</span>
+<span class="sd">    grid if dr is less than the sampling interval of r1, or linear</span>
+<span class="sd">    interpolation if dr is greater than the sampling interval of r1.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -222,8 +228,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-        <span class="s2">&quot;The &#39;resample&#39; function is deprecated and will be removed in a future release (3.8.0). </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="s2">&quot;&#39;resample&#39; has been renamed &#39;wsinterp&#39; to better reflect functionality. Please use &#39;wsinterp&#39; instead.&quot;</span><span class="p">,</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;The &#39;resample&#39; function is deprecated and will be removed &quot;</span>
+            <span class="s2">&quot;in a future release (3.8.0). </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;&#39;resample&#39; has been renamed &#39;wsinterp&#39; to better reflect &quot;</span>
+            <span class="s2">&quot;functionality. Please use &#39;wsinterp&#39; instead.&quot;</span>
+        <span class="p">),</span>
         <span class="ne">DeprecationWarning</span><span class="p">,</span>
         <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
     <span class="p">)</span>

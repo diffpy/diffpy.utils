@@ -5,16 +5,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>diffpy.utils.validators &mdash; diffpy.utils 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+  <title>diffpy.utils.validators &mdash; diffpy.utils 3.6.1rc0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=f539c95a"></script>
+      <script src="../../../_static/documentation_options.js?v=4cdc70cc"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=cca77546"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -41,7 +44,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../release.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release.html">Release notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../utilities/utilities.html">Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/diffpy.utils.html">Package API</a></li>
@@ -74,11 +77,12 @@
   <h1>Source code for diffpy.utils.validators</h1><div class="highlight"><pre>
 <div class="viewcode-block" id="is_number">
 <a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.validators.is_number">[docs]</a>
-<span></span><span class="k">def</span> <span class="nf">is_number</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+<span></span><span class="k">def</span><span class="w"> </span><span class="nf">is_number</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the provided string can be converted to a float.</span>
 
-<span class="sd">    Since integers can be converted to floats, this function will return True for integers as well.</span>
-<span class="sd">    Hence, we can use this function to check if a string is a number.</span>
+<span class="sd">    Since integers can be converted to floats, this function will return True</span>
+<span class="sd">    for integers as well. Hence, we can use this function to check if a</span>
+<span class="sd">    string is a number.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
