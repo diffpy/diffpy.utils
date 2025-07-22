@@ -140,7 +140,7 @@ html_context = {
     "github_user": "diffpy",
     "github_repo": "diffpy.utils",
     "github_version": "main",
-    "conf_py_path": "/doc/source/",
+    "conf_py_path": "/docs/source/",
 }
 
 # Theme options are theme-specific and customize the look and feel of a theme
@@ -223,7 +223,7 @@ html_theme_options = {
 
 # Output file base name for HTML help builder.
 basename = "diffpy.utils".replace(" ", "").replace(".", "")
-htmlhelp_basename = basename + "doc"
+htmlhelp_basename = basename + "docs"
 
 
 # -- Options for LaTeX output ---------------------------------------------
