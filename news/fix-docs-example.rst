@@ -1,6 +1,6 @@
 **Added:**
 
-* No news added: Fix the example of using ``DiffractionObject.get_array_index`` in the documentation.
+* No news added: Fix some examples in the documentation.
 
 **Changed:**
 
