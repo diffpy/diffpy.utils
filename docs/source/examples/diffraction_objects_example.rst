@@ -180,7 +180,7 @@ For example, attempting to add a diffraction object and a string will raise an e
 
 .. code-block:: python
 
-    tth_ninety_index = diff_object1.get_array_index(90, xtype="tth")
+    tth_ninety_index = diff_object1.get_array_index(xtype="tth", xvalue=90)
     intensity_at_ninety = diff_object1.on_tth()[1][tth_ninety_index]
 
 If you do not specify an ``xtype``, it will default to the ``xtype`` used when creating the ``DiffractionObject``.
