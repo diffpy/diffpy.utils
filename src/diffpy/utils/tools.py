@@ -1,5 +1,7 @@
 import importlib.metadata
 import json
+import re
+from collections import defaultdict
 from copy import copy
 from pathlib import Path
 
@@ -212,6 +214,60 @@ def get_package_info(package_names, metadata=None):
         pkg_info.update({package: importlib.metadata.version(package)})
     metadata["package_info"] = pkg_info
     return metadata
+
+
+def _expand_formula(formula):
+    """Expands the formula if it contains parentheses with multipliers."""
+    while "(" in formula and ")" in formula:
+        formula = re.sub(
+            r"\(([A-Za-z0-9]+)\)(\d+)",
+            lambda m: m.group(1) * int(m.group(2)),
+            formula,
+        )
+    return formula
+
+
+def to_hill_notation(formula):
+    """Converts a chemical formula to Hill notation.
+
+    The process is the following:
+    1. Expand group elements, and parse the expanded formula
+       into a dictionary of elements and their counts.
+       e.g., "H2O" -> {"H": 2, "O": 1}.
+    2. Apply Hill notation:
+       - Carbon (C) comes first if present.
+       - Hydrogen (H) follows Carbon (C) if present,
+         but only if carbon is also present.
+       - All remaining elements are listed in alphabetical order.
+    3. Format the elements with their counts, omitting counts of 1.
+
+    Parameters
+    ----------
+    formula : str
+        The chemical formula of the material.
+
+    Returns
+    -------
+    str
+        The formula formatted in Hill notation,
+        with elements separated by spaces (e.g., "C6 H12 O6").
+    """
+    element_counts = defaultdict(int)
+    tokens = re.findall(r"([A-Z][a-z]*)(\d*)", _expand_formula(formula))
+    for element, count in tokens:
+        element_counts[element] += int(count) if count else 1
+
+    hill_parts = []
+    if "C" in element_counts:
+        c_count = element_counts.pop("C")
+        hill_parts.append(f"C{c_count if c_count > 1 else ''}")
+        if "H" in element_counts:
+            h_count = element_counts.pop("H")
+            hill_parts.append(f"H{h_count if h_count > 1 else ''}")
+    for element in sorted(element_counts):
+        count = element_counts[element]
+        hill_parts.append(f"{element}{count if count > 1 else ''}")
+    return " ".join(hill_parts)
 
 
 def get_density_from_cloud(sample_composition, mp_token=""):

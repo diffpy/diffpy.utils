@@ -13,6 +13,7 @@ from diffpy.utils.tools import (
     compute_mud,
     get_package_info,
     get_user_info,
+    to_hill_notation,
 )
 
 
@@ -268,6 +269,27 @@ def test_get_package_info(monkeypatch, inputs, expected):
     )
     actual_metadata = get_package_info(inputs[0], metadata=inputs[1])
     assert actual_metadata == expected
+
+
+@pytest.mark.parametrize(
+    "input_formula, expected",
+    [
+        # C1: Formulas with C and/or H
+        ("C", "C"),  # Only C
+        ("H", "H"),  # Only H
+        ("CO2", "C O2"),  # With C
+        ("C6H12O6", "C6 H12 O6"),  # With C and H
+        ("CH3COOH", "C2 H4 O2"),  # With C and H
+        ("NH3", "H3 N"),  # With H only
+        # C2: Formulas without C or H
+        ("O2", "O2"),  # Single element
+        ("FeCl3", "Cl3 Fe"),  # Compound
+        # C3: Parentheses Expansion
+        ("Mg(OH)2", "H2 Mg O2"),
+    ],
+)
+def test_to_hill_notation(input_formula, expected):
+    assert to_hill_notation(input_formula) == expected
 
 
 @pytest.mark.parametrize(
