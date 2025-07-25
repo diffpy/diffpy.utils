@@ -376,8 +376,8 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
             },
             0,
         ),
-        (  # C2: Target value lies in the array, expect the (first) closest
-            # index
+        # C2: Target value lies in the array, expect the closest index
+        (  # 1. same xtype
             {
                 "wavelength": 4 * np.pi,
                 "xarray": np.array([30, 60]),
@@ -390,7 +390,7 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
             },
             0,
         ),
-        (
+        (  # 2. different xtype
             {
                 "wavelength": 4 * np.pi,
                 "xarray": np.array([30, 60]),
@@ -399,9 +399,9 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
             },
             {
                 "xtype": "q",
-                "value": 0.25,
+                "value": 0.5,
             },
-            0,
+            1,
         ),
         # C3: Target value out of the range, expect the closest index
         (  # 1. Test with xtype of "q"
