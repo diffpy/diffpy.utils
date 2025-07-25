@@ -376,8 +376,8 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
             },
             0,
         ),
-        (  # C2: Target value lies in the array, expect the (first) closest
-            # index
+        # C2: Target value lies in the array, expect the closest index
+        (  # 1. xtype(tth) is equal to self._input_xtype(tth)
             {
                 "wavelength": 4 * np.pi,
                 "xarray": np.array([30, 60]),
@@ -390,7 +390,20 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
             },
             0,
         ),
-        (
+        (  # 2. use default xtype(equal to self._input_xtype)
+            {
+                "wavelength": 4 * np.pi,
+                "xarray": np.array([30, 60]),
+                "yarray": np.array([1, 2]),
+                "xtype": "tth",
+            },
+            {
+                "xtype": None,
+                "value": 45,
+            },
+            0,
+        ),
+        (  # 3. xtype(q) is different from self._input_xtype(tth)
             {
                 "wavelength": 4 * np.pi,
                 "xarray": np.array([30, 60]),
@@ -399,9 +412,9 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
             },
             {
                 "xtype": "q",
-                "value": 0.25,
+                "value": 0.5,
             },
-            0,
+            1,
         ),
         # C3: Target value out of the range, expect the closest index
         (  # 1. Test with xtype of "q"
@@ -435,12 +448,13 @@ def test_scale_to_bad(org_do_args, target_do_args, scale_inputs):
 def test_get_array_index(do_args, get_array_index_inputs, expected_index):
     do = DiffractionObject(**do_args)
     actual_index = do.get_array_index(
-        get_array_index_inputs["xtype"], get_array_index_inputs["value"]
+        get_array_index_inputs["value"], get_array_index_inputs["xtype"]
     )
     assert actual_index == expected_index
 
 
 def test_get_array_index_bad():
+    # empty array in DiffractionObject
     do = DiffractionObject(
         wavelength=2 * np.pi,
         xarray=np.array([]),
@@ -454,6 +468,22 @@ def test_get_array_index_bad():
         ),
     ):
         do.get_array_index(xtype="tth", xvalue=30)
+    # non-existing xtype
+    do = DiffractionObject(
+        wavelength=4 * np.pi,
+        xarray=np.array([30, 60]),
+        yarray=np.array([1, 2]),
+        xtype="tth",
+    )
+    non_existing_xtype = "non_existing_xtype"
+    with pytest.raises(
+        ValueError,
+        match=re.escape(
+            f"I don't know how to handle the xtype, '{non_existing_xtype}'. "
+            f"Please rerun specifying an xtype from {*XQUANTITIES, }"
+        ),
+    ):
+        do.get_array_index(xtype=non_existing_xtype, xvalue=30)
 
 
 def test_dump(tmp_path, mocker):
