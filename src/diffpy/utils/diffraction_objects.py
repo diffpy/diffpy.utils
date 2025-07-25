@@ -409,17 +409,17 @@ class DiffractionObject:
     def uuid(self, _):
         raise AttributeError(_setter_wmsg("uuid"))
 
-    def get_array_index(self, xtype, xvalue):
-        """Return the index of the closest value in the array associated with
+    def get_array_index(self, xvalue, xtype=None):
+        f"""Return the index of the closest value in the array associated with
         the specified xtype and the value provided.
 
         Parameters
         ----------
-        xtype : str
-            The type of the independent variable in `xarray`. Must be one
-            of {*XQUANTITIES}.
         xvalue : float
             The value of the xtype to find the closest index for.
+        xtype : str, optional
+            The type of the independent variable in `xarray`. Must be one
+            of {*XQUANTITIES,}. Default is {self._input_xtype}
 
         Returns
         -------
@@ -427,8 +427,11 @@ class DiffractionObject:
             The index of the closest value in the array associated with the
             specified xtype and the value provided.
         """
-
-        xtype = self._input_xtype
+        if xtype is None:
+            xtype = self._input_xtype
+        else:
+            if xtype not in XQUANTITIES:
+                raise ValueError(_xtype_wmsg(xtype))
         xarray = self.on_xtype(xtype)[0]
         if len(xarray) == 0:
             raise ValueError(
