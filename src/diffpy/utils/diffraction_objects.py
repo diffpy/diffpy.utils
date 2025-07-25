@@ -419,7 +419,7 @@ class DiffractionObject:
             The value of the xtype to find the closest index for.
         xtype : str, optional
             The type of the independent variable in `xarray`. Must be one
-            of {*XQUANTITIES,}. Default is {self._input_xtype}
+            of {*XQUANTITIES, }. Default is {self._input_xtype}
 
         Returns
         -------
