@@ -59,5 +59,5 @@ This example will demonstrate how to use the functions in the
     from diffpy.utils.transforms import d_to_tth
 
     wavelength = 0.71
-    d = np.array([1.0, 0.8, 0.6, 0.4, 0.2])
+    d = np.array([1.0, 0.8, 0.6, 0.4])
     tth = d_to_tth(d, wavelength)
