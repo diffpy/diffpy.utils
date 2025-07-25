@@ -104,8 +104,7 @@ Now we can extract specific data table columns from the dictionary.
 
      parsed_file_data = serialize_data('<PATH to data.txt>', hdata, data_table, serial_file='<PATH to serialfile.json>')
 
-   The returned value, ``parsed_file_data``, is the dictionary we just added to ``serialfile.json``.
-   To extract the data from the serial file, we use ``deserialize_data``.
+The returned value, ``parsed_file_data``, is the dictionary we just added to ``serialfile.json``. To extract the data from the serial file, we use ``deserialize_data``.
 
 .. code-block:: python
 
