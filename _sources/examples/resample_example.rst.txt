@@ -33,18 +33,6 @@ To extract the columns, we can utilize the serialize function ...
      target_grid = nickel_data['Nickel.gr']['grid']
      target_func = nickel_data['Nickel.gr']['func']
 
-To extract the columns, we can utilize the serialize function ...
-
-.. code-block:: python
-
-     from diffpy.utils.parsers.serialization import serialize_data
-     nickel_data = serialize_data('Nickel.gr', {}, nickel_datatable, dt_colnames=['grid', 'func'])
-     nickel_grid = nickel_data['Nickel.gr']['grid']
-     nickel_func = nickel_data['Nickel.gr']['func']
-     target_data = serialize_data('NiTarget.gr', {}, nitarget_datatable, dt_colnames=['grid', 'function'])
-     target_grid = nickel_data['Nickel.gr']['grid']
-     target_func = nickel_data['Nickel.gr']['func']
-
 ... or you can use any other column extracting method you prefer.
 
 2) If we plot the two on top of each other

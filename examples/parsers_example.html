@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Parsers Example &mdash; diffpy.utils 3.6.1rc0 documentation</title>
+  <title>Parsers Example &mdash; diffpy.utils 3.6.1rc1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=4cdc70cc"></script>
+      <script src="../_static/documentation_options.js?v=e59c04aa"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -77,7 +77,7 @@
           <li class="breadcrumb-item"><a href="examples.html">Examples</a></li>
       <li class="breadcrumb-item active">Parsers Example</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/diffpy/diffpy.utils/blob/main/doc/source/examples/parsers_example.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/diffpy/diffpy.utils/blob/main/docs/source/examples/parsers_example.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -174,12 +174,10 @@ dictionary. We can do so using the <code class="docutils literal notranslate"><s
 <li><p>When we are done working with the data, we can store it on disk for later use. This can also be done using the
 <code class="docutils literal notranslate"><span class="pre">serialize_data</span></code> function with an additional <code class="docutils literal notranslate"><span class="pre">serial_file</span></code> parameter.</p></li>
 </ol>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>  <span class="n">parsed_file_data</span> <span class="o">=</span> <span class="n">serialize_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">,</span> <span class="n">data_table</span><span class="p">,</span> <span class="n">serial_file</span><span class="o">=</span><span class="s1">&#39;&lt;PATH to serialfile.json&gt;&#39;</span><span class="p">)</span>
-
-<span class="n">The</span> <span class="n">returned</span> <span class="n">value</span><span class="p">,</span> <span class="err">``</span><span class="n">parsed_file_data</span><span class="err">``</span><span class="p">,</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">dictionary</span> <span class="n">we</span> <span class="n">just</span> <span class="n">added</span> <span class="n">to</span> <span class="err">``</span><span class="n">serialfile</span><span class="o">.</span><span class="n">json</span><span class="err">``</span><span class="o">.</span>
-<span class="n">To</span> <span class="n">extract</span> <span class="n">the</span> <span class="n">data</span> <span class="kn">from</span><span class="w"> </span><span class="nn">the</span> <span class="n">serial</span> <span class="n">file</span><span class="p">,</span> <span class="n">we</span> <span class="n">use</span> <span class="err">``</span><span class="n">deserialize_data</span><span class="err">``</span><span class="o">.</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">parsed_file_data</span> <span class="o">=</span> <span class="n">serialize_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">,</span> <span class="n">data_table</span><span class="p">,</span> <span class="n">serial_file</span><span class="o">=</span><span class="s1">&#39;&lt;PATH to serialfile.json&gt;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>The returned value, <code class="docutils literal notranslate"><span class="pre">parsed_file_data</span></code>, is the dictionary we just added to <code class="docutils literal notranslate"><span class="pre">serialfile.json</span></code>. To extract the data from the serial file, we use <code class="docutils literal notranslate"><span class="pre">deserialize_data</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.parsers.serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">deserialize_data</span>
 <span class="n">parsed_file_data</span> <span class="o">=</span> <span class="n">deserialize_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to serialdata.json&gt;&#39;</span><span class="p">)</span>
 </pre></div>

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>diffpy.utils.diffraction_objects &mdash; diffpy.utils 3.6.1rc0 documentation</title>
+  <title>diffpy.utils.diffraction_objects &mdash; diffpy.utils 3.6.1rc1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -13,7 +13,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=4cdc70cc"></script>
+      <script src="../../../_static/documentation_options.js?v=e59c04aa"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -490,26 +490,29 @@
 
 <div class="viewcode-block" id="DiffractionObject.get_array_index">
 <a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.diffraction_objects.DiffractionObject.get_array_index">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_array_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xtype</span><span class="p">,</span> <span class="n">xvalue</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the index of the closest value in the array associated with</span>
-<span class="sd">        the specified xtype and the value provided.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_array_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xvalue</span><span class="p">,</span> <span class="n">xtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Return the index of the closest value in the array associated with</span>
+<span class="s2">        the specified xtype and the value provided.</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        xtype : str</span>
-<span class="sd">            The type of the independent variable in `xarray`. Must be one</span>
-<span class="sd">            of {*XQUANTITIES}.</span>
-<span class="sd">        xvalue : float</span>
-<span class="sd">            The value of the xtype to find the closest index for.</span>
+<span class="s2">        Parameters</span>
+<span class="s2">        ----------</span>
+<span class="s2">        xvalue : float</span>
+<span class="s2">            The value of the xtype to find the closest index for.</span>
+<span class="s2">        xtype : str, optional</span>
+<span class="s2">            The type of the independent variable in `xarray`. Must be one</span>
+<span class="s2">            of </span><span class="si">{</span><span class="o">*</span><span class="n">XQUANTITIES</span><span class="p">,</span><span class="w"> </span><span class="si">}</span><span class="s2">. Default is </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_xtype</span><span class="si">}</span>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        index : int</span>
-<span class="sd">            The index of the closest value in the array associated with the</span>
-<span class="sd">            specified xtype and the value provided.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">xtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_xtype</span>
+<span class="s2">        Returns</span>
+<span class="s2">        -------</span>
+<span class="s2">        index : int</span>
+<span class="s2">            The index of the closest value in the array associated with the</span>
+<span class="s2">            specified xtype and the value provided.</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">xtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">xtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_xtype</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">xtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">XQUANTITIES</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_xtype_wmsg</span><span class="p">(</span><span class="n">xtype</span><span class="p">))</span>
         <span class="n">xarray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_xtype</span><span class="p">(</span><span class="n">xtype</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xarray</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>

@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Diffraction Objects Example &mdash; diffpy.utils 3.6.1rc0 documentation</title>
+  <title>Diffraction Objects Example &mdash; diffpy.utils 3.6.1rc1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=4cdc70cc"></script>
+      <script src="../_static/documentation_options.js?v=e59c04aa"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -77,7 +77,7 @@
           <li class="breadcrumb-item"><a href="examples.html">Examples</a></li>
       <li class="breadcrumb-item active">Diffraction Objects Example</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/diffpy/diffpy.utils/blob/main/doc/source/examples/diffraction_objects_example.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/diffpy/diffpy.utils/blob/main/docs/source/examples/diffraction_objects_example.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -230,7 +230,7 @@ For example, attempting to add a diffraction object and a string will raise an e
 <ol class="arabic simple" start="4">
 <li><p>get the value of the DiffractionObject at a given point in one of the xarrays</p></li>
 </ol>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tth_ninety_index</span> <span class="o">=</span> <span class="n">diff_object1</span><span class="o">.</span><span class="n">get_array_index</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="n">xtype</span><span class="o">=</span><span class="s2">&quot;tth&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tth_ninety_index</span> <span class="o">=</span> <span class="n">diff_object1</span><span class="o">.</span><span class="n">get_array_index</span><span class="p">(</span><span class="n">xvalue</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">xtype</span><span class="o">=</span><span class="s2">&quot;tth&quot;</span><span class="p">)</span>
 <span class="n">intensity_at_ninety</span> <span class="o">=</span> <span class="n">diff_object1</span><span class="o">.</span><span class="n">on_tth</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="n">tth_ninety_index</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -238,8 +238,8 @@ For example, attempting to add a diffraction object and a string will raise an e
 For example, if you have created a <code class="docutils literal notranslate"><span class="pre">DiffractionObject</span></code> called <code class="docutils literal notranslate"><span class="pre">do</span></code> with <code class="docutils literal notranslate"><span class="pre">xtype=&quot;q&quot;</span></code>,
 you can find its closest index for <code class="docutils literal notranslate"><span class="pre">q=0.25</span></code> by typing either of the following:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">do</span><span class="o">.</span><span class="n">_input_xtype</span><span class="p">)</span>     <span class="c1"># remind ourselves which array was input.  prints &quot;q&quot; in this case.</span>
-<span class="n">index</span> <span class="o">=</span> <span class="n">do</span><span class="o">.</span><span class="n">get_array_index</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span> <span class="c1"># no xtype passed, defaults to do._input_xtype, or in this example, q</span>
-<span class="n">index</span> <span class="o">=</span> <span class="n">do</span><span class="o">.</span><span class="n">get_array_index</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">xtype</span><span class="o">=</span><span class="s2">&quot;q&quot;</span><span class="p">)</span> <span class="c1"># explicitly choose an xtype to specify a value</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">do</span><span class="o">.</span><span class="n">get_array_index</span><span class="p">(</span><span class="n">xvalue</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span> <span class="c1"># no xtype passed, defaults to do._input_xtype, or in this example, q</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">do</span><span class="o">.</span><span class="n">get_array_index</span><span class="p">(</span><span class="n">xvalue</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">xtype</span><span class="o">=</span><span class="s2">&quot;q&quot;</span><span class="p">)</span> <span class="c1"># explicitly choose an xtype to specify a value</span>
 </pre></div>
 </div>
 <p>5. The <code class="docutils literal notranslate"><span class="pre">dump</span></code> function saves the diffraction data and relevant information to an xy format file with headers

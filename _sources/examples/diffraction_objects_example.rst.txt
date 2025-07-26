@@ -180,7 +180,7 @@ For example, attempting to add a diffraction object and a string will raise an e
 
 .. code-block:: python
 
-    tth_ninety_index = diff_object1.get_array_index(90, xtype="tth")
+    tth_ninety_index = diff_object1.get_array_index(xvalue=90, xtype="tth")
     intensity_at_ninety = diff_object1.on_tth()[1][tth_ninety_index]
 
 If you do not specify an ``xtype``, it will default to the ``xtype`` used when creating the ``DiffractionObject``.
@@ -190,8 +190,8 @@ you can find its closest index for ``q=0.25`` by typing either of the following:
 .. code-block:: python
 
     print(do._input_xtype)     # remind ourselves which array was input.  prints "q" in this case.
-    index = do.get_array_index(0.25) # no xtype passed, defaults to do._input_xtype, or in this example, q
-    index = do.get_array_index(0.25, xtype="q") # explicitly choose an xtype to specify a value
+    index = do.get_array_index(xvalue=0.25) # no xtype passed, defaults to do._input_xtype, or in this example, q
+    index = do.get_array_index(xvalue=0.25, xtype="q") # explicitly choose an xtype to specify a value
 
 5. The ``dump`` function saves the diffraction data and relevant information to an xy format file with headers
 (widely used chi format used, for example, by Fit2D and diffpy.  These files can be read by ``LoadData()``

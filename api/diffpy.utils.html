@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>diffpy.utils package &mdash; diffpy.utils 3.6.1rc0 documentation</title>
+  <title>diffpy.utils package &mdash; diffpy.utils 3.6.1rc1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=4cdc70cc"></script>
+      <script src="../_static/documentation_options.js?v=e59c04aa"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -74,7 +74,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">diffpy.utils package</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/diffpy/diffpy.utils/blob/main/doc/source/api/diffpy.utils.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/diffpy/diffpy.utils/blob/main/docs/source/api/diffpy.utils.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -651,26 +651,8 @@ such as ‘tth’:</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject.get_array_index">
-<span class="sig-name descname"><span class="pre">get_array_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xvalue</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/diffraction_objects.html#DiffractionObject.get_array_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.get_array_index" title="Link to this definition"></a></dt>
-<dd><p>Return the index of the closest value in the array associated with
-the specified xtype and the value provided.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>xtype</strong> (<em>str</em>) – The type of the independent variable in <cite>xarray</cite>. Must be one
-of {<a href="#id3"><span class="problematic" id="id4">*</span></a>XQUANTITIES}.</p></li>
-<li><p><strong>xvalue</strong> (<em>float</em>) – The value of the xtype to find the closest index for.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>index</strong> – The index of the closest value in the array associated with the
-specified xtype and the value provided.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
+<span class="sig-name descname"><span class="pre">get_array_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xvalue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/diffraction_objects.html#DiffractionObject.get_array_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.get_array_index" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject.input_xtype">
@@ -678,7 +660,7 @@ specified xtype and the value provided.</p>
 <dd><p>The type of the independent variable in <cite>xarray</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>input_xtype</strong> – The type of <cite>xarray</cite>, which must be one of {<a href="#id5"><span class="problematic" id="id6">*</span></a>XQUANTITIES}.</p>
+<dd class="field-odd"><p><strong>input_xtype</strong> – The type of <cite>xarray</cite>, which must be one of {<a href="#id3"><span class="problematic" id="id4">*</span></a>XQUANTITIES}.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
@@ -735,10 +717,10 @@ specified xtype and the value provided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>xtype</strong> (<em>str</em>) – The type of quantity for the independent variable chosen from
-{<a href="#id7"><span class="problematic" id="id8">*</span></a>XQUANTITIES, }</p>
+{<a href="#id5"><span class="problematic" id="id6">*</span></a>XQUANTITIES, }</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – Raised when the specified xtype is not among {<a href="#id9"><span class="problematic" id="id10">*</span></a>XQUANTITIES, }</p>
+<dd class="field-even"><p><strong>ValueError</strong> – Raised when the specified xtype is not among {<a href="#id7"><span class="problematic" id="id8">*</span></a>XQUANTITIES, }</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>(xarray, yarray)</strong> – The tuple containing two 1D numpy arrays with x and y data for
