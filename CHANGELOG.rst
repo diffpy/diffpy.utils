@@ -4,6 +4,24 @@ Release notes
 
 .. current developments
 
+3.6.1
+=====
+
+**Added:**
+
+* update isort, flake8 and black to set line limit to 79
+
+**Fixed:**
+
+* Support ``scikit-package`` Level 5 standard (https://scikit-package.github.io/scikit-package/).
+* Update github CI to scikit-package standard
+* Let ``DiffractionObject.get_array_index`` to use the ``xtype`` from its inputs.
+
+**Removed:**
+
+* Extra line break in each news after 3.6.0 in `CHANGELOG.rst` so that this rst can be rendered correctly when deployed
+
+
 3.6.0
 =====
 
