@@ -33,7 +33,9 @@ def test_load_multiple(tmp_path, datafile):
             dt_colnames=["r", "gr"],
             show_path=True,
         )
-        assert headerfile == Path(generated_data[headerfile.name].pop("path"))
+        assert Path(headerfile).resolve() == Path(
+            generated_data[headerfile.name].pop("path")
+        )
 
         # rerun without path information and save to file
         generated_data = serialize_data(
