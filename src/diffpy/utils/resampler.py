@@ -38,7 +38,7 @@ def wsinterp(x, xp, fp, left=None, right=None):
         The array of y values associated with xp.
     left: float
         If given, set fp for x < xp[0] to left. Otherwise, if left is None
-        (default) or not given, set fp for x < xp[0] to fp evaluated at xp[-1].
+        (default) or not given, set fp for x < xp[0] to fp evaluated at xp[0].
     right: float
         If given, set fp for x > xp[-1] to right. Otherwise, if right is None
         (default) or not given, set fp for x > xp[-1] to fp evaluated at
