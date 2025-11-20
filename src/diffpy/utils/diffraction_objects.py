@@ -108,18 +108,18 @@ class DiffractionObject:
 
         Parameters
         ----------
-        xarray : ndarray
+        xarray : ``ndarray``
             The independent variable array containing "q", "tth", or "d" values.
-        yarray : ndarray
+        yarray : ``ndarray``
             The dependent variable array corresponding to intensity values.
         xtype : str
             The type of the independent variable in `xarray`. Must be one of
             {*XQUANTITIES}.
-        wavelength : float, optional, default is None.
+        wavelength : float, ``optional``, default is None.
             The wavelength of the incoming beam, specified in angstroms (Å)
-        scat_quantity : str, optional, default is an empty string "".
+        scat_quantity : str, ``optional``, default is an empty string "".
             The type of scattering experiment (e.g., "x-ray", "neutron").
-        name : str, optional, default is an empty string "".
+        name : str, ``optional``, default is an empty string "".
             The name or label for the scattering data.
         metadata : dict, optional, default is an empty dictionary {}
             The additional metadata associated with the diffraction object.
@@ -360,7 +360,7 @@ class DiffractionObject:
 
         Returns
         -------
-        ndarray
+        ``ndarray``
             The shape (len(data), 4) 2D array with columns containing the `
             yarray` (intensity) and the `xarray` values in q, tth, and d.
 
@@ -386,7 +386,7 @@ class DiffractionObject:
         Returns
         -------
         input_xtype : str
-            The type of `xarray`, which must be one of {*XQUANTITIES}.
+            The type of `xarray`, which must be one of ``{*XQUANTITIES}``.
         """
         return self._input_xtype
 
@@ -400,7 +400,7 @@ class DiffractionObject:
 
         Returns
         -------
-        uuid : UUID
+        uuid : ``UUID``
             The unique identifier of the DiffractionObject instance.
         """
         return self._uuid
@@ -478,7 +478,7 @@ class DiffractionObject:
 
         Returns
         -------
-        (q-array, y-array) : tuple of ndarray
+        (q-array, y-array) : tuple of ``ndarray``
             The tuple containing two 1D numpy arrays with q and y data
         """
         return [self.all_arrays[:, 1], self.all_arrays[:, 0]]
@@ -488,7 +488,7 @@ class DiffractionObject:
 
         Returns
         -------
-        (tth-array, y-array) : tuple of ndarray
+        (tth-array, y-array) : tuple of ``ndarray``
             The tuple containing two 1D numpy arrays with tth and y data
         """
         return [self.all_arrays[:, 2], self.all_arrays[:, 0]]
@@ -498,7 +498,7 @@ class DiffractionObject:
 
         Returns
         -------
-        (d-array, y-array) : tuple of ndarray
+        (d-array, y-array) : tuple of ``ndarray``
             The tuple containing two 1D numpy arrays with d and y data
         """
         return [self.all_arrays[:, 3], self.all_arrays[:, 0]]
@@ -522,12 +522,12 @@ class DiffractionObject:
         target_diff_object: DiffractionObject
             The diffraction object you want to scale the current one onto.
 
-        q, tth, d : float, optional, default is None
+        q, tth, d : float, ``optional``, default is None
             The value of the x-array where you want the curves to line up
             vertically. Specify a value on one of the allowed grids, q, tth,
             or d), e.g., q=10.
 
-        offset : float, optional, default is None
+        offset : float, ``optional``, default is None
             The offset to add to the scaled y-values.
 
         Returns
@@ -574,16 +574,16 @@ class DiffractionObject:
         ----------
         xtype : str
             The type of quantity for the independent variable chosen from
-            {*XQUANTITIES, }
+            ``{*XQUANTITIES, }``
 
         Raises
         ------
         ValueError
-            Raised when the specified xtype is not among {*XQUANTITIES, }
+            Raised when the specified xtype is not among ``{*XQUANTITIES, }``
 
         Returns
         -------
-        (xarray, yarray) : tuple of ndarray
+        (xarray, yarray) : tuple of ``ndarray``
             The tuple containing two 1D numpy arrays with x and y data for
             the specified xtype.
         """
@@ -604,9 +604,9 @@ class DiffractionObject:
         ----------
         filepath : str
             The filepath where the diffraction object will be dumped
-        xtype : str, optional, default is q
+        xtype : str, ``optional``, default is q
             The type of quantity for the independent variable chosen from
-            {*XQUANTITIES, }
+            ``{*XQUANTITIES, }``
 
         Examples
         --------

@@ -51,43 +51,46 @@ def _load_config(file_path):
 
 
 def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
-    """Get name, email, and orcid of the owner/user from various sources and
+    """Get name, email, and ORCID of the owner/user from various sources and
     return it as a metadata dictionary.
 
-    The function looks for the information in json format configuration files
-    with the name 'diffpyconfig.json'. These can be in the user's home
-    directory and in the current working directory.  The information in the
-    config files are combined, with the local config overriding the
-    home- directory one.  Values for owner_name, owner_email, and owner_orcid
-    may be passed in to the function and these override the values in the
-    config files.
+    The function looks for information in JSON configuration files named
+    ``diffpyconfig.json``. These can be in the user's home directory and in
+    the current working directory. The information in the config files is
+    combined, with the local config overriding the home-directory one.
+    Values for ``owner_name``, ``owner_email``, and ``owner_orcid`` may be
+    passed in to the function, and these override the config files.
 
-    A template for the config file is below.  Create a text file called '
-    diffpyconfig.json' in your home directory and copy-paste the template
-    into it, editing it with your real information.
-    {
-      "owner_name": "<your name as you would like it stored with your data>>",
-      "owner_email": "<your_associated_email>>@email.com",
-      "owner_orcid": "<your_associated_orcid if you would like this stored with your data>>"  # noqa: E501
-    }
+    A template for the config file is below. Create a text file called
+    ``diffpyconfig.json`` in your home directory and paste the template into
+    it, editing it with your real information::
+
+        {
+          "owner_name": "<your name as you would like it stored with your data>",
+          "owner_email": "<your_associated_email>@email.com",
+          "owner_orcid": "<your_associated_orcid if you would like this stored with your data>" # noqa: E501
+        }
+
     You may also store any other global-level information that you would like
-    associated with your diffraction data in this file
+    associated with your diffraction data in this file.
 
     Parameters
     ----------
-    owner_name : str, optional, default is the value stored in the global or
-        local config file. The name of the user who will show as owner in the
-        metadata that is stored with the data
-    owner_email : str, optional, default is the value stored in the global or
-        local config file. The email of the user/owner
-    owner_orcid : str, optional, default is the value stored in the global or
-        local config file. The ORCID id of the user/owner
+    owner_name : str, ``optional``
+        Default is the value stored in the global or local config file.
+        The name of the user stored in metadata.
+    owner_email : str, ``optional``
+        Default is the value stored in the global or local config file.
+        The email address of the user/owner.
+    owner_orcid : str, ``optional``
+        Default is the value stored in the global or local config file.
+        The ORCID ID of the user/owner.
 
     Returns
     -------
     user_info : dict
-        The dictionary containing username, email and orcid of the user/owner
-        , and any other information stored in the global or local config files.
+        Dictionary containing username, email, ORCID, and any other
+        information stored in global or local config files.
     """
     runtime_info = {
         "owner_name": owner_name,
@@ -127,9 +130,9 @@ def check_and_build_global_config(skip_config_creation=False):
 
     Parameters
     ----------
-    skip_config_creation : bool, optional, default is False.
+    skip_config_creation : bool, ``optional``
         The boolean that will override the creation workflow even if no
-        config file exists.
+        config file exists. Default is False.
 
     Returns
     -------
@@ -190,6 +193,7 @@ def get_package_info(package_names, metadata=None):
     Package info stored in metadata as
     {'package_info': {'package_name': 'version_number'}}.
 
+    Parameters
     ----------
     package_name : str or list
         The name of the package(s) to retrieve the version number for.
@@ -244,11 +248,13 @@ def compute_mu_using_xraydb(
         The chemical formula of the material.
     energy : float
         The energy of the incident x-rays in keV.
-    sample_mass_density : float, optional, Default is None
+    sample_mass_density : float, ``optional``
         The mass density of the packed powder/sample in g/cm*3.
-    packing_fraction : float, optional, Default is None
+        Default is None.
+    packing_fraction : float, ``optional``
         The fraction of sample in the capillary (between 0 and 1).
         Specify either sample_mass_density or packing_fraction but not both.
+        Default is None.
 
     Returns
     -------
