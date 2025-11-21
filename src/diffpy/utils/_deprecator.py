@@ -2,15 +2,16 @@ import functools
 import warnings
 
 # Deprecated decorator is available for Python 3.13+, once
-# Support for earlier versions is dropped, this custom implementation can be removed.
+# Support for earlier versions is dropped, this custom
+# implementation can be removed.
 try:
     from warnings import deprecated as _builtin_deprecated
 except ImportError:
     _builtin_deprecated = None
 
+
 def deprecated(*, alt_name=None, message=None):
-    """
-    Marks a function or class as deprecated.
+    """Marks a function or class as deprecated.
 
     Emits a DeprecationWarning whenever the decorated function is called
     or the decorated class is instantiated.
@@ -64,15 +65,24 @@ def deprecated(*, alt_name=None, message=None):
 
     def decorator(obj):
         name = getattr(obj, "__name__", repr(obj))
-        msg = message or (f"'{name}' is deprecated. Use '{alt_name}' instead."
-                          if alt_name else f"'{name}' is deprecated.")
+        msg = message or (
+            f"'{name}' is deprecated. Use '{alt_name}' instead."
+            if alt_name
+            else f"'{name}' is deprecated."
+        )
 
         if callable(obj):
+
             @functools.wraps(obj)
             def wrapper(*args, **kwargs):
                 warnings.warn(msg, DeprecationWarning, stacklevel=2)
                 return obj(*args, **kwargs)
+
             return wrapper
         else:
-            raise TypeError("deprecated decorator can only be applied to functions or classes")
+            raise TypeError(
+                "deprecated decorator can only be applied to functions or "
+                "classes"
+            )
+
     return decorator
