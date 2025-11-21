@@ -30,11 +30,11 @@ def wsinterp(x, xp, fp, left=None, right=None):
 
     Parameters
     ----------
-    x: ndarray
+    x: ``ndarray``
         The x values at which interpolation is computed.
-    xp: ndarray
+    xp: ``ndarray``
         The array of known x values.
-    fp: ndarray
+    fp: ``ndarray``
         The array of y values associated with xp.
     left: float
         If given, set fp for x < xp[0] to left. Otherwise, if left is None
@@ -46,7 +46,7 @@ def wsinterp(x, xp, fp, left=None, right=None):
 
     Returns
     -------
-    ndarray or float
+    ``ndarray`` or float
         The interpolated values at points x. Returns a single float if x is a
         scalar, otherwise returns a numpy.ndarray.
     """
@@ -91,9 +91,9 @@ def nsinterp(xp, fp, qmin=0, qmax=25, left=None, right=None):
 
     Parameters
     ----------
-    xp: ndarray
+    xp: ``ndarray``
         The array of known x values.
-    fp: ndarray
+    fp: ``ndarray``
         The array of y values associated with xp.
     qmin: float
         The lower band limit in the frequency domain.
@@ -102,7 +102,7 @@ def nsinterp(xp, fp, qmin=0, qmax=25, left=None, right=None):
 
     Returns
     -------
-    x: ndarray
+    x: ``ndarray``
         The Nyquist-Shannon grid computed for the given qmin and qmax.
     fp_at_x: ndarray
         The interpolated values at points x. Returns a single float if x is a
@@ -139,7 +139,7 @@ def resample(r, s, dr):
 
     Returns
     -------
-    Returns resampled (r, s).
+    Returns resampled ``(r, s)``.
     """
 
     warnings.warn(

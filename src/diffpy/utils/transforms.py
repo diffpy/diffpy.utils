@@ -52,7 +52,7 @@ def q_to_tth(q, wavelength):
 
     Parameters
     ----------
-    q : ndarray
+    q : ``ndarray``
         The 1D array of :math:`q` values numpy.array([qs]).
         The units of q must be reciprocal of the units of wavelength.
 
@@ -61,7 +61,7 @@ def q_to_tth(q, wavelength):
 
     Returns
     -------
-    tth : ndarray
+    tth : ``ndarray``
         The 1D array of :math:`2\theta` values in degrees numpy.array([tths]).
     """
     _validate_inputs(q, wavelength)
@@ -95,7 +95,7 @@ def tth_to_q(tth, wavelength):
 
     Parameters
     ----------
-    tth : ndarray
+    tth : ``ndarray``
         The 1D array of :math:`2\theta` values np.array([tths]).
         The units of tth are expected in degrees.
 
@@ -104,7 +104,7 @@ def tth_to_q(tth, wavelength):
 
     Returns
     -------
-    q : ndarray
+    q : ``ndarray``
         The 1D array of :math:`q` values np.array([qs]).
         The units for the q-values are the inverse of the units of the
         provided wavelength.
@@ -129,13 +129,13 @@ def q_to_d(q):
 
     Parameters
     ----------
-    q : ndarray
+    q : ``ndarray``
         The 1D array of :math:`q` values np.array([qs]).
         The units of q must be reciprocal of the units of wavelength.
 
     Returns
     -------
-    d : ndarray
+    d : ``ndarray``
         The 1D array of :math:`d` values np.array([ds]).
     """
     if 0 in q:
@@ -153,7 +153,7 @@ def tth_to_d(tth, wavelength):
 
     Parameters
     ----------
-    tth : nsarray
+    tth : ``nsarray``
         The 1D array of :math:`2\theta` values np.array([tths]).
         The units of tth are expected in degrees.
 
@@ -162,7 +162,7 @@ def tth_to_d(tth, wavelength):
 
     Returns
     -------
-    d : nsarray
+    d : ``nsarray``
         The 1D array of :math:`d` values np.array([ds]).
     """
     q = tth_to_q(tth, wavelength)
@@ -182,12 +182,12 @@ def d_to_q(d):
 
     Parameters
     ----------
-    d : nsarray
+    d : ``nsarray``
         The 1D array of :math:`d` values np.array([ds]).
 
     Returns
     -------
-    q : nsarray
+    q : ``nsarray``
         The 1D array of :math:`q` values np.array([qs]).
         The units of q must be reciprocal of the units of wavelength.
     """
@@ -206,7 +206,7 @@ def d_to_tth(d, wavelength):
 
     Parameters
     ----------
-    d : nsarray
+    d : ``nsarray``
         The 1D array of :math:`d` values np.array([ds]).
 
     wavelength : float
@@ -214,7 +214,7 @@ def d_to_tth(d, wavelength):
 
     Returns
     -------
-    tth : nsarray
+    tth : ``nsarray``
         The 1D array of :math:`2\theta` values np.array([tths]).
         The units of tth are expected in degrees.
     """
