@@ -11,6 +11,7 @@ from diffpy.utils.tools import (
     check_and_build_global_config,
     compute_mu_using_xraydb,
     compute_mud,
+    get_density_from_cloud,
     get_package_info,
     get_user_info,
 )
@@ -268,6 +269,20 @@ def test_get_package_info(monkeypatch, inputs, expected):
     )
     actual_metadata = get_package_info(inputs[0], metadata=inputs[1])
     assert actual_metadata == expected
+
+
+@pytest.mark.parametrize(
+    "inputs, expected_density",
+    [
+        ({"sample_composition": "CeO2"}, 7.2307927),
+        ({"sample_composition": "CeO2", "phase": "P1"}, 7.4143654),
+    ],
+)
+def test_get_density_from_cloud(inputs, expected_density):
+    actual_density = get_density_from_cloud(**inputs)
+    assert actual_density == pytest.approx(
+        expected_density, rel=1e-4, abs=1e-6
+    )
 
 
 @pytest.mark.parametrize(

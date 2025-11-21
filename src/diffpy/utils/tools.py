@@ -4,6 +4,7 @@ from copy import copy
 from pathlib import Path
 
 import numpy as np
+from pymatgen.ext.cod import COD
 from scipy.optimize import dual_annealing
 from scipy.signal import convolve
 from xraydb import material_mu
@@ -214,21 +215,48 @@ def get_package_info(package_names, metadata=None):
     return metadata
 
 
-def get_density_from_cloud(sample_composition, mp_token=""):
-    """Function to get material density from the MP or COD database.
+def get_density_from_cloud(sample_composition, phase=None):
+    """Fetch material density from the COD database.
 
-    It is not implemented yet.
+    Parameters
+    ----------
+    sample_composition : str
+        The chemical formula of the material.
+    phase : str, optional, default is None
+        The phase of the material.
+
+    Returns
+    -------
+    density : float
+        Material density in g/cm^3.
     """
-    raise NotImplementedError(
-        "So sorry, density computation from composition is not implemented "
-        "right now. "
-        "We hope to have this implemented in the next release. "
-        "Please rerun specifying a sample mass density."
+    results = COD().get_structure_by_formula(sample_composition)
+    if phase:
+        phase = phase.replace(" ", "").lower()
+        for r in results:
+            if r.get("sg", "unknown").replace(" ", "").lower() == phase:
+                return r["structure"].density
+    print(
+        "No phase specified. Returning density of the first result. "
+        "Available densities and phases are:"
     )
+    result_list = [
+        {
+            "Density (g/cm^3)": r["structure"].density,
+            "Phase": r.get("sg", "Unknown").replace(" ", ""),
+        }
+        for r in results
+    ]
+    print(result_list)
+    return results[0]["structure"].density
 
 
 def compute_mu_using_xraydb(
-    sample_composition, energy, sample_mass_density=None, packing_fraction=None
+    sample_composition,
+    energy,
+    sample_mass_density=None,
+    packing_fraction=None,
+    phase=None,
 ):
     """Compute the attenuation coefficient (mu) using the XrayDB database.
 
@@ -245,10 +273,14 @@ def compute_mu_using_xraydb(
     energy : float
         The energy of the incident x-rays in keV.
     sample_mass_density : float, optional, Default is None
-        The mass density of the packed powder/sample in g/cm*3.
+        The mass density of the packed powder/sample in g/cm^3.
     packing_fraction : float, optional, Default is None
         The fraction of sample in the capillary (between 0 and 1).
         Specify either sample_mass_density or packing_fraction but not both.
+    phase : string, optional, Default is None
+        The phase information for the sample composition.
+        Only relevant if you need to fetch the theoretical density
+        based on the packing fraction.
 
     Returns
     -------
@@ -265,7 +297,8 @@ def compute_mu_using_xraydb(
         )
     if packing_fraction is not None:
         sample_mass_density = (
-            get_density_from_cloud(sample_composition) * packing_fraction
+            get_density_from_cloud(sample_composition, phase=phase)
+            * packing_fraction
         )
     energy_eV = energy * 1000
     mu = (
