@@ -9,6 +9,7 @@ import pytest
 from diffpy.utils.tools import (
     _extend_z_and_convolve,
     check_and_build_global_config,
+    compute_density_from_cif,
     compute_mu_using_xraydb,
     compute_mud,
     get_package_info,
@@ -268,6 +269,28 @@ def test_get_package_info(monkeypatch, inputs, expected):
     )
     actual_metadata = get_package_info(inputs[0], metadata=inputs[1])
     assert actual_metadata == expected
+
+
+@pytest.mark.parametrize(
+    "inputs, expected_density",
+    [
+        (
+            {
+                "sample_composition": "NaCl",
+                "cif_data_filename": "cif_data.json",
+            },
+            2.187,
+        ),
+    ],
+)
+def test_compute_density_from_cif(inputs, expected_density):
+    path = Path("testdata") / inputs["cif_data_filename"]
+    with open(path) as f:
+        cif_data = json.load(f)
+    actual_density = compute_density_from_cif(
+        inputs["sample_composition"], cif_data
+    )
+    assert actual_density == pytest.approx(expected_density, rel=0.01, abs=0.1)
 
 
 @pytest.mark.parametrize(
