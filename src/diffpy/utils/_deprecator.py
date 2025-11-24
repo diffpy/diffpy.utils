@@ -15,13 +15,10 @@ def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
 
     Matches the Python 3.13 warnings.deprecated API exactly.
     """
-    # If Python 3.13 implementation exists, delegate to it
     if _builtin_deprecated is not None:
         return _builtin_deprecated(
             message, category=category, stacklevel=stacklevel
         )
-
-    # Validate message type like Python 3.13 does
     if not isinstance(message, str):
         raise TypeError(
             f"Expected an object of type str for 'message', not "
@@ -29,10 +26,7 @@ def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
         )
 
     def decorator(obj):
-        # Set __deprecated__ attribute (required by PEP 702)
         setattr(obj, "__deprecated__", message)
-
-        # Must support functions AND classes
         if callable(obj):
 
             @functools.wraps(obj)
