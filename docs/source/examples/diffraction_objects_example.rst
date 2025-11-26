@@ -81,8 +81,9 @@ You could simply load them both as diffraction objects and plot them together on
 
 .. code-block:: python
 
-    calculated = DiffractionObject(xcalc, ycalc, "d")
-    measured = DiffractionObject(xmeas, ymeas, "tth", wavelength=0.717)
+    calculated = DiffractionObject(xcalc=[0.251436, 0.251542, 0.251647], ycalc=[-1.020020, -1.036460, -1.142070], "d")
+    measured = DiffractionObject(xmeas=[5.343089004093959198e-03, 5.343089004093959198e-03, 2.671544437772708711e-02],
+    ymeas=[3.533951950073242188e+01, 3.585629272460937500e+01, 3.611056518554687500e+01], "q", wavelength=0.717)
     plt.plot(calculated.on_q()[0], calculated.on_q()[1])
     plt.plot(measured.on_q()[0], measured.on_q()[1])
     plt.show()
