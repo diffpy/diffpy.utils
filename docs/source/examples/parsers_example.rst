@@ -69,7 +69,7 @@ returns an empty list.
 
 .. code-block:: python
 
-     from diffpy.utils.parsers.loaddata import serialize_data
+     from diffpy.utils.parsers.serialization import serialize_data
      file_data = serialize_data('<PATH to data.txt', hdata, data_table)
      # File data is a dictionary with a single key
      # The key is the file name (in our case, 'data.txt')
