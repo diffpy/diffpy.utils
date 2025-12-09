@@ -11,10 +11,8 @@ except ImportError:
 
 
 def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
-    """Compatibility wrapper for Python <3.13.
-
-    Matches the Python 3.13 warnings.deprecated API exactly.
-    """
+    """Deprecation decorator for functions and classes that is compatible with
+    Python versions prior to 3.13."""
     if _builtin_deprecated is not None:
         return _builtin_deprecated(
             message, category=category, stacklevel=stacklevel
