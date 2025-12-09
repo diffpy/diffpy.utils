@@ -12,7 +12,49 @@ except ImportError:
 
 def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
     """Deprecation decorator for functions and classes that is compatible with
-    Python versions prior to 3.13."""
+    Python versions prior to 3.13.
+
+    Examples
+    --------
+    Basic usage with a deprecated function:
+
+    .. code-block:: python
+
+        from diffpy._deprecations import deprecated
+        import warnings
+
+        @deprecated("old_function is deprecated; use new_function instead")
+        def old_function(x, y):
+            return x + y
+
+        def new_function(x, y):
+            return x + y
+
+        old_function(1, 2)   # Emits DeprecationWarning
+        new_function(1, 2)   # No warning
+
+
+    Deprecating a class:
+
+    .. code-block:: python
+
+        from diffpy._deprecations import deprecated
+        import warnings
+
+        warnings.simplefilter("always", DeprecationWarning)
+
+        @deprecated("OldAtom is deprecated; use NewAtom instead")
+        class OldAtom:
+            def __init__(self, symbol):
+                self.symbol = symbol
+
+        class NewAtom:
+            def __init__(self, symbol):
+                self.symbol = symbol
+
+        a = OldAtom("C")     # Emits DeprecationWarning
+        b = NewAtom("C")     # No warning
+    """
     if _builtin_deprecated is not None:
         return _builtin_deprecated(
             message, category=category, stacklevel=stacklevel
