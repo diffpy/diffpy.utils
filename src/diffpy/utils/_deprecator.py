@@ -10,79 +10,74 @@ except ImportError:
     _builtin_deprecated = None
 
 
-def deprecated(*, alt_name=None, message=None):
-    """Marks a function or class as deprecated.
-
-    Emits a DeprecationWarning whenever the decorated function is called
-    or the decorated class is instantiated.
-
-    Parameters
-    ----------
-    alt_name : str, optional
-        Name of the recommended alternative.
-    message : str, optional
-        Custom deprecation message. If None, a default message is generated.
-
-    Returns
-    -------
-    decorator : function
-        Decorator that wraps the deprecated object.
+def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
+    """Deprecation decorator for functions and classes that is compatible with
+    Python versions prior to 3.13.
 
     Examples
     --------
+    Basic usage with a deprecated function:
+
     .. code-block:: python
 
         from diffpy._deprecations import deprecated
+        import warnings
 
-        # ------------------------------
-        # Deprecated function
-        # ------------------------------
-        @deprecated(alt_name="new_function")
+        @deprecated("old_function is deprecated; use new_function instead")
         def old_function(x, y):
             return x + y
 
         def new_function(x, y):
             return x + y
 
-        # Usage
-        old_function(1, 2)  # Emits DeprecationWarning
-        new_function(1, 2)  # No warning
+        old_function(1, 2)   # Emits DeprecationWarning
+        new_function(1, 2)   # No warning
 
-        # ------------------------------
-        # Deprecated class
-        # ------------------------------
-        @deprecated(alt_name="NewAtom")
+
+    Deprecating a class:
+
+    .. code-block:: python
+
+        from diffpy._deprecations import deprecated
+        import warnings
+
+        warnings.simplefilter("always", DeprecationWarning)
+
+        @deprecated("OldAtom is deprecated; use NewAtom instead")
         class OldAtom:
             def __init__(self, symbol):
                 self.symbol = symbol
 
-        # Usage
-        a = OldAtom("C")  # Emits DeprecationWarning
-        atom = NewAtom("C")  # No warning
-    """
-    if _builtin_deprecated:
-        return _builtin_deprecated
+        class NewAtom:
+            def __init__(self, symbol):
+                self.symbol = symbol
 
-    def decorator(obj):
-        name = getattr(obj, "__name__", repr(obj))
-        msg = message or (
-            f"'{name}' is deprecated. Use '{alt_name}' instead."
-            if alt_name
-            else f"'{name}' is deprecated."
+        a = OldAtom("C")     # Emits DeprecationWarning
+        b = NewAtom("C")     # No warning
+    """
+    if _builtin_deprecated is not None:
+        return _builtin_deprecated(
+            message, category=category, stacklevel=stacklevel
+        )
+    if not isinstance(message, str):
+        raise TypeError(
+            f"Expected an object of type str for 'message', not "
+            f"{type(message).__name__!r}"
         )
 
+    def decorator(obj):
+        setattr(obj, "__deprecated__", message)
         if callable(obj):
 
             @functools.wraps(obj)
             def wrapper(*args, **kwargs):
-                warnings.warn(msg, DeprecationWarning, stacklevel=2)
+                warnings.warn(message, category, stacklevel=stacklevel + 1)
                 return obj(*args, **kwargs)
 
             return wrapper
-        else:
-            raise TypeError(
-                "deprecated decorator can only be applied to functions or "
-                "classes"
-            )
+
+        raise TypeError(
+            "deprecated decorator can only be applied to functions or classes"
+        )
 
     return decorator
