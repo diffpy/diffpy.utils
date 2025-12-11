@@ -4,6 +4,8 @@ from copy import copy
 from pathlib import Path
 
 import numpy as np
+from periodictable import formula
+from scipy.constants import Avogadro as AVOGADRO_NUMBER
 from scipy.optimize import dual_annealing
 from scipy.signal import convolve
 from xraydb import material_mu
@@ -195,7 +197,7 @@ def get_package_info(package_names, metadata=None):
 
     Parameters
     ----------
-    package_name : str or list
+    package_names : str or list
         The name of the package(s) to retrieve the version number for.
     metadata : dict
         The dictionary to store the package info. If not provided, a new
@@ -216,6 +218,49 @@ def get_package_info(package_names, metadata=None):
         pkg_info.update({package: importlib.metadata.version(package)})
     metadata["package_info"] = pkg_info
     return metadata
+
+
+def compute_density_from_cif(sample_composition, cif_data):
+    """Compute the theoretical density from given CIF metadata.
+
+    Parameters
+    ----------
+    sample_composition : str
+        The chemical formula of the material, e.g. "NaCl".
+    cif_data : dict
+        The dictionary containing CIF metadata,
+        typically parsed from a JSON file retrieved
+        from the Crystallography Open Database (COD).
+
+    Returns
+    -------
+    density : float
+        The material density in g/cm^3.
+    """
+    molar_mass = formula(sample_composition).mass
+    a, b, c = (float(cif_data[k]) for k in ("a", "b", "c"))
+    alpha_deg, beta_deg, gamma_deg = (
+        float(cif_data[k]) for k in ("alpha", "beta", "gamma")
+    )
+    Z = int(float(cif_data["Z"]))
+    alpha_rad, beta_rad, gamma_rad = map(
+        np.radians, [alpha_deg, beta_deg, gamma_deg]
+    )
+    volume = (
+        a
+        * b
+        * c
+        * np.sqrt(
+            1
+            - np.cos(alpha_rad) ** 2
+            - np.cos(beta_rad) ** 2
+            - np.cos(gamma_rad) ** 2
+            + 2 * np.cos(alpha_rad) * np.cos(beta_rad) * np.cos(gamma_rad)
+        )
+    )
+    volume_cm3 = volume * 1e-24
+    density = (Z * molar_mass) / (volume_cm3 * AVOGADRO_NUMBER)
+    return density
 
 
 def get_density_from_cloud(sample_composition, mp_token=""):
