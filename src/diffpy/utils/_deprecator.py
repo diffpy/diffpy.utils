@@ -81,3 +81,28 @@ def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
         )
 
     return decorator
+
+
+def deprecation_message(base, old_name, new_name, removal_version):
+    """Generate a deprecation message.
+
+    Parameters
+    ----------
+    base : str
+        The base module or class where the deprecated item resides.
+    old_name : str
+        The name of the deprecated item.
+    new_name : str
+        The name of the new item to use.
+    removal_version : str
+        The version when the deprecated item will be removed.
+
+    Returns
+    -------
+    str
+        A formatted deprecation message.
+    """
+    return (
+        f"'{base}.{old_name}' is deprecated and will be removed in "
+        f"version {removal_version}. Please use '{base}.{new_name}' instead."
+    )
