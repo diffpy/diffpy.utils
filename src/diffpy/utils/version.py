@@ -18,8 +18,9 @@
 #  __all__ = ["__date__", "__git_commit__", "__timestamp__", "__version__"]
 
 # obtain version information
-from importlib.metadata import version
+from importlib.metadata import PackageNotFoundError, version
 
-__version__ = version("diffpy.utils")
-
-# End of file
+try:
+    __version__ = version("diffpy.utils")
+except PackageNotFoundError:
+    __version__ = "unknown"

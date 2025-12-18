@@ -1,0 +1,18 @@
+{
+  "maintainer_name": "Simon Billinge",
+  "maintainer_email": "sb2896@columbia.edu",
+  "maintainer_github_username": "sbillinge",
+  "contributors": "Timur Davis, Chris Farrow, Pavol Juhas",
+  "license_holders": "The Trustees of Columbia University in the City of New York",
+  "project_name": "diffpy.utils",
+  "github_username_or_orgname": "diffpy",
+  "github_repo_name": "diffpy.utils",
+  "conda_pypi_package_dist_name": "diffpy.utils",
+  "package_dir_name": "diffpy.utils",
+  "project_short_description": "Shared utilities for diffpy packages.",
+  "project_keywords": "text data parsers, wx grid, diffraction objects",
+  "minimum_supported_python_version": "3.11",
+  "maximum_supported_python_version": "3.13",
+  "project_needs_c_code_compiled": "No",
+  "project_has_gui_tests": "No"
+}

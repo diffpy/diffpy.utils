@@ -51,8 +51,8 @@ def _load_config(file_path):
 
 
 def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
-    """Get name, email, and ORCID of the owner/user from various sources and
-    return it as a metadata dictionary.
+    """Get name, email, and ORCID of the owner/user from various sources
+    and return it as a metadata dictionary.
 
     The function looks for information in JSON configuration files named
     ``diffpyconfig.json``. These can be in the user's home directory and in
@@ -109,8 +109,8 @@ def get_user_info(owner_name=None, owner_email=None, owner_orcid=None):
 
 
 def check_and_build_global_config(skip_config_creation=False):
-    """Check for a global diffpu config file in user's home directory and
-    creates one if it is missing.
+    """Check for a global diffpu config file in user's home directory
+    and creates one if it is missing.
 
     The file it looks for is called diffpyconfig.json.  This can contain
     anything in json format, but minimally contains information about the
@@ -234,7 +234,8 @@ def get_density_from_cloud(sample_composition, mp_token=""):
 def compute_mu_using_xraydb(
     sample_composition, energy, sample_mass_density=None, packing_fraction=None
 ):
-    """Compute the attenuation coefficient (mu) using the XrayDB database.
+    """Compute the attenuation coefficient (mu) using the XrayDB
+    database.
 
     Computes mu based on the sample composition and energy.
     User should provide a sample mass density or a packing fraction.
@@ -287,8 +288,8 @@ def compute_mu_using_xraydb(
 
 
 def _top_hat(z, half_slit_width):
-    """Create a top-hat function, return 1.0 for values within the specified
-    slit width and 0 otherwise."""
+    """Create a top-hat function, return 1.0 for values within the
+    specified slit width and 0 otherwise."""
     return np.where((z >= -half_slit_width) & (z <= half_slit_width), 1.0, 0.0)
 
 
@@ -319,9 +320,10 @@ def _model_function(z, diameter, z0, I0, mud, slope):
 
 
 def _extend_z_and_convolve(z, diameter, half_slit_width, z0, I0, mud, slope):
-    """Extend z values and I values for padding (so that we don't have tails in
-    convolution), then perform convolution (note that the convolved I values
-    are the same as modeled I values if slit width is close to 0)"""
+    """Extend z values and I values for padding (so that we don't have
+    tails in convolution), then perform convolution (note that the
+    convolved I values are the same as modeled I values if slit width is
+    close to 0)"""
     n_points = len(z)
     z_left_pad = np.linspace(
         z.min() - n_points * (z[1] - z[0]), z.min(), n_points
@@ -342,8 +344,8 @@ def _extend_z_and_convolve(z, diameter, half_slit_width, z0, I0, mud, slope):
 
 def _objective_function(params, z, observed_data):
     """Compute the objective function for fitting a model to the
-    observed/experimental data by minimizing the sum of squared residuals
-    between the observed data and the convolved model data."""
+    observed/experimental data by minimizing the sum of squared
+    residuals between the observed data and the convolved model data."""
     diameter, half_slit_width, z0, I0, mud, slope = params
     convolved_model_data = _extend_z_and_convolve(
         z, diameter, half_slit_width, z0, I0, mud, slope
@@ -353,7 +355,8 @@ def _objective_function(params, z, observed_data):
 
 
 def _compute_single_mud(z_data, I_data):
-    """Perform dual annealing optimization and extract the parameters."""
+    """Perform dual annealing optimization and extract the
+    parameters."""
     bounds = [
         (
             1e-5,
@@ -382,8 +385,8 @@ def _compute_single_mud(z_data, I_data):
 
 
 def compute_mud(filepath):
-    """Compute the best-fit mu*D value from a z-scan file, removing the sample
-    holder effect.
+    """Compute the best-fit mu*D value from a z-scan file, removing the
+    sample holder effect.
 
     This function loads z-scan data and fits it to a model
     that convolves a top-hat function with I = I0 * e^{-mu * l}.

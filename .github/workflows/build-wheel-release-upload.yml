@@ -7,7 +7,7 @@ on:
       - "*" # Trigger on all tags initially, but tag and release privilege are verified in _build-wheel-release-upload.yml
 
 jobs:
-  release:
+  build-release:
     uses: scikit-package/release-scripts/.github/workflows/_build-wheel-release-upload.yml@v0
     with:
       project: diffpy.utils

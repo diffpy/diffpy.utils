@@ -6,7 +6,7 @@
 
 diffpy.utils - General utilities for analyzing diffraction data
 
-| Software version |release|.
+| Software version |release|
 | Last updated |today|.
 
 The diffpy.utils package provides a number of functions and classes designed to help
@@ -33,7 +33,7 @@ Illustrations of when and how one would use various diffpy.utils functions.
 Authors
 =======
 
-diffpy.utils is developed by members of the Billinge Group at
+``diffpy.utils`` is developed by members of the Billinge Group at
 Columbia University and at Brookhaven National Laboratory including
 Pavol Juhás, Christopher L. Farrow, Simon J. L. Billinge, Andrew Yang,
 with contributions from many Billinge Group members and
