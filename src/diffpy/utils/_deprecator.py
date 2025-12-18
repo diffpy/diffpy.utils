@@ -11,8 +11,8 @@ except ImportError:
 
 
 def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
-    """Deprecation decorator for functions and classes that is compatible with
-    Python versions prior to 3.13.
+    """Deprecation decorator for functions and classes that is
+    compatible with Python versions prior to 3.13.
 
     Examples
     --------

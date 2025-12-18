@@ -146,9 +146,9 @@ def quickResizeColumns(grid, indices):
 
 
 def _indicesToBlocks(indices):
-    """Convert a list of integer indices to a list of (start, stop) tuples. The
-    (start, stop) tuple defines a continuous block, where the stop index is
-    included in the block.
+    """Convert a list of integer indices to a list of (start, stop)
+    tuples. The (start, stop) tuple defines a continuous block, where
+    the stop index is included in the block.
 
     Parameters
     ----------

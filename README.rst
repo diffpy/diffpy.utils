@@ -25,6 +25,7 @@
         :target: https://anaconda.org/conda-forge/diffpy.utils
 
 .. |PR| image:: https://img.shields.io/badge/PR-Welcome-29ab47ff
+        :target: https://github.com/diffpy/diffpy.utils/pulls
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/diffpy.utils
         :target: https://pypi.org/project/diffpy.utils/
@@ -35,8 +36,7 @@
 .. |Tracking| image:: https://img.shields.io/badge/issue_tracking-github-blue
         :target: https://github.com/diffpy/diffpy.utils/issues
 
-diffpy.utils Package
-========================================================================
+Shared utilities for diffpy packages.
 
 General utilities for analyzing diffraction data
 

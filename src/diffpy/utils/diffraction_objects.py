@@ -211,8 +211,8 @@ class DiffractionObject:
         return True
 
     def __add__(self, other):
-        """Add a scalar value or another DiffractionObject to the yarray of the
-        DiffractionObject.
+        """Add a scalar value or another DiffractionObject to the yarray
+        of the DiffractionObject.
 
         Parameters
         ----------
@@ -262,8 +262,8 @@ class DiffractionObject:
     __radd__ = __add__
 
     def __sub__(self, other):
-        """Subtract scalar value or another DiffractionObject to the yarray of
-        the DiffractionObject.
+        """Subtract scalar value or another DiffractionObject to the
+        yarray of the DiffractionObject.
 
         This method behaves similarly to the `__add__` method, but performs
         subtraction instead of addition. For details on parameters, returns
@@ -290,8 +290,8 @@ class DiffractionObject:
     __rsub__ = __sub__
 
     def __mul__(self, other):
-        """Multiply a scalar value or another DiffractionObject with the yarray
-        of this DiffractionObject.
+        """Multiply a scalar value or another DiffractionObject with the
+        yarray of this DiffractionObject.
 
         This method behaves similarly to the `__add__` method, but performs
         multiplication instead of addition. For details on parameters,
@@ -318,8 +318,8 @@ class DiffractionObject:
     __rmul__ = __mul__
 
     def __truediv__(self, other):
-        """Divide the yarray of this DiffractionObject by a scalar value or
-        another DiffractionObject.
+        """Divide the yarray of this DiffractionObject by a scalar value
+        or another DiffractionObject.
 
         This method behaves similarly to the `__add__` method, but performs
         division instead of addition. For details on parameters, returns,
@@ -474,7 +474,8 @@ class DiffractionObject:
             return self.on_d(), "d"
 
     def on_q(self):
-        """Return the tuple of two 1D numpy arrays containing q and y data.
+        """Return the tuple of two 1D numpy arrays containing q and y
+        data.
 
         Returns
         -------
@@ -484,7 +485,8 @@ class DiffractionObject:
         return [self.all_arrays[:, 1], self.all_arrays[:, 0]]
 
     def on_tth(self):
-        """Return the tuple of two 1D numpy arrays containing tth and y data.
+        """Return the tuple of two 1D numpy arrays containing tth and y
+        data.
 
         Returns
         -------
@@ -494,7 +496,8 @@ class DiffractionObject:
         return [self.all_arrays[:, 2], self.all_arrays[:, 0]]
 
     def on_d(self):
-        """Return the tuple of two 1D numpy arrays containing d and y data.
+        """Return the tuple of two 1D numpy arrays containing d and y
+        data.
 
         Returns
         -------
@@ -506,8 +509,8 @@ class DiffractionObject:
     def scale_to(
         self, target_diff_object, q=None, tth=None, d=None, offset=None
     ):
-        """Return a new diffraction object which is the current object but
-        rescaled in y to the target.
+        """Return a new diffraction object which is the current object
+        but rescaled in y to the target.
 
         By default, if `q`, `tth`, or `d` are not provided, scaling is
         based on the max intensity from each object. Otherwise, y-value in
@@ -568,7 +571,8 @@ class DiffractionObject:
         return scaled_do
 
     def on_xtype(self, xtype):
-        """Return a tuple of two 1D numpy arrays containing x and y data.
+        """Return a tuple of two 1D numpy arrays containing x and y
+        data.
 
         Parameters
         ----------
@@ -597,8 +601,9 @@ class DiffractionObject:
             raise ValueError(_xtype_wmsg(xtype))
 
     def dump(self, filepath, xtype=None):
-        """Dump the xarray and yarray of the diffraction object to a two-column
-        file, with the associated information included in the header.
+        """Dump the xarray and yarray of the diffraction object to a
+        two-column file, with the associated information included in the
+        header.
 
         Parameters
         ----------
