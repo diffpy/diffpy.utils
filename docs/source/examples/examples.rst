@@ -12,3 +12,4 @@ Landing page for diffpy.utils examples.
     resample_example
     parsers_example
     tools_example
+    mu_calc_examples
