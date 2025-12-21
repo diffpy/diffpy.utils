@@ -231,49 +231,30 @@ def get_density_from_cloud(sample_composition, mp_token=""):
     )
 
 
-def compute_mu_using_xraydb(
-    sample_composition, energy, sample_mass_density=None, packing_fraction=None
-):
+def compute_mu_using_xraydb(sample_composition, energy, sample_mass_density):
     """Compute the attenuation coefficient (mu) using the XrayDB
     database.
 
-    Computes mu based on the sample composition and energy.
-    User should provide a sample mass density or a packing fraction.
-    If neither density nor packing fraction is specified,
-    or if both are specified, a ValueError will be raised.
-    Reference: https://xraypy.github.io/XrayDB/python.html#xraydb.material_mu.
+    Computes mu based on the sample composition, X-ray energy, and
+    sample mass density.
+
+    Reference:
+    https://xraypy.github.io/XrayDB/python.html#xraydb.material_mu
 
     Parameters
     ----------
     sample_composition : str
         The chemical formula of the material.
     energy : float
-        The energy of the incident x-rays in keV.
-    sample_mass_density : float, ``optional``
-        The mass density of the packed powder/sample in g/cm*3.
-        Default is None.
-    packing_fraction : float, ``optional``
-        The fraction of sample in the capillary (between 0 and 1).
-        Specify either sample_mass_density or packing_fraction but not both.
-        Default is None.
+        The energy of the incident X-rays in keV.
+    sample_mass_density : float
+        The mass density of the sample in g/cm^3.
 
     Returns
     -------
     mu : float
-        The attenuation coefficient mu in mm^{-1}.
+        The attenuation coefficient μ in mm⁻¹.
     """
-    if (sample_mass_density is None and packing_fraction is None) or (
-        sample_mass_density is not None and packing_fraction is not None
-    ):
-        raise ValueError(
-            "You must specify either sample_mass_density or packing_fraction, "
-            "but not both. "
-            "Please rerun specifying only one."
-        )
-    if packing_fraction is not None:
-        sample_mass_density = (
-            get_density_from_cloud(sample_composition) * packing_fraction
-        )
     energy_eV = energy * 1000
     mu = (
         material_mu(
