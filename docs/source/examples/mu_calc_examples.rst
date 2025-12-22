@@ -113,11 +113,11 @@ Now calculate μ using the ``compute_mu_using_xraydb`` function.
 
 .. code-block:: python
 
-   mu_density = compute_mu_using_xraydb(composition, energy_keV, sample_mass_density=sample_mass_density)
-   print(f"Calculated mu from sample_mass_density: {round(mu_density, 3)} mm^-1")
+   mu = compute_mu_using_xraydb(composition, energy_keV, sample_mass_density)
+   print(f"Calculated mu: {round(mu, 3)} mm^-1")
 
 This will output the calculated X-ray absorption coefficient, μ, in mm\ :sup:`-1`.
 
 .. code-block:: console
 
-   Calculated mu from sample_mass_density: 13.967 mm^-1
+   Calculated mu: 13.967 mm^-1
