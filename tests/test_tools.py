@@ -9,7 +9,6 @@ import pytest
 from diffpy.utils.tools import (
     _extend_z_and_convolve,
     check_and_build_global_config,
-    compute_mu_using_xraydb,
     compute_mud,
     get_package_info,
     get_user_info,
@@ -268,40 +267,6 @@ def test_get_package_info(monkeypatch, inputs, expected):
     )
     actual_metadata = get_package_info(inputs[0], metadata=inputs[1])
     assert actual_metadata == expected
-
-
-@pytest.mark.parametrize(
-    "inputs",
-    [
-        # Test when the function has invalid inputs
-        (  # C1: Both mass density and packing fraction are provided,
-            # expect ValueError exception
-            {
-                "sample_composition": "SiO2",
-                "energy": 10,
-                "sample_mass_density": 2.65,
-                "packing_fraction": 1,
-            }
-        ),
-        (  # C2: None of mass density or packing fraction are provided,
-            # expect ValueError exception
-            {
-                "sample_composition": "SiO2",
-                "energy": 10,
-            }
-        ),
-    ],
-)
-def test_compute_mu_using_xraydb_bad(inputs):
-    with pytest.raises(
-        ValueError,
-        match=(
-            "You must specify either sample_mass_density or "
-            "packing_fraction, but not both. "
-            "Please rerun specifying only one."
-        ),
-    ):
-        compute_mu_using_xraydb(**inputs)
 
 
 def test_compute_mud(tmp_path):
