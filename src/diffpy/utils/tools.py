@@ -9,7 +9,6 @@ from scipy.signal import convolve
 from xraydb import material_mu
 
 from diffpy.utils import validators
-from diffpy.utils.parsers.loaddata import loadData
 
 
 def _stringify(string_value):
@@ -391,7 +390,7 @@ def compute_mud(filepath):
     mu*D : float
         The best-fit mu*D value.
     """
-    z_data, I_data = loadData(filepath, unpack=True)
+    z_data, I_data = load_data(filepath, unpack=True)
     best_mud, _ = min(
         (_compute_single_mud(z_data, I_data) for _ in range(20)),
         key=lambda pair: pair[1],
