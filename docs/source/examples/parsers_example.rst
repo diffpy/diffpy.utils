@@ -13,13 +13,13 @@ Using the parsers module, we can load file data into simple and easy-to-work-wit
    Our goal will be to extract the data, and the parameters listed in the header, from this file and
    load it into our program.
 
-2) To get the data table, we will use the ``loadData`` function. The default behavior of this
+2) To get the data table, we will use the ``load_data`` function. The default behavior of this
    function is to find and extract a data table from a file.
 
 .. code-block:: python
 
-     from diffpy.utils.parsers.loaddata import loadData
-     data_table = loadData('<PATH to data.txt>')
+     from diffpy.utils.tools import load_data
+     data_table = load_data('<PATH to data.txt>')
 
 While this will work with most datasets, on our ``data.txt`` file, we got a ``ValueError``. The reason for this is
 due to the comments ``$ Phase Transition Near This Temperature Range`` and ``--> Note Significant Jump in Rw <--``
@@ -27,9 +27,9 @@ embedded within the dataset. To fix this, try using the ``comments`` parameter.
 
 .. code-block:: python
 
-     data_table = loadData('<PATH to data.txt>', comments=['$', '-->'])
+     data_table = load_data('<PATH to data.txt>', comments=['$', '-->'])
 
-This parameter tells ``loadData`` that any lines beginning with ``$`` and ``-->`` are just comments and
+This parameter tells ``load_data`` that any lines beginning with ``$`` and ``-->`` are just comments and
 more entries in our data table may follow.
 
 Here are a few other parameters to test out:
@@ -39,7 +39,7 @@ Here are a few other parameters to test out:
 
 .. code-block:: python
 
-       loadData('<PATH to data.txt>', comments=['$', '-->'], delimiter=',')
+       load_data('<PATH to data.txt>', comments=['$', '-->'], delimiter=',')
 
 returns an empty list.
    * ``minrows=50``: Only look for data tables with at least 50 rows. Since our data table has much less than that many
@@ -47,7 +47,7 @@ returns an empty list.
 
 .. code-block:: python
 
-       loadData('<PATH to data.txt>', comments=['$', '-->'], minrows=50)
+       load_data('<PATH to data.txt>', comments=['$', '-->'], minrows=50)
 
 returns an empty list.
    * ``usecols=[0, 3]``: Only return the 0th and 3rd columns (zero-indexed) of the data table. For ``data.txt``, this
@@ -55,14 +55,14 @@ returns an empty list.
 
 .. code-block:: python
 
-       loadData('<PATH to data.txt>', comments=['$', '-->'], usecols=[0, 3])
+       load_data('<PATH to data.txt>', comments=['$', '-->'], usecols=[0, 3])
 
-3) Next, to get the header information, we can again use ``loadData``,
+3) Next, to get the header information, we can again use ``load_data``,
    but this time with the ``headers`` parameter enabled.
 
 .. code-block:: python
 
-     hdata = loadData('<PATH to data.txt>', comments=['$', '-->'], headers=True)
+     hdata = load_data('<PATH to data.txt>', comments=['$', '-->'], headers=True)
 
 4) Rather than working with separate ``data_table`` and ``hdata`` objects, it may be easier to combine them into a single
    dictionary. We can do so using the ``serialize_data`` function.
@@ -116,8 +116,8 @@ The returned value, ``parsed_file_data``, is the dictionary we just added to ``s
 
 .. code-block:: python
 
-     data_table = loadData('<PATH to moredata.txt>')
-     hdata = loadData('<PATH to moredata.txt>', headers=True)
+     data_table = load_data('<PATH to moredata.txt>')
+     hdata = load_data('<PATH to moredata.txt>', headers=True)
      serialize_data('<PATH to moredata.txt>', hdata, data_table, serial_file='<PATH to serialdata.json>')
 
 The serial file ``serialfile.json`` should now contain two entries: ``data.txt`` and ``moredata.txt``.

@@ -18,8 +18,21 @@ import os
 import numpy
 
 from diffpy.utils import validators
+from diffpy.utils._deprecator import deprecated, deprecation_message
+
+base = "diffpy.utils.parsers.loaddata"
+removal_version = "4.0.0"
+
+loaddata_deprecation_msg = deprecation_message(
+    base,
+    "loadData",
+    "load_data",
+    removal_version,
+    new_base="diffpy.utils.tools",
+)
 
 
+@deprecated(loaddata_deprecation_msg)
 def loadData(
     filename, minrows=10, headers=False, hdel="=", hignore=None, **kwargs
 ):
@@ -254,7 +267,7 @@ class TextDataLoader(object):
 
         File details include:
          *  File name.
-         *  All data blocks findable by loadData.
+         *  All data blocks findable by load_data.
          *  Headers (if present) for each data block. (Generally the headers
             contain column name information).
         """
