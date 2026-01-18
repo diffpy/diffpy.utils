@@ -36,6 +36,11 @@ loaddata_deprecation_msg = deprecation_message(
 def loadData(
     filename, minrows=10, headers=False, hdel="=", hignore=None, **kwargs
 ):
+    """This function has been deprecated and will be removed in version
+    4.0.0.
+
+    Please use diffpy.utils.parsers.load_data instead.
+    """
     return load_data(filename, minrows, headers, hdel, hignore, **kwargs)
 
 

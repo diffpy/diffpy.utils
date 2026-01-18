@@ -110,3 +110,10 @@ def deprecation_message(
         f"version {removal_version}. Please use '{new_base}.{new_name}' "
         f"instead."
     )
+
+
+_DEPRECATION_DOCSTRING_TEMPLATE = (
+    "This function has been deprecated and will be "
+    "removed in version {removal_version}. Please use"
+    "{new_base}.{new_name} instead."
+)
