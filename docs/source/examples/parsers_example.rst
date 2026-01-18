@@ -18,7 +18,7 @@ Using the parsers module, we can load file data into simple and easy-to-work-wit
 
 .. code-block:: python
 
-     from diffpy.utils.tools import load_data
+     from diffpy.utils.parsers import load_data
      data_table = load_data('<PATH to data.txt>')
 
 While this will work with most datasets, on our ``data.txt`` file, we got a ``ValueError``. The reason for this is

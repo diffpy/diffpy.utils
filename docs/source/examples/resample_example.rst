@@ -16,7 +16,7 @@ given enough datapoints.
 
 .. code-block:: python
 
-       from diffpy.utils.tools import load_data
+       from diffpy.utils.parsers import load_data
        nickel_datatable = load_data('<PATH to Nickel.gr>')
        nitarget_datatable = load_data('<PATH to NiTarget.gr>')
 
