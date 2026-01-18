@@ -133,6 +133,10 @@ def generate_deprecation_docstring(new_name, removal_version, new_base=None):
       >>> import diffpy.utils._deprecator.generate_deprecation_docstring as gdd
       >>> gdd("new_name", "4.0.0")
 
+    The message looks like:
+      This function has been deprecated and will be removed in version
+      {removal_version}. Please use  {new_base}.{new_name} instead.
+
     Parameters
     ----------
     new_name: str
