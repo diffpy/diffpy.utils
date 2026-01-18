@@ -3,12 +3,12 @@ from pathlib import Path
 import numpy
 import pytest
 
+from diffpy.utils.parsers import load_data
 from diffpy.utils.parsers.custom_exceptions import (
     ImproperSizeError,
     UnsupportedTypeError,
 )
 from diffpy.utils.parsers.serialization import deserialize_data, serialize_data
-from diffpy.utils.tools import load_data
 
 
 def test_load_multiple(tmp_path, datafile):

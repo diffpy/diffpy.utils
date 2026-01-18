@@ -5,8 +5,8 @@
 import numpy as np
 import pytest
 
+from diffpy.utils.parsers import load_data
 from diffpy.utils.parsers.loaddata import loadData
-from diffpy.utils.tools import load_data
 
 
 def test_loadData_default(datafile):
