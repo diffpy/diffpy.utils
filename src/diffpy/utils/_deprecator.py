@@ -20,17 +20,24 @@ def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
 
     .. code-block:: python
 
-        from diffpy.utils._deprecator import deprecated, d
+        from diffpy._deprecations import deprecated, deprecation_message
 
-        @deprecated("old_function is deprecated; use new_function instead")
+        deprecation_warning = build_deprecation_message("diffpy.utils",
+                                                        "old_function",
+                                                        "new_function",
+                                                        "4.0.0")
+
+        @deprecated(deprecation_warning)
         def old_function(x, y):
-            return x + y
+            '''This function is deprecated and will be removed in version
+            4.0.0. Please use new_function instead'''
+            return new_function(x, y)
 
         def new_function(x, y):
             return x + y
 
-        old_function(1, 2)   # Emits DeprecationWarning
-        new_function(1, 2)   # No warning
+        old_function(1, 2)   # Works but emits DeprecationWarning
+        new_function(1, 2)   # Works, no warning
 
 
     Deprecating a class:
@@ -38,9 +45,6 @@ def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
     .. code-block:: python
 
         from diffpy._deprecations import deprecated, deprecation_message
-        import warnings
-
-        warnings.simplefilter("always", DeprecationWarning)
 
         deprecation_warning = build_deprecation_message("diffpy.utils",
                                                         "OldAtom",
@@ -49,8 +53,14 @@ def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
 
         @deprecated(deprecation_warning)
         class OldAtom:
-            def __init__(self, symbol):
-                self.symbol = symbol
+            def __new__(cls, *args, **kwargs):
+                warnings.warn(
+                    "OldAtom is deprecated and will be removed in
+                    version 4.0.0. Use NewClass instead.",
+                    DeprecationWarning,
+                    stacklevel=2,
+                )
+                return NewAtom(*args, **kwargs)
 
         class NewAtom:
             def __init__(self, symbol):
