@@ -8,7 +8,7 @@
 
 **Deprecated:**
 
-* diffpy.utils.parsers.loaddata.loadData replaced by diffpy.utils.tools.load_data
+* diffpy.utils.parsers.loaddata.loadData replaced by diffpy.utils.parsers.load_data
 
 **Removed:**
 

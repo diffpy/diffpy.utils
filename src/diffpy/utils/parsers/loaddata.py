@@ -28,7 +28,7 @@ loaddata_deprecation_msg = deprecation_message(
     "loadData",
     "load_data",
     removal_version,
-    new_base="diffpy.utils.tools",
+    new_base="diffpy.utils.parsers",
 )
 
 
