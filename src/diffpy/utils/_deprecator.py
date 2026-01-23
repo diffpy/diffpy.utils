@@ -20,7 +20,7 @@ def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
 
     .. code-block:: python
 
-        from diffpy._deprecations import deprecated, deprecation_message
+        from diffpy.utils._deprecator import deprecated, deprecation_message
 
         deprecation_warning = build_deprecation_message("diffpy.utils",
                                                         "old_function",
@@ -44,7 +44,7 @@ def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
 
     .. code-block:: python
 
-        from diffpy._deprecations import deprecated, deprecation_message
+        from diffpy.utils._deprecator import deprecated, deprecation_message
 
         deprecation_warning = build_deprecation_message("diffpy.utils",
                                                         "OldAtom",
