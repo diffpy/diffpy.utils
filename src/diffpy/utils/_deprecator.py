@@ -20,7 +20,7 @@ def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
 
     .. code-block:: python
 
-        from diffpy._deprecations import deprecated
+        from diffpy.utils._deprecator import deprecated
         import warnings
 
         @deprecated("old_function is deprecated; use new_function instead")
@@ -39,7 +39,6 @@ def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
     .. code-block:: python
 
         from diffpy._deprecations import deprecated
-        import warnings
 
         warnings.simplefilter("always", DeprecationWarning)
 
@@ -83,7 +82,9 @@ def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
     return decorator
 
 
-def deprecation_message(base, old_name, new_name, removal_version):
+def deprecation_message(
+    base, old_name, new_name, removal_version, new_base=None
+):
     """Generate a deprecation message.
 
     Parameters
@@ -102,7 +103,17 @@ def deprecation_message(base, old_name, new_name, removal_version):
     str
         A formatted deprecation message.
     """
+    if new_base is None:
+        new_base = base
     return (
         f"'{base}.{old_name}' is deprecated and will be removed in "
-        f"version {removal_version}. Please use '{base}.{new_name}' instead."
+        f"version {removal_version}. Please use '{new_base}.{new_name}' "
+        f"instead."
     )
+
+
+_DEPRECATION_DOCSTRING_TEMPLATE = (
+    "This function has been deprecated and will be "
+    "removed in version {removal_version}. Please use"
+    "{new_base}.{new_name} instead."
+)
