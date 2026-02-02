@@ -50,18 +50,18 @@ Calculating μ from a "z-scan" Measurement
 
 .. note::
 
-   The data we will be using for this example can be found here,
-   `FIXME <https://www.diffpy.org/diffpy.utils/examples/zscan_example_data.txt>`_.
+   The data we will be using for this example can be found,
+   `here <https://github.com/diffpy/diffpy.utils/tree/main/docs/source/examples/example_data>`_.
 
 A "z-scan" measurement is the measured transmission of your X-ray incident beam
 as a function of sample position. This is obtained by moving the sample
-along the X-ray beam (z-direction) and recording the transmitted
+perpendicular to the X-ray beam (z-direction) and recording the transmitted
 intensity at each position. This measured data looks something like this,
 
-.. image:: ../images/FIXME
+.. image:: ../img/zscan-plot.png
    :alt: Example of a z-scan measurement.
    :align: center
-   :width: 200px
+   :width: 300px
 
 Using this z-scan data, you can calculate **μ·d**, where d is the inner diameter of
 your sample capillary. To do this, simply pass your z-scan measurement to the ``compute_mud``
@@ -78,7 +78,7 @@ Next, pass the filepath to the function,
 
 .. code-block:: python
 
-   filepath = "zscan_example_data.txt"
+   filepath = "CeO2_635um_zscan_200umSlit_chanClose_exported.xy"
    capillary_diameter = 0.5 # mm
    mud = compute_mud(filepath)
    print(f"Calculated mu*d: {round(mud, 3)}")
@@ -88,8 +88,8 @@ This will output the calculated value of μ·d, which is unitless, and μ in mm\
 
 .. code-block:: console
 
-   Calculated mu*d: FIXME
-   Calculated mu: FIXME mm^-1
+   Calculated mu*d: 3.489
+   Calculated mu: 6.977 mm^-1
 
 Calculating μ from Tabulated Values
 -----------------------------------
