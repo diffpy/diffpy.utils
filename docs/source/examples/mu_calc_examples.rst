@@ -2,14 +2,14 @@
 
 :tocdepth: -1
 
-X-ray Absorption Coefficient (μ) Examples
+Linear Absorption Coefficient (μ) Examples
 #########################################
 
-These examples will demonstrate how to calculate the X-ray absorption
+These examples will demonstrate how to calculate the Linear absorption
 coefficient, μ, using different methods provided in ``diffpy.utils``.
 
 
-.. admonition:: Methods for obtaining X-ray absorption coefficient
+.. admonition:: Methods for obtaining linear absorption coefficient
 
    Obtaining μ can be done in **two
    different ways** using ``diffpy.utils``.
@@ -24,21 +24,21 @@ coefficient, μ, using different methods provided in ``diffpy.utils``.
 Why is μ Important?
 -----------------------
 
-The X-ray absorption coefficient, μ, quantifies how much X-ray
+The linear absorption coefficient, μ, quantifies how much X-ray
 radiation is absorbed by a material per unit length. It is a critical
 parameter in many scientific techniques.
 
 For example, when calculating pair distribution functions (PDFs)
 using ``diffpy.pdfgetx``,
-a key assumption is that the X-ray absorption is negligible.
+a key assumption is that the linear absorption is negligible.
 This is frequently the case for high-energy X-rays. However,
 this must be corrected for when using low energy X-rays, such
-as those from a laboratory source. To correct for X-ray absorption,
-the X-ray absorption coefficient, μ, must be known.
+as those from a laboratory source. To correct for linear absorption,
+the linear absorption coefficient, μ, must be known.
 
-.. admonition:: Correcting for X-ray Absorption with ``diffpy.labpdfproc``
+.. admonition:: Correcting for linear absorption with ``diffpy.labpdfproc``
 
-   If your objective is to correct for X-ray absorption in PDF calculations,
+   If your objective is to correct for linear absorption in PDF calculations,
    please refer to our package ``diffpy.labpdfproc``. This package is specifically
    designed to correct your laboratory X-ray PDF data for absorption effects.
    More information can be found in the
@@ -116,7 +116,7 @@ Now calculate μ using the ``compute_mu_using_xraydb`` function.
    mu = compute_mu_using_xraydb(composition, energy_keV, sample_mass_density)
    print(f"Calculated mu: {round(mu, 3)} mm^-1")
 
-This will output the calculated X-ray absorption coefficient, μ, in mm\ :sup:`-1`.
+This will output the calculated linear absorption coefficient, μ, in mm\ :sup:`-1`.
 
 .. code-block:: console
 
