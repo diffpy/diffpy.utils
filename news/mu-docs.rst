@@ -1,7 +1,6 @@
 **Added:**
 
-* added a function in _deprecator to generate a deprecation message for copy pasting
-* Add ``@deprecated`` decorator.
+* Add documentation for calculation mu.
 
 **Changed:**
 
