@@ -1,6 +1,6 @@
 **Added:**
 
-* Add ``deprecation_message`` helper for printing consistent deprecation messages.
+* Add ``build_deprecation_message`` helper for printing consistent deprecation messages.
 
 **Changed:**
 

@@ -18,12 +18,12 @@ from pathlib import Path
 import numpy
 
 from diffpy.utils import validators
-from diffpy.utils._deprecator import deprecated, deprecation_message
+from diffpy.utils._deprecator import build_deprecation_message, deprecated
 
 base = "diffpy.utils.parsers.loaddata"
 removal_version = "4.0.0"
 
-loaddata_deprecation_msg = deprecation_message(
+loaddata_deprecation_msg = build_deprecation_message(
     base,
     "loadData",
     "load_data",

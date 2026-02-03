@@ -1,13 +1,15 @@
 import pytest
 
-from diffpy.utils._deprecator import deprecated, deprecation_message
+from diffpy.utils._deprecator import build_deprecation_message, deprecated
 
 old_base = "diffpy.utils"
 old_name = "oldFunction"
 new_name = "new_function"
 removal_version = "4.0.0"
 
-dep_msg = deprecation_message(old_base, old_name, new_name, removal_version)
+dep_msg = build_deprecation_message(
+    old_base, old_name, new_name, removal_version
+)
 
 
 @deprecated(dep_msg)
