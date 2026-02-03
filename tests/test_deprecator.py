@@ -31,7 +31,6 @@ def test_deprecated(capsys):
     expected_print_msg = "Testing deprecated function"
     with pytest.deprecated_call(match=dep_msg):
         oldFunction(expected_print_msg)
-
     captured = capsys.readouterr()
     actual_print_msg = captured.out.strip()
     assert actual_print_msg == expected_print_msg
