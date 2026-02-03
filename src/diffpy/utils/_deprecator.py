@@ -96,7 +96,7 @@ def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
     return decorator
 
 
-def build_deprecation_message(
+def deprecation_message(
     old_base, old_name, new_name, removal_version, new_base=None
 ):
     """Generate a deprecation message.
@@ -131,40 +131,3 @@ def build_deprecation_message(
         f"version {removal_version}. Please use '{new_base}.{new_name}' "
         f"instead."
     )
-
-
-def generate_deprecation_docstring(new_name, removal_version, new_base=None):
-    """Generate a docstring for copy-pasting into a deprecated function.
-
-    this function will print the text to the terminal for copy-pasting
-
-    usage:
-      python
-      >>> import diffpy.utils._deprecator.generate_deprecation_docstring as gdd
-      >>> gdd("new_name", "4.0.0")
-
-    The message looks like:
-      This function has been deprecated and will be removed in version
-      {removal_version}. Please use  {new_base}.{new_name} instead.
-
-    Parameters
-    ----------
-    new_name: str
-        The name of the new function or class to replace the existing one
-    removal_version: str
-        The version when the deprecated item is targeted for removal,
-        e.g., 4.0.0
-    new_base: str Optional. Defaults to old_base.
-        The new base for importing.  The new import statement would look like
-        "from new_base import new_name"
-
-    Returns
-    -------
-    None
-    """
-    print(
-        f"This function has been deprecated and will be "
-        f"removed in version {removal_version}. Please use"
-        f"{new_base}.{new_name} instead."
-    )
-    return
