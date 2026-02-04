@@ -20,6 +20,14 @@ Subpackages
 Submodules
 ----------
 
+diffpy.utils.utils_app module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: diffpy.utils.utils_app
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 diffpy.utils.transforms module
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -40,6 +48,14 @@ diffpy.utils.tools module
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: diffpy.utils.tools
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+diffpy.utils._deprecator module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: diffpy.utils._deprecator
     :members:
     :undoc-members:
     :show-inheritance:
