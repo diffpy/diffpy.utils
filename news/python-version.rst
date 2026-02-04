@@ -1,6 +1,7 @@
 **Added:**
 
 * Support for Python 3.14
+* Command line interface for generating a template docstring for deprecated functions
 
 **Changed:**
 
@@ -16,7 +17,7 @@
 
 **Fixed:**
 
-* <news item>
+* All references to ``loadData`` changed to ``load_data`` due to that deprecation
 
 **Security:**
 
