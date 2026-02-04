@@ -20,7 +20,9 @@ def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
 
     .. code-block:: python
 
-        from diffpy.utils._deprecator import deprecated, deprecation_message
+        from diffpy.utils._deprecator import (
+            deprecated, build_deprecation_message
+        )
 
         deprecation_warning = build_deprecation_message("diffpy.utils",
                                                         "old_function",
@@ -44,8 +46,9 @@ def deprecated(message, *, category=DeprecationWarning, stacklevel=1):
 
     .. code-block:: python
 
-        from diffpy.utils._deprecator import deprecated, deprecation_message
-
+        from diffpy.utils._deprecator import (
+            deprecated, build_deprecation_message
+        )
         deprecation_warning = build_deprecation_message("diffpy.utils",
                                                         "OldAtom",
                                                         "NewAtom",
@@ -136,35 +139,36 @@ def build_deprecation_message(
 def generate_deprecation_docstring(new_name, removal_version, new_base=None):
     """Generate a docstring for copy-pasting into a deprecated function.
 
-    this function will print the text to the terminal for copy-pasting
-
-    usage:
-      python
-      >>> import diffpy.utils._deprecator.generate_deprecation_docstring as gdd
-      >>> gdd("new_name", "4.0.0")
-
-    The message looks like:
-      This function has been deprecated and will be removed in version
-      {removal_version}. Please use  {new_base}.{new_name} instead.
+    This function will print the text to the terminal for copy-pasting.
 
     Parameters
     ----------
-    new_name: str
-        The name of the new function or class to replace the existing one
-    removal_version: str
+    new_name : str
+        The name of the new function or class to replace the existing one.
+    removal_version : str
         The version when the deprecated item is targeted for removal,
-        e.g., 4.0.0
-    new_base: str Optional. Defaults to old_base.
-        The new base for importing.  The new import statement would look like
-        "from new_base import new_name"
+        e.g., 4.0.0.
+    new_base : str, optional
+        The new base for importing. The new import statement would look like
+        "from new_base import new_name". Defaults to None.
+
+    Example
+    -------
+    >>> from diffpy.utils._deprecator import generate_deprecation_docstring
+    >>> generate_deprecation_docstring("new_name", "4.0.0")
+
+    The message looks like:
+        This function has been deprecated and will be removed in version
+        {removal_version}. Please use {new_base}.{new_name} instead.
+
 
     Returns
     -------
     None
     """
     print(
-        f"This function has been deprecated and will be "
-        f"removed in version {removal_version}. Please use"
-        f"{new_base}.{new_name} instead."
+        f"This function has been deprecated and will be removed in version "
+        f"{removal_version}.\n"
+        f"Please use {new_base}.{new_name} instead."
     )
     return

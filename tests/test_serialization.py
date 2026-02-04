@@ -3,11 +3,11 @@ from pathlib import Path
 import numpy
 import pytest
 
+from diffpy.utils.parsers import load_data
 from diffpy.utils.parsers.custom_exceptions import (
     ImproperSizeError,
     UnsupportedTypeError,
 )
-from diffpy.utils.parsers.loaddata import loadData
 from diffpy.utils.parsers.serialization import deserialize_data, serialize_data
 
 
@@ -21,9 +21,9 @@ def test_load_multiple(tmp_path, datafile):
 
     generated_data = None
     for headerfile in tlm_list:
-        # gather data using loadData
-        hdata = loadData(headerfile, headers=True)
-        data_table = loadData(headerfile)
+        # gather data using load_data
+        hdata = load_data(headerfile, headers=True)
+        data_table = load_data(headerfile)
 
         # check path extraction
         generated_data = serialize_data(
@@ -60,8 +60,8 @@ def test_exceptions(datafile):
     loadfile = datafile("loadfile.txt")
     warningfile = datafile("generatewarnings.txt")
     nodt = datafile("loaddatawithheaders.txt")
-    hdata = loadData(loadfile, headers=True)
-    data_table = loadData(loadfile)
+    hdata = load_data(loadfile, headers=True)
+    data_table = load_data(loadfile)
 
     # improper file types
     with pytest.raises(UnsupportedTypeError):
@@ -123,15 +123,15 @@ def test_exceptions(datafile):
     assert numpy.allclose(r_extract[data_name]["r"], r_list)
     assert numpy.allclose(gr_extract[data_name]["gr"], gr_list)
     # no datatable
-    nodt_hdata = loadData(nodt, headers=True)
-    nodt_dt = loadData(nodt)
+    nodt_hdata = load_data(nodt, headers=True)
+    nodt_dt = load_data(nodt)
     no_dt = serialize_data(nodt, nodt_hdata, nodt_dt, show_path=False)
     nodt_data_name = list(no_dt.keys())[0]
     assert numpy.allclose(no_dt[nodt_data_name]["data table"], nodt_dt)
 
     # ensure user is warned when columns are overwritten
-    hdata = loadData(warningfile, headers=True)
-    data_table = loadData(warningfile)
+    hdata = load_data(warningfile, headers=True)
+    data_table = load_data(warningfile)
     with pytest.warns(RuntimeWarning) as record:
         serialize_data(
             warningfile,
