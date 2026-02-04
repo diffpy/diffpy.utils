@@ -166,9 +166,13 @@ def generate_deprecation_docstring(new_name, removal_version, new_base=None):
     -------
     None
     """
+    if new_base is None:
+        function_location = new_name
+    else:
+        function_location = f"{new_base}.{new_name}"
     print(
         f"This function has been deprecated and will be removed in version "
         f"{removal_version}.\n"
-        f"Please use {new_base}.{new_name} instead."
+        f"Please use {function_location} instead."
     )
     return
