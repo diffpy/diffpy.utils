@@ -1,4 +1,3 @@
-import argparse
 import functools
 import warnings
 
@@ -173,36 +172,3 @@ def generate_deprecation_docstring(new_name, removal_version, new_base=None):
         f"Please use {new_base}.{new_name} instead."
     )
     return
-
-
-def main():
-    parser = argparse.ArgumentParser(
-        description="""\
-Print a docstring for copy-pasting into a deprecated function.
-
-Example usage
--------------
-    python -m diffpy.utils._deprecator load_data 4.0.0 -n diffpy.utils.parsers
-""",
-        formatter_class=argparse.RawTextHelpFormatter,
-    )
-    parser.add_argument("new_name", help="Name of the new function.")
-    parser.add_argument(
-        "removal_version",
-        help="Version when the deprecated item will be removed.",
-    )
-    parser.add_argument(
-        "-n", "--new-base", default=None, help="New import base."
-    )
-
-    args = parser.parse_args()
-
-    generate_deprecation_docstring(
-        new_name=args.new_name,
-        removal_version=args.removal_version,
-        new_base=args.new_base,
-    )
-
-
-if __name__ == "__main__":
-    main()
