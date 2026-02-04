@@ -1,7 +1,6 @@
 **Added:**
 
 * Support for Python 3.14
-* Command line interface for generating a template docstring for deprecated functions
 
 **Changed:**
 
