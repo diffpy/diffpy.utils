@@ -1,3 +1,4 @@
+import argparse
 import functools
 import warnings
 
@@ -134,3 +135,73 @@ def build_deprecation_message(
         f"version {removal_version}. Please use '{new_base}.{new_name}' "
         f"instead."
     )
+
+
+def generate_deprecation_docstring(new_name, removal_version, new_base=None):
+    """Generate a docstring for copy-pasting into a deprecated function.
+
+    This function will print the text to the terminal for copy-pasting.
+
+    Usage
+    -----
+    >>> from diffpy.utils._deprecator import generate_deprecation_docstring
+    >>> generate_deprecation_docstring("new_name", "4.0.0")
+
+    The message looks like:
+        This function has been deprecated and will be removed in version
+        {removal_version}. Please use {new_base}.{new_name} instead.
+
+    Parameters
+    ----------
+    new_name : str
+        The name of the new function or class to replace the existing one.
+    removal_version : str
+        The version when the deprecated item is targeted for removal,
+        e.g., 4.0.0.
+    new_base : str, optional
+        The new base for importing. The new import statement would look like
+        "from new_base import new_name". Defaults to None.
+
+    Returns
+    -------
+    None
+    """
+    print(
+        f"This function has been deprecated and will be removed in version "
+        f"{removal_version}.\n"
+        f"Please use {new_base}.{new_name} instead."
+    )
+    return
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="""\
+Print a docstring for copy-pasting into a deprecated function.
+
+Example usage
+-------------
+    python -m diffpy.utils._deprecator load_data 4.0.0 -n diffpy.utils.parsers
+""",
+        formatter_class=argparse.RawTextHelpFormatter,
+    )
+    parser.add_argument("new_name", help="Name of the new function.")
+    parser.add_argument(
+        "removal_version",
+        help="Version when the deprecated item will be removed.",
+    )
+    parser.add_argument(
+        "-n", "--new-base", default=None, help="New import base."
+    )
+
+    args = parser.parse_args()
+
+    generate_deprecation_docstring(
+        new_name=args.new_name,
+        removal_version=args.removal_version,
+        new_base=args.new_base,
+    )
+
+
+if __name__ == "__main__":
+    main()
