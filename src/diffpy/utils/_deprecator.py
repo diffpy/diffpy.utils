@@ -142,15 +142,6 @@ def generate_deprecation_docstring(new_name, removal_version, new_base=None):
 
     This function will print the text to the terminal for copy-pasting.
 
-    Usage
-    -----
-    >>> from diffpy.utils._deprecator import generate_deprecation_docstring
-    >>> generate_deprecation_docstring("new_name", "4.0.0")
-
-    The message looks like:
-        This function has been deprecated and will be removed in version
-        {removal_version}. Please use {new_base}.{new_name} instead.
-
     Parameters
     ----------
     new_name : str
@@ -161,6 +152,16 @@ def generate_deprecation_docstring(new_name, removal_version, new_base=None):
     new_base : str, optional
         The new base for importing. The new import statement would look like
         "from new_base import new_name". Defaults to None.
+
+    Example
+    -------
+    >>> from diffpy.utils._deprecator import generate_deprecation_docstring
+    >>> generate_deprecation_docstring("new_name", "4.0.0")
+
+    The message looks like:
+        This function has been deprecated and will be removed in version
+        {removal_version}. Please use {new_base}.{new_name} instead.
+
 
     Returns
     -------
