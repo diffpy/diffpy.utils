@@ -4,6 +4,36 @@ Release notes
 
 .. current developments
 
+3.7.0
+=====
+
+**Added:**
+
+* Add ``build_deprecation_message`` helper for printing consistent deprecation messages.
+* Add ``generate_deprecation_docstring`` for generating a template docstring for deprecated functions.
+* Support for Python 3.14
+* Add ``@deprecated`` decorator.
+* Add documentation for calculation mu.
+
+**Changed:**
+
+* load_data now takes a Path or a string for the file-path
+
+**Deprecated:**
+
+* diffpy.utils.parsers.loaddata.loadData replaced by diffpy.utils.parsers.load_data
+
+**Fixed:**
+
+* Normalize paths before assert in `test_serialization/test_load_multiple` to prevent possible Windows short/long name mismatch.
+* All references to ``loadData`` changed to ``load_data`` due to that deprecation
+
+**Removed:**
+
+* Removed API that calculates mu from packing fraction.
+* Support for Python 3.11
+
+
 3.6.1
 =====
 
