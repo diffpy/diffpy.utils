@@ -4,6 +4,14 @@ Release notes
 
 .. current developments
 
+3.7.1
+=====
+
+**Added:**
+
+* Add support for python 3.11 for deprecator usage.
+
+
 3.7.0
 =====
 
