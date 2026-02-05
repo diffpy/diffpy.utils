@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Release notes &mdash; diffpy.utils 3.7.0rc0 documentation</title>
+  <title>Release notes &mdash; diffpy.utils 3.7.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=c07905d3"></script>
+      <script src="_static/documentation_options.js?v=8e2dce8f"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -80,7 +80,36 @@
   <section id="release-notes">
 <span id="index-0"></span><h1>Release notes<a class="headerlink" href="#release-notes" title="Link to this heading"></a></h1>
 <section id="id1">
-<h2>3.6.1<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<h2>3.7.0<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p><strong>Added:</strong></p>
+<ul class="simple">
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">build_deprecation_message</span></code> helper for printing consistent deprecation messages.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">generate_deprecation_docstring</span></code> for generating a template docstring for deprecated functions.</p></li>
+<li><p>Support for Python 3.14</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">&#64;deprecated</span></code> decorator.</p></li>
+<li><p>Add documentation for calculation mu.</p></li>
+</ul>
+<p><strong>Changed:</strong></p>
+<ul class="simple">
+<li><p>load_data now takes a Path or a string for the file-path</p></li>
+</ul>
+<p><strong>Deprecated:</strong></p>
+<ul class="simple">
+<li><p>diffpy.utils.parsers.loaddata.loadData replaced by diffpy.utils.parsers.load_data</p></li>
+</ul>
+<p><strong>Fixed:</strong></p>
+<ul class="simple">
+<li><p>Normalize paths before assert in <cite>test_serialization/test_load_multiple</cite> to prevent possible Windows short/long name mismatch.</p></li>
+<li><p>All references to <code class="docutils literal notranslate"><span class="pre">loadData</span></code> changed to <code class="docutils literal notranslate"><span class="pre">load_data</span></code> due to that deprecation</p></li>
+</ul>
+<p><strong>Removed:</strong></p>
+<ul class="simple">
+<li><p>Removed API that calculates mu from packing fraction.</p></li>
+<li><p>Support for Python 3.11</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>3.6.1<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <p><strong>Added:</strong></p>
 <ul class="simple">
 <li><p>update isort, flake8 and black to set line limit to 79</p></li>
@@ -96,8 +125,8 @@
 <li><p>Extra line break in each news after 3.6.0 in <cite>CHANGELOG.rst</cite> so that this rst can be rendered correctly when deployed</p></li>
 </ul>
 </section>
-<section id="id2">
-<h2>3.6.0<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="id3">
+<h2>3.6.0<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
 <p><strong>Added:</strong></p>
 <ul class="simple">
 <li><p>unit tests for initializing DiffractionObject with empty array in xarray and yarray</p></li>
@@ -171,8 +200,8 @@
 <li><p><cite>set_angles_from_list</cite>, <cite>set_angles_from</cite>, <cite>set_qs_from_range</cite> methods in <cite>DiffractionObject</cite></p></li>
 </ul>
 </section>
-<section id="id3">
-<h2>3.5.0<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<section id="id4">
+<h2>3.5.0<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <p><strong>Added:</strong></p>
 <ul class="simple">
 <li><p>Support for Python 3.13</p></li>
@@ -182,8 +211,8 @@
 <li><p>Support for Python 3.10</p></li>
 </ul>
 </section>
-<section id="id4">
-<h2>3.4.3<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<section id="id5">
+<h2>3.4.3<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
 <p><strong>Added:</strong></p>
 <ul class="simple">
 <li><p>Diffraction_objects mentioned in the README</p></li>
@@ -196,8 +225,8 @@
 <li><p>Add pip dependencies under pip.txt and conda dependencies under conda.txt</p></li>
 </ul>
 </section>
-<section id="id5">
-<h2>3.4.2<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<section id="id6">
+<h2>3.4.2<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
 <p><strong>Added:</strong></p>
 <ul class="simple">
 <li><p>link docs in the README</p></li>
@@ -211,8 +240,8 @@
 <li><p>Updated package structure to new group standard</p></li>
 </ul>
 </section>
-<section id="id6">
-<h2>3.4.0<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<section id="id7">
+<h2>3.4.0<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
 <p><strong>Added:</strong></p>
 <ul class="simple">
 <li><p>utility for handling the capture of username and email for diffpy applications</p></li>
