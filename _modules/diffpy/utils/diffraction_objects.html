@@ -5,17 +5,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>diffpy.utils.diffraction_objects &mdash; diffpy.utils 3.6.1 documentation</title>
+  <title>diffpy.utils.diffraction_objects &mdash; diffpy.utils 3.7.0rc0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=43a26aad"></script>
-      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/documentation_options.js?v=c07905d3"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../_static/copybutton.js?v=cca77546"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -187,18 +187,18 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        xarray : ndarray</span>
+<span class="sd">        xarray : ``ndarray``</span>
 <span class="sd">            The independent variable array containing &quot;q&quot;, &quot;tth&quot;, or &quot;d&quot; values.</span>
-<span class="sd">        yarray : ndarray</span>
+<span class="sd">        yarray : ``ndarray``</span>
 <span class="sd">            The dependent variable array corresponding to intensity values.</span>
 <span class="sd">        xtype : str</span>
 <span class="sd">            The type of the independent variable in `xarray`. Must be one of</span>
 <span class="sd">            {*XQUANTITIES}.</span>
-<span class="sd">        wavelength : float, optional, default is None.</span>
+<span class="sd">        wavelength : float, ``optional``, default is None.</span>
 <span class="sd">            The wavelength of the incoming beam, specified in angstroms (Å)</span>
-<span class="sd">        scat_quantity : str, optional, default is an empty string &quot;&quot;.</span>
+<span class="sd">        scat_quantity : str, ``optional``, default is an empty string &quot;&quot;.</span>
 <span class="sd">            The type of scattering experiment (e.g., &quot;x-ray&quot;, &quot;neutron&quot;).</span>
-<span class="sd">        name : str, optional, default is an empty string &quot;&quot;.</span>
+<span class="sd">        name : str, ``optional``, default is an empty string &quot;&quot;.</span>
 <span class="sd">            The name or label for the scattering data.</span>
 <span class="sd">        metadata : dict, optional, default is an empty dictionary {}</span>
 <span class="sd">            The additional metadata associated with the diffraction object.</span>
@@ -290,8 +290,8 @@
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a scalar value or another DiffractionObject to the yarray of the</span>
-<span class="sd">        DiffractionObject.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a scalar value or another DiffractionObject to the yarray</span>
+<span class="sd">        of the DiffractionObject.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -341,8 +341,8 @@
     <span class="fm">__radd__</span> <span class="o">=</span> <span class="fm">__add__</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Subtract scalar value or another DiffractionObject to the yarray of</span>
-<span class="sd">        the DiffractionObject.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Subtract scalar value or another DiffractionObject to the</span>
+<span class="sd">        yarray of the DiffractionObject.</span>
 
 <span class="sd">        This method behaves similarly to the `__add__` method, but performs</span>
 <span class="sd">        subtraction instead of addition. For details on parameters, returns</span>
@@ -369,8 +369,8 @@
     <span class="fm">__rsub__</span> <span class="o">=</span> <span class="fm">__sub__</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Multiply a scalar value or another DiffractionObject with the yarray</span>
-<span class="sd">        of this DiffractionObject.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Multiply a scalar value or another DiffractionObject with the</span>
+<span class="sd">        yarray of this DiffractionObject.</span>
 
 <span class="sd">        This method behaves similarly to the `__add__` method, but performs</span>
 <span class="sd">        multiplication instead of addition. For details on parameters,</span>
@@ -397,8 +397,8 @@
     <span class="fm">__rmul__</span> <span class="o">=</span> <span class="fm">__mul__</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Divide the yarray of this DiffractionObject by a scalar value or</span>
-<span class="sd">        another DiffractionObject.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Divide the yarray of this DiffractionObject by a scalar value</span>
+<span class="sd">        or another DiffractionObject.</span>
 
 <span class="sd">        This method behaves similarly to the `__add__` method, but performs</span>
 <span class="sd">        division instead of addition. For details on parameters, returns,</span>
@@ -439,7 +439,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        ndarray</span>
+<span class="sd">        ``ndarray``</span>
 <span class="sd">            The shape (len(data), 4) 2D array with columns containing the `</span>
 <span class="sd">            yarray` (intensity) and the `xarray` values in q, tth, and d.</span>
 
@@ -465,7 +465,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        input_xtype : str</span>
-<span class="sd">            The type of `xarray`, which must be one of {*XQUANTITIES}.</span>
+<span class="sd">            The type of `xarray`, which must be one of ``{*XQUANTITIES}``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_xtype</span>
 
@@ -479,7 +479,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        uuid : UUID</span>
+<span class="sd">        uuid : ``UUID``</span>
 <span class="sd">            The unique identifier of the DiffractionObject instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uuid</span>
@@ -558,11 +558,12 @@
 <div class="viewcode-block" id="DiffractionObject.on_q">
 <a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.diffraction_objects.DiffractionObject.on_q">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_q</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the tuple of two 1D numpy arrays containing q and y data.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the tuple of two 1D numpy arrays containing q and y</span>
+<span class="sd">        data.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        (q-array, y-array) : tuple of ndarray</span>
+<span class="sd">        (q-array, y-array) : tuple of ``ndarray``</span>
 <span class="sd">            The tuple containing two 1D numpy arrays with q and y data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]]</span></div>
@@ -571,11 +572,12 @@
 <div class="viewcode-block" id="DiffractionObject.on_tth">
 <a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.diffraction_objects.DiffractionObject.on_tth">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_tth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the tuple of two 1D numpy arrays containing tth and y data.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the tuple of two 1D numpy arrays containing tth and y</span>
+<span class="sd">        data.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        (tth-array, y-array) : tuple of ndarray</span>
+<span class="sd">        (tth-array, y-array) : tuple of ``ndarray``</span>
 <span class="sd">            The tuple containing two 1D numpy arrays with tth and y data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]]</span></div>
@@ -584,11 +586,12 @@
 <div class="viewcode-block" id="DiffractionObject.on_d">
 <a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.diffraction_objects.DiffractionObject.on_d">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the tuple of two 1D numpy arrays containing d and y data.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the tuple of two 1D numpy arrays containing d and y</span>
+<span class="sd">        data.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        (d-array, y-array) : tuple of ndarray</span>
+<span class="sd">        (d-array, y-array) : tuple of ``ndarray``</span>
 <span class="sd">            The tuple containing two 1D numpy arrays with d and y data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_arrays</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]]</span></div>
@@ -599,8 +602,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">scale_to</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">target_diff_object</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a new diffraction object which is the current object but</span>
-<span class="sd">        rescaled in y to the target.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a new diffraction object which is the current object</span>
+<span class="sd">        but rescaled in y to the target.</span>
 
 <span class="sd">        By default, if `q`, `tth`, or `d` are not provided, scaling is</span>
 <span class="sd">        based on the max intensity from each object. Otherwise, y-value in</span>
@@ -615,12 +618,12 @@
 <span class="sd">        target_diff_object: DiffractionObject</span>
 <span class="sd">            The diffraction object you want to scale the current one onto.</span>
 
-<span class="sd">        q, tth, d : float, optional, default is None</span>
+<span class="sd">        q, tth, d : float, ``optional``, default is None</span>
 <span class="sd">            The value of the x-array where you want the curves to line up</span>
 <span class="sd">            vertically. Specify a value on one of the allowed grids, q, tth,</span>
 <span class="sd">            or d), e.g., q=10.</span>
 
-<span class="sd">        offset : float, optional, default is None</span>
+<span class="sd">        offset : float, ``optional``, default is None</span>
 <span class="sd">            The offset to add to the scaled y-values.</span>
 
 <span class="sd">        Returns</span>
@@ -664,22 +667,23 @@
 <div class="viewcode-block" id="DiffractionObject.on_xtype">
 <a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.diffraction_objects.DiffractionObject.on_xtype">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_xtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xtype</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a tuple of two 1D numpy arrays containing x and y data.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a tuple of two 1D numpy arrays containing x and y</span>
+<span class="sd">        data.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        xtype : str</span>
 <span class="sd">            The type of quantity for the independent variable chosen from</span>
-<span class="sd">            {*XQUANTITIES, }</span>
+<span class="sd">            ``{*XQUANTITIES, }``</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
 <span class="sd">        ValueError</span>
-<span class="sd">            Raised when the specified xtype is not among {*XQUANTITIES, }</span>
+<span class="sd">            Raised when the specified xtype is not among ``{*XQUANTITIES, }``</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        (xarray, yarray) : tuple of ndarray</span>
+<span class="sd">        (xarray, yarray) : tuple of ``ndarray``</span>
 <span class="sd">            The tuple containing two 1D numpy arrays with x and y data for</span>
 <span class="sd">            the specified xtype.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -696,16 +700,17 @@
 <div class="viewcode-block" id="DiffractionObject.dump">
 <a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.diffraction_objects.DiffractionObject.dump">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">xtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dump the xarray and yarray of the diffraction object to a two-column</span>
-<span class="sd">        file, with the associated information included in the header.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dump the xarray and yarray of the diffraction object to a</span>
+<span class="sd">        two-column file, with the associated information included in the</span>
+<span class="sd">        header.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        filepath : str</span>
 <span class="sd">            The filepath where the diffraction object will be dumped</span>
-<span class="sd">        xtype : str, optional, default is q</span>
+<span class="sd">        xtype : str, ``optional``, default is q</span>
 <span class="sd">            The type of quantity for the independent variable chosen from</span>
-<span class="sd">            {*XQUANTITIES, }</span>
+<span class="sd">            ``{*XQUANTITIES, }``</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -779,7 +784,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, The Trustees of Columbia University in the City of New York.</p>
+    <p>&#169; Copyright 2026, The Trustees of Columbia University in the City of New York.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -5,17 +5,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>diffpy.utils.resampler &mdash; diffpy.utils 3.6.1 documentation</title>
+  <title>diffpy.utils.resampler &mdash; diffpy.utils 3.7.0rc0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=43a26aad"></script>
-      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/documentation_options.js?v=c07905d3"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../_static/copybutton.js?v=cca77546"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -109,15 +109,15 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    x: ndarray</span>
+<span class="sd">    x: ``ndarray``</span>
 <span class="sd">        The x values at which interpolation is computed.</span>
-<span class="sd">    xp: ndarray</span>
+<span class="sd">    xp: ``ndarray``</span>
 <span class="sd">        The array of known x values.</span>
-<span class="sd">    fp: ndarray</span>
+<span class="sd">    fp: ``ndarray``</span>
 <span class="sd">        The array of y values associated with xp.</span>
 <span class="sd">    left: float</span>
 <span class="sd">        If given, set fp for x &lt; xp[0] to left. Otherwise, if left is None</span>
-<span class="sd">        (default) or not given, set fp for x &lt; xp[0] to fp evaluated at xp[-1].</span>
+<span class="sd">        (default) or not given, set fp for x &lt; xp[0] to fp evaluated at xp[0].</span>
 <span class="sd">    right: float</span>
 <span class="sd">        If given, set fp for x &gt; xp[-1] to right. Otherwise, if right is None</span>
 <span class="sd">        (default) or not given, set fp for x &gt; xp[-1] to fp evaluated at</span>
@@ -125,7 +125,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    ndarray or float</span>
+<span class="sd">    ``ndarray`` or float</span>
 <span class="sd">        The interpolated values at points x. Returns a single float if x is a</span>
 <span class="sd">        scalar, otherwise returns a numpy.ndarray.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -162,8 +162,8 @@
 <div class="viewcode-block" id="nsinterp">
 <a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.resampler.nsinterp">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">nsinterp</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">qmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">qmax</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;One-dimensional Whittaker-Shannon interpolation onto the Nyquist-Shannon</span>
-<span class="sd">    grid.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;One-dimensional Whittaker-Shannon interpolation onto the Nyquist-</span>
+<span class="sd">    Shannon grid.</span>
 
 <span class="sd">    Takes a band-limited function fp and original grid xp and resamples fp on</span>
 <span class="sd">    the NS grid. Uses the minimum number of points N required by the Nyquist</span>
@@ -173,9 +173,9 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    xp: ndarray</span>
+<span class="sd">    xp: ``ndarray``</span>
 <span class="sd">        The array of known x values.</span>
-<span class="sd">    fp: ndarray</span>
+<span class="sd">    fp: ``ndarray``</span>
 <span class="sd">        The array of y values associated with xp.</span>
 <span class="sd">    qmin: float</span>
 <span class="sd">        The lower band limit in the frequency domain.</span>
@@ -184,7 +184,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    x: ndarray</span>
+<span class="sd">    x: ``ndarray``</span>
 <span class="sd">        The Nyquist-Shannon grid computed for the given qmin and qmax.</span>
 <span class="sd">    fp_at_x: ndarray</span>
 <span class="sd">        The interpolated values at points x. Returns a single float if x is a</span>
@@ -224,7 +224,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    Returns resampled (r, s).</span>
+<span class="sd">    Returns resampled ``(r, s)``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
@@ -281,7 +281,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, The Trustees of Columbia University in the City of New York.</p>
+    <p>&#169; Copyright 2026, The Trustees of Columbia University in the City of New York.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -5,17 +5,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>diffpy.utils.tools &mdash; diffpy.utils 3.6.1 documentation</title>
+  <title>diffpy.utils.tools &mdash; diffpy.utils 3.7.0rc0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=43a26aad"></script>
-      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/documentation_options.js?v=c07905d3"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../_static/copybutton.js?v=cca77546"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -85,7 +85,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">convolve</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">xraydb</span><span class="w"> </span><span class="kn">import</span> <span class="n">material_mu</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.parsers.loaddata</span><span class="w"> </span><span class="kn">import</span> <span class="n">loadData</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_data</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_stringify</span><span class="p">(</span><span class="n">string_value</span><span class="p">):</span>
@@ -130,43 +130,46 @@
 <div class="viewcode-block" id="get_user_info">
 <a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.tools.get_user_info">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_user_info</span><span class="p">(</span><span class="n">owner_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">owner_email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">owner_orcid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get name, email, and orcid of the owner/user from various sources and</span>
-<span class="sd">    return it as a metadata dictionary.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get name, email, and ORCID of the owner/user from various sources</span>
+<span class="sd">    and return it as a metadata dictionary.</span>
 
-<span class="sd">    The function looks for the information in json format configuration files</span>
-<span class="sd">    with the name &#39;diffpyconfig.json&#39;. These can be in the user&#39;s home</span>
-<span class="sd">    directory and in the current working directory.  The information in the</span>
-<span class="sd">    config files are combined, with the local config overriding the</span>
-<span class="sd">    home- directory one.  Values for owner_name, owner_email, and owner_orcid</span>
-<span class="sd">    may be passed in to the function and these override the values in the</span>
-<span class="sd">    config files.</span>
+<span class="sd">    The function looks for information in JSON configuration files named</span>
+<span class="sd">    ``diffpyconfig.json``. These can be in the user&#39;s home directory and in</span>
+<span class="sd">    the current working directory. The information in the config files is</span>
+<span class="sd">    combined, with the local config overriding the home-directory one.</span>
+<span class="sd">    Values for ``owner_name``, ``owner_email``, and ``owner_orcid`` may be</span>
+<span class="sd">    passed in to the function, and these override the config files.</span>
 
-<span class="sd">    A template for the config file is below.  Create a text file called &#39;</span>
-<span class="sd">    diffpyconfig.json&#39; in your home directory and copy-paste the template</span>
-<span class="sd">    into it, editing it with your real information.</span>
-<span class="sd">    {</span>
-<span class="sd">      &quot;owner_name&quot;: &quot;&lt;your name as you would like it stored with your data&gt;&gt;&quot;,</span>
-<span class="sd">      &quot;owner_email&quot;: &quot;&lt;your_associated_email&gt;&gt;@email.com&quot;,</span>
-<span class="sd">      &quot;owner_orcid&quot;: &quot;&lt;your_associated_orcid if you would like this stored with your data&gt;&gt;&quot;  # noqa: E501</span>
-<span class="sd">    }</span>
+<span class="sd">    A template for the config file is below. Create a text file called</span>
+<span class="sd">    ``diffpyconfig.json`` in your home directory and paste the template into</span>
+<span class="sd">    it, editing it with your real information::</span>
+
+<span class="sd">        {</span>
+<span class="sd">          &quot;owner_name&quot;: &quot;&lt;your name as you would like it stored with your data&gt;&quot;,</span>
+<span class="sd">          &quot;owner_email&quot;: &quot;&lt;your_associated_email&gt;@email.com&quot;,</span>
+<span class="sd">          &quot;owner_orcid&quot;: &quot;&lt;your_associated_orcid if you would like this stored with your data&gt;&quot; # noqa: E501</span>
+<span class="sd">        }</span>
+
 <span class="sd">    You may also store any other global-level information that you would like</span>
-<span class="sd">    associated with your diffraction data in this file</span>
+<span class="sd">    associated with your diffraction data in this file.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    owner_name : str, optional, default is the value stored in the global or</span>
-<span class="sd">        local config file. The name of the user who will show as owner in the</span>
-<span class="sd">        metadata that is stored with the data</span>
-<span class="sd">    owner_email : str, optional, default is the value stored in the global or</span>
-<span class="sd">        local config file. The email of the user/owner</span>
-<span class="sd">    owner_orcid : str, optional, default is the value stored in the global or</span>
-<span class="sd">        local config file. The ORCID id of the user/owner</span>
+<span class="sd">    owner_name : str, ``optional``</span>
+<span class="sd">        Default is the value stored in the global or local config file.</span>
+<span class="sd">        The name of the user stored in metadata.</span>
+<span class="sd">    owner_email : str, ``optional``</span>
+<span class="sd">        Default is the value stored in the global or local config file.</span>
+<span class="sd">        The email address of the user/owner.</span>
+<span class="sd">    owner_orcid : str, ``optional``</span>
+<span class="sd">        Default is the value stored in the global or local config file.</span>
+<span class="sd">        The ORCID ID of the user/owner.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    user_info : dict</span>
-<span class="sd">        The dictionary containing username, email and orcid of the user/owner</span>
-<span class="sd">        , and any other information stored in the global or local config files.</span>
+<span class="sd">        Dictionary containing username, email, ORCID, and any other</span>
+<span class="sd">        information stored in global or local config files.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">runtime_info</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;owner_name&quot;</span><span class="p">:</span> <span class="n">owner_name</span><span class="p">,</span>
@@ -188,8 +191,8 @@
 <div class="viewcode-block" id="check_and_build_global_config">
 <a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.tools.check_and_build_global_config">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">check_and_build_global_config</span><span class="p">(</span><span class="n">skip_config_creation</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check for a global diffpu config file in user&#39;s home directory and</span>
-<span class="sd">    creates one if it is missing.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check for a global diffpu config file in user&#39;s home directory</span>
+<span class="sd">    and creates one if it is missing.</span>
 
 <span class="sd">    The file it looks for is called diffpyconfig.json.  This can contain</span>
 <span class="sd">    anything in json format, but minimally contains information about the</span>
@@ -209,9 +212,9 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    skip_config_creation : bool, optional, default is False.</span>
+<span class="sd">    skip_config_creation : bool, ``optional``</span>
 <span class="sd">        The boolean that will override the creation workflow even if no</span>
-<span class="sd">        config file exists.</span>
+<span class="sd">        config file exists. Default is False.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -275,6 +278,7 @@
 <span class="sd">    Package info stored in metadata as</span>
 <span class="sd">    {&#39;package_info&#39;: {&#39;package_name&#39;: &#39;version_number&#39;}}.</span>
 
+<span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    package_name : str or list</span>
 <span class="sd">        The name of the package(s) to retrieve the version number for.</span>
@@ -318,46 +322,30 @@
 
 <div class="viewcode-block" id="compute_mu_using_xraydb">
 <a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.tools.compute_mu_using_xraydb">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">compute_mu_using_xraydb</span><span class="p">(</span>
-    <span class="n">sample_composition</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">sample_mass_density</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">packing_fraction</span><span class="o">=</span><span class="kc">None</span>
-<span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the attenuation coefficient (mu) using the XrayDB database.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_mu_using_xraydb</span><span class="p">(</span><span class="n">sample_composition</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">sample_mass_density</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the attenuation coefficient (mu) using the XrayDB</span>
+<span class="sd">    database.</span>
 
-<span class="sd">    Computes mu based on the sample composition and energy.</span>
-<span class="sd">    User should provide a sample mass density or a packing fraction.</span>
-<span class="sd">    If neither density nor packing fraction is specified,</span>
-<span class="sd">    or if both are specified, a ValueError will be raised.</span>
-<span class="sd">    Reference: https://xraypy.github.io/XrayDB/python.html#xraydb.material_mu.</span>
+<span class="sd">    Computes mu based on the sample composition, X-ray energy, and</span>
+<span class="sd">    sample mass density.</span>
+
+<span class="sd">    Reference:</span>
+<span class="sd">    https://xraypy.github.io/XrayDB/python.html#xraydb.material_mu</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    sample_composition : str</span>
 <span class="sd">        The chemical formula of the material.</span>
 <span class="sd">    energy : float</span>
-<span class="sd">        The energy of the incident x-rays in keV.</span>
-<span class="sd">    sample_mass_density : float, optional, Default is None</span>
-<span class="sd">        The mass density of the packed powder/sample in g/cm*3.</span>
-<span class="sd">    packing_fraction : float, optional, Default is None</span>
-<span class="sd">        The fraction of sample in the capillary (between 0 and 1).</span>
-<span class="sd">        Specify either sample_mass_density or packing_fraction but not both.</span>
+<span class="sd">        The energy of the incident X-rays in keV.</span>
+<span class="sd">    sample_mass_density : float</span>
+<span class="sd">        The mass density of the sample in g/cm^3.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    mu : float</span>
-<span class="sd">        The attenuation coefficient mu in mm^{-1}.</span>
+<span class="sd">        The attenuation coefficient μ in mm⁻¹.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">sample_mass_density</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">packing_fraction</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
-        <span class="n">sample_mass_density</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">packing_fraction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-    <span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;You must specify either sample_mass_density or packing_fraction, &quot;</span>
-            <span class="s2">&quot;but not both. &quot;</span>
-            <span class="s2">&quot;Please rerun specifying only one.&quot;</span>
-        <span class="p">)</span>
-    <span class="k">if</span> <span class="n">packing_fraction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">sample_mass_density</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">get_density_from_cloud</span><span class="p">(</span><span class="n">sample_composition</span><span class="p">)</span> <span class="o">*</span> <span class="n">packing_fraction</span>
-        <span class="p">)</span>
     <span class="n">energy_eV</span> <span class="o">=</span> <span class="n">energy</span> <span class="o">*</span> <span class="mi">1000</span>
     <span class="n">mu</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">material_mu</span><span class="p">(</span>
@@ -373,8 +361,8 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_top_hat</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">half_slit_width</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a top-hat function, return 1.0 for values within the specified</span>
-<span class="sd">    slit width and 0 otherwise.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a top-hat function, return 1.0 for values within the</span>
+<span class="sd">    specified slit width and 0 otherwise.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">z</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="n">half_slit_width</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">z</span> <span class="o">&lt;=</span> <span class="n">half_slit_width</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 
 
@@ -405,9 +393,10 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_extend_z_and_convolve</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">half_slit_width</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">I0</span><span class="p">,</span> <span class="n">mud</span><span class="p">,</span> <span class="n">slope</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extend z values and I values for padding (so that we don&#39;t have tails in</span>
-<span class="sd">    convolution), then perform convolution (note that the convolved I values</span>
-<span class="sd">    are the same as modeled I values if slit width is close to 0)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extend z values and I values for padding (so that we don&#39;t have</span>
+<span class="sd">    tails in convolution), then perform convolution (note that the</span>
+<span class="sd">    convolved I values are the same as modeled I values if slit width is</span>
+<span class="sd">    close to 0)&quot;&quot;&quot;</span>
     <span class="n">n_points</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
     <span class="n">z_left_pad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
         <span class="n">z</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="n">n_points</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">z</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">n_points</span>
@@ -428,8 +417,8 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_objective_function</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">observed_data</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the objective function for fitting a model to the</span>
-<span class="sd">    observed/experimental data by minimizing the sum of squared residuals</span>
-<span class="sd">    between the observed data and the convolved model data.&quot;&quot;&quot;</span>
+<span class="sd">    observed/experimental data by minimizing the sum of squared</span>
+<span class="sd">    residuals between the observed data and the convolved model data.&quot;&quot;&quot;</span>
     <span class="n">diameter</span><span class="p">,</span> <span class="n">half_slit_width</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">I0</span><span class="p">,</span> <span class="n">mud</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">params</span>
     <span class="n">convolved_model_data</span> <span class="o">=</span> <span class="n">_extend_z_and_convolve</span><span class="p">(</span>
         <span class="n">z</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">half_slit_width</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">I0</span><span class="p">,</span> <span class="n">mud</span><span class="p">,</span> <span class="n">slope</span>
@@ -439,7 +428,8 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_compute_single_mud</span><span class="p">(</span><span class="n">z_data</span><span class="p">,</span> <span class="n">I_data</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform dual annealing optimization and extract the parameters.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform dual annealing optimization and extract the</span>
+<span class="sd">    parameters.&quot;&quot;&quot;</span>
     <span class="n">bounds</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">(</span>
             <span class="mf">1e-5</span><span class="p">,</span>
@@ -470,8 +460,8 @@
 <div class="viewcode-block" id="compute_mud">
 <a class="viewcode-back" href="../../../api/diffpy.utils.html#diffpy.utils.tools.compute_mud">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">compute_mud</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the best-fit mu*D value from a z-scan file, removing the sample</span>
-<span class="sd">    holder effect.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the best-fit mu*D value from a z-scan file, removing the</span>
+<span class="sd">    sample holder effect.</span>
 
 <span class="sd">    This function loads z-scan data and fits it to a model</span>
 <span class="sd">    that convolves a top-hat function with I = I0 * e^{-mu * l}.</span>
@@ -494,7 +484,7 @@
 <span class="sd">    mu*D : float</span>
 <span class="sd">        The best-fit mu*D value.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">z_data</span><span class="p">,</span> <span class="n">I_data</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">z_data</span><span class="p">,</span> <span class="n">I_data</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">best_mud</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
         <span class="p">(</span><span class="n">_compute_single_mud</span><span class="p">(</span><span class="n">z_data</span><span class="p">,</span> <span class="n">I_data</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)),</span>
         <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">pair</span><span class="p">:</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
@@ -510,7 +500,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, The Trustees of Columbia University in the City of New York.</p>
+    <p>&#169; Copyright 2026, The Trustees of Columbia University in the City of New York.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -75,14 +75,19 @@ i.e.,
 This makes it very easy to compare a diffraction pattern that was measured or calculated
 on one ``xtype`` with one that was measured or calculated on another.  E.g., suppose that you
 have a calculated powder pattern from a CIF file that was calculated on a d-spacing grid using
-some software package, and
-you want to know if a diffraction pattern you have measured on a Q-grid is the same material.
+some software package, which you could find in the example data folder called `CeO2_dspacing.xy` and
+you want to know if a diffraction pattern you have measured on a Q-grid, where the example data is also
+in the example data folder called `CeO2_mean_q.chi`, is the same material.
 You could simply load them both as diffraction objects and plot them together on the same grid.
+Here the `xcalc` is the first column in the `CeO2_dspacing.xy` and `ycalc` is the second column in the same
+file. Similarly, `xmeas` corresponds to the first column in the `CeO2_mean_q.chi` and `ymeas` is the second column in
+the same file.
 
 .. code-block:: python
 
     calculated = DiffractionObject(xcalc, ycalc, "d")
-    measured = DiffractionObject(xmeas, ymeas, "tth", wavelength=0.717)
+    measured = DiffractionObject(xmeas,
+    ymeas, "q", wavelength=0.1)
     plt.plot(calculated.on_q()[0], calculated.on_q()[1])
     plt.plot(measured.on_q()[0], measured.on_q()[1])
     plt.show()

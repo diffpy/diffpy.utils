@@ -1,0 +1,217 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Linear Absorption Coefficient (μ) Examples &mdash; diffpy.utils 3.7.0rc0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=c07905d3"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=cca77546"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="diffpy.utils package" href="../api/diffpy.utils.html" />
+    <link rel="prev" title="Tools Example" href="tools_example.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            diffpy.utils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utilities/utilities.html">Utilities</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="examples.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="diffraction_objects_example.html">Diffraction Objects Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transforms_example.html">Transforms Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resample_example.html">Resampling Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers_example.html">Parsers Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools_example.html">Tools Example</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Linear Absorption Coefficient (μ) Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/diffpy.utils.html">Package API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">diffpy.utils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="examples.html">Examples</a></li>
+      <li class="breadcrumb-item active">Linear Absorption Coefficient (μ) Examples</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/diffpy/diffpy.utils/blob/main/docs/source/examples/mu_calc_examples.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linear-absorption-coefficient-examples">
+<h1>Linear Absorption Coefficient (μ) Examples<a class="headerlink" href="#linear-absorption-coefficient-examples" title="Link to this heading"></a></h1>
+<p>These examples will demonstrate how to calculate the Linear absorption
+coefficient, μ, using different methods provided in <code class="docutils literal notranslate"><span class="pre">diffpy.utils</span></code>.</p>
+<div class="admonition-methods-for-obtaining-linear-absorption-coefficient admonition">
+<p class="admonition-title">Methods for obtaining linear absorption coefficient</p>
+<p>Obtaining μ can be done in <strong>two
+different ways</strong> using <code class="docutils literal notranslate"><span class="pre">diffpy.utils</span></code>.</p>
+<ol class="arabic simple">
+<li><p><strong>Using a “z-scan” measurement</strong>: Perform a z-scan measurement
+on the sample and use <code class="docutils literal notranslate"><span class="pre">diffpy.utils.tools.compute_mud</span></code> to calculate
+μ.</p></li>
+<li><p><strong>Using tabulated values</strong>: Given composition, density, and X-ray energy,
+use <code class="docutils literal notranslate"><span class="pre">diffpy.utils.tools.compute_mu_using_xraydb</span></code> to calculate μ from
+tabulated values.</p></li>
+</ol>
+</div>
+<section id="why-is-important">
+<h2>Why is μ Important?<a class="headerlink" href="#why-is-important" title="Link to this heading"></a></h2>
+<p>The linear absorption coefficient, μ, quantifies how much X-ray
+radiation is absorbed by a material per unit length. It is a critical
+parameter in many scientific techniques.</p>
+<p>For example, when calculating pair distribution functions (PDFs)
+using <code class="docutils literal notranslate"><span class="pre">diffpy.pdfgetx</span></code>,
+a key assumption is that the linear absorption is negligible.
+This is frequently the case for high-energy X-rays. However,
+this must be corrected for when using low energy X-rays, such
+as those from a laboratory source. To correct for linear absorption,
+the linear absorption coefficient, μ, must be known.</p>
+<div class="admonition-correcting-for-linear-absorption-with-diffpy-labpdfproc admonition">
+<p class="admonition-title">Correcting for linear absorption with <code class="docutils literal notranslate"><span class="pre">diffpy.labpdfproc</span></code></p>
+<p>If your objective is to correct for linear absorption in PDF calculations,
+please refer to our package <code class="docutils literal notranslate"><span class="pre">diffpy.labpdfproc</span></code>. This package is specifically
+designed to correct your laboratory X-ray PDF data for absorption effects.
+More information can be found in the
+<a class="reference external" href="https://www.diffpy.org/diffpy.labpdfproc//">diffpy.labpdfproc documentation</a>.</p>
+</div>
+</section>
+<section id="calculating-from-a-z-scan-measurement">
+<h2>Calculating μ from a “z-scan” Measurement<a class="headerlink" href="#calculating-from-a-z-scan-measurement" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The data we will be using for this example can be found,
+<a class="reference external" href="https://github.com/diffpy/diffpy.utils/tree/main/docs/source/examples/example_data">here</a>.</p>
+</div>
+<p>A “z-scan” measurement is the measured transmission of your X-ray incident beam
+as a function of sample position. This is obtained by moving the sample
+perpendicular to the X-ray beam (z-direction) and recording the transmitted
+intensity at each position. This measured data looks something like this,</p>
+<a class="reference internal image-reference" href="../_images/zscan-plot.png"><img alt="Example of a z-scan measurement." class="align-center" src="../_images/zscan-plot.png" style="width: 300px;" />
+</a>
+<p>Using this z-scan data, you can calculate <strong>μ·d</strong>, where d is the inner diameter of
+your sample capillary. To do this, simply pass your z-scan measurement to the <code class="docutils literal notranslate"><span class="pre">compute_mud</span></code>
+function from the <code class="docutils literal notranslate"><span class="pre">diffpy.utils.tools</span></code> module.</p>
+<p>First, import the <code class="docutils literal notranslate"><span class="pre">compute_mud</span></code> function,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_mud</span>
+</pre></div>
+</div>
+<p>Next, pass the filepath to the function,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">filepath</span> <span class="o">=</span> <span class="s2">&quot;CeO2_635um_zscan_200umSlit_chanClose_exported.xy&quot;</span>
+<span class="n">capillary_diameter</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="c1"># mm</span>
+<span class="n">mud</span> <span class="o">=</span> <span class="n">compute_mud</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Calculated mu*d: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">mud</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Calculated mu: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">mud</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">capillary_diameter</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2"> mm^-1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will output the calculated value of μ·d, which is unitless, and μ in mm<sup>-1</sup>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Calculated mu*d: 3.489</span>
+<span class="go">Calculated mu: 6.977 mm^-1</span>
+</pre></div>
+</div>
+</section>
+<section id="calculating-from-tabulated-values">
+<h2>Calculating μ from Tabulated Values<a class="headerlink" href="#calculating-from-tabulated-values" title="Link to this heading"></a></h2>
+<p>The function to calculate μ from tabulated values is located
+in the <code class="docutils literal notranslate"><span class="pre">diffpy.utils.tools</span></code> module. So first, import the function,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_mu_using_xraydb</span>
+</pre></div>
+</div>
+<p>To calculate μ, you need to know the sample composition, and X-ray energy, and sample mass density (g/cm<sup>3</sup>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">composition</span> <span class="o">=</span> <span class="s2">&quot;Fe2O3&quot;</span>
+<span class="n">energy_keV</span> <span class="o">=</span> <span class="mf">17.45</span> <span class="c1"># Mo K-alpha energy</span>
+<span class="n">sample_mass_density</span> <span class="o">=</span> <span class="mf">5.24</span> <span class="c1"># g/cm^3</span>
+</pre></div>
+</div>
+<p>Now calculate μ using the <code class="docutils literal notranslate"><span class="pre">compute_mu_using_xraydb</span></code> function.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mu</span> <span class="o">=</span> <span class="n">compute_mu_using_xraydb</span><span class="p">(</span><span class="n">composition</span><span class="p">,</span> <span class="n">energy_keV</span><span class="p">,</span> <span class="n">sample_mass_density</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Calculated mu: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2"> mm^-1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will output the calculated linear absorption coefficient, μ, in mm<sup>-1</sup>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Calculated mu: 13.967 mm^-1</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tools_example.html" class="btn btn-neutral float-left" title="Tools Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api/diffpy.utils.html" class="btn btn-neutral float-right" title="diffpy.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, The Trustees of Columbia University in the City of New York.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

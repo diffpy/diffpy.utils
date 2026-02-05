@@ -6,17 +6,17 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Parsers Example &mdash; diffpy.utils 3.6.1 documentation</title>
+  <title>Parsers Example &mdash; diffpy.utils 3.7.0rc0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=43a26aad"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/documentation_options.js?v=c07905d3"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../_static/copybutton.js?v=cca77546"></script>
     <script src="../_static/js/theme.js"></script>
@@ -55,6 +55,7 @@
 <li class="toctree-l2"><a class="reference internal" href="resample_example.html">Resampling Example</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Parsers Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tools_example.html">Tools Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mu_calc_examples.html">Linear Absorption Coefficient (μ) Examples</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/diffpy.utils.html">Package API</a></li>
@@ -94,20 +95,20 @@ Using the parsers module, we can load file data into simple and easy-to-work-wit
 This is a fairly standard format for 1D powder diffraction data.
 Our goal will be to extract the data, and the parameters listed in the header, from this file and
 load it into our program.</p></li>
-<li><p>To get the data table, we will use the <code class="docutils literal notranslate"><span class="pre">loadData</span></code> function. The default behavior of this
+<li><p>To get the data table, we will use the <code class="docutils literal notranslate"><span class="pre">load_data</span></code> function. The default behavior of this
 function is to find and extract a data table from a file.</p></li>
 </ol>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.parsers.loaddata</span><span class="w"> </span><span class="kn">import</span> <span class="n">loadData</span>
-<span class="n">data_table</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_data</span>
+<span class="n">data_table</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>While this will work with most datasets, on our <code class="docutils literal notranslate"><span class="pre">data.txt</span></code> file, we got a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>. The reason for this is
 due to the comments <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">Phase</span> <span class="pre">Transition</span> <span class="pre">Near</span> <span class="pre">This</span> <span class="pre">Temperature</span> <span class="pre">Range</span></code> and <code class="docutils literal notranslate"><span class="pre">--&gt;</span> <span class="pre">Note</span> <span class="pre">Significant</span> <span class="pre">Jump</span> <span class="pre">in</span> <span class="pre">Rw</span> <span class="pre">&lt;--</span></code>
 embedded within the dataset. To fix this, try using the <code class="docutils literal notranslate"><span class="pre">comments</span></code> parameter.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_table</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;--&gt;&#39;</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_table</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;--&gt;&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>This parameter tells <code class="docutils literal notranslate"><span class="pre">loadData</span></code> that any lines beginning with <code class="docutils literal notranslate"><span class="pre">$</span></code> and <code class="docutils literal notranslate"><span class="pre">--&gt;</span></code> are just comments and
+<p>This parameter tells <code class="docutils literal notranslate"><span class="pre">load_data</span></code> that any lines beginning with <code class="docutils literal notranslate"><span class="pre">$</span></code> and <code class="docutils literal notranslate"><span class="pre">--&gt;</span></code> are just comments and
 more entries in our data table may follow.</p>
 <p>Here are a few other parameters to test out:</p>
 <blockquote>
@@ -116,7 +117,7 @@ more entries in our data table may follow.</p>
 However, since <code class="docutils literal notranslate"><span class="pre">data.txt</span></code> is whitespace separated, running</p></li>
 </ul>
 </div></blockquote>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;--&gt;&#39;</span><span class="p">],</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;--&gt;&#39;</span><span class="p">],</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="simple">
@@ -126,7 +127,7 @@ rows, running</p></li>
 </ul>
 </dd>
 </dl>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;--&gt;&#39;</span><span class="p">],</span> <span class="n">minrows</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;--&gt;&#39;</span><span class="p">],</span> <span class="n">minrows</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="simple">
@@ -136,21 +137,21 @@ corresponds to the temperature and rw columns.</p></li>
 </ul>
 </dd>
 </dl>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;--&gt;&#39;</span><span class="p">],</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;--&gt;&#39;</span><span class="p">],</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 </pre></div>
 </div>
 <ol class="arabic simple" start="3">
-<li><p>Next, to get the header information, we can again use <code class="docutils literal notranslate"><span class="pre">loadData</span></code>,
+<li><p>Next, to get the header information, we can again use <code class="docutils literal notranslate"><span class="pre">load_data</span></code>,
 but this time with the <code class="docutils literal notranslate"><span class="pre">headers</span></code> parameter enabled.</p></li>
 </ol>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hdata</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;--&gt;&#39;</span><span class="p">],</span> <span class="n">headers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hdata</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&gt;&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;--&gt;&#39;</span><span class="p">],</span> <span class="n">headers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <ol class="arabic simple" start="4">
 <li><p>Rather than working with separate <code class="docutils literal notranslate"><span class="pre">data_table</span></code> and <code class="docutils literal notranslate"><span class="pre">hdata</span></code> objects, it may be easier to combine them into a single
 dictionary. We can do so using the <code class="docutils literal notranslate"><span class="pre">serialize_data</span></code> function.</p></li>
 </ol>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.parsers.loaddata</span><span class="w"> </span><span class="kn">import</span> <span class="n">serialize_data</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.parsers.serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">serialize_data</span>
 <span class="n">file_data</span> <span class="o">=</span> <span class="n">serialize_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to data.txt&#39;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">,</span> <span class="n">data_table</span><span class="p">)</span>
 <span class="c1"># File data is a dictionary with a single key</span>
 <span class="c1"># The key is the file name (in our case, &#39;data.txt&#39;)</span>
@@ -186,8 +187,8 @@ dictionary. We can do so using the <code class="docutils literal notranslate"><s
 <li><p>Finally, <code class="docutils literal notranslate"><span class="pre">serialize_data</span></code> allows us to store data from multiple text files in a single serial file. For one last bit
 of practice, we will extract and add the data from <code class="docutils literal notranslate"><span class="pre">moredata.txt</span></code> into the same <code class="docutils literal notranslate"><span class="pre">serialdata.json</span></code> file.</p></li>
 </ol>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_table</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to moredata.txt&gt;&#39;</span><span class="p">)</span>
-<span class="n">hdata</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to moredata.txt&gt;&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_table</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to moredata.txt&gt;&#39;</span><span class="p">)</span>
+<span class="n">hdata</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to moredata.txt&gt;&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">serialize_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to moredata.txt&gt;&#39;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">,</span> <span class="n">data_table</span><span class="p">,</span> <span class="n">serial_file</span><span class="o">=</span><span class="s1">&#39;&lt;PATH to serialdata.json&gt;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -213,7 +214,7 @@ b</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, The Trustees of Columbia University in the City of New York.</p>
+    <p>&#169; Copyright 2026, The Trustees of Columbia University in the City of New York.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

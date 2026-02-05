@@ -16,9 +16,9 @@ given enough datapoints.
 
 .. code-block:: python
 
-       from diffpy.utils.parsers.loaddata import loadData
-       nickel_datatable = loadData('<PATH to Nickel.gr>')
-       nitarget_datatable = loadData('<PATH to NiTarget.gr>')
+       from diffpy.utils.parsers import load_data
+       nickel_datatable = load_data('<PATH to Nickel.gr>')
+       nitarget_datatable = load_data('<PATH to NiTarget.gr>')
 
 Each data table has two columns: first is the grid and second is the function value.
 To extract the columns, we can utilize the serialize function ...

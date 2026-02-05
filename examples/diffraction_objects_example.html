@@ -6,17 +6,17 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Diffraction Objects Example &mdash; diffpy.utils 3.6.1 documentation</title>
+  <title>Diffraction Objects Example &mdash; diffpy.utils 3.7.0rc0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=43a26aad"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/documentation_options.js?v=c07905d3"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../_static/copybutton.js?v=cca77546"></script>
     <script src="../_static/js/theme.js"></script>
@@ -55,6 +55,7 @@
 <li class="toctree-l2"><a class="reference internal" href="resample_example.html">Resampling Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parsers_example.html">Parsers Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tools_example.html">Tools Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mu_calc_examples.html">Linear Absorption Coefficient (μ) Examples</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/diffpy.utils.html">Package API</a></li>
@@ -146,11 +147,16 @@ i.e.,</p>
 <p>This makes it very easy to compare a diffraction pattern that was measured or calculated
 on one <code class="docutils literal notranslate"><span class="pre">xtype</span></code> with one that was measured or calculated on another.  E.g., suppose that you
 have a calculated powder pattern from a CIF file that was calculated on a d-spacing grid using
-some software package, and
-you want to know if a diffraction pattern you have measured on a Q-grid is the same material.
-You could simply load them both as diffraction objects and plot them together on the same grid.</p>
+some software package, which you could find in the example data folder called <cite>CeO2_dspacing.xy</cite> and
+you want to know if a diffraction pattern you have measured on a Q-grid, where the example data is also
+in the example data folder called <cite>CeO2_mean_q.chi</cite>, is the same material.
+You could simply load them both as diffraction objects and plot them together on the same grid.
+Here the <cite>xcalc</cite> is the first column in the <cite>CeO2_dspacing.xy</cite> and <cite>ycalc</cite> is the second column in the same
+file. Similarly, <cite>xmeas</cite> corresponds to the first column in the <cite>CeO2_mean_q.chi</cite> and <cite>ymeas</cite> is the second column in
+the same file.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">calculated</span> <span class="o">=</span> <span class="n">DiffractionObject</span><span class="p">(</span><span class="n">xcalc</span><span class="p">,</span> <span class="n">ycalc</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">)</span>
-<span class="n">measured</span> <span class="o">=</span> <span class="n">DiffractionObject</span><span class="p">(</span><span class="n">xmeas</span><span class="p">,</span> <span class="n">ymeas</span><span class="p">,</span> <span class="s2">&quot;tth&quot;</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="mf">0.717</span><span class="p">)</span>
+<span class="n">measured</span> <span class="o">=</span> <span class="n">DiffractionObject</span><span class="p">(</span><span class="n">xmeas</span><span class="p">,</span>
+<span class="n">ymeas</span><span class="p">,</span> <span class="s2">&quot;q&quot;</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">calculated</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">calculated</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">measured</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">measured</span><span class="o">.</span><span class="n">on_q</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -273,7 +279,7 @@ is properly documented and saved for future reference.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, The Trustees of Columbia University in the City of New York.</p>
+    <p>&#169; Copyright 2026, The Trustees of Columbia University in the City of New York.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

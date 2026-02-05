@@ -6,20 +6,20 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Resampling Example &mdash; diffpy.utils 3.6.1 documentation</title>
+  <title>Resampling Example &mdash; diffpy.utils 3.7.0rc0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=43a26aad"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/documentation_options.js?v=c07905d3"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../_static/copybutton.js?v=cca77546"></script>
-      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -56,6 +56,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Resampling Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parsers_example.html">Parsers Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tools_example.html">Tools Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mu_calc_examples.html">Linear Absorption Coefficient (μ) Examples</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/diffpy.utils.html">Package API</a></li>
@@ -96,9 +97,9 @@ given enough datapoints.</p>
 <li><p>To start, unzip <a class="reference download internal" download="" href="../_downloads/bd886e57cf9f4de4ad76c29e2ff8bf8b/parser_data.zip"><code class="xref download docutils literal notranslate"><span class="pre">parser_data</span></code></a>. Then, load the data table from <code class="docutils literal notranslate"><span class="pre">Nickel.gr</span></code>
 and <code class="docutils literal notranslate"><span class="pre">NiTarget.gr</span></code>. These datasets are based on data from <a class="reference external" href="https://global.oup.com/academic/product/atomic-pair-distribution-function-analysis-9780198885801?cc=us&amp;lang=en&amp;">Atomic Pair Distribution Function Analysis: A Primer</a>.</p></li>
 </ol>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.parsers.loaddata</span><span class="w"> </span><span class="kn">import</span> <span class="n">loadData</span>
-<span class="n">nickel_datatable</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to Nickel.gr&gt;&#39;</span><span class="p">)</span>
-<span class="n">nitarget_datatable</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to NiTarget.gr&gt;&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils.parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_data</span>
+<span class="n">nickel_datatable</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to Nickel.gr&gt;&#39;</span><span class="p">)</span>
+<span class="n">nitarget_datatable</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;&lt;PATH to NiTarget.gr&gt;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Each data table has two columns: first is the grid and second is the function value.
@@ -186,7 +187,7 @@ reconstruction was perfect as shown from the comparison between <code class="doc
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, The Trustees of Columbia University in the City of New York.</p>
+    <p>&#169; Copyright 2026, The Trustees of Columbia University in the City of New York.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

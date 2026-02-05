@@ -6,25 +6,25 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>diffpy.utils package &mdash; diffpy.utils 3.6.1 documentation</title>
+  <title>diffpy.utils package &mdash; diffpy.utils 3.7.0rc0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=43a26aad"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/documentation_options.js?v=c07905d3"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../_static/copybutton.js?v=cca77546"></script>
-      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="diffpy.utils.parsers package" href="diffpy.utils.parsers.html" />
-    <link rel="prev" title="Tools Example" href="../examples/tools_example.html" /> 
+    <link rel="prev" title="Linear Absorption Coefficient (μ) Examples" href="../examples/mu_calc_examples.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -96,22 +96,31 @@
 </section>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+<section id="module-diffpy.utils.utils_app">
+<span id="diffpy-utils-utils-app-module"></span><h3>diffpy.utils.utils_app module<a class="headerlink" href="#module-diffpy.utils.utils_app" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="diffpy.utils.utils_app.main">
+<span class="sig-prename descclassname"><span class="pre">diffpy.utils.utils_app.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/utils_app.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.utils_app.main" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
 <section id="module-diffpy.utils.transforms">
 <span id="diffpy-utils-transforms-module"></span><h3>diffpy.utils.transforms module<a class="headerlink" href="#module-diffpy.utils.transforms" title="Link to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="diffpy.utils.transforms.d_to_q">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.transforms.</span></span><span class="sig-name descname"><span class="pre">d_to_q</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/transforms.html#d_to_q"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.transforms.d_to_q" title="Link to this definition"></a></dt>
-<dd><p>Helper function to convert q to d using <span class="math notranslate nohighlight">\(d = \frac{2 \pi}{q}\)</span>.</p>
+<dd><p>Helper function to convert q to d using <span class="math notranslate nohighlight">\(d = \frac{2
+\pi}{q}\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>d</strong> (<em>nsarray</em>) – The 1D array of <span class="math notranslate nohighlight">\(d\)</span> values np.array([ds]).</p>
+<dd class="field-odd"><p><strong>d</strong> (<code class="docutils literal notranslate"><span class="pre">nsarray</span></code>) – The 1D array of <span class="math notranslate nohighlight">\(d\)</span> values np.array([ds]).</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>q</strong> – The 1D array of <span class="math notranslate nohighlight">\(q\)</span> values np.array([qs]).
 The units of q must be reciprocal of the units of wavelength.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>nsarray</p>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">nsarray</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -119,14 +128,15 @@ The units of q must be reciprocal of the units of wavelength.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="diffpy.utils.transforms.d_to_tth">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.transforms.</span></span><span class="sig-name descname"><span class="pre">d_to_tth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/transforms.html#d_to_tth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.transforms.d_to_tth" title="Link to this definition"></a></dt>
-<dd><p>Helper function to convert d to two-theta on independent variable axis.</p>
+<dd><p>Helper function to convert d to two-theta on independent variable
+axis.</p>
 <p>The formula is ..
 math:: 2theta = 2 arcsinleft(frac{lambda}{2d}right).</p>
 <p>Here we convert d to q first, then to tth.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>d</strong> (<em>nsarray</em>) – The 1D array of <span class="math notranslate nohighlight">\(d\)</span> values np.array([ds]).</p></li>
+<li><p><strong>d</strong> (<code class="docutils literal notranslate"><span class="pre">nsarray</span></code>) – The 1D array of <span class="math notranslate nohighlight">\(d\)</span> values np.array([ds]).</p></li>
 <li><p><strong>wavelength</strong> (<em>float</em>) – The wavelength of the incoming x-rays/neutrons/electrons.</p></li>
 </ul>
 </dd>
@@ -135,7 +145,7 @@ math:: 2theta = 2 arcsinleft(frac{lambda}{2d}right).</p>
 The units of tth are expected in degrees.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>nsarray</p>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">nsarray</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -143,18 +153,18 @@ The units of tth are expected in degrees.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="diffpy.utils.transforms.q_to_d">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.transforms.</span></span><span class="sig-name descname"><span class="pre">q_to_d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/transforms.html#q_to_d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.transforms.q_to_d" title="Link to this definition"></a></dt>
-<dd><p>Helper function to convert q to d on independent variable axis, using
-<span class="math notranslate nohighlight">\(d = \frac{2 \pi}{q}\)</span>.</p>
+<dd><p>Helper function to convert q to d on independent variable axis,
+using <span class="math notranslate nohighlight">\(d = \frac{2 \pi}{q}\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>q</strong> (<em>ndarray</em>) – The 1D array of <span class="math notranslate nohighlight">\(q\)</span> values np.array([qs]).
+<dd class="field-odd"><p><strong>q</strong> (<code class="docutils literal notranslate"><span class="pre">ndarray</span></code>) – The 1D array of <span class="math notranslate nohighlight">\(q\)</span> values np.array([qs]).
 The units of q must be reciprocal of the units of wavelength.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>d</strong> – The 1D array of <span class="math notranslate nohighlight">\(d\)</span> values np.array([ds]).</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">ndarray</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -173,7 +183,7 @@ The units of q must be reciprocal of the units of wavelength.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>q</strong> (<em>ndarray</em>) – The 1D array of <span class="math notranslate nohighlight">\(q\)</span> values numpy.array([qs]).
+<li><p><strong>q</strong> (<code class="docutils literal notranslate"><span class="pre">ndarray</span></code>) – The 1D array of <span class="math notranslate nohighlight">\(q\)</span> values numpy.array([qs]).
 The units of q must be reciprocal of the units of wavelength.</p></li>
 <li><p><strong>wavelength</strong> (<em>float</em>) – Wavelength of the incoming x-rays/neutrons/electrons</p></li>
 </ul>
@@ -182,7 +192,7 @@ The units of q must be reciprocal of the units of wavelength.</p></li>
 <dd class="field-even"><p><strong>tth</strong> – The 1D array of <span class="math notranslate nohighlight">\(2\theta\)</span> values in degrees numpy.array([tths]).</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">ndarray</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -190,14 +200,15 @@ The units of q must be reciprocal of the units of wavelength.</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="diffpy.utils.transforms.tth_to_d">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.transforms.</span></span><span class="sig-name descname"><span class="pre">tth_to_d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/transforms.html#tth_to_d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.transforms.tth_to_d" title="Link to this definition"></a></dt>
-<dd><p>Helper function to convert two-theta to d on independent variable axis.</p>
+<dd><p>Helper function to convert two-theta to d on independent variable
+axis.</p>
 <p>The formula is ..
 math:: d = frac{lambda}{2 sinleft(frac{2theta}{2}right)}.</p>
 <p>Here we convert tth to q first, then to d.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tth</strong> (<em>nsarray</em>) – The 1D array of <span class="math notranslate nohighlight">\(2\theta\)</span> values np.array([tths]).
+<li><p><strong>tth</strong> (<code class="docutils literal notranslate"><span class="pre">nsarray</span></code>) – The 1D array of <span class="math notranslate nohighlight">\(2\theta\)</span> values np.array([tths]).
 The units of tth are expected in degrees.</p></li>
 <li><p><strong>wavelength</strong> (<em>float</em>) – The wavelength of the incoming x-rays/neutrons/electrons.</p></li>
 </ul>
@@ -206,7 +217,7 @@ The units of tth are expected in degrees.</p></li>
 <dd class="field-even"><p><strong>d</strong> – The 1D array of <span class="math notranslate nohighlight">\(d\)</span> values np.array([ds]).</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>nsarray</p>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">nsarray</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -214,7 +225,8 @@ The units of tth are expected in degrees.</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="diffpy.utils.transforms.tth_to_q">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.transforms.</span></span><span class="sig-name descname"><span class="pre">tth_to_q</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/transforms.html#tth_to_q"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.transforms.tth_to_q" title="Link to this definition"></a></dt>
-<dd><p>Helper function to convert two-theta to q on independent variable axis.</p>
+<dd><p>Helper function to convert two-theta to q on independent variable
+axis.</p>
 <p>If wavelength is missing, returns independent variable axis as integer
 indexes.</p>
 <p>By definition the relationship is:</p>
@@ -226,7 +238,7 @@ indexes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tth</strong> (<em>ndarray</em>) – The 1D array of <span class="math notranslate nohighlight">\(2\theta\)</span> values np.array([tths]).
+<li><p><strong>tth</strong> (<code class="docutils literal notranslate"><span class="pre">ndarray</span></code>) – The 1D array of <span class="math notranslate nohighlight">\(2\theta\)</span> values np.array([tths]).
 The units of tth are expected in degrees.</p></li>
 <li><p><strong>wavelength</strong> (<em>float</em>) – The wavelength of the incoming x-rays/neutrons/electrons.</p></li>
 </ul>
@@ -237,7 +249,7 @@ The units for the q-values are the inverse of the units of the
 provided wavelength.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">ndarray</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -304,8 +316,8 @@ string is a number.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="diffpy.utils.tools.check_and_build_global_config">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.tools.</span></span><span class="sig-name descname"><span class="pre">check_and_build_global_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skip_config_creation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/tools.html#check_and_build_global_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.tools.check_and_build_global_config" title="Link to this definition"></a></dt>
-<dd><p>Check for a global diffpu config file in user’s home directory and
-creates one if it is missing.</p>
+<dd><p>Check for a global diffpu config file in user’s home directory
+and creates one if it is missing.</p>
 <p>The file it looks for is called diffpyconfig.json.  This can contain
 anything in json format, but minimally contains information about the
 computer owner.  The information is used when diffpy objects are created
@@ -320,8 +332,8 @@ inside it.</p>
 workflow you can set the optional argument skip_config_creation to True.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>skip_config_creation</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default is False.</em>) – The boolean that will override the creation workflow even if no
-config file exists.</p>
+<dd class="field-odd"><p><strong>skip_config_creation</strong> (bool, <code class="docutils literal notranslate"><span class="pre">optional</span></code>) – The boolean that will override the creation workflow even if no
+config file exists. Default is False.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>config_exists</strong> – The boolean indicating whether the config file exists.</p>
@@ -334,25 +346,23 @@ config file exists.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="diffpy.utils.tools.compute_mu_using_xraydb">
-<span class="sig-prename descclassname"><span class="pre">diffpy.utils.tools.</span></span><span class="sig-name descname"><span class="pre">compute_mu_using_xraydb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_composition</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_mass_density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">packing_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/tools.html#compute_mu_using_xraydb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.tools.compute_mu_using_xraydb" title="Link to this definition"></a></dt>
-<dd><p>Compute the attenuation coefficient (mu) using the XrayDB database.</p>
-<p>Computes mu based on the sample composition and energy.
-User should provide a sample mass density or a packing fraction.
-If neither density nor packing fraction is specified,
-or if both are specified, a ValueError will be raised.
-Reference: <a class="reference external" href="https://xraypy.github.io/XrayDB/python.html#xraydb.material_mu">https://xraypy.github.io/XrayDB/python.html#xraydb.material_mu</a>.</p>
+<span class="sig-prename descclassname"><span class="pre">diffpy.utils.tools.</span></span><span class="sig-name descname"><span class="pre">compute_mu_using_xraydb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_composition</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_mass_density</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/tools.html#compute_mu_using_xraydb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.tools.compute_mu_using_xraydb" title="Link to this definition"></a></dt>
+<dd><p>Compute the attenuation coefficient (mu) using the XrayDB
+database.</p>
+<p>Computes mu based on the sample composition, X-ray energy, and
+sample mass density.</p>
+<p>Reference:
+<a class="reference external" href="https://xraypy.github.io/XrayDB/python.html#xraydb.material_mu">https://xraypy.github.io/XrayDB/python.html#xraydb.material_mu</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sample_composition</strong> (<em>str</em>) – The chemical formula of the material.</p></li>
-<li><p><strong>energy</strong> (<em>float</em>) – The energy of the incident x-rays in keV.</p></li>
-<li><p><strong>sample_mass_density</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>Default is None</em>) – The mass density of the packed powder/sample in g/cm*3.</p></li>
-<li><p><strong>packing_fraction</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>Default is None</em>) – The fraction of sample in the capillary (between 0 and 1).
-Specify either sample_mass_density or packing_fraction but not both.</p></li>
+<li><p><strong>energy</strong> (<em>float</em>) – The energy of the incident X-rays in keV.</p></li>
+<li><p><strong>sample_mass_density</strong> (<em>float</em>) – The mass density of the sample in g/cm^3.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>mu</strong> – The attenuation coefficient mu in mm^{-1}.</p>
+<dd class="field-even"><p><strong>mu</strong> – The attenuation coefficient μ in mm⁻¹.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -363,8 +373,8 @@ Specify either sample_mass_density or packing_fraction but not both.</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="diffpy.utils.tools.compute_mud">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.tools.</span></span><span class="sig-name descname"><span class="pre">compute_mud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/tools.html#compute_mud"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.tools.compute_mud" title="Link to this definition"></a></dt>
-<dd><p>Compute the best-fit mu*D value from a z-scan file, removing the sample
-holder effect.</p>
+<dd><p>Compute the best-fit mu*D value from a z-scan file, removing the
+sample holder effect.</p>
 <p>This function loads z-scan data and fits it to a model
 that convolves a top-hat function with I = I0 * e^{-mu * l}.
 The fitting procedure is run multiple times, and we return the best-fit
@@ -400,17 +410,19 @@ in preparation.</p>
 <dd><p>Fetch package version and updates it into (given) metadata.</p>
 <p>Package info stored in metadata as
 {‘package_info’: {‘package_name’: ‘version_number’}}.</p>
-<dl class="simple">
-<dt>metadata<span class="classifier">dict</span></dt><dd><p>The dictionary to store the package info. If not provided, a new
-dictionary will be created.</p>
-</dd>
-</dl>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>metadata</strong> – The updated metadata dict with package info inserted.</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>package_name</strong> (<em>str</em><em> or </em><em>list</em>) – The name of the package(s) to retrieve the version number for.</p></li>
+<li><p><strong>metadata</strong> (<em>dict</em>) – The dictionary to store the package info. If not provided, a new
+dictionary will be created.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metadata</strong> – The updated metadata dict with package info inserted.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -418,39 +430,40 @@ dictionary will be created.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="diffpy.utils.tools.get_user_info">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.tools.</span></span><span class="sig-name descname"><span class="pre">get_user_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">owner_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owner_email</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owner_orcid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/tools.html#get_user_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.tools.get_user_info" title="Link to this definition"></a></dt>
-<dd><p>Get name, email, and orcid of the owner/user from various sources and
-return it as a metadata dictionary.</p>
-<p>The function looks for the information in json format configuration files
-with the name ‘diffpyconfig.json’. These can be in the user’s home
-directory and in the current working directory.  The information in the
-config files are combined, with the local config overriding the
-home- directory one.  Values for owner_name, owner_email, and owner_orcid
-may be passed in to the function and these override the values in the
-config files.</p>
-<p>A template for the config file is below.  Create a text file called ‘
-diffpyconfig.json’ in your home directory and copy-paste the template
-into it, editing it with your real information.
-{</p>
-<blockquote>
-<div><p>“owner_name”: “&lt;your name as you would like it stored with your data&gt;&gt;”,
-“owner_email”: “&lt;your_associated_email&gt;&gt;&#64;email.com”,
-“owner_orcid”: “&lt;your_associated_orcid if you would like this stored with your data&gt;&gt;”  # noqa: E501</p>
-</div></blockquote>
-<p>}
-You may also store any other global-level information that you would like
-associated with your diffraction data in this file</p>
+<dd><p>Get name, email, and ORCID of the owner/user from various sources
+and return it as a metadata dictionary.</p>
+<p>The function looks for information in JSON configuration files named
+<code class="docutils literal notranslate"><span class="pre">diffpyconfig.json</span></code>. These can be in the user’s home directory and in
+the current working directory. The information in the config files is
+combined, with the local config overriding the home-directory one.
+Values for <code class="docutils literal notranslate"><span class="pre">owner_name</span></code>, <code class="docutils literal notranslate"><span class="pre">owner_email</span></code>, and <code class="docutils literal notranslate"><span class="pre">owner_orcid</span></code> may be
+passed in to the function, and these override the config files.</p>
+<p>A template for the config file is below. Create a text file called
+<code class="docutils literal notranslate"><span class="pre">diffpyconfig.json</span></code> in your home directory and paste the template into
+it, editing it with your real information:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;owner_name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;your name as you would like it stored with your data&gt;&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;owner_email&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;your_associated_email&gt;@email.com&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;owner_orcid&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;your_associated_orcid if you would like this stored with your data&gt;&quot;</span> <span class="c1"># noqa: E501</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You may also store any other global-level information that you would like
+associated with your diffraction data in this file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>owner_name</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default is the value stored in the global or</em>) – local config file. The name of the user who will show as owner in the
-metadata that is stored with the data</p></li>
-<li><p><strong>owner_email</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default is the value stored in the global or</em>) – local config file. The email of the user/owner</p></li>
-<li><p><strong>owner_orcid</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default is the value stored in the global or</em>) – local config file. The ORCID id of the user/owner</p></li>
+<li><p><strong>owner_name</strong> (str, <code class="docutils literal notranslate"><span class="pre">optional</span></code>) – Default is the value stored in the global or local config file.
+The name of the user stored in metadata.</p></li>
+<li><p><strong>owner_email</strong> (str, <code class="docutils literal notranslate"><span class="pre">optional</span></code>) – Default is the value stored in the global or local config file.
+The email address of the user/owner.</p></li>
+<li><p><strong>owner_orcid</strong> (str, <code class="docutils literal notranslate"><span class="pre">optional</span></code>) – Default is the value stored in the global or local config file.
+The ORCID ID of the user/owner.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>user_info</strong> – The dictionary containing username, email and orcid of the user/owner
-, and any other information stored in the global or local config files.</p>
+<dd class="field-even"><p><strong>user_info</strong> – Dictionary containing username, email, ORCID, and any other
+information stored in global or local config files.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -459,14 +472,134 @@ metadata that is stored with the data</p></li>
 </dd></dl>
 
 </section>
-<section id="diffpy-utils-user-config-module">
-<h3>diffpy.utils.user_config module<a class="headerlink" href="#diffpy-utils-user-config-module" title="Link to this heading"></a></h3>
+<section id="module-diffpy.utils._deprecator">
+<span id="diffpy-utils-deprecator-module"></span><h3>diffpy.utils._deprecator module<a class="headerlink" href="#module-diffpy.utils._deprecator" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="diffpy.utils._deprecator.build_deprecation_message">
+<span class="sig-prename descclassname"><span class="pre">diffpy.utils._deprecator.</span></span><span class="sig-name descname"><span class="pre">build_deprecation_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">old_base</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">old_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removal_version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/_deprecator.html#build_deprecation_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils._deprecator.build_deprecation_message" title="Link to this definition"></a></dt>
+<dd><p>Generate a deprecation message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>old_base</strong> (<em>str</em>) – The base module or class where the deprecated item resides.
+This will look like the import statement used in the code
+currently</p></li>
+<li><p><strong>old_name</strong> (<em>str</em>) – The name of the deprecated item.</p></li>
+<li><p><strong>new_name</strong> (<em>str</em>) – The name of the new item to use.</p></li>
+<li><p><strong>removal_version</strong> (<em>str</em>) – The version when the deprecated item will be removed.</p></li>
+<li><p><strong>new_base</strong> (<em>str Optional. Defaults to old_base.</em>) – The base module or class where the new item resides.
+This will look like the import statement that
+will be used in the code moving forward. If not specified,
+the new base defaults to the old one.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A formatted deprecation message.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="diffpy.utils._deprecator.deprecated">
+<span class="sig-prename descclassname"><span class="pre">diffpy.utils._deprecator.</span></span><span class="sig-name descname"><span class="pre">deprecated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;class</span> <span class="pre">'DeprecationWarning'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stacklevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/_deprecator.html#deprecated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils._deprecator.deprecated" title="Link to this definition"></a></dt>
+<dd><p>Deprecation decorator for functions and classes that is
+compatible with Python versions prior to 3.13.</p>
+<p class="rubric">Examples</p>
+<p>Basic usage with a deprecated function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils._deprecator</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">deprecated</span><span class="p">,</span> <span class="n">build_deprecation_message</span>
+<span class="p">)</span>
+
+<span class="n">deprecation_warning</span> <span class="o">=</span> <span class="n">build_deprecation_message</span><span class="p">(</span><span class="s2">&quot;diffpy.utils&quot;</span><span class="p">,</span>
+                                                <span class="s2">&quot;old_function&quot;</span><span class="p">,</span>
+                                                <span class="s2">&quot;new_function&quot;</span><span class="p">,</span>
+                                                <span class="s2">&quot;4.0.0&quot;</span><span class="p">)</span>
+
+<span class="nd">@deprecated</span><span class="p">(</span><span class="n">deprecation_warning</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">old_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;This function is deprecated and will be removed in version</span>
+<span class="sd">    4.0.0. Please use new_function instead&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">new_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">new_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+
+<span class="n">old_function</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>   <span class="c1"># Works but emits DeprecationWarning</span>
+<span class="n">new_function</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>   <span class="c1"># Works, no warning</span>
+</pre></div>
+</div>
+<p>Deprecating a class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils._deprecator</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">deprecated</span><span class="p">,</span> <span class="n">build_deprecation_message</span>
+<span class="p">)</span>
+<span class="n">deprecation_warning</span> <span class="o">=</span> <span class="n">build_deprecation_message</span><span class="p">(</span><span class="s2">&quot;diffpy.utils&quot;</span><span class="p">,</span>
+                                                <span class="s2">&quot;OldAtom&quot;</span><span class="p">,</span>
+                                                <span class="s2">&quot;NewAtom&quot;</span><span class="p">,</span>
+                                                <span class="s2">&quot;4.0.0&quot;</span><span class="p">)</span>
+
+<span class="nd">@deprecated</span><span class="p">(</span><span class="n">deprecation_warning</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OldAtom</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;OldAtom is deprecated and will be removed in</span>
+            <span class="n">version</span> <span class="mf">4.0.0</span><span class="o">.</span> <span class="n">Use</span> <span class="n">NewClass</span> <span class="n">instead</span><span class="o">.</span><span class="s2">&quot;,</span>
+            <span class="ne">DeprecationWarning</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">NewAtom</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">NewAtom</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span> <span class="o">=</span> <span class="n">symbol</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">OldAtom</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>     <span class="c1"># Works but emits DeprecationWarning</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">NewAtom</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>     <span class="c1"># Works with no warning</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="diffpy.utils._deprecator.generate_deprecation_docstring">
+<span class="sig-prename descclassname"><span class="pre">diffpy.utils._deprecator.</span></span><span class="sig-name descname"><span class="pre">generate_deprecation_docstring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removal_version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/_deprecator.html#generate_deprecation_docstring"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils._deprecator.generate_deprecation_docstring" title="Link to this definition"></a></dt>
+<dd><p>Generate a docstring for copy-pasting into a deprecated function.</p>
+<p>This function will print the text to the terminal for copy-pasting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>new_name</strong> (<em>str</em>) – The name of the new function or class to replace the existing one.</p></li>
+<li><p><strong>removal_version</strong> (<em>str</em>) – The version when the deprecated item is targeted for removal,
+e.g., 4.0.0.</p></li>
+<li><p><strong>new_base</strong> (<em>str</em><em>, </em><em>optional</em>) – The new base for importing. The new import statement would look like
+“from new_base import new_name”. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">diffpy.utils._deprecator</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_deprecation_docstring</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_deprecation_docstring</span><span class="p">(</span><span class="s2">&quot;new_name&quot;</span><span class="p">,</span> <span class="s2">&quot;4.0.0&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>The message looks like:</dt><dd><p>This function has been deprecated and will be removed in version
+{removal_version}. Please use {new_base}.{new_name} instead.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="module-diffpy.utils.diffraction_objects">
 <span id="diffpy-utils-diffraction-objects-module"></span><h3>diffpy.utils.diffraction_objects module<a class="headerlink" href="#module-diffpy.utils.diffraction_objects" title="Link to this heading"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">diffpy.utils.diffraction_objects.</span></span><span class="sig-name descname"><span class="pre">DiffractionObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scat_quantity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/diffraction_objects.html#DiffractionObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">diffpy.utils.diffraction_objects.</span></span><span class="sig-name descname"><span class="pre">DiffractionObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scat_quantity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/diffraction_objects.html#DiffractionObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for storing and manipulating diffraction data.</p>
 <p>DiffractionObject stores data produced from X-ray, neutron,
@@ -579,7 +712,7 @@ Default is none.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject.all_arrays">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_arrays</span></span><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.all_arrays" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">all_arrays</span></span><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.all_arrays" title="Link to this definition"></a></dt>
 <dd><p>The 2D array containing <cite>xarray</cite> and <cite>yarray</cite> values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -587,7 +720,7 @@ Default is none.</p>
 yarray` (intensity) and the <cite>xarray</cite> values in q, tth, and d.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>ndarray</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">ndarray</span></code></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -618,14 +751,15 @@ the current instance.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject.dump">
 <span class="sig-name descname"><span class="pre">dump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/diffraction_objects.html#DiffractionObject.dump"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.dump" title="Link to this definition"></a></dt>
-<dd><p>Dump the xarray and yarray of the diffraction object to a two-column
-file, with the associated information included in the header.</p>
+<dd><p>Dump the xarray and yarray of the diffraction object to a
+two-column file, with the associated information included in the
+header.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>filepath</strong> (<em>str</em>) – The filepath where the diffraction object will be dumped</p></li>
-<li><p><strong>xtype</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default is q</em>) – The type of quantity for the independent variable chosen from
-{<a href="#id1"><span class="problematic" id="id2">*</span></a>XQUANTITIES, }</p></li>
+<li><p><strong>xtype</strong> (str, <code class="docutils literal notranslate"><span class="pre">optional</span></code>, default is q) – The type of quantity for the independent variable chosen from
+<code class="docutils literal notranslate"><span class="pre">{*XQUANTITIES,</span> <span class="pre">}</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -656,11 +790,11 @@ such as ‘tth’:</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject.input_xtype">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_xtype</span></span><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.input_xtype" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">input_xtype</span></span><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.input_xtype" title="Link to this definition"></a></dt>
 <dd><p>The type of the independent variable in <cite>xarray</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>input_xtype</strong> – The type of <cite>xarray</cite>, which must be one of {<a href="#id3"><span class="problematic" id="id4">*</span></a>XQUANTITIES}.</p>
+<dd class="field-odd"><p><strong>input_xtype</strong> – The type of <cite>xarray</cite>, which must be one of <code class="docutils literal notranslate"><span class="pre">{*XQUANTITIES}</span></code>.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
@@ -671,13 +805,14 @@ such as ‘tth’:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject.on_d">
 <span class="sig-name descname"><span class="pre">on_d</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/diffraction_objects.html#DiffractionObject.on_d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.on_d" title="Link to this definition"></a></dt>
-<dd><p>Return the tuple of two 1D numpy arrays containing d and y data.</p>
+<dd><p>Return the tuple of two 1D numpy arrays containing d and y
+data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>(d-array, y-array)</strong> – The tuple containing two 1D numpy arrays with d and y data</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple of ndarray</p>
+<dd class="field-even"><p>tuple of <code class="docutils literal notranslate"><span class="pre">ndarray</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -685,13 +820,14 @@ such as ‘tth’:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject.on_q">
 <span class="sig-name descname"><span class="pre">on_q</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/diffraction_objects.html#DiffractionObject.on_q"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.on_q" title="Link to this definition"></a></dt>
-<dd><p>Return the tuple of two 1D numpy arrays containing q and y data.</p>
+<dd><p>Return the tuple of two 1D numpy arrays containing q and y
+data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>(q-array, y-array)</strong> – The tuple containing two 1D numpy arrays with q and y data</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple of ndarray</p>
+<dd class="field-even"><p>tuple of <code class="docutils literal notranslate"><span class="pre">ndarray</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -699,13 +835,14 @@ such as ‘tth’:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject.on_tth">
 <span class="sig-name descname"><span class="pre">on_tth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/diffraction_objects.html#DiffractionObject.on_tth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.on_tth" title="Link to this definition"></a></dt>
-<dd><p>Return the tuple of two 1D numpy arrays containing tth and y data.</p>
+<dd><p>Return the tuple of two 1D numpy arrays containing tth and y
+data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>(tth-array, y-array)</strong> – The tuple containing two 1D numpy arrays with tth and y data</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple of ndarray</p>
+<dd class="field-even"><p>tuple of <code class="docutils literal notranslate"><span class="pre">ndarray</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -713,21 +850,22 @@ such as ‘tth’:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject.on_xtype">
 <span class="sig-name descname"><span class="pre">on_xtype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xtype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/diffraction_objects.html#DiffractionObject.on_xtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.on_xtype" title="Link to this definition"></a></dt>
-<dd><p>Return a tuple of two 1D numpy arrays containing x and y data.</p>
+<dd><p>Return a tuple of two 1D numpy arrays containing x and y
+data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>xtype</strong> (<em>str</em>) – The type of quantity for the independent variable chosen from
-{<a href="#id5"><span class="problematic" id="id6">*</span></a>XQUANTITIES, }</p>
+<code class="docutils literal notranslate"><span class="pre">{*XQUANTITIES,</span> <span class="pre">}</span></code></p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – Raised when the specified xtype is not among {<a href="#id7"><span class="problematic" id="id8">*</span></a>XQUANTITIES, }</p>
+<dd class="field-even"><p><strong>ValueError</strong> – Raised when the specified xtype is not among <code class="docutils literal notranslate"><span class="pre">{*XQUANTITIES,</span> <span class="pre">}</span></code></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>(xarray, yarray)</strong> – The tuple containing two 1D numpy arrays with x and y data for
 the specified xtype.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple of ndarray</p>
+<dd class="field-even"><p>tuple of <code class="docutils literal notranslate"><span class="pre">ndarray</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -735,8 +873,8 @@ the specified xtype.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject.scale_to">
 <span class="sig-name descname"><span class="pre">scale_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_diff_object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/diffraction_objects.html#DiffractionObject.scale_to"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.scale_to" title="Link to this definition"></a></dt>
-<dd><p>Return a new diffraction object which is the current object but
-rescaled in y to the target.</p>
+<dd><p>Return a new diffraction object which is the current object
+but rescaled in y to the target.</p>
 <p>By default, if <cite>q</cite>, <cite>tth</cite>, or <cite>d</cite> are not provided, scaling is
 based on the max intensity from each object. Otherwise, y-value in
 the target at the closest specified x-value will be used as the
@@ -748,16 +886,16 @@ be raised.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>target_diff_object</strong> (<a class="reference internal" href="#diffpy.utils.diffraction_objects.DiffractionObject" title="diffpy.utils.diffraction_objects.DiffractionObject"><em>DiffractionObject</em></a>) – The diffraction object you want to scale the current one onto.</p></li>
-<li><p><strong>q</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default is None</em>) – The value of the x-array where you want the curves to line up
+<li><p><strong>q</strong> (float, <code class="docutils literal notranslate"><span class="pre">optional</span></code>, default is None) – The value of the x-array where you want the curves to line up
 vertically. Specify a value on one of the allowed grids, q, tth,
 or d), e.g., q=10.</p></li>
-<li><p><strong>tth</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default is None</em>) – The value of the x-array where you want the curves to line up
+<li><p><strong>tth</strong> (float, <code class="docutils literal notranslate"><span class="pre">optional</span></code>, default is None) – The value of the x-array where you want the curves to line up
 vertically. Specify a value on one of the allowed grids, q, tth,
 or d), e.g., q=10.</p></li>
-<li><p><strong>d</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default is None</em>) – The value of the x-array where you want the curves to line up
+<li><p><strong>d</strong> (float, <code class="docutils literal notranslate"><span class="pre">optional</span></code>, default is None) – The value of the x-array where you want the curves to line up
 vertically. Specify a value on one of the allowed grids, q, tth,
 or d), e.g., q=10.</p></li>
-<li><p><strong>offset</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default is None</em>) – The offset to add to the scaled y-values.</p></li>
+<li><p><strong>offset</strong> (float, <code class="docutils literal notranslate"><span class="pre">optional</span></code>, default is None) – The offset to add to the scaled y-values.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -771,14 +909,14 @@ or d), e.g., q=10.</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="diffpy.utils.diffraction_objects.DiffractionObject.uuid">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">uuid</span></span><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.uuid" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">uuid</span></span><a class="headerlink" href="#diffpy.utils.diffraction_objects.DiffractionObject.uuid" title="Link to this definition"></a></dt>
 <dd><p>The unique identifier for the DiffractionObject instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>uuid</strong> – The unique identifier of the DiffractionObject instance.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>UUID</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">UUID</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -792,8 +930,8 @@ or d), e.g., q=10.</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="diffpy.utils.resampler.nsinterp">
 <span class="sig-prename descclassname"><span class="pre">diffpy.utils.resampler.</span></span><span class="sig-name descname"><span class="pre">nsinterp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diffpy/utils/resampler.html#nsinterp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diffpy.utils.resampler.nsinterp" title="Link to this definition"></a></dt>
-<dd><p>One-dimensional Whittaker-Shannon interpolation onto the Nyquist-Shannon
-grid.</p>
+<dd><p>One-dimensional Whittaker-Shannon interpolation onto the Nyquist-
+Shannon grid.</p>
 <p>Takes a band-limited function fp and original grid xp and resamples fp on
 the NS grid. Uses the minimum number of points N required by the Nyquist
 sampling theorem. N = (qmax-qmin)(rmax-rmin)/pi, where rmin and rmax are
@@ -802,15 +940,15 @@ qmin and qmax of the frequency-domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>xp</strong> (<em>ndarray</em>) – The array of known x values.</p></li>
-<li><p><strong>fp</strong> (<em>ndarray</em>) – The array of y values associated with xp.</p></li>
+<li><p><strong>xp</strong> (<code class="docutils literal notranslate"><span class="pre">ndarray</span></code>) – The array of known x values.</p></li>
+<li><p><strong>fp</strong> (<code class="docutils literal notranslate"><span class="pre">ndarray</span></code>) – The array of y values associated with xp.</p></li>
 <li><p><strong>qmin</strong> (<em>float</em>) – The lower band limit in the frequency domain.</p></li>
 <li><p><strong>qmax</strong> (<em>float</em>) – The upper band limit in the frequency domain.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>x</strong> (<em>ndarray</em>) – The Nyquist-Shannon grid computed for the given qmin and qmax.</p></li>
+<li><p><strong>x</strong> (<code class="docutils literal notranslate"><span class="pre">ndarray</span></code>) – The Nyquist-Shannon grid computed for the given qmin and qmax.</p></li>
 <li><p><strong>fp_at_x</strong> (<em>ndarray</em>) – The interpolated values at points x. Returns a single float if x is a
 scalar, otherwise returns a numpy.ndarray.</p></li>
 </ul>
@@ -835,7 +973,7 @@ interpolation if dr is greater than the sampling interval of r1.</p>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Returns resampled (r, s).</p>
+<dd class="field-even"><p>Returns resampled <code class="docutils literal notranslate"><span class="pre">(r,</span> <span class="pre">s)</span></code>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -852,11 +990,11 @@ paper (<a class="reference external" href="https://doi.org/10.1017/S037016460001
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>ndarray</em>) – The x values at which interpolation is computed.</p></li>
-<li><p><strong>xp</strong> (<em>ndarray</em>) – The array of known x values.</p></li>
-<li><p><strong>fp</strong> (<em>ndarray</em>) – The array of y values associated with xp.</p></li>
+<li><p><strong>x</strong> (<code class="docutils literal notranslate"><span class="pre">ndarray</span></code>) – The x values at which interpolation is computed.</p></li>
+<li><p><strong>xp</strong> (<code class="docutils literal notranslate"><span class="pre">ndarray</span></code>) – The array of known x values.</p></li>
+<li><p><strong>fp</strong> (<code class="docutils literal notranslate"><span class="pre">ndarray</span></code>) – The array of y values associated with xp.</p></li>
 <li><p><strong>left</strong> (<em>float</em>) – If given, set fp for x &lt; xp[0] to left. Otherwise, if left is None
-(default) or not given, set fp for x &lt; xp[0] to fp evaluated at xp[-1].</p></li>
+(default) or not given, set fp for x &lt; xp[0] to fp evaluated at xp[0].</p></li>
 <li><p><strong>right</strong> (<em>float</em>) – If given, set fp for x &gt; xp[-1] to right. Otherwise, if right is None
 (default) or not given, set fp for x &gt; xp[-1] to fp evaluated at
 xp[-1].</p></li>
@@ -867,7 +1005,7 @@ xp[-1].</p></li>
 scalar, otherwise returns a numpy.ndarray.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray or float</p>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">ndarray</span></code> or float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -880,14 +1018,14 @@ scalar, otherwise returns a numpy.ndarray.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../examples/tools_example.html" class="btn btn-neutral float-left" title="Tools Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../examples/mu_calc_examples.html" class="btn btn-neutral float-left" title="Linear Absorption Coefficient (μ) Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="diffpy.utils.parsers.html" class="btn btn-neutral float-right" title="diffpy.utils.parsers package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, The Trustees of Columbia University in the City of New York.</p>
+    <p>&#169; Copyright 2026, The Trustees of Columbia University in the City of New York.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
