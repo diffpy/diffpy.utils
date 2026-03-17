@@ -4,6 +4,14 @@ Release notes
 
 .. current developments
 
+3.7.2
+=====
+
+**Added:**
+
+* Added Support for Python 3.10
+
+
 3.7.1
 =====
 
