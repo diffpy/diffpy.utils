@@ -81,8 +81,9 @@ def getSelectedCells(grid):
 
 
 def limitSelectionToRows(grid, indices):
-    """Limit selection to the specified row indices. No action for empty
-    indices.
+    """Limit selection to the specified row indices.
+
+    No action for empty indices.
 
     Parameters
     ----------
