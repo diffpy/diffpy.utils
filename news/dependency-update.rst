@@ -1,6 +1,6 @@
 **Added:**
 
-* No news needed: updating isort and black. Not user facing.
+* No news needed: updating docformatter, isort and black. Not user facing.
 
 **Changed:**
 
