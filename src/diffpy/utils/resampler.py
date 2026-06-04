@@ -141,7 +141,6 @@ def resample(r, s, dr):
     -------
     Returns resampled ``(r, s)``.
     """
-
     warnings.warn(
         (
             "The 'resample' function is deprecated and will be removed "
