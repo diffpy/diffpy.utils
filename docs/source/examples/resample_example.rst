@@ -5,98 +5,65 @@
 Resampling Example
 ##################
 
-This example will demonstrate how we can use diffpy.utils functions to resample a function on a denser grid.
-Specifically, we will resample the grid of one function to match another for us to easily compare the two.
-Then we will show how this resampling method lets us create a perfect reconstruction of certain functions
-given enough datapoints.
+This example compares two nickel pair distribution functions sampled on different grids.
+We will interpolate the coarser dataset onto the reference grid and plot the difference.
 
-1) To start, unzip :download:`parser_data<./example_data/parser_data.zip>`. Then, load the data table from ``Nickel.gr``
-   and ``NiTarget.gr``. These datasets are based on data from `Atomic Pair Distribution Function Analysis: A Primer
+1) Unzip :download:`parser_data<./example_data/parser_data.zip>` and run the
+   example from the directory containing ``Nickel.gr`` and ``NiTarget.gr``.
+   These datasets are based on data from `Atomic Pair Distribution Function Analysis: A Primer
    <https://global.oup.com/academic/product/atomic-pair-distribution-function-analysis-9780198885801?cc=us&lang=en&>`_.
+   The first column is the distance grid and the second is the function value.
 
 .. code-block:: python
 
-       from diffpy.utils.parsers import load_data
-       nickel_datatable = load_data('<PATH to Nickel.gr>')
-       nitarget_datatable = load_data('<PATH to NiTarget.gr>')
+    from diffpy.utils.parsers import load_data
 
-Each data table has two columns: first is the grid and second is the function value.
-To extract the columns, we can utilize the serialize function ...
+    nickel_grid, nickel_func = load_data("Nickel.gr").T
+    target_grid, target_func = load_data("NiTarget.gr").T
 
-.. code-block:: python
-
-     from diffpy.utils.parsers.serialization import serialize_data
-     nickel_data = serialize_data('Nickel.gr', {}, nickel_datatable, dt_colnames=['grid', 'func'])
-     nickel_grid = nickel_data['Nickel.gr']['grid']
-     nickel_func = nickel_data['Nickel.gr']['func']
-     target_data = serialize_data('NiTarget.gr', {}, nitarget_datatable, dt_colnames=['grid', 'function'])
-     target_grid = nickel_data['Nickel.gr']['grid']
-     target_func = nickel_data['Nickel.gr']['func']
-
-... or you can use any other column extracting method you prefer.
-
-2) If we plot the two on top of each other
+2) Plot both functions on their native grids. Both span 0 to 60 Å.
+   The nickel file has 601 points spaced by 0.1 Å, and the reference has
+   6001 points spaced by 0.01 Å. Every tenth reference point coincides
+   with a sample in the nickel file.
 
 .. code-block:: python
 
-     import matplotlib.pyplot as plt
-     plt.plot(target_grid, target_func, linewidth=3)
-     plt.plot(nickel_grid, nickel_func, linewidth=1)
+    import matplotlib.pyplot as plt
+    import numpy as np
 
-they look pretty similar, but to truly see the difference, we should plot the difference between the two.
-We may want to run something like ...
+    plt.plot(target_grid, target_func, label="Reference")
+    plt.plot(nickel_grid, nickel_func, ".", label="Nickel samples")
+    plt.legend()
 
-.. code-block:: python
-
-     import numpy as np
-     difference = np.subtract(target_func, nickel_func)
-
-... but this will only produce the right result if the ``target_func`` and ``nickel_func`` are on the same grid.
-Checking the lengths of ``target_grid`` and ``nickel_grid`` shows that these grids are clearly distinct.
-
-3) However, we can resample the two functions to be on the same grid. Since both functions have grids spanning
-   ``[0, 60]``, let us define a new grid ...
+3) To compare the functions point by point, use ``wsinterp`` to evaluate the
+   nickel samples at the reference distances. The residual is close to zero at
+   the original sample positions. Between those positions, the maximum absolute
+   difference is about 0.0063 for these files.
 
 .. code-block:: python
 
-     grid = np.linspace(0, 60, 6001)
+    from diffpy.utils.resampler import wsinterp
 
-... and use the diffpy.utils ``wsinterp`` function to resample on this grid.
+    nickel_resample = wsinterp(target_grid, nickel_grid, nickel_func)
+    residual = target_func - nickel_resample
+    print(np.max(np.abs(residual)))
 
-.. code-block:: python
+    plt.figure()
+    plt.plot(target_grid, residual)
+    plt.xlabel("Distance (Å)")
+    plt.ylabel("Reference − interpolated nickel")
 
-     from diffpy.utils.resampler import wsinterp
-     nickel_resample = wsinterp(grid, nickel_grid, nickel_func)
-     target_resample = wsinterp(grid, target_grid, target_func)
+4) For a signal band-limited to :math:`Q_\mathrm{max}`, the Nyquist sampling
+   interval in real space is :math:`\pi / Q_\mathrm{max}`. Here
+   :math:`Q_\mathrm{max} = 25` Å⁻¹ gives an interval of about
+   0.126 Å. The nickel grid samples more finely than that. Its finite range
+   still limits the accuracy of sinc interpolation between samples.
 
-We can now plot the difference to see that these two functions are quite similar.
-
-.. code-block:: python
-
-     plt.plot(grid, target_resample)
-     plt.plot(grid, nickel_resample)
-     plt.plot(grid, target_resample - nickel_resample)
-
-This is the desired result as the data in ``Nickel.gr`` is every tenth data point in ``NiTarget.gr``.
-This also shows us that ``wsinterp`` can help us reconstruct a function from incomplete data.
-
-4) In order for our function reconstruction to be perfect up to a truncation error, we require that (a) the function is
-   a Fourier transform of a band-limited dataset and (b) the original grid has enough equally-spaced datapoints based on
-   the Nyquist sampling theorem.
-
-     * If our function :math:`F(r)` is of the form :math:`F(r) = \int_0^{qmax} f(q)e^{-iqr}dq` where :math:`qmax` is
-       the bandlimit, then for a grid spanning :math:`r \in [rmin, rmax]`, the Nyquist sampling theorem tells us we
-       require at least :math:`qmax * (rmin - rmax) / \pi` equally-spaced datapoints.
-
-   In the case of our dataset, our band-limit is ``qmax=25.0`` and our function spans :math:`r \in (0.0, 60.0)`.
-   Thus, our original grid requires :math:`25.0 * 60.0 / \pi < 478`. Since our grid has :math:`601` datapoints, our
-   reconstruction was perfect as shown from the comparison between ``Nickel.gr`` and ``NiTarget.gr``.
-
-   This computation is implemented in the function ``nsinterp``.
+   To evaluate the same data on the grid chosen by ``nsinterp``, use both
+   returned arrays as the new distances and function values.
 
 .. code-block:: python
 
-     from diffpy.utils.resampler import nsinterp
-     qmin = 0
-     qmax = 25
-     nickel_resample = (nickel_grid, nickel_func, qmin, qmax)
+    from diffpy.utils.resampler import nsinterp
+
+    ns_grid, ns_func = nsinterp(nickel_grid, nickel_func, qmin=0, qmax=25)
